@@ -1,0 +1,86 @@
+'use strict';
+var map = L.map('map');
+var toggle = false;
+var windclass = [];
+var windrpLayer,windLeaseLayer,windPlanningLayer;
+var toggleFull = false;
+
+function preloader() {
+    if (document.images) {
+        var img1 = new Image();
+       // var img2 = new Image();
+       // var img3 = new Image();
+
+        img1.src = "img/wind_cc.svg";
+       // img2.src = "img/GandH.png";
+       // img3.src = "img/info.png";
+    }
+}
+function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+        window.onload = func;
+    } else {
+        window.onload = function() {
+            if (oldonload) {
+                oldonload();
+            }
+            func();
+        }
+    }
+}
+addLoadEvent(preloader);
+
+// Declare app level module which depends on filters, and services
+angular.module('myApp', [
+      'ui.router',
+      'myApp.filters',
+      'myApp.services',
+      'myApp.directives',
+      'myApp.controllers',
+      'angulartics',
+      'angulartics.google.analytics',
+      'pageslide-directive',
+      'angularModalService',
+      'ngAnimate'
+    ])
+    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+      //$urlRouterProvider.otherwise('/view1');
+      $stateProvider
+          .state('view1', {
+           // url: '/view1',
+            templateUrl: 'partials/CE.html',
+            controller: 'MyCtrl1'
+          })
+          .state('view3', {
+           // url: '/view3',
+            templateUrl: 'partials/NRC.html',
+            controller: 'MyCtrl3'
+          })
+          .state('view4',{
+          //  url:'/view4',
+            templateUrl:'partials/TI.html',
+            controller: 'MyCtrl4'
+          })
+        .state('EM', {
+          //  url: '/EM',
+            templateUrl: 'partials/EnergyMineral.html',
+            controller: 'MyCtrl2'
+        })
+          .state('view5',{
+           //   url:'/view5',
+              templateUrl:'partials/EC.html',
+              controller: 'MyCtrl5'
+          })
+      ;
+    }])
+    .config(function($animateProvider) {
+      $animateProvider.classNameFilter(/angular-animate/);
+    })
+    .config(function ($analyticsProvider) {
+      $analyticsProvider.firstPageview(true); /* Records pages that don't use $state or $route */
+      $analyticsProvider.withAutoBase(true);  /* Records full path */
+    });
+
+
+

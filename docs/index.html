@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>OCM Angular Seed Project 2.0</title>
+
+<xmp theme="cerulean" style="display:none;">
+# Developer Documentation
+This angular projects gives developers a good starting point to make mapping and visualization tools.
+
+###Getting started with seed template
++ Get setup with [node.js](https://nodejs.org/en/)
++ Get setup with Grunt CLI, by running `npm install -g grunt-cli`
++ Unzip the contents of `angular-html5-webapp.zip` to your blank app directory in your local development web server.
++ cd into the app directory and run `npm install`. This should bring down all the dependencies.
++ Then run `grunt`
+  -  You should see output that looks like 
+     ```shell
+      C:\Projects\Sites\seeds\my-webapp
+      λ grunt
+      Running "setup" task
+      Warning: You are running grunt without changing "appName" property in packege.json file.
+      Please change the property to a different name (oneword small-caps), and try running grunt again. Use --force to continue.
+
+      Aborted due to warnings.
+     ```
++ This means you are setup to start. Like the message says, in ` packege.json` change the `appName` property to the name you want to use for this app. Remember the name has to be smallcase, and no spaces. 
+    ```js
+      {
+        "name": "ProjectName",
+        "appName": "my-app", // Change to "your-project"
+        "version": "1.0.0",
+        "description": "ProjectDescription",
+        "main": "Gruntfile.js",
+        "directories": {
+          "doc": "docs"
+        },
+        ...
+      }
+    ```
++ Run `grunt` again and you should see an output like so, but before running grunt again check the contents of `js/app-name.js` and see what it changes to later :). 
+
+    ```shell
+      λ grunt
+      Running "setup" task
+      >> Checking if your-project.json exists...no
+
+              Checking if app-name.json exists...yes
+              Renaming app-name.json to your-project.json
+              Deleting js/app-name.js
+      >> Checking if css/less/your-project.less exists...no
+
+              Checking if css/less/app-name.less exists...yes
+              Renaming css/less/app-name.less to css/less/your-project.less
+              Deleting css/app-name.min.css
+              Injecting CSS buid in index.html
+      >> Injecting CSS and JavaScript buid in index.html
+
+      Running "config" task
+
+      Running "fetch-dependencies" task
+              Downloading https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js to > js/lib/jquery.min.js
+              Downloading https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js to > js/lib/underscore-min.js
+              Downloading https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js to > js/lib/angular.min.js
+              Downloading https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.min.js to > js/lib/angular-route.min.js
+
+      Running "update-dependency-json" task
+
+      Running "concat:dist" (concat) task
+
+      Running "less:development" (less) task
+      >> 1 stylesheet created.
+
+      Running "cssmin:minify" (cssmin) task
+      >> 1 file created. 9.12 kB → 1.92 kB
+
+      Running "cachebreak:dev" (cachebreak) task
+
+      Running "cacheBust:assets" (cacheBust) task
+      >> Static asset "favicon.png" skipped because it wasn't found, original reference=favicon.png
+      >> Static asset "nice-highres.png" skipped because it wasn't found, original reference=nice-highres.png
+      >> Static asset "niceicon.png" skipped because it wasn't found, original reference=niceicon.png
+      The file index.html was busted!
+
+      Running "clean:artifacts" (clean) task
+      >> 1 path cleaned.
+
+      Running "watch" task
+      Waiting...
+    ```
+    At this point you are ready to begin coding on your project. If you run grunt you won't see a lot of those setup tasks information again, however its a good idea to look at it once, to understand what it did. It basically renamed the compiled js and css files under `js` and `css` directoty to `your-project.js` and `your-project.css`.  It also fetched all the dependencies listed in the `your-project.json`, saved the scripts in the lib directory and minified them. 
+    Now the grunt watch is waiting for you to make your changes, at which point it will keep re-building. 
+
+## Asset Pipeline
+   
+   - ###JavaScript
+    Adding/modifying files to JavaScript build is easy. Just add the dependency in `js/your-project.json` in the order you want, and it will be automatically compiled to `your-project.js`, injected into `index.html` and cache busted every time.
+
+    Downloading new dependencies from web is easy too. Say you wanted to include `d3.js` you would copy its cdn link from say [cdnjs.com](https://cdnjs.com) and just paste it in the `your-project.json`, hit save and watch the grunt watcher do its magick. For eg: 
+    
+    Add the url you want to download the d3.js from to the `your-project.json` file and hit save. If your grunt watcher is not running, just run it again with `grunt`. If your watcher is already runnning you don't have to do anything. Sit back and watch as grunt downloads the dependency, saves the file in the lib directory and makes replaces the URL entry with file path. Oh What fun (yep am lazy)!
+
+    Ofcourse, you can just copy the library in the `js/lib` directory and make a manual entry in the `your-project.json` and it will get inected in the build too. Infact this is how you will add any JavaScripts from `app` directory that you may write for your project.
+    
+    ####Before
+    ```json
+      [
+          "js/lib/jquery.min.js",
+          "js/lib/accessifyhtml5.min.js",
+          "js/lib/underscore-min.js",
+          "js/lib/angular.min.js",
+          "js/lib/angular-route.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"
+          "js/app/services.js",
+          "js/app/controllers.js",
+          "js/app/filters.js",
+          "js/app/directives.js",
+          "js/app/app.js"
+      ]
+    ```
+
+    ####After
+    ```json
+      [
+          "js/lib/jquery.min.js",
+          "js/lib/accessifyhtml5.min.js",
+          "js/lib/underscore-min.js",
+          "js/lib/angular.min.js",
+          "js/lib/angular-route.min.js",
+          "js/lib/d3.min.js"  -------> see what happened here? easy!
+          "js/app/services.js",
+          "js/app/controllers.js",
+          "js/app/filters.js",
+          "js/app/directives.js",
+          "js/app/app.js"
+      ]
+    ```
+    
+    - ###CSS
+      We use [LESS](http://lesscss.org/) css preprocessor in this seed project. You should never modify `css/your-project.css` directly. Instead, all css must be imported as less files and included in `css\less\your-project.less` and it will be automatically compiled and minified into `your-project.css`, injected into `index.html` and cache-busted. 
+
+      The seed project comes with a good set of guidelines and some boilerplate code. 
+
+      ```less
+        /**************************************
+            SETTINGS 
+        **************************************/
+
+        @import "normalize.less";
+        @import "colors.less";  -----------------> Has NOAA color pallet defined. 
+        @import "fonts.less";
+
+        /**************************************
+            COMPONENTS 
+        **************************************/
+
+        /**************************************
+            PAGES 
+        **************************************/
+        @import "print.less";
+
+        /**************************************
+            ICONS 
+        **************************************/
+
+        /**************************************
+            HELPERS 
+        **************************************/
+      ```
+
+Just remember that NOAA OCM project cannot include any javascript/css/font or any asset for that matter directly from an external URL. All assets have to be downloded locally with the project and included. Only assets that may be included are the ones that are hosted on `coast.noaa.gov` server.
+
+## Development workflow
+
+As we have seen above running `grunt` builds and watches for changes. Now if you have the project checked out in a local webserver like apache, this is all you will need to do. 
+
+However, its more fun now to just run `grunt serve-dev`. This will do every thing that grunt does, plus starts a local web server and pulls the project up in your default browser at location `http://localhost:3000/`. It even auto refreshes when you make changes to your code. Much Automation! &#9829;
+
+When you are ready to create/test the production build just run `grunt release`, and this will create a `dist` directory with your production build. You can even preview this production build by running `grunt serve-dist` in a local server like above.  
+
+## Version Control
+   Before adding the newly setup seed project to a version control, make sure you ignore the `node_modules` directory. You may or may not ignore the `dist` directory after it is generated using `grunt release` depending on your deployment plan.
+
+  + **SVN Url**
+    - [todo](https://todo/)
+  + **Branches**
+    - Currently there are no branches
+  + **Tags**
+    - [todo](https://todo/)
+
+## Javascript Libraries
+
+All 3rd party JavaScript libraries used in the project can be found in ```js/lib``` directory. Please list all javascript libraries that go with this project below. Make sure, all required licences are preserved in the libraries. Most libaries will have version number and url they were download from in the comments, however if they don't come with one, please add this information in a block comment in the header. 
+
+```
+  accessifyhtml5.min.js
+  angular-route.min.js
+  angular.min.js
+  jquery.min.js
+  underscore-min.js
+```
+
+## File structure
+Here's a quick overview of the structure. 
+
+```shell
+  your-project
+  ├── css
+  │   ├── less                              (all stylesheets in less format)
+  │   │        ├── your-project.less        (main less config file)
+  │   │        ├── ....
+  │   │        ├── ....
+  │   ├── your-project.min.css              (compiled css file)
+  ├── docs ( <----- You are here!)
+  ├── font
+  ├── img
+  ├── js
+  │   ├── lib                               (vendor scripts )
+  │   │        ├── jquery.min.js
+  │   │        ├── ....
+  │   │        ├── ....
+  │   ├── app                               (application scripts)
+  │   │        ├── your-project.app.js
+  │   │        ├── your-project.ui.js
+  │   │        ├── ....
+  │   ├── your-project.js                   (compiled javascript that is included in HTML)
+  │   ├── your-project.json                 (list js required by the index.html. They are compiled and auto included in html by Grunt)
+  ├── node_modules
+  ├── partials (stores all html partials which are lazy loaded with AJAX when needed)
+  ├── Gruntfile.js
+  ├── index.html 
+  ├── package.json
+  ├── robots.txt
+```
+
+## Questions?
+  Shoot an email to `shaunak.vairagare@noaa.gov` or `charles.molnar@noaa.gov`. Any suggestions on improving the documentation, seed project or grunt script are welcome too! 
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>

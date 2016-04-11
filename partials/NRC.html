@@ -1,0 +1,26 @@
+<script>
+    // Elements to inject
+    var mySVGsToInject = document.querySelectorAll('img.inject-it');
+
+    // Do the injection
+    SVGInjector(mySVGsToInject);
+</script>
+<a href="" id="togglefull" class="toggleicon"><img class="inject-it toggleimg" src="img/ArrowButton.svg"></a>
+
+<div style="padding:30px;" id="slide-right">
+    <div style="width: 100%;height:5px">
+        <div id="AOIname">{{Cur_AOI.toUpperCase()}}</div>
+        <div id="shareIcons">
+            <div id="shareIcon"><img src="img/PDF.svg"></div>
+            <div id="shareIcon"><img src="img/Printer.svg"></div>
+            <div id="shareIcon"><img src="img/Export.svg"></div>
+        </div>
+    </div>
+    <br style="clear: left;"/>
+
+    <div id="sliderData">
+        <div id="AOItab" class="AOItabClass"> Natural Resources and Conservation
+            <hr width="50%" align="left" color="#F4F8FC">
+        </div>
+    </div>
+</div>

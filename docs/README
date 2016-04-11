@@ -1,0 +1,8 @@
+Please check the `doc/index.html` for details.
+
+For best rendering, make sure you pullup the `doc\index.html` in the browser using a web server url like: 
+`localhost/blah-blah/doc/index.html`.
+
+Donot, open the `doc/index.html` from the filesystem path something like
+`file:///C:/Projects/Sites/seeds/angular-html5-webapp/docs/index.html` as that will not render the markdown properly. 
+
