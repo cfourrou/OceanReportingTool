@@ -5051,7 +5051,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 //console.log(document.getElementById('smallmap').className);
                 //document.getElementById('smallmap').className='smallmapclass';
 
-                document.getElementById("slide1").style.width = '100%';
+               document.getElementById("slide1").style.width = '100%';
+
                 //document.getElementById('smallmap').style.visibility = "visible";
                 //document.getElementById('AOItab2').style.height='794px';
                 document.getElementById("togglefull").style.marginLeft='0px';
@@ -5093,6 +5094,32 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.checked = !$scope.checked
         }
 
+        $scope.reset = function (){
+            $scope.checked = true;
+           // $scope.size='50%';
+           // $scope.psSize= "25%";
+            document.getElementById("slide1").style.width = '50%';
+           toggleFull=false;
+            toggle=false;
+            map.removeLayer(windPlanningLayer);
+            map.removeLayer(windLeaseLayer);
+            map.removeLayer(windrpLayer);
+            map.setView([33.51, -68.3], 6);
+        }
+
+        $scope.off = function (){
+            $scope.checked = false;
+            // $scope.size='50%';
+            // $scope.psSize= "25%";
+            //document.getElementById("slide1").style.width = '50%';
+            toggleFull=false;
+            toggle=false;
+            map.removeLayer(windPlanningLayer);
+            map.removeLayer(windLeaseLayer);
+            map.removeLayer(windrpLayer);
+            //map.setView([33.51, -68.3], 6);
+        }
+
         $scope.Cur_AOI = 'Grand Strand';
         var marker;
         $scope.wind = [];
@@ -5111,7 +5138,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         var cLayer = L.esri.featureLayer({
             url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/11',
             where: "DATASET_NM='AOI_input' AND AOI_NAME='" + $scope.Cur_AOI + "'",
-            color: '#E59ECA', weight: 3, fillOpacity:.3,
+            color: '#EB660C', weight: 3, fillOpacity:.3,
             pane:'AOIfeature'
         }).addTo(map);
 
@@ -5377,6 +5404,16 @@ angular.module('myApp', [
            //   url:'/view5',
               templateUrl:'partials/EC.html',
               controller: 'MyCtrl5'
+          })
+          .state('splash',{
+              //   url:'/view5',
+              templateUrl:'partials/splash.html',
+             // controller: 'splashCtrl'
+          })
+          .state('search',{
+              //   url:'/view5',
+              templateUrl:'partials/search.html',
+              // controller: 'splashCtrl'
           })
       ;
     }])

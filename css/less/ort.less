@@ -172,21 +172,53 @@ h6 {
   margin-right: 0;
   font-weight: bold;
 }
+
+.resetbutton{
+  background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/Reset_2.svg');
+  .leftbutton;
+}
+
+.areasbutton{
+  background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/KnownAreas_2.svg');
+  .leftbutton;
+}
+
+.drawbutton{
+  background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/MapInput_2.svg');
+  .leftbutton;
+}
 .leftbutton {
   //font-family: arial;
   color: #FFFFFF !important;
   font-size: 14px;
-  font-weight: normal;
-  letter-spacing: .75px;
+  font-weight: 300;
+  //letter-spacing: .75px;
   //text-shadow: 1px 2px 0px #7CACDE;
   //box-shadow: 1px 1px 1px #BEE2F9;
-  padding: 10px 25px;
+  //padding: 10px 25px;
   // -moz-border-radius: 2px;
   // -webkit-border-radius: 2px;
   // border-radius: 2px;
   //background: inherit;
   text-decoration: none;
+  background-color:  @ortBlue-light;
+ // background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/Reset_2.svg');
+  background-repeat: no-repeat;
+  background-position: center 5px;
+   width: 130px;
+  //height: 26px;
+  padding: 12px 12px 0px 12px;
+  display: inline-block;
+ // font-size: 18px;
+  line-height: 48px;
+  text-align: center;
+  border:none;
+  &:hover{background-color: @ortBlue-Dark;border:none;}
+  &:visited{background-color: @ortBlue-Dark;border:none;}
+  //&:active{background-color: @ortBlue-Dark;border:none;}
+
 }
+
 .rightbutton {
   color: #FFFFFF ;
   font-size: 11px;
@@ -433,9 +465,17 @@ body.ng-pageslide-body-closed::before {
   display:none;
 }
 #WRBox{
+   background: @ortBlue-Pale;
+   height:280px;
+   width:645px;
+   box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
+ }
+
+.sBox{
   background: @ortBlue-Pale;
-  height:280px;
-  width:645px;
+  padding:50px;
+ // height:280px;
+ // width:645px;
   box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
 }
 #box1{
@@ -765,3 +805,52 @@ body.ng-pageslide-body-closed::before {
   font-size: 62.5%;
 }
 
+.sText {
+  font-size: 14px;
+  color: @ortGrey-Dark;
+}
+.orangeHead {
+  font-size: 20px;
+  //float: left;
+  color: @ortOrange;
+  //padding: 10px;
+ // width: 665px;
+  //height:794px;
+}
+
+.blackimg #Page-1 {
+  stroke:black ;
+  fill:black;
+  // transform: rotate(180deg);
+  // stroke:red; //test
+}
+
+.menuBoxlight{
+  background: @ortBlue-Pale;
+  padding:6px;
+  //height:20px;
+  // width:645px;
+  box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
+  text-align:center;
+  background-image: url('../img/info.svg'); //umm
+  background-repeat: no-repeat;
+  background-position: left ;
+  background-size:25px;
+}
+.menuBoxdark{
+  background: #EDF1F4;
+  padding:6px;
+  //height:20px;
+  // width:645px;
+  box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
+  text-align:center;
+//  background-image: url('../img/info.svg'); //umm
+  background-repeat: no-repeat;
+  background-position: left ;
+  background-size:25px;
+  margin-bottom: 1px;
+  &:hover{background-color: @ortBlue-Pale;border:none;}
+}
+#boxofbuttons{
+  margin-top: 3px;
+}

@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?8a6b82d4b046d566">
+    <link rel="stylesheet" href="css/ort.min.css?56dc25b6417d0fa8">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -122,10 +122,10 @@
         <div id="main_content" class="inner">
 <div class="nav_bar">
             <div class="nav_menu_left">
-                <a class="leftbutton" href="">RESET</a>
-                <a class="leftbutton" href="">KNOWN AREAS</a>
-                <a class="leftbutton" href="">SEARCH</a>
-                <a class="leftbutton" href="">MAP INPUT</a>
+                <button ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</button>
+                <button ui-sref="search" class="areasbutton" ng-click="reset()">KNOWN AREAS</button>
+                <button  class="drawbutton" ng-click="off()">DRAW AREA</button>
+
             </div>
             <div class="nav_menu_right">
 
@@ -157,7 +157,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?6f145e09440e787f"></script>
+<script src="js/ort.js?c42b2de472726075"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

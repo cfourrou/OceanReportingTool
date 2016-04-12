@@ -513,13 +513,100 @@ h6 {
   margin-right: 0;
   font-weight: bold;
 }
+.resetbutton {
+  background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/Reset_2.svg');
+  color: #FFFFFF !important;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+  background-color: #3284BC;
+  background-repeat: no-repeat;
+  background-position: center 5px;
+  width: 130px;
+  padding: 12px 12px 0px 12px;
+  display: inline-block;
+  line-height: 48px;
+  text-align: center;
+  border: none;
+}
+.resetbutton:hover {
+  background-color: #46596D;
+  border: none;
+}
+.resetbutton:visited {
+  background-color: #46596D;
+  border: none;
+}
+.areasbutton {
+  background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/KnownAreas_2.svg');
+  color: #FFFFFF !important;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+  background-color: #3284BC;
+  background-repeat: no-repeat;
+  background-position: center 5px;
+  width: 130px;
+  padding: 12px 12px 0px 12px;
+  display: inline-block;
+  line-height: 48px;
+  text-align: center;
+  border: none;
+}
+.areasbutton:hover {
+  background-color: #46596D;
+  border: none;
+}
+.areasbutton:visited {
+  background-color: #46596D;
+  border: none;
+}
+.drawbutton {
+  background-image: url('http://tiger.innovateteam.com/OceanReportingTool/img/MapInput_2.svg');
+  color: #FFFFFF !important;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+  background-color: #3284BC;
+  background-repeat: no-repeat;
+  background-position: center 5px;
+  width: 130px;
+  padding: 12px 12px 0px 12px;
+  display: inline-block;
+  line-height: 48px;
+  text-align: center;
+  border: none;
+}
+.drawbutton:hover {
+  background-color: #46596D;
+  border: none;
+}
+.drawbutton:visited {
+  background-color: #46596D;
+  border: none;
+}
 .leftbutton {
   color: #FFFFFF !important;
   font-size: 14px;
-  font-weight: normal;
-  letter-spacing: .75px;
-  padding: 10px 25px;
+  font-weight: 300;
   text-decoration: none;
+  background-color: #3284BC;
+  background-repeat: no-repeat;
+  background-position: center 5px;
+  width: 130px;
+  padding: 12px 12px 0px 12px;
+  display: inline-block;
+  line-height: 48px;
+  text-align: center;
+  border: none;
+}
+.leftbutton:hover {
+  background-color: #46596D;
+  border: none;
+}
+.leftbutton:visited {
+  background-color: #46596D;
+  border: none;
 }
 .rightbutton {
   color: #FFFFFF ;
@@ -718,6 +805,11 @@ body.ng-pageslide-body-closed::before {
   background: #F4F8FC;
   height: 280px;
   width: 645px;
+  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
+}
+.sBox {
+  background: #F4F8FC;
+  padding: 50px;
   box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
 }
 #box1 {
@@ -969,4 +1061,43 @@ a:visited {
 }
 .footnote {
   font-size: 62.5%;
+}
+.sText {
+  font-size: 14px;
+  color: #4a4a4a;
+}
+.orangeHead {
+  font-size: 20px;
+  color: #EB660C;
+}
+.blackimg #Page-1 {
+  stroke: black ;
+  fill: black;
+}
+.menuBoxlight {
+  background: #F4F8FC;
+  padding: 6px;
+  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
+  text-align: center;
+  background-image: url('../img/info.svg');
+  background-repeat: no-repeat;
+  background-position: left ;
+  background-size: 25px;
+}
+.menuBoxdark {
+  background: #EDF1F4;
+  padding: 6px;
+  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: left ;
+  background-size: 25px;
+  margin-bottom: 1px;
+}
+.menuBoxdark:hover {
+  background-color: #F4F8FC;
+  border: none;
+}
+#boxofbuttons {
+  margin-top: 3px;
 }

@@ -72,6 +72,16 @@ angular.module('myApp', [
               templateUrl:'partials/EC.html',
               controller: 'MyCtrl5'
           })
+          .state('splash',{
+              //   url:'/view5',
+              templateUrl:'partials/splash.html',
+             // controller: 'splashCtrl'
+          })
+          .state('search',{
+              //   url:'/view5',
+              templateUrl:'partials/search.html',
+              // controller: 'splashCtrl'
+          })
       ;
     }])
     .config(function($animateProvider) {
