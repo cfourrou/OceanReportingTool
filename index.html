@@ -127,10 +127,10 @@
                 <button  class="drawbutton" ng-click="off()">DRAW AREA</button>
 
             </div>
-            <div class="nav_menu_right">
+            <div ng-show="checkifAOI" class="nav_menu_right">
 
-                <a class="rightbuttonItalics" ui-sref="view1" href="" ng-click="toggle()">{{Cur_AOI.toUpperCase()}}</a>
-                <a class="rightbutton" ui-sref="EM" href="" >ENERGY & MINERALS</a>
+                <a class="rightbuttonItalics" ui-sref="CEview" href="" >{{Cur_AOI.toUpperCase()}}</a>
+                <a class="rightbutton" ui-sref="EMview" href="" >ENERGY & MINERALS</a>
                 <a class="rightbutton" ui-sref="view3" href="" >NATURAL RESOURCES & CONSERVATION</a>
                 <a class="rightbutton" ui-sref="view4" href="" >TRANSPORTATION & INFRASTRUCTURE</a>
                 <a class="rightbutton" ui-sref="view5"href="">ECONOMICS & COMMERCE</a>
@@ -157,7 +157,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?c42b2de472726075"></script>
+<script src="js/ort.js?e73ae602f24c240b"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

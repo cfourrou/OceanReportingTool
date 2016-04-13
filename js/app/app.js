@@ -4,6 +4,7 @@ var toggle = false;
 var windclass = [];
 var windrpLayer,windLeaseLayer,windPlanningLayer;
 var toggleFull = false;
+var cLayer;
 
 function preloader() {
     if (document.images) {
@@ -31,6 +32,17 @@ function addLoadEvent(func) {
 }
 addLoadEvent(preloader);
 
+var marker;
+L.esri.basemapLayer('Oceans').addTo(map);
+L.esri.basemapLayer('OceansLabels').addTo(map);
+map.createPane('optionalfeature1');
+map.createPane('optionalfeature2');
+map.createPane('optionalfeature3');
+map.createPane('AOIfeature');
+
+map.setView([33.51, -78.3], 6);
+
+
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
       'ui.router',
@@ -47,22 +59,22 @@ angular.module('myApp', [
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       //$urlRouterProvider.otherwise('/view1');
       $stateProvider
-          .state('view1', {
+          .state('CEview', {
            // url: '/view1',
             templateUrl: 'partials/CE.html',
-            controller: 'MyCtrl1'
+            controller: 'AOICtrl'
           })
           .state('view3', {
            // url: '/view3',
             templateUrl: 'partials/NRC.html',
-            controller: 'MyCtrl3'
+            //controller: 'MyCtrl3'
           })
           .state('view4',{
           //  url:'/view4',
             templateUrl:'partials/TI.html',
-            controller: 'MyCtrl4'
+           // controller: 'MyCtrl4'
           })
-        .state('EM', {
+        .state('EMview', {
           //  url: '/EM',
             templateUrl: 'partials/EnergyMineral.html',
             controller: 'MyCtrl2'
@@ -70,7 +82,7 @@ angular.module('myApp', [
           .state('view5',{
            //   url:'/view5',
               templateUrl:'partials/EC.html',
-              controller: 'MyCtrl5'
+             // controller: 'MyCtrl5'
           })
           .state('splash',{
               //   url:'/view5',
