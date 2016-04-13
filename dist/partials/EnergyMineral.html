@@ -1,7 +1,7 @@
 <script>
     // Elements to inject
     var mySVGsToInject = document.querySelectorAll('img.inject-it');
-    console.log(mySVGsToInject);
+
     // Do the injection
     SVGInjector(mySVGsToInject);
 </script>
@@ -28,7 +28,7 @@
                     <div id="line1a">Wind Resource Potential</div>
                     <div id="line1b"><a href="" id="windRSel" class="maplinkbutton"><img
                             src="img/layers.svg" class="maplinkbutton">
-                        <div id="layerviewlink" class="maplinkbutton">Click to view on Map</div>
+                        <div id="layerviewlink" class="maplinkbutton">{{layers_toggle}}</div>
                     </a></div>
                 </div>
                 <div id="line2">
@@ -202,7 +202,7 @@
             </div>
         </div>
         <div id="AOItab2" class="AOItabClass">
-            <div id="smallmap" class="smallmapclass"></div>
+            <div id="map" class="smallmapclass"></div>
 
         </div>
 

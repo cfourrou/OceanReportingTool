@@ -523,6 +523,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: center 5px;
   width: 130px;
+  height: 55px;
   padding: 12px 12px 0px 12px;
   display: inline-block;
   line-height: 48px;
@@ -547,6 +548,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: center 5px;
   width: 130px;
+  height: 55px;
   padding: 12px 12px 0px 12px;
   display: inline-block;
   line-height: 48px;
@@ -571,6 +573,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: center 5px;
   width: 130px;
+  height: 55px;
   padding: 12px 12px 0px 12px;
   display: inline-block;
   line-height: 48px;
@@ -594,6 +597,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: center 5px;
   width: 130px;
+  height: 55px;
   padding: 12px 12px 0px 12px;
   display: inline-block;
   line-height: 48px;
@@ -739,6 +743,7 @@ p {
 /*  #map { position: absolute; top:45; bottom:0; right:0; left:0; } */
 .mapclass {
   height: 900px;
+  width: 100%;
 }
 #slide_div {
   position: relative;
@@ -997,6 +1002,10 @@ a:visited {
   color: #EB660C;
   padding: 10px;
   width: 665px;
+}
+#map {
+  height: 60%;
+  width: 100%;
 }
 .smallmapclass {
   height: 60%;

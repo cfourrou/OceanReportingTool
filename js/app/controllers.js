@@ -17,7 +17,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('AOICtrl', ['AOIData', '$scope', function (AOIData, $scope) {
         // AOIData.name = 'test name';
         // this would be where we need to load the AOI, all of it.
-        $scope.name = "AOICtrl";
+        //$scope.name = "AOICtrl";
 
         map.setView([33.51, -78.3], 10); //this is specific to Grand Strand
 
@@ -32,6 +32,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 pane: 'AOIfeature'
             }).addTo(map);
 
+            cLayer.query().bounds(function (error, latlngbounds) {
+                 //map.fitBounds(latlngbounds); //works here . see https://jsfiddle.net/uopatmop/4/
+            });
 
             windrpLayer = L.esri.featureLayer({ //windresource layer
                 url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/32',
@@ -290,27 +293,28 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-        //map.setView([33.51, -78.3], 10);
-        /*
-         //over ride windclass for testing chart
+       /*  //over ride windclass for testing chart
          console.log(windclass[0]);
          windclass[0]=10;
          windclass[1]=25;
          windclass[2]=65;
          */
-        //var smallmap= L.map('smallmap');
-        var smallmap = L.map('smallmap').setView([33.51, -78.3], 8); //.setView([33.51, -78.3], 8); //this is specific to Grand Strand
-        smallmap.createPane('miniAOIfeature');
+
+        var smallmap = L.map('map').setView([33.51, -78.3], 8);//.setView([33.51, -78.3], 8); //this is specific to Grand Strand. kludge until fitBounds works
         L.esri.basemapLayer('Oceans').addTo(smallmap);
         L.esri.basemapLayer('OceansLabels').addTo(smallmap);
 
+
         var minicLayer = L.esri.featureLayer({
             url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/11',
-            where: "DATASET_NM='AOI_input' AND AOI_NAME='" + $scope.Cur_AOI + "'",
-            color: '#E59ECA', weight: 3, fillOpacity: .3,
-            pane: 'miniAOIfeature'
+            where: "DATASET_NM='AOI_input' AND AOI_NAME='"+$scope.Cur_AOI +"'",
+            color: '#E59ECA', weight: 3, fillOpacity: .3
+            //,            pane: 'miniAOIfeature'
         }).addTo(smallmap);
 
+        minicLayer.query().bounds(function (error, latlngbounds) {
+           // smallmap.fitBounds(latlngbounds); //this isn't working. see https://jsfiddle.net/uopatmop/4/
+        });
 
 
     }])

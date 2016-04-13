@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?56dc25b6417d0fa8">
+    <link rel="stylesheet" href="css/ort.min.css?7f3ad8e966c6a60f">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -121,7 +121,7 @@
 
         <div id="main_content" class="inner">
 <div class="nav_bar">
-            <div class="nav_menu_left">
+            <div class="nav_menu_left"  >
                 <button ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</button>
                 <button ui-sref="search" class="areasbutton" ng-click="reset()">KNOWN AREAS</button>
                 <button  class="drawbutton" ng-click="off()">DRAW AREA</button>
@@ -138,8 +138,8 @@
             </div>
     </div>
 
-            <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="TRUE">
-                    <div ui-view style="overflow: hidden"></div>
+            <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true" >
+                    <div ui-view></div>
 
             </div>
         </div>
@@ -147,7 +147,7 @@
         <div id="contentliquid">
             <div id="content">
                 <div id="slide_div">
-                    <div id="map" class="mapclass"></div>
+                    <div id="bigmap" class="mapclass"></div>
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?e73ae602f24c240b"></script>
+<script src="js/ort.js?2b4f42dac5efb5ff"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

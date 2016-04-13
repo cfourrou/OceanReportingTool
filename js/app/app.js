@@ -1,5 +1,5 @@
 'use strict';
-var map = L.map('map');
+var map = L.map('bigmap');
 var toggle = false;
 var windclass = [];
 var windrpLayer,windLeaseLayer,windPlanningLayer;
@@ -57,7 +57,7 @@ angular.module('myApp', [
       'ngAnimate'
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-      //$urlRouterProvider.otherwise('/view1');
+      //$urlRouterProvider.otherwise('/help');
       $stateProvider
           .state('CEview', {
            // url: '/view1',
@@ -85,7 +85,7 @@ angular.module('myApp', [
              // controller: 'MyCtrl5'
           })
           .state('splash',{
-              //   url:'/view5',
+              //url:'/help',
               templateUrl:'partials/splash.html',
              // controller: 'splashCtrl'
           })
