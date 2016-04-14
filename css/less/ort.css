@@ -817,7 +817,7 @@ body.ng-pageslide-body-closed::before {
   padding: 50px;
   box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
 }
-#box1 {
+#wrbox1 {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 16px;
@@ -870,7 +870,6 @@ body.ng-pageslide-body-closed::before {
   float: left;
   height: 20px;
   text-align: left;
-  transform: rotate(180deg);
 }
 .infobutton.mainbutton .infoicon-1 {
   stroke: black ;
@@ -1088,14 +1087,12 @@ a:visited {
   padding: 6px;
   box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
   text-align: center;
-  background-image: url('../img/info.svg');
-  background-repeat: no-repeat;
-  background-position: left ;
-  background-size: 25px;
+  width: 100%;
 }
 .menuBoxdark {
   background: #EDF1F4;
   padding: 6px;
+  width: 100%;
   box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
   text-align: center;
   background-repeat: no-repeat;
@@ -1107,6 +1104,27 @@ a:visited {
   background-color: #F4F8FC;
   border: none;
 }
-#boxofbuttons {
+.menuboxofboxes {
   margin-top: 3px;
+  margin-left: 50px;
+}
+.areasicon {
+  float: left;
+  height: 23px;
+}
+.rotate,
+.rotateCounterwise {
+  -webkit-transition: 300ms ease all;
+  -moz-transition: 300ms ease all;
+  -o-transition: 300ms ease all;
+  transition: 300ms ease all;
+}
+.rotate {
+  -webkit-transform: rotate(45deg);
+}
+.rotateCounterwise {
+  -webkit-transform: rotate(0deg);
+}
+.pluscloseIcon {
+  -webkit-transform: rotate(45deg);
 }

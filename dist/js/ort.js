@@ -4931,7 +4931,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }).addTo(map);
 
             cLayer.query().bounds(function (error, latlngbounds) {
-                 //map.fitBounds(latlngbounds); //works here . see https://jsfiddle.net/uopatmop/4/
+                //map.fitBounds(latlngbounds); //works here . see https://jsfiddle.net/uopatmop/4/
             });
 
             windrpLayer = L.esri.featureLayer({ //windresource layer
@@ -5130,7 +5130,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }]
         });
 
-        $scope.layers_toggle = (toggle?"Click to hide Layer":"Click to view on Map");
+        $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
         document.getElementById("windRSel").addEventListener("click", function () {
             toggle = !toggle;
             if (toggle) {
@@ -5191,7 +5191,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-       /*  //over ride windclass for testing chart
+        /*  //over ride windclass for testing chart
          console.log(windclass[0]);
          windclass[0]=10;
          windclass[1]=25;
@@ -5205,13 +5205,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         var minicLayer = L.esri.featureLayer({
             url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/11',
-            where: "DATASET_NM='AOI_input' AND AOI_NAME='"+$scope.Cur_AOI +"'",
+            where: "DATASET_NM='AOI_input' AND AOI_NAME='" + $scope.Cur_AOI + "'",
             color: '#E59ECA', weight: 3, fillOpacity: .3
             //,            pane: 'miniAOIfeature'
         }).addTo(smallmap);
 
         minicLayer.query().bounds(function (error, latlngbounds) {
-           // smallmap.fitBounds(latlngbounds); //this isn't working. see https://jsfiddle.net/uopatmop/4/
+            // smallmap.fitBounds(latlngbounds); //this isn't working. see https://jsfiddle.net/uopatmop/4/
         });
 
 
@@ -5219,17 +5219,41 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('pageslideCtrl', ['$scope', function ($scope) { //this one loads once on start up
 
+        $scope.box = [];
+        var len = 7;
+        for (var i = 0; i < len; i++) {
+            $scope.box.push({
+                isActive: false,
+                level: 0,
+                future: true
+            });
+        }
+
 
         //$scope.name = "bababooey";
         $scope.checked = false; // This will be binded using the ps-open attribute
+
 
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
         }
 
+        $scope.t_menu_box = function (id,levl) {
+            $scope.box[id].level=levl;
+            $scope.box[id].isActive = !$scope.box[id].isActive;
+            for (i = 0; i < len; i++) {
+                if ((i != id)&&(levl<=$scope.box[i].level)) {
+                    $scope.box[i].isActive = false;
+                }
+            }
+        }
+
         $scope.reset = function () { //unloads AOI but leaves slider pane on
             $scope.AOIoff();
             $scope.paneon();
+            for (i = 0; i < len; i++) {
+                 $scope.box[i].isActive = false;
+            }
 
         }
 
@@ -5253,7 +5277,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 map.removeLayer(windLeaseLayer);
                 map.removeLayer(windrpLayer);
                 map.removeLayer(cLayer);
-                cLayer=null;
+                cLayer = null;
             }
             map.setView([33.51, -68.3], 6);
         }
