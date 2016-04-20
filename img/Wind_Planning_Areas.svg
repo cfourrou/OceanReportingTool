@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="73px" height="66px" viewBox="0 0 73 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
+    <title>Wind Planning Areas</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" filter="url(#filter-1)">
+        <g id="Energy-and-Minerals-Split-View-Color-Map" transform="translate(-1102.000000, -585.000000)" stroke="#0B131A" fill="#A1A1A1">
+            <g id="Energy-and-Minerals-Content" transform="translate(762.000000, 237.000000)">
+                <g id="Wind-Planning-Areas" transform="translate(376.500000, 379.000000) rotate(-90.000000) translate(-376.500000, -379.000000) translate(348.000000, 347.000000)">
+                    <rect id="Rectangle-859" x="21" y="7" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="0" y="28" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="7" y="21" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="7" y="28" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="14" y="14" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="14" y="21" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="14" y="28" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="28" y="0" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="35" y="0" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="42" y="0" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="49" y="0" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="21" y="14" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="21" y="21" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="21" y="28" width="8" height="8"></rect>
+                    <rect id="Rectangle-859" x="28" y="7" width="29" height="29"></rect>
+                    <rect id="Rectangle-859" x="0" y="35" width="29" height="29"></rect>
+                    <rect id="Rectangle-859" x="28" y="35" width="29" height="29"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

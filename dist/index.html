@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?e82c1b8dbffe3baa">
+    <link rel="stylesheet" href="css/ort.min.css?6a815d259c1fded0">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -122,9 +122,9 @@
         <div id="main_content" class="inner">
 <div class="nav_bar">
             <div class="nav_menu_left"  >
-                <button ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</button>
-                <button ui-sref="search" class="areasbutton" ng-click="reset()">KNOWN AREAS</button>
-                <button  class="drawbutton" ng-click="off()">DRAW AREA</button>
+                <div ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</div>
+                <div ui-sref="search" class="areasbutton" ng-click="reset()">KNOWN AREAS</div>
+                <div  class="drawbutton" ng-click="off()">DRAW AREA</div>
 
             </div>
             <div ng-show="checkifAOI" class="nav_menu_right">
@@ -138,7 +138,7 @@
             </div>
     </div>
 
-            <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true" >
+            <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true" ps-custom-height="100%" ps-custom-top="-55px">
                     <div ui-view></div>
 
             </div>
@@ -157,7 +157,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?4239fc2370bb5e7d"></script>
+<script src="js/ort.js?8f199e4c0c9b7bb0"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

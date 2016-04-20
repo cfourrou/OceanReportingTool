@@ -1,10 +1,17 @@
 'use strict';
-var map = L.map('bigmap');
+var map = L.map('bigmap',{
+    zoomControl: false
+});
+
+
+
+
 var toggle = false;
 var windclass = [];
 var windrpLayer,windLeaseLayer,windPlanningLayer;
 var toggleFull = false;
 var cLayer;
+var menuitems= [];
 
 function preloader() {
     if (document.images) {
@@ -35,6 +42,9 @@ addLoadEvent(preloader);
 var marker;
 L.esri.basemapLayer('Oceans').addTo(map);
 L.esri.basemapLayer('OceansLabels').addTo(map);
+L.control.zoom({
+    position:'bottomleft'
+}).addTo(map);
 map.createPane('optionalfeature1');
 map.createPane('optionalfeature2');
 map.createPane('optionalfeature3');
@@ -55,6 +65,7 @@ angular.module('myApp', [
       'pageslide-directive',
       'angularModalService',
       'ngAnimate'
+
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       //$urlRouterProvider.otherwise('/help');

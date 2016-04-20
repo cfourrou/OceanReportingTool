@@ -97,7 +97,7 @@ a:active {
   //border: 1px solid black;
   //background-color: black;
   // opacity: 1;
-  top:159px;
+  top:214px;
 }
 .windmill {
   width: 190px;
@@ -115,7 +115,7 @@ a:active {
   height: 231px;
   width: 190px;
   position: absolute;
-  top:160px;
+  top:215px;
   //left:0px;
 }
 h1 {
@@ -206,7 +206,7 @@ h6 {
   background-repeat: no-repeat;
   background-position: center 5px;
    width: 130px;
-  height: 55px;
+  height: 43px;
   padding: 12px 12px 0px 12px;
   display: inline-block;
  // font-size: 18px;
@@ -317,6 +317,8 @@ p {
   width: 100%;
   box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
   background:@ortBlue-light;
+  z-index: 1001; //cof 1
+  opacity: .85; //cof 1
 }
 .nav_menu_left {
   float: left;
@@ -381,15 +383,16 @@ p {
 
 
 .mapclass{
-  height: 900px;
-  width:100%;
+  height: 955px;
+  width:50%;
   //height:20%;
-
+  top: -55px; //cof 1
 }
 
 #slide_div {
   position: relative;
   height: 900px;
+
 }
 
 html {
@@ -399,8 +402,12 @@ html {
 
 .ng-pageslide {
   background: #fff;
-}
+  //height:100%;
 
+}
+#slide-right{
+  margin-top: 55px;
+}
 body.ng-pageslide-body-open::before {
   content: '.';
   display: block;
@@ -500,35 +507,7 @@ body.ng-pageslide-body-closed::before {
   color: #060606;
 }
 
-.maplinkbutton {
-  //font-family: arial;
-  color: #060606;
-  //    color: #FFFFFF !important;
-  //    font-size: 12px;
-  //text-shadow: 1px 2px 0px #7CACDE;
-  //box-shadow: 1px 1px 1px #BEE2F9;
-  //    padding: 5px 5px;
-  // -moz-border-radius: 2px;
-  // -webkit-border-radius: 2px;
-  // border-radius: 2px;
-  //    background: #4690C3;
-  text-decoration: none;
-  //    width:20%;
-  //height: 145px;
-  //white-space: normal;
-  //word-wrap: break-word;
-  //overflow-x: scroll;
-  float:left;
-  vertical-align:middle;
-  text-align: left;
-  //    display: inline-block;
-}
-.maplinkbutton:hover {
-  color: #060606;
-  //   color: #14396A !important;
-  //   background: #4690C3;
-  text-decoration: none;
-}
+
 
 #line2{
   float: left;
@@ -707,7 +686,7 @@ body.ng-pageslide-body-closed::before {
   // height:43px;
   position: absolute;
   margin-left: -25px;
-  top:44%;
+  top:47%;
   // left: 50%;
   z-index: 9998;
   overflow-y: visible;
@@ -838,6 +817,7 @@ body.ng-pageslide-body-closed::before {
   //background-repeat: no-repeat;
   //background-position: left ;
   //background-size:25px;
+  margin-bottom: 1px;
   width:100%;
 }
 .menuBoxdark{
@@ -852,7 +832,12 @@ body.ng-pageslide-body-closed::before {
   background-position: left ;
   background-size:25px;
   margin-bottom: 1px;
-  &:hover{background-color: @ortBlue-Pale;border:none;}
+  font-weight: 300;
+  &:hover{
+    background-color: @ortBlue-Pale;
+    border:none;
+    font-weight: 400;
+  }
 }
 .menuboxofboxes{
   margin-top: 3px;
@@ -878,4 +863,26 @@ body.ng-pageslide-body-closed::before {
 }
 .pluscloseIcon{
   -webkit-transform: rotate(45deg);
+}
+.splashtitleimg{
+  height: 50px;
+  margin-bottom: 30px;
+}
+.splashtitle {
+  text-align: center;
+}
+
+.maplinkbutton {
+  color: #060606;
+  text-decoration: none;
+  float:left;
+  vertical-align:middle;
+  text-align: left;
+ }
+.maplinkbutton:hover {
+  color: #060606;
+  text-decoration: none;
+}
+#windRSelimg{
+  -webkit-transform: rotate(90deg);
 }

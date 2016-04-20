@@ -12,6 +12,10 @@
     <div id="sliderData">
         <div class="orangeHead"><b>Known Areas</b></div>
         <hr width="50%" align="left">
+
+
+
+
         <div class="menuBoxlight" ng-click="t_menu_box(0,0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[0].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
             <div>High Priority Areas</div>
@@ -23,7 +27,7 @@
             <div class="menuBoxdark">Charleston Bump</div>
             <div class="menuBoxdark">Diamond Shoals</div>
             <div class="menuBoxdark">Frying Pan Shoals</div>
-            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Grand Strand')">Grand Strand</div>
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Grand Strand',90)">Grand Strand</div>
             <div class="menuBoxdark">Hatteras Canyon</div>
             <div class="menuBoxdark">Miami Terrace</div>
             <div class="menuBoxdark">Oculina Banks</div>
@@ -41,8 +45,8 @@
                 <div>Florida</div>
             </div>
             <div id="box2" class="menuboxofboxes" ng-show="box[2].isActive">
-                <div class="menuBoxdark">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Federal Waters',83)">Federal Waters (offshore to 50nm)</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('State Waters',85)">State Waters (offshore to 3nm)</div>
                 <div class="menuBoxdark">Waters offshore of Counties</div>
             </div>
             <div class="menuBoxlight" ng-click="t_menu_box(3,1)">
@@ -50,16 +54,16 @@
                 <div>Georgia</div>
             </div>
             <div id="box3" class="menuboxofboxes" ng-show="box[3].isActive">
-                <div class="menuBoxdark">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
-                <div class="menuBoxdark">Waters offshore of Counties</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Federal Waters',79)">Federal Waters (offshore to 50nm)</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('State Waters',86)">State Waters (offshore to 3nm)</div>
+                <div class="menuBoxdark" >Waters offshore of Counties</div>
             </div>
             <div class="menuBoxlight" ng-click="t_menu_box(4,1)">
                 <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[4].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
                 <div>North Carolina</div>
             </div>
             <div id="box4" class="menuboxofboxes" ng-show="box[4].isActive">
-                <div class="menuBoxdark">Federal Waters (offshore to 50nm)</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Federal Waters',82)">Federal Waters (offshore to 50nm)</div>
                 <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
                 <div class="menuBoxdark">Waters offshore of Counties</div>
             </div>
@@ -68,7 +72,7 @@
                 <div>South Carolina</div>
             </div>
             <div id="box5" class="menuboxofboxes" ng-show="box[5].isActive">
-                <div class="menuBoxdark">Federal Waters (offshore to 50nm)</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Federal Waters',80)">Federal Waters (offshore to 50nm)</div>
                 <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
                 <div class="menuBoxdark">Waters offshore of Counties</div>
             </div>
@@ -77,7 +81,7 @@
                 <div>Virginia</div>
             </div>
             <div id="box6" class="menuboxofboxes" ng-show="box[6].isActive">
-                <div class="menuBoxdark">Federal Waters (offshore to 50nm)</div>
+                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Federal Waters',81)">Federal Waters (offshore to 50nm)</div>
                 <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
                 <div class="menuBoxdark">Waters offshore of Counties</div>
             </div>

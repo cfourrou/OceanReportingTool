@@ -4898,8 +4898,6 @@ angular.module('myApp.services', []).factory('_', function () {
 ;
 'use strict';
 
-/* Controllers */
-
 
 angular.module('myApp.controllers', ["pageslide-directive"])
 
@@ -4923,9 +4921,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //-----------------------------
 
         if (!cLayer) {
-            cLayer = L.esri.featureLayer({
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/11',
-                where: "DATASET_NM='AOI_input' AND AOI_NAME='" + $scope.Cur_AOI + "'",
+            cLayer = L.esri.featureLayer({ //AOI poly (7)
+                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                where: "AOI_NAME='" + $scope.Cur_AOI + "'",
                 color: '#EB660C', weight: 3, fillOpacity: .3,
                 pane: 'AOIfeature'
             }).addTo(map);
@@ -4934,8 +4932,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 //map.fitBounds(latlngbounds); //works here . see https://jsfiddle.net/uopatmop/4/
             });
 
-            windrpLayer = L.esri.featureLayer({ //windresource layer
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/32',
+            windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
+                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
                 //where: "DATASET_NM='Area of Interest'",
                 //color: 'gray', weight: 2, fillOpacity: 0
                 pane: 'optionalfeature1',
@@ -4958,8 +4956,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 }
             });
 
-            windLeaseLayer = L.esri.featureLayer({ //windresource layer
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/31',
+            windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
+                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
                 //where: "DATASET_NM='Area of Interest'",
                 //color: 'gray', weight: 2, fillOpacity: 0
                 pane: 'optionalfeature2',
@@ -4968,8 +4966,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     return {color: 'white', weight: 1, fillOpacity: .5};
                 }
             });
-            windPlanningLayer = L.esri.featureLayer({ //windresource layer
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/36',
+            windPlanningLayer = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
+                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
                 //where: "DATASET_NM='Area of Interest'",
                 //color: 'gray', weight: 2, fillOpacity: 0
                 pane: 'optionalfeature3',
@@ -4980,21 +4978,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
 
-            var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/11';
+            var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
 
             var query = L.esri.query({
-                url: cMapLayer1
+                url: cMapLayer1,
+
             });
 
 
-            query.run(function (error, featureCollection, response) {
+            query.where("AOI_NAME='" + $scope.Cur_AOI + "'").run(function (error, featureCollection, response) {
 
                 var k = 0;
 
                 var ba = 0;
                 var bb = 0;
                 var bc = 0;
-
+                //console.log(featureCollection);
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
                     switch (featureCollection.features[i].properties.DATASET_NM) {
                         case  "BOEM_Wind_Planning_Areas":
@@ -5204,8 +5203,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         var minicLayer = L.esri.featureLayer({
-            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/11',
-            where: "DATASET_NM='AOI_input' AND AOI_NAME='" + $scope.Cur_AOI + "'",
+            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+            where: "AOI_NAME='" + $scope.Cur_AOI + "'",
             color: '#E59ECA', weight: 3, fillOpacity: .3
             //,            pane: 'miniAOIfeature'
         }).addTo(smallmap);
@@ -5220,6 +5219,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('pageslideCtrl', ['$scope', function ($scope) { //this one loads once on start up
 
         $scope.box = [];
+        $scope.menuitems=[];
         var len = 7;
         for (var i = 0; i < len; i++) {
             $scope.box.push({
@@ -5238,11 +5238,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.checked = !$scope.checked;
         }
 
-        $scope.t_menu_box = function (id,levl) {
-            $scope.box[id].level=levl;
+        $scope.t_menu_box = function (id, levl) {
+            $scope.box[id].level = levl;
             $scope.box[id].isActive = !$scope.box[id].isActive;
             for (i = 0; i < len; i++) {
-                if ((i != id)&&(levl<=$scope.box[i].level)) {
+                if ((i != id) && (levl <= $scope.box[i].level)) {
                     $scope.box[i].isActive = false;
                 }
             }
@@ -5252,7 +5252,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.AOIoff();
             $scope.paneon();
             for (i = 0; i < len; i++) {
-                 $scope.box[i].isActive = false;
+                $scope.box[i].isActive = false;
             }
 
         }
@@ -5302,6 +5302,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.wind = [];
         $scope.boem = [];
 
+        //I think this would be the right place to put the menu data loop.
+
+/*
+        var query = L.esri.query({
+            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7'
+
+        });
+        query.run(function(error, featureCollection, response){
+            console.log('Found ' + featureCollection.features.length + ' features');
+        });
+        */
 
     }
     ])
@@ -5330,6 +5341,7 @@ angular.module('myApp.filters', []);
 /* Directives */
 
 
+
 angular.module('myApp.directives', [])
     .directive('appVersion', ['version', function (version) {
         return function (scope, elm, attrs) {
@@ -5337,6 +5349,10 @@ angular.module('myApp.directives', [])
         };
     }
     ])
+
+
+
+
 
     .directive('infoDirective', function () {
         return {
@@ -5367,12 +5383,19 @@ angular.module('myApp.directives', [])
 
 ;
 'use strict';
-var map = L.map('bigmap');
+var map = L.map('bigmap',{
+    zoomControl: false
+});
+
+
+
+
 var toggle = false;
 var windclass = [];
 var windrpLayer,windLeaseLayer,windPlanningLayer;
 var toggleFull = false;
 var cLayer;
+var menuitems= [];
 
 function preloader() {
     if (document.images) {
@@ -5403,6 +5426,9 @@ addLoadEvent(preloader);
 var marker;
 L.esri.basemapLayer('Oceans').addTo(map);
 L.esri.basemapLayer('OceansLabels').addTo(map);
+L.control.zoom({
+    position:'bottomleft'
+}).addTo(map);
 map.createPane('optionalfeature1');
 map.createPane('optionalfeature2');
 map.createPane('optionalfeature3');
@@ -5423,6 +5449,7 @@ angular.module('myApp', [
       'pageslide-directive',
       'angularModalService',
       'ngAnimate'
+
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       //$urlRouterProvider.otherwise('/help');
