@@ -165,14 +165,14 @@
                 <div id="wrbox1">
                     <div id="boemline1">Renewable Energy Leases</div>
                     <div id="boemline2">
-                        <span class="boemline2b">0</span>
+                        <span class="boemline2b">{{arel.length}}</span>
                         <span class="boemline2a">BOEM Active Renewable Energy Leases</span>
                     </div>
                     <div id="boemline2">
                         <span class="boemline2a">Covers</span>
-                        <span class="boemline2b">0<!--{{boem[0].PERC_COVER.toFixed(0)}}--></span>
+                        <span class="boemline2b">{{arel[0].PERC_COVER.toFixed(0)}}</span>
                         <span class="boemline2a">%, including</span>
-                        <span class="boemline2b">0<!--{{boem[0].TOTAL_BLOC}}--></span>
+                        <span class="boemline2b">{{arel[0].TOTAL_BLOC}}</span>
                         <span class="boemline2a">OCS blocks</span>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
                     <div id="boemline1">Wind Planning Areas</div>
 
                     <div id="boemline2">
-                        <span class="boemline2b">1</span>
+                        <span class="boemline2b">{{boem.length}}</span>
                         <span class="boemline2a">BOEM Wind Planning Area</span>
                     </div>
                     <div id="boemline2">

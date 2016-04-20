@@ -4915,7 +4915,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         // this would be where we need to load the AOI, all of it.
         //$scope.name = "AOICtrl";
 
-       // map.setView([33.51, -78.3], 10); //this is specific to Grand Strand
+        // map.setView([33.51, -78.3], 10); //this is specific to Grand Strand
 
 
         //-----------------------------
@@ -4930,33 +4930,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }).addTo(map);
 
 
-            //cLayer.query().bounds(function (error, latlngbounds) {
-            //    map.fitBounds(latlngbounds); //works here . see https://jsfiddle.net/uopatmop/5/
-            //});
-            //---------------------------------
-            cLayer.on("load", function(evt) {
+            cLayer.on("load", function (evt) {
                 // create a new empty Leaflet bounds object
 
                 var mbounds = L.latLngBounds([]);
                 // loop through the features returned by the server
-                cLayer.eachFeature(function(layer) {
+                cLayer.eachFeature(function (layer) {
                     // get the bounds of an individual feature
-
                     var layerBounds = layer.getBounds();
                     // extend the bounds of the collection to fit the bounds of the new feature
                     mbounds.extend(layerBounds);
                 });
-
-                // once we've looped through all the features, zoom the map to the extent of the collection
-               // $scope.minibounds=bounds;
-
                 map.fitBounds(mbounds);
-                //map.panTo([500, 500]);
 
                 console.log(mbounds);
-                //map.panTo([mbounds.getNorth(),mbounds.getEast()+20]);
                 // unwire the event listener so that it only fires once when the page is loaded
-               cLayer.off('load');
+                cLayer.off('load');
             });
 
 
@@ -4964,8 +4953,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
                 url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
-                //where: "DATASET_NM='Area of Interest'",
-                //color: 'gray', weight: 2, fillOpacity: 0
                 pane: 'optionalfeature1',
                 style: function (feature) {
                     if (feature.properties.Speed_90 >= 8.8) {
@@ -4988,8 +4975,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
                 url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
-                //where: "DATASET_NM='Area of Interest'",
-                //color: 'gray', weight: 2, fillOpacity: 0
                 pane: 'optionalfeature2',
                 style: function (feature) {
 
@@ -4998,8 +4983,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
             windPlanningLayer = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
                 url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
-                //where: "DATASET_NM='Area of Interest'",
-                //color: 'gray', weight: 2, fillOpacity: 0
                 pane: 'optionalfeature3',
                 style: function (feature) {
 
@@ -5016,21 +4999,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
 
-
-            //query.where("AOI_NAME='" + $scope.Cur_AOI + "'").run(function (error, featureCollection, response) {
-                query.where("AOI_ID =" + $scope.AOI_ID + "").run(function (error, featureCollection, response) {
+            query.where("AOI_ID =" + $scope.AOI_ID + "").run(function (error, featureCollection, response) {
 
                 var k = 0;
                 var ba = 0;
                 var bb = 0;
                 var bc = 0;
-                //console.log(featureCollection);
 
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
 
                     switch (featureCollection.features[i].properties.DATASET_NM) {
                         case  "BOEM_Wind_Planning_Areas":
-                        /*    $scope.boem[ba] = {
+                            $scope.boem[ba] = {
                                 INFO: featureCollection.features[i].properties.INFO,
                                 PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
                                 LINK1: featureCollection.features[i].properties.LINK1,
@@ -5038,17 +5018,23 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
                                 TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC
                             };
-                            ba++;*/
+                            ba++;
                             break;
                         case "ActiveRenewableEnergyLeases":
-                        /*    $scope.boem[bc] = {
+                            $scope.arel[bc] = {
                                 Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
-                                Company: featureCollection.features[i].properties.Company
+                                Company: featureCollection.features[i].properties.Company,
+                                INFO: featureCollection.features[i].properties.INFO,
+                                PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
+                                LINK1: featureCollection.features[i].properties.LINK1,
+                                LINK2: featureCollection.features[i].properties.LINK2,
+                                PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
+                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC
                             };
                             bc++;
-                          */  break;
+                            break;
                         case  "WindResourcePotential":
-                         /*   $scope.wind[bb] = {
+                            $scope.wind[bb] = {
                                 WIND_CLASS: featureCollection.features[i].properties.WIND_CLASS,
                                 AVG_WGHT: featureCollection.features[i].properties.AVG_WGHT.toFixed(2),
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
@@ -5076,10 +5062,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                     break;
                             }
                             bb++;
-                            */break;
+                            break;
                     }
                 }
+                //console.log($scope.arel.length);
                 $scope.boem.sort(function (a, b) {
+                    return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
+                });
+                $scope.arel.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
 
@@ -5230,19 +5220,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
          windclass[1]=25;
          windclass[2]=65;
          */
-/*
-        var smallmap = L.map('map').setView([33.51, -78.3], 8); //this is specific to Grand Strand. kludge until fitBounds works
-        L.esri.basemapLayer('Oceans').addTo(smallmap);
-        L.esri.basemapLayer('OceansLabels').addTo(smallmap);
 
-
-        var minicLayer = L.esri.featureLayer({
-            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
-            where: "AOI_NAME='" + $scope.Cur_AOI + "'",
-            color: '#E59ECA', weight: 3, fillOpacity: .3
-            //,            pane: 'miniAOIfeature'
-        }).addTo(smallmap);
-*/
         var smallmap = L.map('map').setView([45.526, -122.667], 1);
         L.esri.basemapLayer('Oceans').addTo(smallmap);
         L.esri.basemapLayer('OceansLabels').addTo(smallmap);
@@ -5257,12 +5235,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             //,            pane: 'miniAOIfeature'
         }).addTo(smallmap);
 
-        minicLayer.on("load", function(evt) {
+        minicLayer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
             var bounds = L.latLngBounds([]);
             // loop through the features returned by the server
-            minicLayer.eachFeature(function(layer) {
+            minicLayer.eachFeature(function (layer) {
                 // get the bounds of an individual feature
 
                 var layerBounds = layer.getBounds();
@@ -5271,7 +5249,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
             // once we've looped through all the features, zoom the map to the extent of the collection
-            $scope.minibounds=bounds;
+            $scope.minibounds = bounds;
             smallmap.fitBounds(bounds);
 
 
@@ -5285,7 +5263,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('pageslideCtrl', ['$scope', function ($scope) { //this one loads once on start up
 
         $scope.box = [];
-        $scope.menuitems=[];
+        $scope.menuitems = [];
         var len = 7;
         for (var i = 0; i < len; i++) {
             $scope.box.push({
@@ -5297,7 +5275,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         //$scope.name = "bababooey";
-        $scope.checked = false; // This will be binded using the ps-open attribute
+        $scope.checked = true; // This will be binded using the ps-open attribute
 
 
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
@@ -5328,12 +5306,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.paneoff();
         }
 
-        $scope.on = function (AOI,AOI_id) {//turns on AOI and slider pane
+        $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
             $scope.AOIon();
             $scope.paneon();
             //console.log(AOI);
             $scope.Cur_AOI = AOI;
-            $scope.AOI_ID=AOI_id;
+            $scope.AOI_ID = AOI_id;
             console.log($scope.AOI_ID);
         }
 
@@ -5348,6 +5326,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 cLayer = null;
             }
             map.setView([33.51, -78.3], 6);
+            $scope.wind.length = 0;
+            $scope.boem.length = 0;
+            $scope.arel.length = 0;
+            windclass.length = 0;
             //map.setView([33.51, -68.3], 6);
         }
 
@@ -5370,24 +5352,25 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         $scope.wind = [];
         $scope.boem = [];
+        $scope.arel = [];
 
         //I think this would be the right place to put the menu data loop.
 
-/*        var cMapLayer3 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/34';
+        /*        var cMapLayer3 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/34';
 
-        var query = L.esri.query({
-            url: cMapLayer3,
+         var query = L.esri.query({
+         url: cMapLayer3,
 
-        });
+         });
 
-        console.log("2");
+         console.log("2");
 
-        query.where("AOI_NAME='Grand Strand' AND DATASET_NM='AOI_input'").run(function (error, featureCollection, response) {
+         query.where("AOI_NAME='Grand Strand' AND DATASET_NM='AOI_input'").run(function (error, featureCollection, response) {
 
 
-            console.log(featureCollection);
-        });
-*/
+         console.log(featureCollection);
+         });
+         */
     }
     ])
 ;
