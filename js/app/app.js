@@ -5,6 +5,8 @@ var ortLayerAOI = '7';
 var ortLayerData = '33';
 var ortLayerOptional = [];
 
+var windChart;
+
 ortLayerOptional[0]=
 {
     num:'18',
@@ -37,7 +39,7 @@ var toggle = false;
 var windclass = [];
 var windrpLayer,windLeaseLayer,windPlanningLayer;
 var toggleFull = false;
-var cLayer;
+var cLayer,mouseLayer;
 var menuitems= [];
 
 function preloader() {

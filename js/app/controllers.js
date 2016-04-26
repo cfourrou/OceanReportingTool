@@ -32,7 +32,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 simplifyFactor: 5.0,
                 precision: 2,
             }).addTo(map);
-            console.log(" layer loaded " + $scope.AOI_ID);
+            //console.log(" layer loaded " + $scope.AOI_ID);
 
             cLayer.on("load", function (evt) {
                 // create a new empty Leaflet bounds object
@@ -203,6 +203,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.name = "controller 2";
 
 
+
         windChart = Highcharts.chart('container', {
             chart: {
                 spacing: 0,
@@ -336,7 +337,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         /*  //over ride windclass for testing chart
-         console.log(windclass[0]);
+        // console.log(windclass[0]);
          windclass[0]=10;
          windclass[1]=25;
          windclass[2]=65;
@@ -416,7 +417,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     $scope.box[i].isActive = false;
                 }
             }
-            console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
+            //console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
         };
 
         $scope.opt_layer_button = function (id) {
@@ -464,7 +465,35 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             //console.log(AOI);
             $scope.Cur_AOI = AOI;
             $scope.AOI_ID = AOI_id;
-            console.log($scope.AOI_ID);
+            //console.log($scope.AOI_ID);
+        };
+
+        $scope.mover = function (AOI_id) {//turns on poly on mouse over in menu
+
+            if (!mouseLayer) {
+                mouseLayer = L.esri.featureLayer({ //AOI poly (7)
+                    url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                    //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
+                    where: "AOI_ID =" + AOI_id + "",
+                    color: '#EB660C', weight: 3, fillOpacity: .3,
+                    //pane: 'AOIfeature',
+                    simplifyFactor: 5.0,
+                    precision: 2,
+                }).addTo(map);
+            };
+
+           // console.log(AOI_id);
+
+        };
+        $scope.mout = function (AOI_id) {//turns on poly on mouse over in menu
+
+            if (mouseLayer) {
+                map.removeLayer(mouseLayer);
+                mouseLayer = null;
+            }
+
+            // console.log(AOI_id);
+
         };
 
         $scope.AOIoff = function () {
@@ -582,12 +611,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
          });
 
-         console.log("2");
+         //console.log("2");
 
          query.where("AOI_NAME='Grand Strand' AND DATASET_NM='AOI_input'").run(function (error, featureCollection, response) {
 
 
-         console.log(featureCollection);
+         //console.log(featureCollection);
          });
          */
     }

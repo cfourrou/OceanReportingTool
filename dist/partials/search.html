@@ -25,7 +25,7 @@
         <div id="box0" class="menuboxofboxes" ng-show="box[1000].isActive" ng-repeat="aoix in aoismenu">
             <!--this should be the results of a looped lookup-->
 
-            <div class="menuBoxdark" ui-sref="CEview" ng-click="on(aoix.AOI_NAME,aoix.AOI_ID)">{{aoix.AOI_NAME}}</div>
+            <div class="menuBoxdark" ui-sref="CEview"  ng-mouseenter="mover(aoix.AOI_ID)"   ng-mouseout="mout(aoix.AOI_ID)" ng-click="on(aoix.AOI_NAME,aoix.AOI_ID)">{{aoix.AOI_NAME}} </div>
 
         </div>
 
@@ -48,7 +48,7 @@
 
                 <div class="menuboxofboxes" ng-show="box[{{$index}}].isActive">
                     <div ng-repeat="statel in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
-                        <div class="menuBoxdark" ui-sref="CEview" ng-click="on(statel.AOI_NAME,statel.AOI_ID)">
+                        <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(statel.AOI_ID)"  ng-mouseout="mout(statel.AOI_ID)" ng-click="on(statel.AOI_NAME,statel.AOI_ID)">
                             {{statel.AOI_NAME}}
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="menuboxofboxes" ng-show="box[{{$index+100}}].isActive">
                         <div ng-repeat="statey in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
-                            <div class="menuBoxdark" ui-sref="CEview" ng-click="on(statey.AOI_NAME,statel.AOI_ID)">
+                            <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(statey.AOI_ID)" ng-mouseout="mout(statey.AOI_ID)" ng-click="on(statey.AOI_NAME,statey.AOI_ID)">
                                 {{statey.AOI_NAME}}
                             </div>
                         </div>
