@@ -4915,28 +4915,49 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         // this would be where we need to load the AOI, all of it.
         //$scope.name = "AOICtrl";
 
-        map.setView([33.51, -78.3], 10); //this is specific to Grand Strand
+        // map.setView([33.51, -78.3], 10); //this is specific to Grand Strand
 
 
         //-----------------------------
 
         if (!cLayer) {
             cLayer = L.esri.featureLayer({ //AOI poly (7)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
-                where: "AOI_NAME='" + $scope.Cur_AOI + "'",
+                url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
+                where: "AOI_ID =" + $scope.AOI_ID + "",
                 color: '#EB660C', weight: 3, fillOpacity: .3,
-                pane: 'AOIfeature'
+                pane: 'AOIfeature',
+                simplifyFactor: 5.0,
+                precision: 2,
             }).addTo(map);
+            console.log(" layer loaded " + $scope.AOI_ID);
 
-            cLayer.query().bounds(function (error, latlngbounds) {
-                //map.fitBounds(latlngbounds); //works here . see https://jsfiddle.net/uopatmop/4/
+            cLayer.on("load", function (evt) {
+                // create a new empty Leaflet bounds object
+
+                var mbounds = L.latLngBounds([]);
+                // loop through the features returned by the server
+                cLayer.eachFeature(function (layer) {
+                    // get the bounds of an individual feature
+                    var layerBounds = layer.getBounds();
+                    // extend the bounds of the collection to fit the bounds of the new feature
+                    mbounds.extend(layerBounds);
+                });
+                map.fitBounds(mbounds);
+
+                //console.log(mbounds);
+                // unwire the event listener so that it only fires once when the page is loaded
+                cLayer.off('load');
             });
 
+
+            //-----------------------------------
+
             windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
-                //where: "DATASET_NM='Area of Interest'",
-                //color: 'gray', weight: 2, fillOpacity: 0
+                url: ortMapServer + ortLayerOptional[0].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
                 pane: 'optionalfeature1',
+                //simplifyFactor: 5.0,
+                //precision: 3,
                 style: function (feature) {
                     if (feature.properties.Speed_90 >= 8.8) {
                         return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -4957,9 +4978,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
             windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
-                //where: "DATASET_NM='Area of Interest'",
-                //color: 'gray', weight: 2, fillOpacity: 0
+                url: ortMapServer + ortLayerOptional[1].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
                 pane: 'optionalfeature2',
                 style: function (feature) {
 
@@ -4967,9 +4986,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 }
             });
             windPlanningLayer = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
-                //where: "DATASET_NM='Area of Interest'",
-                //color: 'gray', weight: 2, fillOpacity: 0
+                url: ortMapServer + ortLayerOptional[2].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
                 pane: 'optionalfeature3',
                 style: function (feature) {
 
@@ -4978,23 +4995,23 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
 
-            var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
+            // var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
 
             var query = L.esri.query({
-                url: cMapLayer1,
+                url: ortMapServer + ortLayerData,
 
             });
 
 
-            query.where("AOI_NAME='" + $scope.Cur_AOI + "'").run(function (error, featureCollection, response) {
+            query.returnGeometry(false).where("AOI_ID =" + $scope.AOI_ID + "").run(function (error, featureCollection, response) {
 
                 var k = 0;
-
                 var ba = 0;
                 var bb = 0;
                 var bc = 0;
-                //console.log(featureCollection);
+
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+
                     switch (featureCollection.features[i].properties.DATASET_NM) {
                         case  "BOEM_Wind_Planning_Areas":
                             $scope.boem[ba] = {
@@ -5003,14 +5020,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 LINK1: featureCollection.features[i].properties.LINK1,
                                 LINK2: featureCollection.features[i].properties.LINK2,
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
-                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC
+                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
+                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT
                             };
                             ba++;
                             break;
                         case "ActiveRenewableEnergyLeases":
-                            $scope.boem[bc] = {
+                            $scope.arel[bc] = {
                                 Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
-                                Company: featureCollection.features[i].properties.Company
+                                Company: featureCollection.features[i].properties.Company,
+                                INFO: featureCollection.features[i].properties.INFO,
+                                PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
+                                LINK1: featureCollection.features[i].properties.LINK1,
+                                LINK2: featureCollection.features[i].properties.LINK2,
+                                PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
+                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
+                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT
                             };
                             bc++;
                             break;
@@ -5046,10 +5071,21 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             break;
                     }
                 }
+                //console.log($scope.arel.length);
                 $scope.boem.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
-
+                $scope.arel.sort(function (a, b) {
+                    return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
+                });
+                if ($scope.boem[0].TOTAL_CNT === 0) {
+                    $scope.boem[0].PERC_COVER = 0;
+                    $scope.boem[0].TOTAL_BLOC = 0;
+                }
+                if ($scope.arel[0].TOTAL_CNT === 0) {
+                    $scope.arel[0].PERC_COVER = 0;
+                    $scope.arel[0].TOTAL_BLOC = 0;
+                }
                 $scope.$apply();
             });
         }
@@ -5128,29 +5164,30 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 data: [windclass[5]]
             }]
         });
+        /*
+         $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
+         document.getElementById("windRSel").addEventListener("click", function () {
+         toggle = !toggle;
+         if (toggle) {
+         windrpLayer.addTo(map);
+         windLeaseLayer.addTo(map);
+         windPlanningLayer.addTo(map);
+         //windrpLayer.setOpacity(.1);
+         //windrpLayer.bringToBack();
+         document.getElementById("layerviewlink").innerHTML = "Click to hide Layer";
 
-        $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
-        document.getElementById("windRSel").addEventListener("click", function () {
-            toggle = !toggle;
-            if (toggle) {
-                windrpLayer.addTo(map);
-                windLeaseLayer.addTo(map);
-                windPlanningLayer.addTo(map);
-                //windrpLayer.setOpacity(.1);
-                //windrpLayer.bringToBack();
-                document.getElementById("layerviewlink").innerHTML = "Click to hide Layer";
+         } else {
+         map.removeLayer(windPlanningLayer);
+         map.removeLayer(windLeaseLayer);
+         map.removeLayer(windrpLayer);
 
-            } else {
-                map.removeLayer(windPlanningLayer);
-                map.removeLayer(windLeaseLayer);
-                map.removeLayer(windrpLayer);
-
-                document.getElementById("layerviewlink").innerHTML = "Click to view on Map";
-            }
-        });
-
+         document.getElementById("layerviewlink").innerHTML = "Click to view on Map";
+         }
+         });
+         */
         document.getElementById("togglefull").addEventListener("click", function () {
             toggleFull = !toggleFull;
+            $scope.toggleFull = toggleFull;
             if (toggleFull) {
                 //document.getElementById('map').className='smallmapclass';
                 //document.getElementById('smallmap').innerHTML= document.getElementById('map').innerHTML;
@@ -5170,7 +5207,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                 document.getElementById('AOItab2').style.display = 'block';
                 smallmap.invalidateSize();
-                document.getElementById('windRSel').style.visibility = "hidden";
+                smallmap.fitBounds($scope.minibounds);
+                document.getElementById('slider_but0').style.visibility = "hidden";
+                document.getElementById('slider_but1').style.visibility = "hidden";
+                document.getElementById('slider_but2').style.visibility = "hidden";
+                document.getElementById('slbuttxt0').style.visibility = "hidden";
             } else {
                 //document.getElementById('smallmap').style.visibility = "hidden";
                 document.getElementById("togglefull").style.marginLeft = "-25px";
@@ -5178,8 +5219,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("slide1").style.width = '50%';
                 document.getElementById('AOItab2').style.display = 'none';
                 // document.getElementById('AOItab2').style.height='0px';
-                document.getElementById('windRSel').style.visibility = "visible";
-
+                document.getElementById('slider_but0').style.visibility = "visible";
+                document.getElementById('slider_but1').style.visibility = "visible";
+                document.getElementById('slider_but2').style.visibility = "visible";
+                document.getElementById('slbuttxt0').style.visibility = "visible";
                 // Code for Chrome, Safari, Opera
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                 // Code for IE9
@@ -5197,32 +5240,56 @@ angular.module('myApp.controllers', ["pageslide-directive"])
          windclass[2]=65;
          */
 
-        var smallmap = L.map('map').setView([33.51, -78.3], 8);//.setView([33.51, -78.3], 8); //this is specific to Grand Strand. kludge until fitBounds works
+        var smallmap = L.map('map').setView([45.526, -122.667], 1);
         L.esri.basemapLayer('Oceans').addTo(smallmap);
         L.esri.basemapLayer('OceansLabels').addTo(smallmap);
 
 
         var minicLayer = L.esri.featureLayer({
-            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
-            where: "AOI_NAME='" + $scope.Cur_AOI + "'",
-            color: '#E59ECA', weight: 3, fillOpacity: .3
+            url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+            where: "AOI_ID =" + $scope.AOI_ID + "",
+            color: '#EB660C',
+            weight: 3,
+            fillOpacity: .3,
+            simplifyFactor: 5.0,
+            precision: 3
             //,            pane: 'miniAOIfeature'
         }).addTo(smallmap);
 
-        minicLayer.query().bounds(function (error, latlngbounds) {
-            // smallmap.fitBounds(latlngbounds); //this isn't working. see https://jsfiddle.net/uopatmop/4/
-        });
+        minicLayer.on("load", function (evt) {
+            // create a new empty Leaflet bounds object
 
+            var bounds = L.latLngBounds([]);
+            // loop through the features returned by the server
+            minicLayer.eachFeature(function (layer) {
+                // get the bounds of an individual feature
+
+                var layerBounds = layer.getBounds();
+                // extend the bounds of the collection to fit the bounds of the new feature
+                bounds.extend(layerBounds);
+            });
+
+            // once we've looped through all the features, zoom the map to the extent of the collection
+            $scope.minibounds = bounds;
+            smallmap.fitBounds(bounds);
+
+
+            // unwire the event listener so that it only fires once when the page is loaded
+            minicLayer.off('load');
+        });
+        //smallmap.invalidateSize();
 
     }])
 
     .controller('pageslideCtrl', ['$scope', function ($scope) { //this one loads once on start up
 
         $scope.box = [];
-        $scope.menuitems=[];
-        var len = 7;
+        $scope.menuitems = [];
+        $scope.optLayer = [];
+        var len = 2000;
         for (var i = 0; i < len; i++) {
             $scope.box.push({
+                myid: i,
                 isActive: false,
                 level: 0,
                 future: true
@@ -5231,22 +5298,49 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         //$scope.name = "bababooey";
-        $scope.checked = false; // This will be binded using the ps-open attribute
+        $scope.checked = true; // This will be binded using the ps-open attribute
 
 
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
-        }
+        };
 
         $scope.t_menu_box = function (id, levl) {
             $scope.box[id].level = levl;
+
             $scope.box[id].isActive = !$scope.box[id].isActive;
             for (i = 0; i < len; i++) {
                 if ((i != id) && (levl <= $scope.box[i].level)) {
                     $scope.box[i].isActive = false;
                 }
             }
-        }
+            console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
+        };
+
+        $scope.opt_layer_button = function (id) {
+            $scope.optLayer[id] = !$scope.optLayer[id];
+            //console.log("button " + id);
+            switch (id) {
+                case 0:
+                    if ($scope.optLayer[0]) {
+                        windrpLayer.addTo(map);
+                    } else map.removeLayer(windrpLayer);
+                    break;
+                case 1:
+                    if ($scope.optLayer[1]) {
+                        windLeaseLayer.addTo(map);
+                    } else map.removeLayer(windLeaseLayer);
+                    break;
+                case 2:
+                    if ($scope.optLayer[2]) {
+                        windPlanningLayer.addTo(map);
+                    } else map.removeLayer(windPlanningLayer);
+                    break;
+            }
+
+
+        };
+
 
         $scope.reset = function () { //unloads AOI but leaves slider pane on
             $scope.AOIoff();
@@ -5255,19 +5349,21 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.box[i].isActive = false;
             }
 
-        }
+        };
 
         $scope.off = function () { //unloads AOI and turns off slider pane
             $scope.AOIoff();
             $scope.paneoff();
-        }
+        };
 
-        $scope.on = function (AOI) {//turns on AOI and slider pane
+        $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
             $scope.AOIon();
             $scope.paneon();
             //console.log(AOI);
             $scope.Cur_AOI = AOI;
-        }
+            $scope.AOI_ID = AOI_id;
+            console.log($scope.AOI_ID);
+        };
 
         $scope.AOIoff = function () {
             $scope.checkifAOI = false;
@@ -5279,41 +5375,119 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 map.removeLayer(cLayer);
                 cLayer = null;
             }
-            map.setView([33.51, -68.3], 6);
-        }
+            map.setView([33.51, -78.3], 6);
+            $scope.wind.length = 0;
+            $scope.boem.length = 0;
+            $scope.arel.length = 0;
+            $scope.optLayer.length = 0;
+            windclass.length = 0;
+            //map.setView([33.51, -68.3], 6);
+        };
 
         $scope.AOIon = function () {
             $scope.checkifAOI = true;
-        }
+        };
 
         $scope.paneoff = function () {
             $scope.checked = false;
             toggleFull = false;
-        }
+        };
 
         $scope.paneon = function () {
             $scope.checked = true;
             document.getElementById("slide1").style.width = '50%';
             toggleFull = false;
-        }
+        };
 
         //$scope.Cur_AOI = 'Grand Strand';
 
         $scope.wind = [];
         $scope.boem = [];
+        $scope.arel = [];
+
+        $scope.aoismenu = [];
+        $scope.aoistates = [];
+        $scope.aoistate = [];
+
+        var query = L.esri.query({
+            url: ortMapServer + ortLayerAOI
+
+        });
+        //query.returnGeometry = false;
+        query.returnGeometry(false).where("KNOWN_AREA='High Priority Areas'").run(function (error, featureCollection, response) {
+            //query.where("COMMON_NM='*'").run(function (error, featureCollection, response) {
+            // query.where("COMMON_NM LIKE '%'").run(function (error, featureCollection, response) {
+
+
+            var ba = 0;
+
+
+            for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+
+                // switch (featureCollection.features[i].properties.REPORT_TYPE) {
+                //    case  "High Priority Areas":
+
+                $scope.aoismenu[ba] = {
+                    AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
+                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                    REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                    AOI_ID: featureCollection.features[i].properties.AOI_ID,
+                    DATASET_NM:featureCollection.features[i].properties.DATASET_NM
+                };
+                ba++;
+                //      break;
+
+                //}
+            }
+
+            $scope.aoismenu.sort(function (a, b) {
+                //return parseFloat(a.AOI_NAME) - parseFloat(b.AOI_NAME);
+                return a.AOI_NAME.localeCompare(b.AOI_NAME);
+            });
+        });
+
+
+        //query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
+        query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
+                var ba = 0;
+                for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+                    $scope.aoistates[ba] = {
+                        AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
+                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                        REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                        AOI_ID: featureCollection.features[i].properties.AOI_ID,
+                        DATASET_NM:featureCollection.features[i].properties.DATASET_NM
+                    };
+                    ba++;
+                }
+            //console.log($scope.aoistates);
+                $scope.aoistates.sort(function (a, b) {
+                    return a.AOI_NAME.localeCompare(b.AOI_NAME);
+                });
+            //console.log($scope.aoistates);
+            }
+        );
+
+
+        //console.log($scope.aoismenu);
 
         //I think this would be the right place to put the menu data loop.
 
-/*
-        var query = L.esri.query({
-            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7'
+        /*        var cMapLayer3 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/34';
 
-        });
-        query.run(function(error, featureCollection, response){
-            console.log('Found ' + featureCollection.features.length + ' features');
-        });
-        */
+         var query = L.esri.query({
+         url: cMapLayer3,
 
+         });
+
+         console.log("2");
+
+         query.where("AOI_NAME='Grand Strand' AND DATASET_NM='AOI_input'").run(function (error, featureCollection, response) {
+
+
+         console.log(featureCollection);
+         });
+         */
     }
     ])
 ;
@@ -5383,6 +5557,33 @@ angular.module('myApp.directives', [])
 
 ;
 'use strict';
+
+var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/';
+var ortLayerAOI = '7';
+var ortLayerData = '33';
+var ortLayerOptional = [];
+
+ortLayerOptional[0]=
+{
+    num:'18',
+    name:'wind resource potential'
+};
+ortLayerOptional[1]=
+{
+    num:'17',
+    name:'renewable energy leases'
+};
+ortLayerOptional[2]=
+{
+    num:'21',
+    name:'BOEM_Wind_Planning_Areas'
+};
+ortLayerOptional[3]=
+{
+    num:'18',
+    name:'future'
+};
+
 var map = L.map('bigmap',{
     zoomControl: false
 });
@@ -5440,6 +5641,7 @@ map.setView([33.51, -78.3], 6);
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
       'ui.router',
+      'angular.filter',
       'myApp.filters',
       'myApp.services',
       'myApp.directives',
@@ -5453,7 +5655,13 @@ angular.module('myApp', [
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       //$urlRouterProvider.otherwise('/help');
+        $urlRouterProvider.otherwise('/main');
       $stateProvider
+
+          .state('otherwise', {
+              url : '/main',
+              templateUrl:'partials/splash.html',
+          })
           .state('CEview', {
            // url: '/view1',
             templateUrl: 'partials/CE.html',
@@ -5501,3 +5709,10 @@ angular.module('myApp', [
 
 
 
+;
+/**
+ * Bunch of useful filters for angularJS(with no external dependencies!)
+ * @version v0.5.7 - 2015-10-04 * @link https://github.com/a8m/angular-filter
+ * @author Ariel Mashraki <ariel@mashraki.co.il>
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */!function(a,b,c){"use strict";function d(a){return D(a)?a:Object.keys(a).map(function(b){return a[b]})}function e(a){return null===a}function f(a,b){var d=Object.keys(a);return-1==d.map(function(d){return b[d]!==c&&b[d]==a[d]}).indexOf(!1)}function g(a,b){if(""===b)return a;var c=a.indexOf(b.charAt(0));return-1===c?!1:g(a.substr(c+1),b.substr(1))}function h(a,b,c){var d=0;return a.filter(function(a){var e=x(c)?b>d&&c(a):b>d;return d=e?d+1:d,e})}function i(a,b,c){return c.round(a*c.pow(10,b))/c.pow(10,b)}function j(a,b,c){b=b||[];var d=Object.keys(a);return d.forEach(function(d){if(C(a[d])&&!D(a[d])){var e=c?c+"."+d:c;j(a[d],b,e||d)}else{var f=c?c+"."+d:d;b.push(f)}}),b}function k(a){return a&&a.$evalAsync&&a.$watch}function l(){return function(a,b){return a>b}}function m(){return function(a,b){return a>=b}}function n(){return function(a,b){return b>a}}function o(){return function(a,b){return b>=a}}function p(){return function(a,b){return a==b}}function q(){return function(a,b){return a!=b}}function r(){return function(a,b){return a===b}}function s(){return function(a,b){return a!==b}}function t(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?!1:b.some(function(b){return C(b)||z(c)?a(c)(b):b===c})}}function u(a,b){return b=b||0,b>=a.length?a:D(a[b])?u(a.slice(0,b).concat(a[b],a.slice(b+1)),b):u(a,b+1)}function v(a){return function(b,c){function e(a,b){return y(b)?!1:a.some(function(a){return H(a,b)})}if(b=C(b)?d(b):b,!D(b))return b;var f=[],g=a(c);return y(c)?b.filter(function(a,b,c){return c.indexOf(a)===b}):b.filter(function(a){var b=g(a);return e(f,b)?!1:(f.push(b),!0)})}}function w(a,b,c){return b?a+c+w(a,--b,c):a}var x=b.isDefined,y=b.isUndefined,z=b.isFunction,A=b.isString,B=b.isNumber,C=b.isObject,D=b.isArray,E=b.forEach,F=b.extend,G=b.copy,H=b.equals;String.prototype.contains||(String.prototype.contains=function(){return-1!==String.prototype.indexOf.apply(this,arguments)}),b.module("a8m.angular",[]).filter("isUndefined",function(){return function(a){return b.isUndefined(a)}}).filter("isDefined",function(){return function(a){return b.isDefined(a)}}).filter("isFunction",function(){return function(a){return b.isFunction(a)}}).filter("isString",function(){return function(a){return b.isString(a)}}).filter("isNumber",function(){return function(a){return b.isNumber(a)}}).filter("isArray",function(){return function(a){return b.isArray(a)}}).filter("isObject",function(){return function(a){return b.isObject(a)}}).filter("isEqual",function(){return function(a,c){return b.equals(a,c)}}),b.module("a8m.conditions",[]).filter({isGreaterThan:l,">":l,isGreaterThanOrEqualTo:m,">=":m,isLessThan:n,"<":n,isLessThanOrEqualTo:o,"<=":o,isEqualTo:p,"==":p,isNotEqualTo:q,"!=":q,isIdenticalTo:r,"===":r,isNotIdenticalTo:s,"!==":s}),b.module("a8m.is-null",[]).filter("isNull",function(){return function(a){return e(a)}}),b.module("a8m.after-where",[]).filter("afterWhere",function(){return function(a,b){if(a=C(a)?d(a):a,!D(a)||y(b))return a;var c=a.map(function(a){return f(b,a)}).indexOf(!0);return a.slice(-1===c?0:c)}}),b.module("a8m.after",[]).filter("after",function(){return function(a,b){return a=C(a)?d(a):a,D(a)?a.slice(b):a}}),b.module("a8m.before-where",[]).filter("beforeWhere",function(){return function(a,b){if(a=C(a)?d(a):a,!D(a)||y(b))return a;var c=a.map(function(a){return f(b,a)}).indexOf(!0);return a.slice(0,-1===c?a.length:++c)}}),b.module("a8m.before",[]).filter("before",function(){return function(a,b){return a=C(a)?d(a):a,D(a)?a.slice(0,b?--b:b):a}}),b.module("a8m.chunk-by",["a8m.filter-watcher"]).filter("chunkBy",["filterWatcher",function(a){return function(b,c,d){function e(a,b){for(var c=[];a--;)c[a]=b;return c}function f(a,b,c){return D(a)?a.map(function(a,d,f){return d*=b,a=f.slice(d,d+b),!y(c)&&a.length<b?a.concat(e(b-a.length,c)):a}).slice(0,Math.ceil(a.length/b)):a}return a.isMemoized("chunkBy",arguments)||a.memoize("chunkBy",arguments,this,f(b,c,d))}}]),b.module("a8m.concat",[]).filter("concat",[function(){return function(a,b){if(y(b))return a;if(D(a))return C(b)?a.concat(d(b)):a.concat(b);if(C(a)){var c=d(a);return C(b)?c.concat(d(b)):c.concat(b)}return a}}]),b.module("a8m.contains",[]).filter({contains:["$parse",t],some:["$parse",t]}),b.module("a8m.count-by",[]).filter("countBy",["$parse",function(a){return function(b,c){var e,f={},g=a(c);return b=C(b)?d(b):b,!D(b)||y(c)?b:(b.forEach(function(a){e=g(a),f[e]||(f[e]=0),f[e]++}),f)}}]),b.module("a8m.defaults",[]).filter("defaults",["$parse",function(a){return function(b,c){if(b=C(b)?d(b):b,!D(b)||!C(c))return b;var e=j(c);return b.forEach(function(b){e.forEach(function(d){var e=a(d),f=e.assign;y(e(b))&&f(b,e(c))})}),b}}]),b.module("a8m.every",[]).filter("every",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?!0:b.every(function(b){return C(b)||z(c)?a(c)(b):b===c})}}]),b.module("a8m.filter-by",[]).filter("filterBy",["$parse",function(a){return function(b,e,f){var g;return f=A(f)||B(f)?String(f).toLowerCase():c,b=C(b)?d(b):b,!D(b)||y(f)?b:b.filter(function(b){return e.some(function(c){if(~c.indexOf("+")){var d=c.replace(new RegExp("\\s","g"),"").split("+");g=d.reduce(function(c,d,e){return 1===e?a(c)(b)+" "+a(d)(b):c+" "+a(d)(b)})}else g=a(c)(b);return A(g)||B(g)?String(g).toLowerCase().contains(f):!1})})}}]),b.module("a8m.first",[]).filter("first",["$parse",function(a){return function(b){var e,f,g;return b=C(b)?d(b):b,D(b)?(g=Array.prototype.slice.call(arguments,1),e=B(g[0])?g[0]:1,f=B(g[0])?B(g[1])?c:g[1]:g[0],g.length?h(b,e,f?a(f):f):b[0]):b}}]),b.module("a8m.flatten",[]).filter("flatten",function(){return function(a,b){return b=b||!1,a=C(a)?d(a):a,D(a)?b?[].concat.apply([],a):u(a,0):a}}),b.module("a8m.fuzzy-by",[]).filter("fuzzyBy",["$parse",function(a){return function(b,c,e,f){var h,i,j=f||!1;return b=C(b)?d(b):b,!D(b)||y(c)||y(e)?b:(i=a(c),b.filter(function(a){return h=i(a),A(h)?(h=j?h:h.toLowerCase(),e=j?e:e.toLowerCase(),g(h,e)!==!1):!1}))}}]),b.module("a8m.fuzzy",[]).filter("fuzzy",function(){return function(a,b,c){function e(a,b){var c,d,e=Object.keys(a);return 0<e.filter(function(e){return c=a[e],d?!0:A(c)?(c=f?c:c.toLowerCase(),d=g(c,b)!==!1):!1}).length}var f=c||!1;return a=C(a)?d(a):a,!D(a)||y(b)?a:(b=f?b:b.toLowerCase(),a.filter(function(a){return A(a)?(a=f?a:a.toLowerCase(),g(a,b)!==!1):C(a)?e(a,b):!1}))}}),b.module("a8m.group-by",["a8m.filter-watcher"]).filter("groupBy",["$parse","filterWatcher",function(a,b){return function(c,d){function e(a,b){var c,d={};return E(a,function(a){c=b(a),d[c]||(d[c]=[]),d[c].push(a)}),d}return!C(c)||y(d)?c:b.isMemoized("groupBy",arguments)||b.memoize("groupBy",arguments,this,e(c,a(d)))}}]),b.module("a8m.is-empty",[]).filter("isEmpty",function(){return function(a){return C(a)?!d(a).length:!a.length}}),b.module("a8m.join",[]).filter("join",function(){return function(a,b){return y(a)||!D(a)?a:(y(b)&&(b=" "),a.join(b))}}),b.module("a8m.last",[]).filter("last",["$parse",function(a){return function(b){var e,f,g,i=G(b);return i=C(i)?d(i):i,D(i)?(g=Array.prototype.slice.call(arguments,1),e=B(g[0])?g[0]:1,f=B(g[0])?B(g[1])?c:g[1]:g[0],g.length?h(i.reverse(),e,f?a(f):f).reverse():i[i.length-1]):i}}]),b.module("a8m.map",[]).filter("map",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?b:b.map(function(b){return a(c)(b)})}}]),b.module("a8m.omit",[]).filter("omit",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?b:b.filter(function(b){return!a(c)(b)})}}]),b.module("a8m.pick",[]).filter("pick",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?b:b.filter(function(b){return a(c)(b)})}}]),b.module("a8m.range",[]).filter("range",function(){return function(a,b){for(var c=0;c<parseInt(b);c++)a.push(c);return a}}),b.module("a8m.remove-with",[]).filter("removeWith",function(){return function(a,b){return y(b)?a:(a=C(a)?d(a):a,a.filter(function(a){return!f(b,a)}))}}),b.module("a8m.remove",[]).filter("remove",function(){return function(a){a=C(a)?d(a):a;var b=Array.prototype.slice.call(arguments,1);return D(a)?a.filter(function(a){return!b.some(function(b){return H(b,a)})}):a}}),b.module("a8m.reverse",[]).filter("reverse",[function(){return function(a){return a=C(a)?d(a):a,A(a)?a.split("").reverse().join(""):D(a)?a.slice().reverse():a}}]),b.module("a8m.search-field",[]).filter("searchField",["$parse",function(a){return function(b){var c,e;b=C(b)?d(b):b;var f=Array.prototype.slice.call(arguments,1);return D(b)&&f.length?b.map(function(b){return e=f.map(function(d){return(c=a(d))(b)}).join(" "),F(b,{searchField:e})}):b}}]),b.module("a8m.to-array",[]).filter("toArray",function(){return function(a,b){return C(a)?b?Object.keys(a).map(function(b){return F(a[b],{$key:b})}):d(a):a}}),b.module("a8m.unique",[]).filter({unique:["$parse",v],uniq:["$parse",v]}),b.module("a8m.where",[]).filter("where",function(){return function(a,b){return y(b)?a:(a=C(a)?d(a):a,a.filter(function(a){return f(b,a)}))}}),b.module("a8m.xor",[]).filter("xor",["$parse",function(a){return function(b,c,e){function f(b,c){var d=a(e);return c.some(function(a){return e?H(d(a),d(b)):H(a,b)})}return e=e||!1,b=C(b)?d(b):b,c=C(c)?d(c):c,D(b)&&D(c)?b.concat(c).filter(function(a){return!(f(a,b)&&f(a,c))}):b}}]),b.module("a8m.math.byteFmt",["a8m.math"]).filter("byteFmt",["$math",function(a){return function(b,c){return B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)?1024>b?i(b,c,a)+" B":1048576>b?i(b/1024,c,a)+" KB":1073741824>b?i(b/1048576,c,a)+" MB":i(b/1073741824,c,a)+" GB":"NaN"}}]),b.module("a8m.math.degrees",["a8m.math"]).filter("degrees",["$math",function(a){return function(b,c){if(B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)){var d=180*b/a.PI;return a.round(d*a.pow(10,c))/a.pow(10,c)}return"NaN"}}]),b.module("a8m.math.kbFmt",["a8m.math"]).filter("kbFmt",["$math",function(a){return function(b,c){return B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)?1024>b?i(b,c,a)+" KB":1048576>b?i(b/1024,c,a)+" MB":i(b/1048576,c,a)+" GB":"NaN"}}]),b.module("a8m.math",[]).factory("$math",["$window",function(a){return a.Math}]),b.module("a8m.math.max",["a8m.math"]).filter("max",["$math","$parse",function(a,b){function c(c,d){var e=c.map(function(a){return b(d)(a)});return e.indexOf(a.max.apply(a,e))}return function(b,d){return D(b)?y(d)?a.max.apply(a,b):b[c(b,d)]:b}}]),b.module("a8m.math.min",["a8m.math"]).filter("min",["$math","$parse",function(a,b){function c(c,d){var e=c.map(function(a){return b(d)(a)});return e.indexOf(a.min.apply(a,e))}return function(b,d){return D(b)?y(d)?a.min.apply(a,b):b[c(b,d)]:b}}]),b.module("a8m.math.percent",["a8m.math"]).filter("percent",["$math","$window",function(a,b){return function(c,d,e){var f=A(c)?b.Number(c):c;return d=d||100,e=e||!1,!B(f)||b.isNaN(f)?c:e?a.round(f/d*100):f/d*100}}]),b.module("a8m.math.radians",["a8m.math"]).filter("radians",["$math",function(a){return function(b,c){if(B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)){var d=3.14159265359*b/180;return a.round(d*a.pow(10,c))/a.pow(10,c)}return"NaN"}}]),b.module("a8m.math.radix",[]).filter("radix",function(){return function(a,b){var c=/^[2-9]$|^[1-2]\d$|^3[0-6]$/;return B(a)&&c.test(b)?a.toString(b).toUpperCase():a}}),b.module("a8m.math.shortFmt",["a8m.math"]).filter("shortFmt",["$math",function(a){return function(b,c){return B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)?1e3>b?b:1e6>b?i(b/1e3,c,a)+" K":1e9>b?i(b/1e6,c,a)+" M":i(b/1e9,c,a)+" B":"NaN"}}]),b.module("a8m.math.sum",[]).filter("sum",function(){return function(a,b){return D(a)?a.reduce(function(a,b){return a+b},b||0):a}}),b.module("a8m.ends-with",[]).filter("endsWith",function(){return function(a,b,c){var d,e=c||!1;return!A(a)||y(b)?a:(a=e?a:a.toLowerCase(),d=a.length-b.length,-1!==a.indexOf(e?b:b.toLowerCase(),d))}}),b.module("a8m.latinize",[]).filter("latinize",[function(){function a(a){return a.replace(/[^\u0000-\u007E]/g,function(a){return c[a]||a})}for(var b=[{base:"A",letters:"AⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ"},{base:"AA",letters:"Ꜳ"},{base:"AE",letters:"ÆǼǢ"},{base:"AO",letters:"Ꜵ"},{base:"AU",letters:"Ꜷ"},{base:"AV",letters:"ꜸꜺ"},{base:"AY",letters:"Ꜽ"},{base:"B",letters:"BⒷＢḂḄḆɃƂƁ"},{base:"C",letters:"CⒸＣĆĈĊČÇḈƇȻꜾ"},{base:"D",letters:"DⒹＤḊĎḌḐḒḎĐƋƊƉꝹ"},{base:"DZ",letters:"ǱǄ"},{base:"Dz",letters:"ǲǅ"},{base:"E",letters:"EⒺＥÈÉÊỀẾỄỂẼĒḔḖĔĖËẺĚȄȆẸỆȨḜĘḘḚƐƎ"},{base:"F",letters:"FⒻＦḞƑꝻ"},{base:"G",letters:"GⒼＧǴĜḠĞĠǦĢǤƓꞠꝽꝾ"},{base:"H",letters:"HⒽＨĤḢḦȞḤḨḪĦⱧⱵꞍ"},{base:"I",letters:"IⒾＩÌÍÎĨĪĬİÏḮỈǏȈȊỊĮḬƗ"},{base:"J",letters:"JⒿＪĴɈ"},{base:"K",letters:"KⓀＫḰǨḲĶḴƘⱩꝀꝂꝄꞢ"},{base:"L",letters:"LⓁＬĿĹĽḶḸĻḼḺŁȽⱢⱠꝈꝆꞀ"},{base:"LJ",letters:"Ǉ"},{base:"Lj",letters:"ǈ"},{base:"M",letters:"MⓂＭḾṀṂⱮƜ"},{base:"N",letters:"NⓃＮǸŃÑṄŇṆŅṊṈȠƝꞐꞤ"},{base:"NJ",letters:"Ǌ"},{base:"Nj",letters:"ǋ"},{base:"O",letters:"OⓄＯÒÓÔỒỐỖỔÕṌȬṎŌṐṒŎȮȰÖȪỎŐǑȌȎƠỜỚỠỞỢỌỘǪǬØǾƆƟꝊꝌ"},{base:"OI",letters:"Ƣ"},{base:"OO",letters:"Ꝏ"},{base:"OU",letters:"Ȣ"},{base:"OE",letters:"Œ"},{base:"oe",letters:"œ"},{base:"P",letters:"PⓅＰṔṖƤⱣꝐꝒꝔ"},{base:"Q",letters:"QⓆＱꝖꝘɊ"},{base:"R",letters:"RⓇＲŔṘŘȐȒṚṜŖṞɌⱤꝚꞦꞂ"},{base:"S",letters:"SⓈＳẞŚṤŜṠŠṦṢṨȘŞⱾꞨꞄ"},{base:"T",letters:"TⓉＴṪŤṬȚŢṰṮŦƬƮȾꞆ"},{base:"TZ",letters:"Ꜩ"},{base:"U",letters:"UⓊＵÙÚÛŨṸŪṺŬÜǛǗǕǙỦŮŰǓȔȖƯỪỨỮỬỰỤṲŲṶṴɄ"},{base:"V",letters:"VⓋＶṼṾƲꝞɅ"},{base:"VY",letters:"Ꝡ"},{base:"W",letters:"WⓌＷẀẂŴẆẄẈⱲ"},{base:"X",letters:"XⓍＸẊẌ"},{base:"Y",letters:"YⓎＹỲÝŶỸȲẎŸỶỴƳɎỾ"},{base:"Z",letters:"ZⓏＺŹẐŻŽẒẔƵȤⱿⱫꝢ"},{base:"a",letters:"aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐ"},{base:"aa",letters:"ꜳ"},{base:"ae",letters:"æǽǣ"},{base:"ao",letters:"ꜵ"},{base:"au",letters:"ꜷ"},{base:"av",letters:"ꜹꜻ"},{base:"ay",letters:"ꜽ"},{base:"b",letters:"bⓑｂḃḅḇƀƃɓ"},{base:"c",letters:"cⓒｃćĉċčçḉƈȼꜿↄ"},{base:"d",letters:"dⓓｄḋďḍḑḓḏđƌɖɗꝺ"},{base:"dz",letters:"ǳǆ"},{base:"e",letters:"eⓔｅèéêềếễểẽēḕḗĕėëẻěȅȇẹệȩḝęḙḛɇɛǝ"},{base:"f",letters:"fⓕｆḟƒꝼ"},{base:"g",letters:"gⓖｇǵĝḡğġǧģǥɠꞡᵹꝿ"},{base:"h",letters:"hⓗｈĥḣḧȟḥḩḫẖħⱨⱶɥ"},{base:"hv",letters:"ƕ"},{base:"i",letters:"iⓘｉìíîĩīĭïḯỉǐȉȋịįḭɨı"},{base:"j",letters:"jⓙｊĵǰɉ"},{base:"k",letters:"kⓚｋḱǩḳķḵƙⱪꝁꝃꝅꞣ"},{base:"l",letters:"lⓛｌŀĺľḷḹļḽḻſłƚɫⱡꝉꞁꝇ"},{base:"lj",letters:"ǉ"},{base:"m",letters:"mⓜｍḿṁṃɱɯ"},{base:"n",letters:"nⓝｎǹńñṅňṇņṋṉƞɲŉꞑꞥ"},{base:"nj",letters:"ǌ"},{base:"o",letters:"oⓞｏòóôồốỗổõṍȭṏōṑṓŏȯȱöȫỏőǒȍȏơờớỡởợọộǫǭøǿɔꝋꝍɵ"},{base:"oi",letters:"ƣ"},{base:"ou",letters:"ȣ"},{base:"oo",letters:"ꝏ"},{base:"p",letters:"pⓟｐṕṗƥᵽꝑꝓꝕ"},{base:"q",letters:"qⓠｑɋꝗꝙ"},{base:"r",letters:"rⓡｒŕṙřȑȓṛṝŗṟɍɽꝛꞧꞃ"},{base:"s",letters:"sⓢｓßśṥŝṡšṧṣṩșşȿꞩꞅẛ"},{base:"t",letters:"tⓣｔṫẗťṭțţṱṯŧƭʈⱦꞇ"},{base:"tz",letters:"ꜩ"},{base:"u",letters:"uⓤｕùúûũṹūṻŭüǜǘǖǚủůűǔȕȗưừứữửựụṳųṷṵʉ"},{base:"v",letters:"vⓥｖṽṿʋꝟʌ"},{base:"vy",letters:"ꝡ"},{base:"w",letters:"wⓦｗẁẃŵẇẅẘẉⱳ"},{base:"x",letters:"xⓧｘẋẍ"},{base:"y",letters:"yⓨｙỳýŷỹȳẏÿỷẙỵƴɏỿ"},{base:"z",letters:"zⓩｚźẑżžẓẕƶȥɀⱬꝣ"}],c={},d=0;d<b.length;d++)for(var e=b[d].letters.split(""),f=0;f<e.length;f++)c[e[f]]=b[d].base;return function(b){return A(b)?a(b):b}}]),b.module("a8m.ltrim",[]).filter("ltrim",function(){return function(a,b){var c=b||"\\s";return A(a)?a.replace(new RegExp("^"+c+"+"),""):a}}),b.module("a8m.match",[]).filter("match",function(){return function(a,b,c){var d=new RegExp(b,c);return A(a)?a.match(d):null}}),b.module("a8m.repeat",[]).filter("repeat",[function(){return function(a,b,c){var d=~~b;return A(a)&&d?w(a,--b,c||""):a}}]),b.module("a8m.rtrim",[]).filter("rtrim",function(){return function(a,b){var c=b||"\\s";return A(a)?a.replace(new RegExp(c+"+$"),""):a}}),b.module("a8m.slugify",[]).filter("slugify",[function(){return function(a,b){var c=y(b)?"-":b;return A(a)?a.toLowerCase().replace(/\s+/g,c):a}}]),b.module("a8m.starts-with",[]).filter("startsWith",function(){return function(a,b,c){var d=c||!1;return!A(a)||y(b)?a:(a=d?a:a.toLowerCase(),!a.indexOf(d?b:b.toLowerCase()))}}),b.module("a8m.stringular",[]).filter("stringular",function(){return function(a){var b=Array.prototype.slice.call(arguments,1);return a.replace(/{(\d+)}/g,function(a,c){return y(b[c])?a:b[c]})}}),b.module("a8m.strip-tags",[]).filter("stripTags",function(){return function(a){return A(a)?a.replace(/<\S[^><]*>/g,""):a}}),b.module("a8m.test",[]).filter("test",function(){return function(a,b,c){var d=new RegExp(b,c);return A(a)?d.test(a):a}}),b.module("a8m.trim",[]).filter("trim",function(){return function(a,b){var c=b||"\\s";return A(a)?a.replace(new RegExp("^"+c+"+|"+c+"+$","g"),""):a}}),b.module("a8m.truncate",[]).filter("truncate",function(){return function(a,b,c,d){return b=y(b)?a.length:b,d=d||!1,c=c||"",!A(a)||a.length<=b?a:a.substring(0,d?-1===a.indexOf(" ",b)?a.length:a.indexOf(" ",b):b)+c}}),b.module("a8m.ucfirst",[]).filter("ucfirst",[function(){return function(a){return A(a)?a.split(" ").map(function(a){return a.charAt(0).toUpperCase()+a.substring(1)}).join(" "):a}}]),b.module("a8m.uri-component-encode",[]).filter("uriComponentEncode",["$window",function(a){return function(b){return A(b)?a.encodeURIComponent(b):b}}]),b.module("a8m.uri-encode",[]).filter("uriEncode",["$window",function(a){return function(b){return A(b)?a.encodeURI(b):b}}]),b.module("a8m.wrap",[]).filter("wrap",function(){return function(a,b,c){return A(a)&&x(b)?[b,a,c||b].join(""):a}}),b.module("a8m.filter-watcher",[]).provider("filterWatcher",function(){this.$get=["$window","$rootScope",function(a,b){function c(b,c){function d(){var b=[];return function(c,d){if(C(d)&&!e(d)){if(~b.indexOf(d))return"[Circular]";b.push(d)}return a==d?"$WINDOW":a.document==d?"$DOCUMENT":k(d)?"$SCOPE":d}}return[b,JSON.stringify(c,d())].join("#").replace(/"/g,"")}function d(a){var b=a.targetScope.$id;E(l[b],function(a){delete j[a]}),delete l[b]}function f(){m(function(){b.$$phase||(j={})},2e3)}function g(a,b){var c=a.$id;return y(l[c])&&(a.$on("$destroy",d),l[c]=[]),l[c].push(b)}function h(a,b){var d=c(a,b);return j[d]}function i(a,b,d,e){var h=c(a,b);return j[h]=e,k(d)?g(d,h):f(),e}var j={},l={},m=a.setTimeout;return{isMemoized:h,memoize:i}}]}),b.module("angular.filter",["a8m.ucfirst","a8m.uri-encode","a8m.uri-component-encode","a8m.slugify","a8m.latinize","a8m.strip-tags","a8m.stringular","a8m.truncate","a8m.starts-with","a8m.ends-with","a8m.wrap","a8m.trim","a8m.ltrim","a8m.rtrim","a8m.repeat","a8m.test","a8m.match","a8m.to-array","a8m.concat","a8m.contains","a8m.unique","a8m.is-empty","a8m.after","a8m.after-where","a8m.before","a8m.before-where","a8m.defaults","a8m.where","a8m.reverse","a8m.remove","a8m.remove-with","a8m.group-by","a8m.count-by","a8m.chunk-by","a8m.search-field","a8m.fuzzy-by","a8m.fuzzy","a8m.omit","a8m.pick","a8m.every","a8m.filter-by","a8m.xor","a8m.map","a8m.first","a8m.last","a8m.flatten","a8m.join","a8m.range","a8m.math","a8m.math.max","a8m.math.min","a8m.math.percent","a8m.math.radix","a8m.math.sum","a8m.math.degrees","a8m.math.radians","a8m.math.byteFmt","a8m.math.kbFmt","a8m.math.shortFmt","a8m.angular","a8m.conditions","a8m.is-null","a8m.filter-watcher"])}(window,window.angular);

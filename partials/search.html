@@ -14,81 +14,102 @@
         <hr width="50%" align="left">
 
 
-
-
-        <div class="menuBoxlight" ng-click="t_menu_box(0,0)">
-            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[0].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+        <div class="menuBoxlight" ng-click="t_menu_box(1000,0)">
+            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
+                 ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[1000].isActive]"><img
+                    class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
             <div>High Priority Areas</div>
         </div>
-        <div id="box0" class="menuboxofboxes" ng-show="box[0].isActive">
-             <!--this should be the results of a looped lookup-->
-            <div class="menuBoxdark">Big Rock</div>
-            <div class="menuBoxdark">Blake Plateau</div>
-            <div class="menuBoxdark">Charleston Bump</div>
-            <div class="menuBoxdark">Diamond Shoals</div>
-            <div class="menuBoxdark">Frying Pan Shoals</div>
-            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Grand Strand',90)">Grand Strand</div>
-            <div class="menuBoxdark">Hatteras Canyon</div>
-            <div class="menuBoxdark">Miami Terrace</div>
-            <div class="menuBoxdark">Oculina Banks</div>
-            <div class="menuBoxdark">Pamlico Canyon</div>
-            <div class="menuBoxdark">Winyah Scarp</div>
+
+
+        <div id="box0" class="menuboxofboxes" ng-show="box[1000].isActive" ng-repeat="aoix in aoismenu">
+            <!--this should be the results of a looped lookup-->
+
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on(aoix.AOI_NAME,aoix.AOI_ID)">{{aoix.AOI_NAME}}</div>
+
         </div>
-        <div class="menuBoxlight" ng-click="t_menu_box(1,0)">
-            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[1].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+
+
+        <div class="menuBoxlight" ng-click="t_menu_box(1001,0)">
+            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
+                 ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[1001].isActive]"><img
+                    class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
             <div>Other Areas by State</div>
         </div>
-        <div id="box1" class="menuboxofboxes" ng-show="box[1].isActive">
+        <div ng-repeat="statex in aoistates | unique: 'COMMON_NM' | orderBy : 'COMMON_NM'">
+            <div class="menuboxofboxes" ng-show="box[1001].isActive">
 
-            <div class="menuBoxlight" ng-click="t_menu_box(2,1)">
-                <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[2].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
-                <div>Florida</div>
-            </div>
-            <div id="box2" class="menuboxofboxes" ng-show="box[2].isActive">
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('North Florida Federal Waters',84)">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Florida State Waters',85)">State Waters (offshore to 3nm)</div>
-                <div class="menuBoxdark">Waters offshore of Counties</div>
-            </div>
-            <div class="menuBoxlight" ng-click="t_menu_box(3,1)">
-                <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[3].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
-                <div>Georgia</div>
-            </div>
-            <div id="box3" class="menuboxofboxes" ng-show="box[3].isActive">
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Georgia Federal Waters',79)">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Georgia State Waters',86)">State Waters (offshore to 3nm)</div>
-                <div class="menuBoxdark" >Waters offshore of Counties</div>
-            </div>
-            <div class="menuBoxlight" ng-click="t_menu_box(4,1)">
-                <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[4].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
-                <div>North Carolina</div>
-            </div>
-            <div id="box4" class="menuboxofboxes" ng-show="box[4].isActive">
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('North Carolina Federal Waters',82)">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
-                <div class="menuBoxdark">Waters offshore of Counties</div>
-            </div>
-            <div class="menuBoxlight" ng-click="t_menu_box(5,1)">
-                <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[5].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
-                <div>South Carolina</div>
-            </div>
-            <div id="box5" class="menuboxofboxes" ng-show="box[5].isActive">
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('South Carolina Federal Waters',80)">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
-                <div class="menuBoxdark">Waters offshore of Counties</div>
-            </div>
-            <div class="menuBoxlight" ng-click="t_menu_box(6,1)">
-                <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[6].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
-                <div>Virginia</div>
-            </div>
-            <div id="box6" class="menuboxofboxes" ng-show="box[6].isActive">
-                <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Virginia Federal Waters',81)">Federal Waters (offshore to 50nm)</div>
-                <div class="menuBoxdark">State Waters (offshore to 3nm)</div>
-                <div class="menuBoxdark">Waters offshore of Counties</div>
-            </div>
+                <div class="menuBoxlight" ng-click="t_menu_box($index,1)">
+                    <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
+                         ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[{{$index}}].isActive]"><img
+                            class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+                    <div>{{statex.COMMON_NM}}</div>
+                </div>
 
+                <div class="menuboxofboxes" ng-show="box[{{$index}}].isActive">
+                    <div ng-repeat="statel in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
+                        <div class="menuBoxdark" ui-sref="CEview" ng-click="on(statel.AOI_NAME,statel.AOI_ID)">
+                            {{statel.AOI_NAME}}
+                        </div>
+                    </div>
+                    <div class="menuBoxlight" ng-click="t_menu_box($index+100,2)">
+                        <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
+                             ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[{{$index+100}}].isActive]"><img
+                                class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+                        <div>Waters offshore of {{statex.COMMON_NM}} Counties</div>
+                    </div>
+                    <div class="menuboxofboxes" ng-show="box[{{$index+100}}].isActive">
+                        <div ng-repeat="statey in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
+                            <div class="menuBoxdark" ui-sref="CEview" ng-click="on(statey.AOI_NAME,statel.AOI_ID)">
+                                {{statey.AOI_NAME}}
+                            </div>
+                        </div>
+                        </div>
 
+                </div>
+            </div>
         </div>
+        <!--
+        <div class="menuBoxlight" ng-click="t_menu_box(3,1)">
+            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[3].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+            <div>Georgia</div>
+        </div>
+        <div id="box3" class="menuboxofboxes" ng-show="box[3].isActive">
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Georgia Federal Waters',79)">Georgia Federal Waters (offshore to 50nm)</div>
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Georgia State Waters',86)">Georgia State Waters (offshore to 3nm)</div>
+            <div class="menuBoxdark" >Waters offshore of Counties</div>
+        </div>
+        <div class="menuBoxlight" ng-click="t_menu_box(4,1)">
+            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[4].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+            <div>North Carolina</div>
+        </div>
+        <div id="box4" class="menuboxofboxes" ng-show="box[4].isActive">
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('North Carolina Federal Waters',82)">North Carolina Federal Waters (offshore to 50nm)</div>
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('North Carolina State Waters',87)">North Carolina State Waters (offshore to 3nm)</div>
+            <div class="menuBoxdark">Waters offshore of Counties</div>
+        </div>
+        <div class="menuBoxlight" ng-click="t_menu_box(5,1)">
+            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[5].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+            <div>South Carolina</div>
+        </div>
+        <div id="box5" class="menuboxofboxes" ng-show="box[5].isActive">
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('South Carolina Federal Waters',80)">South Carolina Federal Waters (offshore to 50nm)</div>
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('South Carolina State Waters',88)">South Carolina State Waters (offshore to 3nm)</div>
+            <div class="menuBoxdark">Waters offshore of Counties</div>
+        </div>
+        <div class="menuBoxlight" ng-click="t_menu_box(6,1)">
+            <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}" ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[6].isActive]"><img class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+            <div>Virginia</div>
+        </div>
+        <div id="box6" class="menuboxofboxes" ng-show="box[6].isActive">
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Virginia Federal Waters',81)">Virginia Federal Waters (offshore to 50nm)</div>
+            <div class="menuBoxdark" ui-sref="CEview" ng-click="on('Virginia State Waters',89)">Virginia State Waters (offshore to 3nm)</div>
+            <div class="menuBoxdark">Waters offshore of Counties</div>
+        </div>
+-->
+
     </div>
+</div>
 </div>
 
 

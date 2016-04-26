@@ -38,6 +38,8 @@ module.exports = function(grunt) {
     // Load the plugin that is used to compress a folder to zip
     grunt.loadNpmTasks('grunt-contrib-compress');
 
+    grunt.loadNpmTasks('grunt-ftpscript');
+
     /**
      * Start the actual Grunt script
      */
@@ -61,6 +63,28 @@ module.exports = function(grunt) {
             pkg: grunt.file.readJSON('package.json'),
 
             //Combine JavaScript files
+
+            ftpscript: {
+                upload: {
+                    options: {
+                        host: 'tiger.innovateteam.com',
+                        authkey: 'key1',
+                        port:'2121',
+                        passive: false,
+                        //dryrun: true
+                },
+                    files: [
+                        {
+                            src: './dist/*',
+                            dest: 'OceanReportingTool/'
+                        }
+
+                    ]
+                }
+            },
+
+
+
             concat: {
                 options: {
                     separator: ';\n',
@@ -225,6 +249,8 @@ module.exports = function(grunt) {
         grunt.task.run('cacheBust');
     });
 
+	
+
     grunt.registerTask('setup','Checks that all the required configuration files are present for building this project', function (){
         
         /**
@@ -346,5 +372,7 @@ module.exports = function(grunt) {
 
     //serve task: runs default tasks of build,then starts a local server to preview production, finally starts the watch tasks to enable live changes build and reload
     grunt.registerTask('serve-dist',['build', 'connect:dist' , 'watch']);
+
+  //grunt.registerTask('FTP-This',['ftp-deploy']);
 
 };

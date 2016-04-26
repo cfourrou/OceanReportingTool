@@ -831,7 +831,6 @@ body.ng-pageslide-body-closed::before {
 }
 #line1a {
   float: left;
-  width: 70%;
   padding-top: 15px;
   padding-left: 15px;
 }
@@ -963,7 +962,6 @@ a:visited {
   vertical-align: bottom;
 }
 #boemline1 {
-  float: left;
   width: 312.8px;
   padding-top: 15px;
   padding-left: 15px;
@@ -972,7 +970,6 @@ a:visited {
 #boemline2 {
   width: 312.8px;
   padding-left: 12px;
-  padding-top: 12px;
   vertical-align: bottom;
 }
 #togglefull {
@@ -1119,12 +1116,15 @@ a:visited {
 }
 .rotate {
   -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .rotateCounterwise {
   -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 .pluscloseIcon {
   -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .splashtitleimg {
   height: 50px;
@@ -1133,17 +1133,65 @@ a:visited {
 .splashtitle {
   text-align: center;
 }
-.maplinkbutton {
-  color: #060606;
-  text-decoration: none;
-  float: left;
-  vertical-align: middle;
+.rotate180 {
+  -webkit-transform: rotate(180deg);
+}
+.rotateCounterwise180 {
+  -webkit-transform: rotate(0deg);
+}
+.rotateCounterwise180 .trackclass {
+  fill: #4a4a4a;
+  opacity: 1;
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+}
+.rotateCounterwise180 .knobclass {
+  fill: white;
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+}
+.flip {
+  -moz-transform: scaleX(-1);
+  /* Gecko */
+  -o-transform: scaleX(-1);
+  /* Opera */
+  -webkit-transform: scaleX(-1);
+  /* Webkit */
+  transform: scaleX(-1);
+  /* Standard */
+  filter: FlipH;
+  /* IE 6/7/8 */
+}
+.flip .trackclass {
+  fill: #EB660C;
+  opacity: .5;
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+}
+.flip .knobclass {
+  fill: #EB660C;
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+}
+.sliderbutton {
+  float: right;
+  padding-top: 15px;
+  padding-right: 15px;
   text-align: left;
-}
-.maplinkbutton:hover {
+  font-family: 'Open Sans';
+  font-size: 10px;
   color: #060606;
-  text-decoration: none;
 }
-#windRSelimg {
-  -webkit-transform: rotate(90deg);
+.sliderbuttontext {
+  float: right;
+  padding-top: 20px;
+  padding-right: 15px;
+  text-align: middle;
+  font-family: 'Open Sans';
+  font-size: 10px;
+  font-weight: normal;
+  color: #787878;
+}
+.swatch {
+  padding-left: 12px;
+  text-align: left;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: #060606;
 }

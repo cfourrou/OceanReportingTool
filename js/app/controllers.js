@@ -24,13 +24,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         if (!cLayer) {
             cLayer = L.esri.featureLayer({ //AOI poly (7)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
                 //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
                 where: "AOI_ID =" + $scope.AOI_ID + "",
                 color: '#EB660C', weight: 3, fillOpacity: .3,
-                pane: 'AOIfeature'
+                pane: 'AOIfeature',
+                simplifyFactor: 5.0,
+                precision: 2,
             }).addTo(map);
-
+            console.log(" layer loaded " + $scope.AOI_ID);
 
             cLayer.on("load", function (evt) {
                 // create a new empty Leaflet bounds object
@@ -45,7 +47,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 });
                 map.fitBounds(mbounds);
 
-                console.log(mbounds);
+                //console.log(mbounds);
                 // unwire the event listener so that it only fires once when the page is loaded
                 cLayer.off('load');
             });
@@ -54,8 +56,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             //-----------------------------------
 
             windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
+                url: ortMapServer + ortLayerOptional[0].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
                 pane: 'optionalfeature1',
+                //simplifyFactor: 5.0,
+                //precision: 3,
                 style: function (feature) {
                     if (feature.properties.Speed_90 >= 8.8) {
                         return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -76,7 +80,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
             windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
+                url: ortMapServer + ortLayerOptional[1].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
                 pane: 'optionalfeature2',
                 style: function (feature) {
 
@@ -84,7 +88,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 }
             });
             windPlanningLayer = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
-                url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                url: ortMapServer + ortLayerOptional[2].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
                 pane: 'optionalfeature3',
                 style: function (feature) {
 
@@ -93,15 +97,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             });
 
 
-            var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
+            // var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
 
             var query = L.esri.query({
-                url: cMapLayer1,
+                url: ortMapServer + ortLayerData,
 
             });
 
 
-            query.where("AOI_ID =" + $scope.AOI_ID + "").run(function (error, featureCollection, response) {
+            query.returnGeometry(false).where("AOI_ID =" + $scope.AOI_ID + "").run(function (error, featureCollection, response) {
 
                 var k = 0;
                 var ba = 0;
@@ -118,7 +122,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 LINK1: featureCollection.features[i].properties.LINK1,
                                 LINK2: featureCollection.features[i].properties.LINK2,
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
-                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC
+                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
+                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT
                             };
                             ba++;
                             break;
@@ -131,7 +136,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 LINK1: featureCollection.features[i].properties.LINK1,
                                 LINK2: featureCollection.features[i].properties.LINK2,
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
-                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC
+                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
+                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT
                             };
                             bc++;
                             break;
@@ -174,7 +180,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.arel.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
-
+                if ($scope.boem[0].TOTAL_CNT === 0) {
+                    $scope.boem[0].PERC_COVER = 0;
+                    $scope.boem[0].TOTAL_BLOC = 0;
+                }
+                if ($scope.arel[0].TOTAL_CNT === 0) {
+                    $scope.arel[0].PERC_COVER = 0;
+                    $scope.arel[0].TOTAL_BLOC = 0;
+                }
                 $scope.$apply();
             });
         }
@@ -253,29 +266,30 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 data: [windclass[5]]
             }]
         });
+        /*
+         $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
+         document.getElementById("windRSel").addEventListener("click", function () {
+         toggle = !toggle;
+         if (toggle) {
+         windrpLayer.addTo(map);
+         windLeaseLayer.addTo(map);
+         windPlanningLayer.addTo(map);
+         //windrpLayer.setOpacity(.1);
+         //windrpLayer.bringToBack();
+         document.getElementById("layerviewlink").innerHTML = "Click to hide Layer";
 
-        $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
-        document.getElementById("windRSel").addEventListener("click", function () {
-            toggle = !toggle;
-            if (toggle) {
-                windrpLayer.addTo(map);
-                windLeaseLayer.addTo(map);
-                windPlanningLayer.addTo(map);
-                //windrpLayer.setOpacity(.1);
-                //windrpLayer.bringToBack();
-                document.getElementById("layerviewlink").innerHTML = "Click to hide Layer";
+         } else {
+         map.removeLayer(windPlanningLayer);
+         map.removeLayer(windLeaseLayer);
+         map.removeLayer(windrpLayer);
 
-            } else {
-                map.removeLayer(windPlanningLayer);
-                map.removeLayer(windLeaseLayer);
-                map.removeLayer(windrpLayer);
-
-                document.getElementById("layerviewlink").innerHTML = "Click to view on Map";
-            }
-        });
-
+         document.getElementById("layerviewlink").innerHTML = "Click to view on Map";
+         }
+         });
+         */
         document.getElementById("togglefull").addEventListener("click", function () {
             toggleFull = !toggleFull;
+            $scope.toggleFull = toggleFull;
             if (toggleFull) {
                 //document.getElementById('map').className='smallmapclass';
                 //document.getElementById('smallmap').innerHTML= document.getElementById('map').innerHTML;
@@ -296,7 +310,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById('AOItab2').style.display = 'block';
                 smallmap.invalidateSize();
                 smallmap.fitBounds($scope.minibounds);
-                document.getElementById('windRSel').style.visibility = "hidden";
+                document.getElementById('slider_but0').style.visibility = "hidden";
+                document.getElementById('slider_but1').style.visibility = "hidden";
+                document.getElementById('slider_but2').style.visibility = "hidden";
+                document.getElementById('slbuttxt0').style.visibility = "hidden";
             } else {
                 //document.getElementById('smallmap').style.visibility = "hidden";
                 document.getElementById("togglefull").style.marginLeft = "-25px";
@@ -304,8 +321,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("slide1").style.width = '50%';
                 document.getElementById('AOItab2').style.display = 'none';
                 // document.getElementById('AOItab2').style.height='0px';
-                document.getElementById('windRSel').style.visibility = "visible";
-
+                document.getElementById('slider_but0').style.visibility = "visible";
+                document.getElementById('slider_but1').style.visibility = "visible";
+                document.getElementById('slider_but2').style.visibility = "visible";
+                document.getElementById('slbuttxt0').style.visibility = "visible";
                 // Code for Chrome, Safari, Opera
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                 // Code for IE9
@@ -329,11 +348,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         var minicLayer = L.esri.featureLayer({
-            url: '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+            url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
             where: "AOI_ID =" + $scope.AOI_ID + "",
-            color: '#E59ECA',
+            color: '#EB660C',
             weight: 3,
-            fillOpacity: .3
+            fillOpacity: .3,
+            simplifyFactor: 5.0,
+            precision: 3
             //,            pane: 'miniAOIfeature'
         }).addTo(smallmap);
 
@@ -366,9 +387,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         $scope.box = [];
         $scope.menuitems = [];
-        var len = 7;
+        $scope.optLayer = [];
+        var len = 2000;
         for (var i = 0; i < len; i++) {
             $scope.box.push({
+                myid: i,
                 isActive: false,
                 level: 0,
                 future: true
@@ -382,17 +405,44 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
-        }
+        };
 
         $scope.t_menu_box = function (id, levl) {
             $scope.box[id].level = levl;
+
             $scope.box[id].isActive = !$scope.box[id].isActive;
             for (i = 0; i < len; i++) {
                 if ((i != id) && (levl <= $scope.box[i].level)) {
                     $scope.box[i].isActive = false;
                 }
             }
-        }
+            console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
+        };
+
+        $scope.opt_layer_button = function (id) {
+            $scope.optLayer[id] = !$scope.optLayer[id];
+            //console.log("button " + id);
+            switch (id) {
+                case 0:
+                    if ($scope.optLayer[0]) {
+                        windrpLayer.addTo(map);
+                    } else map.removeLayer(windrpLayer);
+                    break;
+                case 1:
+                    if ($scope.optLayer[1]) {
+                        windLeaseLayer.addTo(map);
+                    } else map.removeLayer(windLeaseLayer);
+                    break;
+                case 2:
+                    if ($scope.optLayer[2]) {
+                        windPlanningLayer.addTo(map);
+                    } else map.removeLayer(windPlanningLayer);
+                    break;
+            }
+
+
+        };
+
 
         $scope.reset = function () { //unloads AOI but leaves slider pane on
             $scope.AOIoff();
@@ -401,12 +451,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.box[i].isActive = false;
             }
 
-        }
+        };
 
         $scope.off = function () { //unloads AOI and turns off slider pane
             $scope.AOIoff();
             $scope.paneoff();
-        }
+        };
 
         $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
             $scope.AOIon();
@@ -415,7 +465,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.Cur_AOI = AOI;
             $scope.AOI_ID = AOI_id;
             console.log($scope.AOI_ID);
-        }
+        };
 
         $scope.AOIoff = function () {
             $scope.checkifAOI = false;
@@ -431,30 +481,97 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.wind.length = 0;
             $scope.boem.length = 0;
             $scope.arel.length = 0;
+            $scope.optLayer.length = 0;
             windclass.length = 0;
             //map.setView([33.51, -68.3], 6);
-        }
+        };
 
         $scope.AOIon = function () {
             $scope.checkifAOI = true;
-        }
+        };
 
         $scope.paneoff = function () {
             $scope.checked = false;
             toggleFull = false;
-        }
+        };
 
         $scope.paneon = function () {
             $scope.checked = true;
             document.getElementById("slide1").style.width = '50%';
             toggleFull = false;
-        }
+        };
 
         //$scope.Cur_AOI = 'Grand Strand';
 
         $scope.wind = [];
         $scope.boem = [];
         $scope.arel = [];
+
+        $scope.aoismenu = [];
+        $scope.aoistates = [];
+        $scope.aoistate = [];
+
+        var query = L.esri.query({
+            url: ortMapServer + ortLayerAOI
+
+        });
+        //query.returnGeometry = false;
+        query.returnGeometry(false).where("KNOWN_AREA='High Priority Areas'").run(function (error, featureCollection, response) {
+            //query.where("COMMON_NM='*'").run(function (error, featureCollection, response) {
+            // query.where("COMMON_NM LIKE '%'").run(function (error, featureCollection, response) {
+
+
+            var ba = 0;
+
+
+            for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+
+                // switch (featureCollection.features[i].properties.REPORT_TYPE) {
+                //    case  "High Priority Areas":
+
+                $scope.aoismenu[ba] = {
+                    AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
+                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                    REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                    AOI_ID: featureCollection.features[i].properties.AOI_ID,
+                    DATASET_NM:featureCollection.features[i].properties.DATASET_NM
+                };
+                ba++;
+                //      break;
+
+                //}
+            }
+
+            $scope.aoismenu.sort(function (a, b) {
+                //return parseFloat(a.AOI_NAME) - parseFloat(b.AOI_NAME);
+                return a.AOI_NAME.localeCompare(b.AOI_NAME);
+            });
+        });
+
+
+        //query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
+        query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
+                var ba = 0;
+                for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+                    $scope.aoistates[ba] = {
+                        AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
+                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                        REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                        AOI_ID: featureCollection.features[i].properties.AOI_ID,
+                        DATASET_NM:featureCollection.features[i].properties.DATASET_NM
+                    };
+                    ba++;
+                }
+            //console.log($scope.aoistates);
+                $scope.aoistates.sort(function (a, b) {
+                    return a.AOI_NAME.localeCompare(b.AOI_NAME);
+                });
+            //console.log($scope.aoistates);
+            }
+        );
+
+
+        //console.log($scope.aoismenu);
 
         //I think this would be the right place to put the menu data loop.
 

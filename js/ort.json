@@ -16,5 +16,6 @@
     "js/app/controllers.js",
     "js/app/filters.js",
     "js/app/directives.js",
-    "js/app/app.js"
+    "js/app/app.js",
+    "js/lib/angular-filter.min.js"
 ]

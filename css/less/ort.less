@@ -492,7 +492,7 @@ body.ng-pageslide-body-closed::before {
 }
 #line1a{
   float: left;
-  width: 70%;
+ // width: 70%;
   padding-top: 15px;
   padding-left: 15px;
 }
@@ -658,7 +658,7 @@ body.ng-pageslide-body-closed::before {
 
 }
 #boemline1{
-  float: left;
+  //float: left;
   width: 312.8px;
   padding-top: 15px;
   padding-left: 15px;
@@ -669,7 +669,7 @@ body.ng-pageslide-body-closed::before {
   width:312.8px;
   //height:24px;
   padding-left:12px;
-  padding-top:12px;
+  //padding-top:12px;
   vertical-align: bottom;
   //line-height: 80%;
 }
@@ -857,12 +857,15 @@ body.ng-pageslide-body-closed::before {
 }
 .rotate {
   -webkit-transform: rotate(45deg);
+  transform:rotate(45deg);
 }
 .rotateCounterwise {
   -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 .pluscloseIcon{
   -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .splashtitleimg{
   height: 50px;
@@ -873,16 +876,92 @@ body.ng-pageslide-body-closed::before {
 }
 
 .maplinkbutton {
-  color: #060606;
-  text-decoration: none;
-  float:left;
-  vertical-align:middle;
-  text-align: left;
+ // color: #060606;
+ // text-decoration: none;
+//  float:left;
+//  vertical-align:middle;
+//  text-align: left;
  }
 .maplinkbutton:hover {
-  color: #060606;
-  text-decoration: none;
+ // color: #060606;
+ // text-decoration: none;
+}
+.maplinkimg {
+ // color: #060606;
+ // text-decoration: none;
+//  float:left;
+//  vertical-align:middle;
+//  text-align: left;
+
 }
 #windRSelimg{
-  -webkit-transform: rotate(90deg);
+
+}
+.rotate180 {
+  -webkit-transform: rotate(180deg);
+
+}
+.rotateCounterwise180 {
+  -webkit-transform: rotate(0deg);
+  .trackclass{
+    fill:@ortGrey-Dark;
+    opacity:1;
+    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
+  }
+  .knobclass{
+    fill:white;
+    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
+  }
+
+}
+
+.flip {
+  -moz-transform: scaleX(-1);    /* Gecko */
+  -o-transform: scaleX(-1);      /* Opera */
+  -webkit-transform: scaleX(-1); /* Webkit */
+  transform: scaleX(-1);         /* Standard */
+  filter: FlipH;                 /* IE 6/7/8 */
+  .trackclass{
+    fill:@ortOrange;
+    opacity:.5;
+    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
+  }
+  .knobclass{
+    fill:@ortOrange;
+    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.12), 0px 1px 1px 0px rgba(0,0,0,0.24);
+  }
+
+}
+.sliderbutton{
+  float: right;
+  //width: 300px;
+  padding-top: 15px;
+  padding-right:15px;
+  text-align: left;
+  font-family: 'Open Sans';
+  font-size: 10px;
+  color: #060606;
+
+}
+.sliderbuttontext{
+  float: right;
+  //width: 300px;
+  padding-top: 20px;
+  padding-right:15px;
+  text-align: middle;
+  font-family: 'Open Sans';
+  font-size: 10px;
+  font-weight:normal;
+  color: #787878;
+
+}
+.swatch{
+  //float: right;
+  //width: 300px;
+ // padding-top: 15px;
+  padding-left:12px;
+  text-align: left;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: #060606;
 }

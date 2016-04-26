@@ -26,11 +26,14 @@
             <div id="WRBox">
                 <div id="wrbox1">
                     <div id="line1a">Wind Resource Potential</div>
-                    <div id="line1b"><a href="" id="windRSel" class="maplinkbutton"><img
-                            id = "windRselimg" src="img/switch_off.svg" class="inject-it maplinkbutton">
-                        <div id="layerviewlink" class="maplinkbutton">{{layers_toggle}}</div>
-                    </a></div>
+
+                    <div id="slider_but0" class="sliderbutton">
+                        <div ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[0]]" ng-click="opt_layer_button(0)" ng-include="'img/switch_off.svg'"></div>
+                    </div>
+                    <div id="slbuttxt0" class="sliderbuttontext">CLICK TO TURN LAYER ON AND OFF</div>
                 </div>
+
+
                 <div id="line2">
                     <div class="floatitleft" style="width: 25%;"> Weighted Average:<br>
                         {{wind[0].AVG_WGHT}} m/s
@@ -163,9 +166,15 @@
             <br>
             <div id="RELBox">
                 <div id="wrbox1">
+                    <div id="slider_but1" class="sliderbutton">
+                        <div  ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[1]]" ng-click="opt_layer_button(1)" ng-include="'img/switch_off.svg'" ></div>
+                    </div>
+
                     <div id="boemline1">Renewable Energy Leases</div>
+                    <div class="swatch"><img src="img/Renewable_Energy_Leases.svg"></div>
+
                     <div id="boemline2">
-                        <span class="boemline2b">{{arel.length}}</span>
+                        <span class="boemline2b">{{arel[0].TOTAL_CNT}}</span>
                         <span class="boemline2a">BOEM Active Renewable Energy Leases</span>
                     </div>
                     <div id="boemline2">
@@ -179,10 +188,14 @@
             </div>
             <div id="WPABox">
                 <div id="wrbox1">
-                    <div id="boemline1">Wind Planning Areas</div>
 
+                    <div id="slider_but2" class="sliderbutton">
+                        <div  ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[2]]" ng-click="opt_layer_button(2)" ng-include="'img/switch_off.svg'" ></div>
+                    </div>
+                    <div id="boemline1">Wind Planning Areas</div>
+                    <div class="swatch" ><img src="img/Wind_Planning_Areas.svg"></div>
                     <div id="boemline2">
-                        <span class="boemline2b">{{boem.length}}</span>
+                        <span class="boemline2b">{{boem[0].TOTAL_CNT}}</span>
                         <span class="boemline2a">BOEM Wind Planning Area</span>
                     </div>
                     <div id="boemline2">

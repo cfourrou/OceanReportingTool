@@ -1,4 +1,31 @@
 'use strict';
+
+var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/';
+var ortLayerAOI = '7';
+var ortLayerData = '33';
+var ortLayerOptional = [];
+
+ortLayerOptional[0]=
+{
+    num:'18',
+    name:'wind resource potential'
+};
+ortLayerOptional[1]=
+{
+    num:'17',
+    name:'renewable energy leases'
+};
+ortLayerOptional[2]=
+{
+    num:'21',
+    name:'BOEM_Wind_Planning_Areas'
+};
+ortLayerOptional[3]=
+{
+    num:'18',
+    name:'future'
+};
+
 var map = L.map('bigmap',{
     zoomControl: false
 });
@@ -56,6 +83,7 @@ map.setView([33.51, -78.3], 6);
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
       'ui.router',
+      'angular.filter',
       'myApp.filters',
       'myApp.services',
       'myApp.directives',
@@ -69,7 +97,13 @@ angular.module('myApp', [
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       //$urlRouterProvider.otherwise('/help');
+        $urlRouterProvider.otherwise('/main');
       $stateProvider
+
+          .state('otherwise', {
+              url : '/main',
+              templateUrl:'partials/splash.html',
+          })
           .state('CEview', {
            // url: '/view1',
             templateUrl: 'partials/CE.html',
