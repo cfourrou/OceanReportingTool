@@ -1,39 +1,58 @@
-<script>
-    // Elements to inject
-    var mySVGsToInject = document.querySelectorAll('img.inject-it');
-
-    // Do the injection
-    SVGInjector(mySVGsToInject);
-</script>
-
-
 <div style="padding:30px;" id="slide-right">
     <div style="width: 100%;height:5px"></div>
     <div id="sliderData">
         <div class="orangeHead"><b>Known Areas</b></div>
         <hr width="50%" align="left">
 
-
+        <!--Special Interest areas menu below -->
         <div class="menuBoxlight" ng-click="t_menu_box(1000,0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                  ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[1000].isActive]"><img
-                    class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
-            <div>High Priority Areas</div>
+                    class="pluscloseIcon" src="img/plus_close.svg"></div>
+            <div>Special Interest Areas</div>
         </div>
 
-
+<!--
         <div id="box0" class="menuboxofboxes" ng-show="box[1000].isActive" ng-repeat="aoix in aoismenu">
-            <!--this should be the results of a looped lookup-->
 
-            <div class="menuBoxdark" ui-sref="CEview"  ng-mouseenter="mover(aoix.AOI_ID)"   ng-mouseout="mout(aoix.AOI_ID)" ng-click="on(aoix.AOI_NAME,aoix.AOI_ID)">{{aoix.AOI_NAME}} </div>
 
+            <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(aoix.AOI_ID)" ng-mouseout="mout(aoix.AOI_ID)"
+                 ng-click="on(aoix.AOI_NAME,aoix.AOI_ID)">{{aoix.AOI_NAME}}
+            </div>
+
+        </div>
+-->
+
+        <div ng-repeat="aoix in aoismenu | unique: 'REPORT_TYPE' | orderBy : 'REPORT_TYPE'">
+            <div class="menuboxofboxes" ng-show="box[1000].isActive">
+
+                <div class="menuBoxlight" ng-click="t_menu_box($index,1)">
+                    <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
+                         ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[{{$index}}].isActive]">
+                        <img class="pluscloseIcon" src="img/plus_close.svg"></div>
+                    <div>{{aoix.REPORT_TYPE}}</div>
+                </div>
+
+                <div class="menuboxofboxes" ng-show="box[{{$index}}].isActive">
+                    <div ng-repeat="aoil in aoismenu | filter: {REPORT_TYPE: aoix.REPORT_TYPE} | orderBy : 'AOI_NAME'">
+                        <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(aoil.AOI_ID)"
+                             ng-mouseout="mout(aoil.AOI_ID)" ng-click="on(aoil.AOI_NAME,aoil.AOI_ID)">
+                            {{aoil.AOI_NAME}}
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
         </div>
 
 
+        <!--State menu below -->
         <div class="menuBoxlight" ng-click="t_menu_box(1001,0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                  ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[1001].isActive]"><img
-                    class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+                    class="pluscloseIcon" src="img/plus_close.svg"></div>
             <div>Other Areas by State</div>
         </div>
         <div ng-repeat="statex in aoistates | unique: 'COMMON_NM' | orderBy : 'COMMON_NM'">
@@ -42,29 +61,31 @@
                 <div class="menuBoxlight" ng-click="t_menu_box($index,1)">
                     <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                          ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[{{$index}}].isActive]"><img
-                            class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+                            class="pluscloseIcon" src="img/plus_close.svg"></div>
                     <div>{{statex.COMMON_NM}}</div>
                 </div>
 
                 <div class="menuboxofboxes" ng-show="box[{{$index}}].isActive">
                     <div ng-repeat="statel in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
-                        <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(statel.AOI_ID)"  ng-mouseout="mout(statel.AOI_ID)" ng-click="on(statel.AOI_NAME,statel.AOI_ID)">
-                            {{statel.AOI_NAME}}
+                        <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(statel.AOI_ID)"
+                             ng-mouseout="mout(statel.AOI_ID)" ng-click="on(statel.AOI_NAME,statel.AOI_ID)">
+                            {{statel.AOI_NAME}} ({{statel.DESC_}})
                         </div>
                     </div>
                     <div class="menuBoxlight" ng-click="t_menu_box($index+100,2)">
                         <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                              ng-class="{true: 'rotate', false: 'rotateCounterwise'}[box[{{$index+100}}].isActive]"><img
-                                class="inject-it pluscloseIcon" src="img/plus_close.svg"></div>
+                                class="pluscloseIcon" src="img/plus_close.svg"></div>
                         <div>Waters offshore of {{statex.COMMON_NM}} Counties</div>
                     </div>
                     <div class="menuboxofboxes" ng-show="box[{{$index+100}}].isActive">
                         <div ng-repeat="statey in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
-                            <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(statey.AOI_ID)" ng-mouseout="mout(statey.AOI_ID)" ng-click="on(statey.AOI_NAME,statey.AOI_ID)">
+                            <div class="menuBoxdark" ui-sref="CEview" ng-mouseenter="mover(statey.AOI_ID)"
+                                 ng-mouseout="mout(statey.AOI_ID)" ng-click="on(statey.AOI_NAME,statey.AOI_ID)">
                                 {{statey.AOI_NAME}}
                             </div>
                         </div>
-                        </div>
+                    </div>
 
                 </div>
             </div>

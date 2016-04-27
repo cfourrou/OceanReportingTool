@@ -4948,6 +4948,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 //console.log(mbounds);
                 // unwire the event listener so that it only fires once when the page is loaded
                 cLayer.off('load');
+                $scope.mout($scope.AOI_ID);
             });
 
 
@@ -5033,55 +5034,85 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
                                 LINK1: featureCollection.features[i].properties.LINK1,
                                 LINK2: featureCollection.features[i].properties.LINK2,
-                                PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
-                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
-                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT
+                                PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
+                                TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
+                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0)
                             };
                             bc++;
                             break;
                         case  "WindResourcePotential":
                             $scope.wind[bb] = {
-                                WIND_CLASS: featureCollection.features[i].properties.WIND_CLASS,
-                                AVG_WGHT: featureCollection.features[i].properties.AVG_WGHT.toFixed(2),
-                                PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
-                                HOUSES_SUM: featureCollection.features[i].properties.HOUSES_SUM.toLocaleString(),
-                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC
+                                WIND_CLASS: (featureCollection.features[i].properties.WIND_CLASS),
+                                AVG_WGHT: (featureCollection.features[i].properties.AVG_WGHT || 0).toFixed(2),
+                                PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
+                                HOUSES_SUM: (featureCollection.features[i].properties.HOUSES_SUM || 0).toLocaleString(),
+                                TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
+                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0)
                             };
-                            switch (featureCollection.features[i].properties.WIND_CLASS.substring(0, 3)) {
-                                case "Sup":
-                                    windclass[0] = featureCollection.features[i].properties.PERC_COVER;
-                                    break;
-                                case "Out":
-                                    windclass[1] = featureCollection.features[i].properties.PERC_COVER;
-                                    break;
-                                case "Exc":
-                                    windclass[2] = featureCollection.features[i].properties.PERC_COVER;
-                                    break;
-                                case "Goo":
-                                    windclass[3] = featureCollection.features[i].properties.PERC_COVER;
-                                    break;
-                                case "Fai":
-                                    windclass[4] = featureCollection.features[i].properties.PERC_COVER;
-                                    break;
-                                case "Uns":
-                                    windclass[5] = featureCollection.features[i].properties.PERC_COVER;
-                                    break;
+                            if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
+                                switch (featureCollection.features[i].properties.WIND_CLASS.substring(0, 3)) {
+                                    case "Sup":
+                                        windclass[0] = featureCollection.features[i].properties.PERC_COVER;
+                                        break;
+                                    case "Out":
+                                        windclass[1] = featureCollection.features[i].properties.PERC_COVER;
+                                        break;
+                                    case "Exc":
+                                        windclass[2] = featureCollection.features[i].properties.PERC_COVER;
+                                        break;
+                                    case "Goo":
+                                        windclass[3] = featureCollection.features[i].properties.PERC_COVER;
+                                        break;
+                                    case "Fai":
+                                        windclass[4] = featureCollection.features[i].properties.PERC_COVER;
+                                        break;
+                                    case "Uns":
+                                        windclass[5] = featureCollection.features[i].properties.PERC_COVER;
+                                        break;
+                                }
+
                             }
                             bb++;
                             break;
                     }
                 }
                 //console.log($scope.arel.length);
+                if ($scope.boem[0] == null) {
+                    $scope.boem[0] = {
+                        INFO: "NA",
+                        PROT_NUMBE: 0,
+                        LINK1: "NA",
+                        LINK2: "NA",
+                        PERC_COVER: 0,
+                        TOTAL_BLOC: 0,
+                        TOTAL_CNT: 0
+                    };
+                }
+                if ($scope.arel[0] == null) {
+                    $scope.arel[0] = {
+                        Lease_Numb: 0,
+                        Company: "NA",
+                        INFO: "NA",
+                        PROT_NUMBE: 0,
+                        LINK1: "NA",
+                        LINK2: "NA",
+                        PERC_COVER: 0,
+                        TOTAL_BLOC: 0,
+                        TOTAL_CNT: 0
+                    };
+                }
                 $scope.boem.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
                 $scope.arel.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
+
                 if ($scope.boem[0].TOTAL_CNT === 0) {
                     $scope.boem[0].PERC_COVER = 0;
                     $scope.boem[0].TOTAL_BLOC = 0;
                 }
+                if ($scope.arel[0] == null)$scope.arel[0].TOTAL_CNT = 0;
                 if ($scope.arel[0].TOTAL_CNT === 0) {
                     $scope.arel[0].PERC_COVER = 0;
                     $scope.arel[0].TOTAL_BLOC = 0;
@@ -5099,7 +5130,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('MyCtrl2', ['$scope', function ($scope) {
         $scope.name = "controller 2";
-
 
 
         windChart = Highcharts.chart('container', {
@@ -5235,7 +5265,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         /*  //over ride windclass for testing chart
-        // console.log(windclass[0]);
+         // console.log(windclass[0]);
          windclass[0]=10;
          windclass[1]=25;
          windclass[2]=65;
@@ -5363,6 +5393,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             //console.log(AOI);
             $scope.Cur_AOI = AOI;
             $scope.AOI_ID = AOI_id;
+
+
             //console.log($scope.AOI_ID);
         };
 
@@ -5378,9 +5410,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     simplifyFactor: 5.0,
                     precision: 2,
                 }).addTo(map);
-            };
+            }
+            ;
 
-           // console.log(AOI_id);
+            // console.log(AOI_id);
 
         };
         $scope.mout = function (AOI_id) {//turns on poly on mouse over in menu
@@ -5443,7 +5476,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         });
         //query.returnGeometry = false;
-        query.returnGeometry(false).where("KNOWN_AREA='High Priority Areas'").run(function (error, featureCollection, response) {
+        query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
             //query.where("COMMON_NM='*'").run(function (error, featureCollection, response) {
             // query.where("COMMON_NM LIKE '%'").run(function (error, featureCollection, response) {
 
@@ -5459,16 +5492,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.aoismenu[ba] = {
                     AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
                     COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                    REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                    REPORT_TYPE: featureCollection.features[i].properties.REPORT_TYPE,
                     AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                    DATASET_NM:featureCollection.features[i].properties.DATASET_NM
+                    DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
+                    DESC_: featureCollection.features[i].properties.DESC_
                 };
                 ba++;
                 //      break;
 
                 //}
             }
-
+            //console.log($scope.aoismenu);
             $scope.aoismenu.sort(function (a, b) {
                 //return parseFloat(a.AOI_NAME) - parseFloat(b.AOI_NAME);
                 return a.AOI_NAME.localeCompare(b.AOI_NAME);
@@ -5485,15 +5519,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
                         REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                         AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                        DATASET_NM:featureCollection.features[i].properties.DATASET_NM
+                        DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
+                        DESC_: featureCollection.features[i].properties.DESC_
                     };
                     ba++;
                 }
-            //console.log($scope.aoistates);
+                //console.log($scope.aoistates);
                 $scope.aoistates.sort(function (a, b) {
                     return a.AOI_NAME.localeCompare(b.AOI_NAME);
                 });
-            //console.log($scope.aoistates);
+                //console.log($scope.aoistates);
             }
         );
 
