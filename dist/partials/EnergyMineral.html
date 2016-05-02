@@ -13,8 +13,9 @@
         <div id="AOIname">{{Cur_AOI.toUpperCase()}}</div>
         <div id="shareIcons">
             <div id="shareIcon"><img src="img/PDF.svg"></div>
-            <div id="shareIcon"><img src="img/Printer.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
+            <div id="shareIcon"><a ui-sref="meta"href=""><img src="img/tag.svg"></a></div>
+
         </div>
     </div>
     <br style="clear: left;"/>
@@ -41,6 +42,7 @@
                     <div>
 
                         <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+                        <!-- //metadata-url="{{wind[0].METADATA_URL}}" -->
                         <info-directive class="infobutton mainbutton" modal-template="modal1.html" message="message"
                                         modal-img="img/info.svg"></info-directive>
 
@@ -58,10 +60,13 @@
                                     development. The potential megawatts (MW) of rated capacity that could be installed
                                     in this area, assuming 5 MW of installed capacity per square kilometer of water is:
                                     14,160 MW.
+                                    <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
                                 </div>
                                 <div id="fade"></div>
                             </div>
                         </script>
+
+
                     </div>
                     <div id="spacer">&nbsp;</div>
                     <div class="floatitleft" style="width: 38%;">Potential Houses Supported Annually:
@@ -91,6 +96,7 @@
                                                         href="http://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3">U.S.
                                             Energy Information Administration FAQ</a>
                                     </div>
+
 
                                 </div>
                                 <div id="fade"></div>

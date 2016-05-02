@@ -22,18 +22,25 @@ angular.module('myApp.directives', [])
             scope: {
                 modalTemplate: '@',
                 modalImg: '@',
-                message: '='
+                message: '=',
+                metadataUrl: '@'
             },
-            template: '<a href ng-click="show(modalTemplate)"><div ng-include="" src="modalImg"></div></a>',
+            template: '<a href ng-click="show(modalTemplate)" ><div ng-include="" src="modalImg"></div></a>',
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {
+                    //console.log("show " +$scope.metadataUrl);
                     ModalService.showModal({
                         templateUrl: modalTemplate,
-                        controller: "ModalController"
+                        controller: "ModalController",
+                        inputs: {
+                            metaurl: $scope.metadataUrl
+
+                        }
                     }).then(function (modal) {
                         modal.close.then(function (result) {
                             $scope.message = "You said " + result;
+
                         });
                     });
                 };

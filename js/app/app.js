@@ -131,6 +131,11 @@ angular.module('myApp', [
               templateUrl:'partials/EC.html',
              // controller: 'MyCtrl5'
           })
+          .state('meta',{
+              //url:'/metadata',
+              templateUrl:'partials/metadata.html',
+              // controller: 'MyCtrl5'
+          })
           .state('splash',{
               //url:'/help',
               templateUrl:'partials/splash.html',

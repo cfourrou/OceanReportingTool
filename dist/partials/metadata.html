@@ -13,17 +13,19 @@
         <div id="shareIcons">
             <div id="shareIcon"><img src="img/PDF.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
-            <div id="shareIcon"><a ui-sref="meta"href=""><img src="img/tag.svg"></a></div>
         </div>
     </div>
     <br style="clear: left;"/>
 
     <div id="sliderData">
-        <div id="AOItab" class="AOItabClass"> Economics and Commerce
+        <div id="AOItab" class="AOItabClass"> Metadata
             <hr width="50%" align="left" color="#F4F8FC">
+            <div class="metaline1" ng-repeat="m1 in metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
+                {{m1.REPORT_CAT}}
+                <div class="metaline2" ng-repeat="m2 in metadata | filter: {REPORT_CAT: m1.REPORT_CAT} | orderBy : 'REPORT_CAT'">
+            <a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a><br>
 
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-

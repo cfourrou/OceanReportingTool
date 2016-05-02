@@ -4,8 +4,9 @@
 angular.module('myApp.controllers', ["pageslide-directive"])
 
 
-    .controller('ModalController', function ($scope, close) {
+    .controller('ModalController', function ($scope, metaurl, close) {
 
+        $scope.metadataurl=metaurl;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
@@ -112,10 +113,40 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 var ba = 0;
                 var bb = 0;
                 var bc = 0;
+                var bd = 0;
 
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
 
                     switch (featureCollection.features[i].properties.DATASET_NM) {
+
+                        case "TribalLands":
+                            $scope.test[bd] = {
+                                Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
+                                Company: featureCollection.features[i].properties.Company,
+                                INFO: featureCollection.features[i].properties.INFO,
+                                PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
+                                LINK1: featureCollection.features[i].properties.LINK1,
+                                LINK2: featureCollection.features[i].properties.LINK2,
+                                PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
+                                TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
+                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
+                            };
+                            if ((bd ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                                $scope.metadata[k] = {
+                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                };
+                                k++;
+                            };
+
+                            bd++;
+                            break;
+
+
+
                         case  "BOEM_Wind_Planning_Areas":
                             $scope.boem[ba] = {
                                 INFO: featureCollection.features[i].properties.INFO,
@@ -124,7 +155,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 LINK2: featureCollection.features[i].properties.LINK2,
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
                                 TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
-                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT
+                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT,
+                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
+                            };
+                            if ((ba ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                                $scope.metadata[k] = {
+                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                };
+                               // console.log($scope.metadata[k]);
+                                k++;
+
                             };
                             ba++;
                             break;
@@ -138,8 +181,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 LINK2: featureCollection.features[i].properties.LINK2,
                                 PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
                                 TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0)
+                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
                             };
+                            if ((bc ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                                $scope.metadata[k] = {
+                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                };
+                                k++;
+                            };
+
                             bc++;
                             break;
                         case  "WindResourcePotential":
@@ -149,8 +203,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
                                 HOUSES_SUM: (featureCollection.features[i].properties.HOUSES_SUM || 0).toLocaleString(),
                                 TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0)
+                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
                             };
+                            if ((bb ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                                $scope.metadata[k] = {
+                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                };
+                                k++;
+                            };
+
                             if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
                                 switch (featureCollection.features[i].properties.WIND_CLASS.substring(0, 3)) {
                                     case "Sup":
@@ -178,7 +243,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             break;
                     }
                 }
-                //console.log($scope.arel.length);
+
                 if ($scope.boem[0] == null) {
                     $scope.boem[0] = {
                         INFO: "NA",
@@ -542,9 +607,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             map.setView([33.51, -78.3], 6);
             $scope.wind.length = 0;
             $scope.boem.length = 0;
-            $scope.arel.length = 0;
+            $scope.metadata.length = 0;
             $scope.optLayer.length = 0;
             windclass.length = 0;
+            $scope.test.length = 0;
             //map.setView([33.51, -68.3], 6);
         };
 
@@ -568,6 +634,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.wind = [];
         $scope.boem = [];
         $scope.arel = [];
+        $scope.metadata = [];
+        $scope.test = [];
 
         $scope.aoismenu = [];
         $scope.aoistates = [];

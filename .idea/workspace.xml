@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e8090f5-02cf-46c3-b523-f4e54481fa8d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/metadata.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/less/ort.css" afterPath="$PROJECT_DIR$/css/less/ort.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/less/ort.less" afterPath="$PROJECT_DIR$/css/less/ort.less" />
@@ -9,11 +10,21 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/ort.min.css" afterPath="$PROJECT_DIR$/dist/css/ort.min.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/ort.js" afterPath="$PROJECT_DIR$/dist/js/ort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/search.html" afterPath="$PROJECT_DIR$/dist/partials/search.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/CE.html" afterPath="$PROJECT_DIR$/dist/partials/CE.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EC.html" afterPath="$PROJECT_DIR$/dist/partials/EC.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EnergyMineral.html" afterPath="$PROJECT_DIR$/dist/partials/EnergyMineral.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC.html" afterPath="$PROJECT_DIR$/dist/partials/NRC.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TI.html" afterPath="$PROJECT_DIR$/dist/partials/TI.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/app.js" afterPath="$PROJECT_DIR$/js/app/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/controllers.js" afterPath="$PROJECT_DIR$/js/app/controllers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/directives.js" afterPath="$PROJECT_DIR$/js/app/directives.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/ort.js" afterPath="$PROJECT_DIR$/js/ort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/search.html" afterPath="$PROJECT_DIR$/partials/search.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/CE.html" afterPath="$PROJECT_DIR$/partials/CE.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EC.html" afterPath="$PROJECT_DIR$/partials/EC.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EnergyMineral.html" afterPath="$PROJECT_DIR$/partials/EnergyMineral.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC.html" afterPath="$PROJECT_DIR$/partials/NRC.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TI.html" afterPath="$PROJECT_DIR$/partials/TI.html" />
     </list>
     <ignored path="Ocean Reporting Tool.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,11 +45,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ort.less" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/css/less/ort.less">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/app/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36942676">
-              <caret line="444" column="23" selection-start-line="444" selection-start-column="23" selection-end-line="444" selection-end-column="23" />
+            <state vertical-scroll-proportion="-2.2997987">
+              <caret line="22" column="14" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -47,8 +58,8 @@
       <file leaf-file-name="search.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/partials/search.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.32692307">
-              <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+            <state vertical-scroll-proportion="-5.6346154">
+              <caret line="36" column="94" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="94" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -57,24 +68,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EnergyMineral.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/EnergyMineral.html">
+      <file leaf-file-name="metadata.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/partials/metadata.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.115385">
-              <caret line="161" column="17" selection-start-line="161" selection-start-column="17" selection-end-line="161" selection-end-column="17" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="-15.692307">
+              <caret line="24" column="101" selection-start-line="24" selection-start-column="101" selection-end-line="24" selection-end-column="101" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app/app.js">
+      <file leaf-file-name="EnergyMineral.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/partials/EnergyMineral.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="42" column="18" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
-              <folding />
+            <state vertical-scroll-proportion="-4.576923">
+              <caret line="7" column="44" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="44" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#3;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -82,8 +94,18 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-396.23077">
-              <caret line="606" column="12" selection-start-line="606" selection-start-column="12" selection-end-line="606" selection-end-column="12" />
+            <state vertical-scroll-proportion="95.46154">
+              <caret line="208" column="35" selection-start-line="208" selection-start-column="35" selection-end-line="208" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ort.less" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/less/ort.less">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.3461537">
+              <caret line="516" column="21" selection-start-line="516" selection-start-column="21" selection-end-line="516" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -114,26 +136,28 @@
         <option value="$PROJECT_DIR$/js/ort.js" />
         <option value="$PROJECT_DIR$/img/wind_cc.svg" />
         <option value="$PROJECT_DIR$/css/less/colors.less" />
-        <option value="$PROJECT_DIR$/partials/CE.html" />
-        <option value="$PROJECT_DIR$/partials/NRC.html" />
-        <option value="$PROJECT_DIR$/partials/TI.html" />
         <option value="$PROJECT_DIR$/css/ng-modal.css" />
         <option value="$PROJECT_DIR$/js/lib/ng-modal.js" />
-        <option value="$PROJECT_DIR$/partials/EC.html" />
         <option value="$PROJECT_DIR$/css/less/main.less" />
         <option value="$PROJECT_DIR$/img/Info.svg" />
         <option value="$PROJECT_DIR$/partials/splash.html" />
         <option value="$PROJECT_DIR$/js/lib/angular-pageslide-directive.js" />
-        <option value="$PROJECT_DIR$/js/app/directives.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/Gruntfile.js" />
         <option value="$PROJECT_DIR$/img/switch_off.svg" />
-        <option value="$PROJECT_DIR$/partials/EnergyMineral.html" />
         <option value="$PROJECT_DIR$/js/ort.json" />
-        <option value="$PROJECT_DIR$/js/app/app.js" />
-        <option value="$PROJECT_DIR$/js/app/controllers.js" />
         <option value="$PROJECT_DIR$/partials/search.html" />
+        <option value="$PROJECT_DIR$/js/app/directives.js" />
+        <option value="$PROJECT_DIR$/img/Tag.svg" />
+        <option value="$PROJECT_DIR$/js/app/app.js" />
+        <option value="$PROJECT_DIR$/partials/CE.html" />
+        <option value="$PROJECT_DIR$/partials/EC.html" />
+        <option value="$PROJECT_DIR$/partials/NRC.html" />
+        <option value="$PROJECT_DIR$/partials/TI.html" />
+        <option value="$PROJECT_DIR$/partials/EnergyMineral.html" />
         <option value="$PROJECT_DIR$/css/less/ort.less" />
+        <option value="$PROJECT_DIR$/partials/metadata.html" />
+        <option value="$PROJECT_DIR$/js/app/controllers.js" />
       </list>
     </option>
   </component>
@@ -282,20 +306,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="partials" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OceanReportingTool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OceanReportingTool" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -314,7 +324,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
+              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -473,12 +483,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="7" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.55737704" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.55737704" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt " active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.44262296" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Grunt " active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.44262296" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3129176" sideWeight="0.5021097" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24954791" sideWeight="0.37894738" order="2" side_tool="true" content_ui="tabs" />
@@ -532,20 +542,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/CE.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -644,20 +640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/TI.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50395256">
-          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/NRC.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7055336">
-          <caret line="21" column="80" selection-start-line="21" selection-start-column="80" selection-end-line="21" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.63833994">
@@ -698,13 +680,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.1923075">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/lib/angular-modal-service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -757,27 +732,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/CE.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30357143">
-          <caret line="11" column="57" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/services.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.059027776">
-          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/lib/angular-pageslide-directive.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.029513888">
@@ -789,30 +743,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34845734">
           <caret line="4505" column="28099" selection-start-line="4505" selection-start-column="28099" selection-end-line="4505" selection-end-column="28099" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/directives.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44270834">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7181818">
-          <caret line="150" column="46" selection-start-line="150" selection-start-column="46" selection-end-line="150" selection-end-column="46" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/splash.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3090909">
-          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -862,26 +792,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
+    <entry file="file://$PROJECT_DIR$/js/app/services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-396.23077">
-          <caret line="606" column="12" selection-start-line="606" selection-start-column="12" selection-end-line="606" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+    <entry file="file://$PROJECT_DIR$/js/lib/angular-modal-service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.52007645">
+          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/directives.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="18" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
+          <caret line="31" column="22" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/Tag.svg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.730769">
+          <caret line="135" column="86" selection-start-line="135" selection-start-column="16" selection-end-line="135" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5472837">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/splash.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32595575">
+          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/NRC.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5472837">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/CE.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5392354">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EC.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4024145">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/less/ort.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.3461537">
+          <caret line="516" column="21" selection-start-line="516" selection-start-column="21" selection-end-line="516" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/search.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.32692307">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+        <state vertical-scroll-proportion="-5.6346154">
+          <caret line="36" column="94" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="94" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -889,20 +891,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/partials/metadata.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.692307">
+          <caret line="24" column="101" selection-start-line="24" selection-start-column="101" selection-end-line="24" selection-end-column="101" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/partials/EnergyMineral.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.115385">
-          <caret line="161" column="17" selection-start-line="161" selection-start-column="17" selection-end-line="161" selection-end-column="17" />
+        <state vertical-scroll-proportion="-4.576923">
+          <caret line="7" column="44" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="44" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/less/ort.less">
+    <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36942676">
-          <caret line="444" column="23" selection-start-line="444" selection-start-column="23" selection-end-line="444" selection-end-column="23" />
+        <state vertical-scroll-proportion="95.46154">
+          <caret line="208" column="35" selection-start-line="208" selection-start-column="35" selection-end-line="208" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.2997987">
+          <caret line="22" column="14" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="14" />
           <folding />
         </state>
       </provider>
