@@ -23,7 +23,7 @@
             <div class="metaline1" ng-repeat="m1 in metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
                 {{m1.REPORT_CAT}}
                 <div class="metaline2" ng-repeat="m2 in metadata | filter: {REPORT_CAT: m1.REPORT_CAT} | orderBy : 'REPORT_CAT'">
-            <a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a><br>
+            <a target="_blank" href={{m2.METADATA_URL}}>{{m2.COMMON_NM}} - {{m2.METADATA_OWNER}}</a><br>
 
                 </div>
             </div>

@@ -135,6 +135,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             if ((bd ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
                                 $scope.metadata[k] = {
                                     REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
                                     METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
                                     METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
                                     METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
@@ -161,6 +162,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             if ((ba ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
                                 $scope.metadata[k] = {
                                     REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
                                     METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
                                     METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
                                     METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
@@ -187,6 +189,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             if ((bc ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
                                 $scope.metadata[k] = {
                                     REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
                                     METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
                                     METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
                                     METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
@@ -209,6 +212,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             if ((bb ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
                                 $scope.metadata[k] = {
                                     REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
                                     METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
                                     METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
                                     METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
