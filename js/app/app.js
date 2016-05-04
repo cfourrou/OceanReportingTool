@@ -24,8 +24,8 @@ ortLayerOptional[2]=
 };
 ortLayerOptional[3]=
 {
-    num:'18',
-    name:'future'
+    num:'22',
+    name:'Ocean Disposal Sites'
 };
 
 var map = L.map('bigmap',{
@@ -37,7 +37,7 @@ var map = L.map('bigmap',{
 
 var toggle = false;
 var windclass = [];
-var windrpLayer,windLeaseLayer,windPlanningLayer;
+var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites;
 var toggleFull = false;
 var cLayer,mouseLayer;
 var menuitems= [];
@@ -77,6 +77,7 @@ L.control.zoom({
 map.createPane('optionalfeature1');
 map.createPane('optionalfeature2');
 map.createPane('optionalfeature3');
+map.createPane('optionalfeature4');
 map.createPane('AOIfeature');
 
 map.setView([33.51, -78.3], 6);

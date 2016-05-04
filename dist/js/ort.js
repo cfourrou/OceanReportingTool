@@ -391,7 +391,7 @@ angular.module('pageslide-directive', [])
                 slider.style.zIndex = param.zindex;
                 slider.style.position = param.container !== false ? 'absolute' : 'fixed';
                 slider.style.width = 0;
-                slider.style.height = 0;
+                //slider.style.height = 0;
                 //slider.style.overflow = 'hidden';
                 slider.style.transitionDuration = param.speed + 's';
                 slider.style.webkitTransitionDuration = param.speed + 's';
@@ -406,9 +406,9 @@ angular.module('pageslide-directive', [])
 
                 switch (param.side) {
                     case 'right':
-                        slider.style.height = attrs.psCustomHeight || '100%';
+                        //slider.style.height = attrs.psCustomHeight || '100%';
                         slider.style.top = attrs.psCustomTop || '0px';
-                        slider.style.bottom = attrs.psCustomBottom || '0px';
+                        //slider.style.bottom = attrs.psCustomBottom || '0px';
                         slider.style.right = attrs.psCustomRight || '0px';
                         break;
                     case 'left':
@@ -4990,6 +4990,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     return {color: 'Black', weight: 1, fillOpacity: .5};
                 }
             });
+            oceanDisposalSites = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
+                url: ortMapServer + ortLayerOptional[3].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                pane: 'optionalfeature4',
+                style: function (feature) {
+
+                    return {color: 'Black', weight: 1, fillOpacity: .5};
+                }
+            });
 
 
             // var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
@@ -5007,11 +5015,30 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 var bb = 0;
                 var bc = 0;
                 var bd = 0;
+                var be = 0;
 
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
 
                     switch (featureCollection.features[i].properties.DATASET_NM) {
+                        case "OceanDisposalSites":
+                            $scope.disp[be] = {
+                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
+                            };
 
+                            if ((be ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                                $scope.metadata[k] = {
+                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
+                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                };
+                                k++;
+                            };
+
+                            be++;
+                            break;
                         case "TribalLands":
                             $scope.test[bd] = {
                                 Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
@@ -5284,15 +5311,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             toggleFull = !toggleFull;
             $scope.toggleFull = toggleFull;
             if (toggleFull) {
-                //document.getElementById('map').className='smallmapclass';
-                //document.getElementById('smallmap').innerHTML= document.getElementById('map').innerHTML;
-                //console.log(document.getElementById('smallmap').className);
-                //document.getElementById('smallmap').className='smallmapclass';
+
 
                 document.getElementById("slide1").style.width = '100%';
+                //document.getElementById("slide1").style.position = 'absolute';
 
-                //document.getElementById('smallmap').style.visibility = "visible";
-                //document.getElementById('AOItab2').style.height='794px';
                 document.getElementById("togglefull").style.marginLeft = '0px';
                 // Code for Chrome, Safari, Opera
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
@@ -5312,6 +5335,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("togglefull").style.marginLeft = "-25px";
                 //.style.marginLeft='-25px';
                 document.getElementById("slide1").style.width = '50%';
+                //document.getElementById("slide1").style.position = 'relative';
                 document.getElementById('AOItab2').style.display = 'none';
                 // document.getElementById('AOItab2').style.height='0px';
                 document.getElementById('slider_but0').style.visibility = "visible";
@@ -5431,6 +5455,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         windPlanningLayer.addTo(map);
                     } else map.removeLayer(windPlanningLayer);
                     break;
+                case 3:
+                    if ($scope.optLayer[3]) {
+                        oceanDisposalSites.addTo(map);
+                    } else map.removeLayer(oceanDisposalSites);
+                    break;
             }
 
 
@@ -5495,6 +5524,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.checkifAOI = false;
             toggle = false;
             if (cLayer) {
+                map.removeLayer(oceanDisposalSites);
                 map.removeLayer(windPlanningLayer);
                 map.removeLayer(windLeaseLayer);
                 map.removeLayer(windrpLayer);
@@ -5507,6 +5537,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.metadata.length = 0;
             $scope.optLayer.length = 0;
             windclass.length = 0;
+            $scope.disp.length = 0;
             $scope.test.length = 0;
             //map.setView([33.51, -68.3], 6);
         };
@@ -5532,6 +5563,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.boem = [];
         $scope.arel = [];
         $scope.metadata = [];
+        $scope.disp = [];
         $scope.test = [];
 
         $scope.aoismenu = [];
@@ -5720,8 +5752,8 @@ ortLayerOptional[2]=
 };
 ortLayerOptional[3]=
 {
-    num:'18',
-    name:'future'
+    num:'22',
+    name:'Ocean Disposal Sites'
 };
 
 var map = L.map('bigmap',{
@@ -5733,7 +5765,7 @@ var map = L.map('bigmap',{
 
 var toggle = false;
 var windclass = [];
-var windrpLayer,windLeaseLayer,windPlanningLayer;
+var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites;
 var toggleFull = false;
 var cLayer,mouseLayer;
 var menuitems= [];
@@ -5773,6 +5805,7 @@ L.control.zoom({
 map.createPane('optionalfeature1');
 map.createPane('optionalfeature2');
 map.createPane('optionalfeature3');
+map.createPane('optionalfeature4');
 map.createPane('AOIfeature');
 
 map.setView([33.51, -78.3], 6);

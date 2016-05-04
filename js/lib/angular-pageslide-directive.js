@@ -84,7 +84,7 @@ angular.module('pageslide-directive', [])
                 slider.style.zIndex = param.zindex;
                 slider.style.position = param.container !== false ? 'absolute' : 'fixed';
                 slider.style.width = 0;
-                slider.style.height = 0;
+                //slider.style.height = 0;
                 //slider.style.overflow = 'hidden';
                 slider.style.transitionDuration = param.speed + 's';
                 slider.style.webkitTransitionDuration = param.speed + 's';
@@ -99,9 +99,9 @@ angular.module('pageslide-directive', [])
 
                 switch (param.side) {
                     case 'right':
-                        slider.style.height = attrs.psCustomHeight || '100%';
+                        //slider.style.height = attrs.psCustomHeight || '100%';
                         slider.style.top = attrs.psCustomTop || '0px';
-                        slider.style.bottom = attrs.psCustomBottom || '0px';
+                        //slider.style.bottom = attrs.psCustomBottom || '0px';
                         slider.style.right = attrs.psCustomRight || '0px';
                         break;
                     case 'left':

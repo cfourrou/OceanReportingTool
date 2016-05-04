@@ -14,7 +14,7 @@
         <div id="shareIcons">
             <div id="shareIcon"><img src="img/PDF.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
-            <div id="shareIcon"><a ui-sref="meta"href=""><img src="img/tag.svg"></a></div>
+            <div id="shareIcon"><a ui-sref="meta"href=""><img src="img/MetadataIcon.svg"></a></div>
 
         </div>
     </div>
@@ -43,7 +43,7 @@
 
                         <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
                         <!-- //metadata-url="{{wind[0].METADATA_URL}}" -->
-                        <info-directive class="infobutton mainbutton" modal-template="modal1.html" message="message"
+                        <info-directive class="infobutton mainbutton floatitleft" modal-template="modal1.html" message="message"
                                         modal-img="img/info.svg"></info-directive>
 
                         <script type="text/ng-template" id="modal1.html">
@@ -72,10 +72,10 @@
                     <div class="floatitleft" style="width: 38%;">Potential Houses Supported Annually:
                         {{wind[0].HOUSES_SUM}}
                     </div>
+                    <!-- iButton start-->
                     <div>
-
                         <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
-                        <info-directive class="infobutton mainbutton" modal-template="modal2.html" message="message"
+                        <info-directive class="infobutton mainbutton floatitleft" modal-template="modal2.html" message="message"
                                         modal-img="img/info.svg"></info-directive>
 
                         <script type="text/ng-template" id="modal2.html">
@@ -104,6 +104,7 @@
                         </script>
 
                     </div>
+                    <!-- iButton end-->
                 </div>
                 <div id="line3">
                     <div id="wrscale" class="line3a"><!--<img src="img/GandH.png?168a886aba220a3d">-->
@@ -219,6 +220,94 @@
                     </div>
                 </div>
             </div>
+            <!-- begin 3rd row of boxes -->
+            <br>
+            <div id="RELBox">
+                <div id="wrbox1">
+                    <div id="slider_but3" class="sliderbutton">
+                        <div  ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[3]]" ng-click="opt_layer_button(3)" ng-include="'img/switch_off.svg'" ></div>
+                    </div>
+
+                    <div id="boemline1">Ocean Disposal Sites</div>
+                    <div class="swatch floatitleft"><img src="img/Renewable_Energy_Leases.svg"></div>
+                    <div id="boemline2" style="height: 70px">
+                    <span class="boemline2a floatitleft" >Within 10 miles</span>
+                    <!-- iButton start-->
+                    <div>
+                        <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+                        <info-directive class="infobutton mainbutton" modal-template="modal3.html" message="message"
+                                        modal-img="img/info.svg"></info-directive>
+
+                        <script type="text/ng-template" id="modal3.html">
+                            <div id="custom-modal" class="modal">
+                                <div id="overlay">
+                                    <a href="" class="modal-close" ng-click="close('Cancel')">
+                                        <svg class="" viewBox="0 0 24 24">
+                                            <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                            <path d="M0 0h24v24h-24z" fill="none"/>
+                                        </svg>
+                                    </a>
+                                    no text yet<br>
+
+
+                                </div>
+                                <div id="fade"></div>
+                            </div>
+                        </script>
+
+                    </div>
+                    <!-- iButton end-->
+
+                        </div>
+                    <div ng-repeat="count in disp | filter:query as filtered">
+                    </div>
+                    <div ng-repeat="dispx in disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+                        <div ng-repeat="count in disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE} as filtered">
+                        </div>
+                    <div id="boemline2">
+                        <span class="boemline2b">{{filtered.length}}</span>
+                        <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
+                    </div>
+                        </div>
+
+                </div>
+            </div>
+            <div id="WPABox">
+                <div id="wrbox1">
+
+                    <div id="slider_but4" class="sliderbutton">
+                        <div  ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[4]]" ng-click="opt_layer_button(4)" ng-include="'img/switch_off.svg'" ></div>
+                    </div>
+                    <div id="boemline1">New Box</div>
+                    <div class="swatch" ><img src="img/Wind_Planning_Areas.svg"></div>
+                    <div id="boemline2">
+                        <span class="boemline2b">{{boem[0].TOTAL_CNT}}</span>
+                        <span class="boemline2a">Some Data</span>
+                    </div>
+                    <div id="boemline2">
+                        <span class="boemline2a">Covers</span>
+                        <span class="boemline2b">{{boem[0].PERC_COVER.toFixed(0)}}</span>
+                        <span class="boemline2a">%, including</span>
+                        <span class="boemline2b">{{boem[0].TOTAL_BLOC}}</span>
+                        <span class="boemline2a">OCS blocks</span>
+                    </div>
+
+                    <div id="boemline2">
+                        <div class="boemline2a">{{boem[0].PROT_NUMBE}}:{{boem[0].INFO}}</div>
+                        <div class="boemline2a"><a href={{boem[0].LINK1}}>{{boem[0].LINK1}}</a></div>
+                        <div class="boemline2a"><a href={{boem[0].LINK2}}>{{boem[0].LINK2}}</a></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- end 3rd row of boxes -->
+
+
+
+
         </div>
         <div id="AOItab2" class="AOItabClass">
             <div id="map" class="smallmapclass"></div>
