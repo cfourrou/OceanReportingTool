@@ -27,6 +27,11 @@ ortLayerOptional[3]=
     num:'22',
     name:'Ocean Disposal Sites'
 };
+ortLayerOptional[4]=
+{
+    num:'22',
+    name:'Marine Minerals Leases'
+};
 
 var map = L.map('bigmap',{
     zoomControl: false

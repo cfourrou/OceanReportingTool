@@ -951,6 +951,15 @@ body.ng-pageslide-body-closed::before {
   margin-right: 20px;
   margin-bottom: 20px;
 }
+.infographic-box-small {
+  background: #F4F8FC;
+  height: 280px;
+  width: 312.8px;
+  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.5);
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
 #boemdata1 {
   font-family: 'Open Sans';
   font-size: 12px;

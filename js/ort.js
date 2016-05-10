@@ -5219,10 +5219,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('MyCtrl2', ['$scope', function ($scope) {
+    .controller('MyCtrl2', ['$scope','$timeout', function ($scope,$timeout) {
         $scope.name = "controller 2";
 
-
+        $scope.$on('$viewContentLoaded', function() {
+            // Your document is ready, place your code here
+            $timeout(function(){
         windChart = Highcharts.chart('container', {
             chart: {
                 spacing: 0,
@@ -5285,6 +5287,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 name: '',
                 data: [windclass[5]]
             }]
+        });
+        },100);
         });
         /*
          $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
@@ -5754,6 +5758,11 @@ ortLayerOptional[3]=
 {
     num:'22',
     name:'Ocean Disposal Sites'
+};
+ortLayerOptional[4]=
+{
+    num:'22',
+    name:'Marine Minerals Leases'
 };
 
 var map = L.map('bigmap',{

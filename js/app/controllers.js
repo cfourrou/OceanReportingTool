@@ -6,7 +6,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('ModalController', function ($scope, metaurl, close) {
 
-        $scope.metadataurl=metaurl;
+        $scope.metadataurl = metaurl;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
@@ -133,16 +133,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
                             };
 
-                            if ((be ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                            if ((be === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
                                 $scope.metadata[k] = {
-                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
                                 };
                                 k++;
-                            };
+                            }
+                            ;
 
                             be++;
                             break;
@@ -157,22 +158,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
                                 TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
                                 TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
+                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
                             };
-                            if ((bd ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                            if ((bd === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
                                 $scope.metadata[k] = {
-                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
                                 };
                                 k++;
-                            };
+                            }
+                            ;
 
                             bd++;
                             break;
-
 
 
                         case  "BOEM_Wind_Planning_Areas":
@@ -184,20 +185,21 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
                                 TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
                                 TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT,
-                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
+                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
                             };
-                            if ((ba ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                            if ((ba === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
                                 $scope.metadata[k] = {
-                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
                                 };
-                               // console.log($scope.metadata[k]);
+                                // console.log($scope.metadata[k]);
                                 k++;
 
-                            };
+                            }
+                            ;
                             ba++;
                             break;
                         case "ActiveRenewableEnergyLeases":
@@ -211,18 +213,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
                                 TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
                                 TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
+                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
                             };
-                            if ((bc ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                            if ((bc === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
                                 $scope.metadata[k] = {
-                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
                                 };
                                 k++;
-                            };
+                            }
+                            ;
 
                             bc++;
                             break;
@@ -234,18 +237,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 HOUSES_SUM: (featureCollection.features[i].properties.HOUSES_SUM || 0).toLocaleString(),
                                 TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
                                 TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                METADATA_URL:featureCollection.features[i].properties.METADATA_URL
+                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
                             };
-                            if ((bb ===0)&&(featureCollection.features[i].properties.METADATA_URL != null)){
+                            if ((bb === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
                                 $scope.metadata[k] = {
-                                    REPORT_CAT:featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM:featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL:featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER:featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV:featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
                                 };
                                 k++;
-                            };
+                            }
+                            ;
 
                             if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
                                 switch (featureCollection.features[i].properties.WIND_CLASS.substring(0, 3)) {
@@ -326,72 +330,76 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('MyCtrl2', ['$scope', function ($scope) {
+    .controller('MyCtrl2', ['$scope', '$timeout', function ($scope, $timeout) {
         $scope.name = "controller 2";
 
-
-        windChart = Highcharts.chart('container', {
-            chart: {
-                spacing: 0,
-                margin: 0,
-                type: 'column'
-            },
-            title: {
-                text: null
-            },
-            exporting: {enabled: false},
-            colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306'],
-            xAxis: {
-                title: {
-                    enabled: false
-                },
-                labels: {
-                    enabled: false
-                },
-                tickLength: 0
-            },
-            yAxis: {
-                title: {
-                    enabled: false
-                },
-                labels: {
-                    enabled: false
-                },
-                TickLength: 0
-            },
-            plotOptions: {
-                series: {
-                    pointWidth: 190
-                },
-                column: {
-                    stacking: 'percent'
-                }
-            },
-            series: [{
-                showInLegend: false,
-                name: '',
-                data: [windclass[0]]
-            }, {
-                showInLegend: false,
-                name: '',
-                data: [windclass[1]]
-            }, {
-                showInLegend: false,
-                name: '',
-                data: [windclass[2]]
-            }, {
-                showInLegend: false,
-                name: '',
-                data: [windclass[3]]
-            }, {
-                showInLegend: false,
-                name: '',
-                data: [windclass[4]]
-            }, {
-                showInLegend: false,
-                name: '',
-                data: [windclass[5]]
-            }]
+        $scope.$on('$viewContentLoaded', function () {
+            // Your document is ready, place your code here
+            $timeout(function () {
+                windChart = Highcharts.chart('container', {
+                    chart: {
+                        spacing: 0,
+                        margin: 0,
+                        type: 'column'
+                    },
+                    title: {
+                        text: null
+                    },
+                    exporting: {enabled: false},
+                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306'],
+                    xAxis: {
+                        title: {
+                            enabled: false
+                        },
+                        labels: {
+                            enabled: false
+                        },
+                        tickLength: 0
+                    },
+                    yAxis: {
+                        title: {
+                            enabled: false
+                        },
+                        labels: {
+                            enabled: false
+                        },
+                        TickLength: 0
+                    },
+                    plotOptions: {
+                        series: {
+                            pointWidth: 190
+                        },
+                        column: {
+                            stacking: 'percent'
+                        }
+                    },
+                    series: [{
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[0]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[1]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[2]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[3]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[4]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[5]]
+                    }]
+                });
+            }, 100);
         });
         /*
          $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
