@@ -5212,6 +5212,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     $scope.arel[0].PERC_COVER = 0;
                     $scope.arel[0].TOTAL_BLOC = 0;
                 }
+
                 $scope.$apply();
             });
         }
@@ -5230,6 +5231,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.emconfig = res.data;
             });
 
+          /*//over ride windclass for testing chart
+         // console.log(windclass[0]);
+         windclass[0]=10;
+         windclass[1]=25;
+         windclass[2]=65;
+*/
+        windclass[6]=(windclass.reduce(function(prev, cur) {
+            return prev - cur;
+        },100));
         $scope.$on('$viewContentLoaded', function () {
 
             $timeout(function () {
@@ -5243,7 +5253,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         text: null
                     },
                     exporting: {enabled: false},
-                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306'],
+                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306','white'],
                     xAxis: {
                         title: {
                             enabled: false
@@ -5294,7 +5304,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         showInLegend: false,
                         name: '',
                         data: [windclass[5]]
-                    }]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[6]]
+                    }
+                    ]
                 });
             }, 500);
         });
@@ -5365,12 +5380,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-        /*  //over ride windclass for testing chart
-         // console.log(windclass[0]);
-         windclass[0]=10;
-         windclass[1]=25;
-         windclass[2]=65;
-         */
+
 
         var smallmap = L.map('map').setView([45.526, -122.667], 1);
         L.esri.basemapLayer('Oceans').addTo(smallmap);
