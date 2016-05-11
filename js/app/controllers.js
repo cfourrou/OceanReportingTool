@@ -330,11 +330,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('MyCtrl2', ['$scope', '$timeout', function ($scope, $timeout) {
+    .controller('MyCtrl2', ['$scope', '$timeout','$http', function ($scope, $timeout,$http) {
         $scope.name = "controller 2";
+        $http.get('emconfig.json')
+            .then(function(res){
+                $scope.emconfig = res.data;
+            });
 
         $scope.$on('$viewContentLoaded', function () {
-            // Your document is ready, place your code here
+
             $timeout(function () {
                 windChart = Highcharts.chart('container', {
                     chart: {
@@ -399,8 +403,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         data: [windclass[5]]
                     }]
                 });
-            }, 100);
+            }, 500);
         });
+
         /*
          $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
          document.getElementById("windRSel").addEventListener("click", function () {
@@ -438,7 +443,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
                 document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
-                document.getElementById('AOItab2').style.display = 'block';
+                document.getElementById('AOItab2').style.display = 'inline-block';
                 smallmap.invalidateSize();
                 smallmap.fitBounds($scope.minibounds);
                 document.getElementById('slider_but0').style.visibility = "hidden";

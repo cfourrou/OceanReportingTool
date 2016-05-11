@@ -1,0 +1,28 @@
+<div class="infographic-box-small">
+    <div id="wrbox1">
+
+        <div id="slider_but2" class="sliderbutton">
+            <div ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[2]]"
+                 ng-click="opt_layer_button(2)" ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div id="boemline1">Wind Planning Areas</div>
+        <div class="swatch"><img src="img/Wind_Planning_Areas.svg"></div>
+        <div id="boemline2">
+            <span class="boemline2b">{{boem[0].TOTAL_CNT}}</span>
+            <span class="boemline2a">BOEM Wind Planning Area</span>
+        </div>
+        <div id="boemline2">
+            <span class="boemline2a">Covers</span>
+            <span class="boemline2b">{{boem[0].PERC_COVER.toFixed(0)}}</span>
+            <span class="boemline2a">%, including</span>
+            <span class="boemline2b">{{boem[0].TOTAL_BLOC}}</span>
+            <span class="boemline2a">OCS blocks</span>
+        </div>
+
+        <div id="boemline2">
+            <div class="boemline2a">{{boem[0].PROT_NUMBE}}:{{boem[0].INFO}}</div>
+            <div class="boemline2a"><a href={{boem[0].LINK1}}>{{boem[0].LINK1}}</a></div>
+            <div class="boemline2a"><a href={{boem[0].LINK2}}>{{boem[0].LINK2}}</a></div>
+        </div>
+    </div>
+</div>
