@@ -8,7 +8,7 @@
 angular.module('myApp.services', []).factory('_', function () {
         return window._; // assumes underscore has already been loaded on the page
     })
-    .service('AOI', function ($timeout) {
+    .service('AOI', function () {
         var AOI;
 
         AOI = {
@@ -22,6 +22,8 @@ angular.module('myApp.services', []).factory('_', function () {
             arel: [],
             wind: [],
             disp: [],
+            optLayer: [],
+            test: [],
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 this.layer = L.esri.featureLayer({ //AOI poly (7)
@@ -333,6 +335,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     windclass.length = 0;
                     this.disp.length = 0;
                     this.test.length = 0;
+                    this.hide();
                     //map.setView([33.51, -68.3], 6);
                 }
                 this.isLoaded = false;

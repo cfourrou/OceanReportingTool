@@ -587,6 +587,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.reset = function () { //unloads AOI but leaves slider pane on
             $scope.AOIoff();
             $scope.paneon();
+            AOI.unloadData();
             for (i = 0; i < len; i++) {
                 $scope.box[i].isActive = false;
             }
@@ -602,8 +603,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.AOIon();
             $scope.paneon();
             //console.log(AOI);
-            $scope.Cur_AOI = AOI;
-            $scope.AOI_ID = AOI_id;
+            //$scope.Cur_AOI = AOI;
+            //$scope.AOI_ID = AOI_id;
 
 
             //console.log($scope.AOI_ID);
