@@ -48,5 +48,14 @@ angular.module('myApp.directives', [])
             }
         }
     })
-;
+    .directive('renewableEnergy', function () {
+        return {
+            restrict: 'E',
+            scope: true,
+            templateUrl: 'partials/RenewableEnergyLeases.html',
+            controller: function ($scope, AOI) {
+                $scope.AOI = AOI;
+            }
+        }
+    });
 

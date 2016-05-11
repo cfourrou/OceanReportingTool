@@ -10,7 +10,7 @@
 
 <div style="padding:30px;" id="slide-right">
     <div style="width: 100%;height:5px">
-        <div id="AOIname">{{Cur_AOI.toUpperCase()}}</div>
+        <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
         <div id="shareIcons">
             <div id="shareIcon"><img src="img/PDF.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
@@ -26,7 +26,8 @@
             <div ng-include="'partials/WindResourcePotential.html'"></div>
 
 
-            <div ng-include="'partials/RenewableEnergyLeases.html'"></div>
+            <!--<div ng-include="'partials/RenewableEnergyLeases.html'"></div>-->
+            <renewable-energy></renewable-energy>
             <div ng-include="'partials/WindPlanningAreas.html'"></div>
             <!-- begin 3rd row of boxes -->
             <div ng-include="'partials/MarineMineralsLeases.html'"></div>

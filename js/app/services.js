@@ -59,6 +59,7 @@ angular.module('myApp.services', []).factory('_', function () {
             isVisible: false,
             loadData: function (name) {
                 var myThis = this;
+                myThis.zoomTo();
                 myThis.name = name;
                 myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
                     url: ortMapServer + ortLayerOptional[0].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
@@ -83,7 +84,7 @@ angular.module('myApp.services', []).factory('_', function () {
                         }
                     }
                 });
-
+                // is this really wind leases or all renewable energy leases?
                 myThis.windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
                     url: ortMapServer + ortLayerOptional[1].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
                     pane: 'optionalfeature2',
@@ -327,7 +328,9 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.removeLayer(this.oceanDisposalSites);
                     map.removeLayer(this.windPlanningLayer);
                     map.removeLayer(this.windLeaseLayer);
+                    this.windLeaseLayerIsVisible = false;
                     map.removeLayer(this.windrpLayer);
+                    this.windrpLayerIsVisible = false;
                     this.wind.length = 0;
                     this.boem.length = 0;
                     this.metadata.length = 0;
@@ -340,7 +343,27 @@ angular.module('myApp.services', []).factory('_', function () {
                 }
                 this.isLoaded = false;
             },
-            isLoaded: false
+            isLoaded: false,
+            windLeaseLayerIsVisible: false,
+            toggleWindLeaseLayer: function () {
+                if (!this.windLeaseLayerIsVisible){
+                    this.windLeaseLayer.addTo(map);
+                    this.windLeaseLayerIsVisible = true;
+                } else {
+                    map.removeLayer(this.windLeaseLayer);
+                    this.windLeaseLayerIsVisible = false;
+                }
+            },
+            windrpLayerIsVisible: false,
+            toggleWindrpLayer: function (){
+                if (!this.windrpLayerIsVisible){
+                    this.windrpLayer.addTo(map);
+                    this.windrpLayerIsVisible = true;
+                } else {
+                    map.removeLayer(this.windrpLayer);
+                    this.windrpLayerIsVisible = false;
+                }
+            }
         };
 
         return AOI;
