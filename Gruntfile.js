@@ -327,8 +327,7 @@ module.exports = function(grunt) {
                         if(res.statusCode !== 200){
                             grunt.fail.warn("Cannot download dependency", + dependency );
                             dependencyCount -= 1;
-                            if(dependencyCount <= 0) done();    
-                            
+                            if(dependencyCount <= 0) done();
                         }
                     })  
                    .pipe(fs.createWriteStream('./js/lib/'+fileName).on('finish',function(){
