@@ -458,7 +458,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
                 document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
-                document.getElementById('AOItab2').style.display = 'inline-block';
+               // document.getElementByClassName('AOItabClass2').style.display = 'inline-block';
+                var elems = document.getElementsByClassName('AOItabClass2');
+                for(var i = 0; i < elems.length; i++) {
+                    elems[i].style.display = 'inline-block';
+                }
                 smallmap.invalidateSize();
                 smallmap.fitBounds($scope.minibounds);
                 document.getElementById('slider_but0').style.visibility = "hidden";
@@ -471,7 +475,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 //.style.marginLeft='-25px';
                 document.getElementById("slide1").style.width = '50%';
                 //document.getElementById("slide1").style.position = 'relative';
-                document.getElementById('AOItab2').style.display = 'none';
+                //document.getElementByClassName('AOItabClass2').style.display = 'none';
+                var elems = document.getElementsByClassName('AOItabClass2');
+                for(var i = 0; i < elems.length; i++) {
+                    elems[i].style.display = 'none';
+                }
                 // document.getElementById('AOItab2').style.height='0px';
                 document.getElementById('slider_but0').style.visibility = "visible";
                 document.getElementById('slider_but1').style.visibility = "visible";

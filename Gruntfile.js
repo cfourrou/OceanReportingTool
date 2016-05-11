@@ -147,7 +147,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     expand: true,
-                    src: ['**/**.html','**/*.xml','**/*.php','data/*','!docs/*','!node_modules/**/*.*'],
+                    src: ['**/**.json','**/**.html','**/*.xml','**/*.php','data/*','!docs/*','!node_modules/**/*.*','!package.json'],
                     dest: 'dist/'
                 },
                 fonts: {

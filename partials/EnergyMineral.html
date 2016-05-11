@@ -23,13 +23,13 @@
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Energy and Minerals
             <hr width="50%" align="left" color="#F4F8FC">
+            <div id="AOItab2" class="AOItabClass2">
+                <div id="map" class="smallmapclass"></div>
+
+            </div>
             <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
                 <div class="zeroheightkludge" ng-include="emconf.filename"></div>
             </div>
-        </div>
-        <div id="AOItab2" class="AOItabClass2">
-            <div id="map" class="smallmapclass" ></div>
-
         </div>
 
 
