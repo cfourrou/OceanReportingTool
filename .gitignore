@@ -46,6 +46,7 @@ Thumbs.db
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.idea/watcherTasks.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
