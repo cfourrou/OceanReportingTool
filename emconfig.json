@@ -1,0 +1,7 @@
+[
+  { "filename":"partials/WindPlanningAreas.html", "priority":4 },
+  { "filename":"partials/WindResourcePotential.html", "priority":3},
+  { "filename":"partials/RenewableEnergyLeases.html", "priority":1},
+  { "filename":"partials/MarineMineralsLeases.html", "priority":2 },
+  { "filename":"partials/OceanDisposalSites.html", "priority":5 }
+]
