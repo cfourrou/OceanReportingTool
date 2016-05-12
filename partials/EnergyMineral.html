@@ -23,25 +23,34 @@
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Energy and Minerals
             <hr width="50%" align="left" color="#F4F8FC">
-            <div ng-include="'partials/WindResourcePotential.html'"></div>
+            <!--div id="AOItab2" class="AOItabClass2">
+                <div id="map" class="smallmapclass"></div>
+            </div-->
+
+            <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
+                <div class="zeroheightkludge" ng-include="emconf.filename"></div>
+            </div>
+
+            <!--
+              <div ng-include="'partials/WindResourcePotential.html'"></div>
 
 
-            <!--<div ng-include="'partials/RenewableEnergyLeases.html'"></div>-->
-            <renewable-energy></renewable-energy>
-            <div ng-include="'partials/WindPlanningAreas.html'"></div>
-            <!-- begin 3rd row of boxes -->
-            <div ng-include="'partials/MarineMineralsLeases.html'"></div>
-            <div ng-include="'partials/OceanDisposalSites.html'"></div>
+
+              <renewable-energy></renewable-energy>
+              <div ng-include="'partials/WindPlanningAreas.html'"></div>
+
+              <div ng-include="'partials/MarineMineralsLeases.html'"></div>
+              <div ng-include="'partials/OceanDisposalSites.html'"></div>
 
 
 
-            <!-- end 3rd row of boxes -->
 
 
-        </div>
-        <div id="AOItab2" class="AOItabClass">
-            <div id="map" class="smallmapclass"></div>
 
+          </div>
+          <div id="AOItab2" class="AOItabClass">
+              <div id="map" class="smallmapclass"></div>
+          -->
         </div>
 
 
@@ -49,3 +58,4 @@
 </div>
 
 <br>
+

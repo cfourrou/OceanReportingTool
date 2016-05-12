@@ -35,6 +35,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     precision: 2
                 }).addTo(map);
                 this.isVisible = true;
+                console.log("display: this.ID = " +AOI_ID);
             },
             hide: function () {
                 if (this.isVisible) {
@@ -59,6 +60,7 @@ angular.module('myApp.services', []).factory('_', function () {
             isVisible: false,
             loadData: function (name) {
                 var myThis = this;
+                console.log("loadData: mythis.ID = " +myThis.ID);
                 myThis.zoomTo();
                 myThis.name = name;
                 myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
@@ -354,6 +356,27 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.windLeaseLayerIsVisible = false;
                 }
             },
+            windPlanningLayerIsVisible: false,
+            toggleWindPlanningLayer: function () {
+                if (!this.windPlanningLayerIsVisible){
+                    this.windPlanningLayer.addTo(map);
+                    this.windPlanningLayerIsVisible = true;
+                } else {
+                    map.removeLayer(this.windPlanningLayer);
+                    this.windPlanningLayerIsVisible = false;
+                }
+            },
+            oceanDisposalSitesIsVisible: false,
+            toggleOceanDisposalSites: function () {
+                if (!this.oceanDisposalSitesIsVisible){
+                    this.oceanDisposalSites.addTo(map);
+                    this.oceanDisposalSitesIsVisible = true;
+                } else {
+                    map.removeLayer(this.oceanDisposalSites);
+                    this.oceanDisposalSitesIsVisible = false;
+                }
+            },
+
             windrpLayerIsVisible: false,
             toggleWindrpLayer: function (){
                 if (!this.windrpLayerIsVisible){

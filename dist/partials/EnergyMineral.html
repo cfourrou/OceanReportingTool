@@ -10,7 +10,7 @@
 
 <div style="padding:30px;" id="slide-right">
     <div style="width: 100%;height:5px">
-        <div id="AOIname">{{Cur_AOI.toUpperCase()}}</div>
+        <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
         <div id="shareIcons">
             <div id="shareIcon"><img src="img/PDF.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
@@ -23,13 +23,34 @@
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Energy and Minerals
             <hr width="50%" align="left" color="#F4F8FC">
-            <div id="AOItab2" class="AOItabClass2">
+            <!--div id="AOItab2" class="AOItabClass2">
                 <div id="map" class="smallmapclass"></div>
+            </div-->
 
-            </div>
             <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
                 <div class="zeroheightkludge" ng-include="emconf.filename"></div>
             </div>
+
+            <!--
+              <div ng-include="'partials/WindResourcePotential.html'"></div>
+
+
+
+              <renewable-energy></renewable-energy>
+              <div ng-include="'partials/WindPlanningAreas.html'"></div>
+
+              <div ng-include="'partials/MarineMineralsLeases.html'"></div>
+              <div ng-include="'partials/OceanDisposalSites.html'"></div>
+
+
+
+
+
+
+          </div>
+          <div id="AOItab2" class="AOItabClass">
+              <div id="map" class="smallmapclass"></div>
+          -->
         </div>
 
 
@@ -37,3 +58,4 @@
 </div>
 
 <br>
+

@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?b4e1854a03bd1fe7">
+    <link rel="stylesheet" href="css/ort.min.css?0e9db76030c00296">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -127,9 +127,9 @@
                     <div class="drawbutton" ng-click="off()">DRAW AREA</div>
 
                 </div>
-                <div ng-show="checkifAOI" class="nav_menu_right">
+                <div ng-show="AOI.isLoaded" class="nav_menu_right">
 
-                    <a class="rightbuttonItalics" ui-sref="CEview" href="">{{Cur_AOI.toUpperCase()}}</a>
+                    <a class="rightbuttonItalics" ui-sref="CEview" href="">{{AOI.name.toUpperCase()}}</a>
                     <a class="rightbutton" ui-sref="EMview" href="">ENERGY & MINERALS</a>
                     <a class="rightbutton" ui-sref="view3" href="">NATURAL RESOURCES & CONSERVATION</a>
                     <a class="rightbutton" ui-sref="view4" href="">TRANSPORTATION & INFRASTRUCTURE</a>
@@ -164,7 +164,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?ee5eb0b4bfe9836a"></script>
+<script src="js/ort.js?13971ef18e78a527"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

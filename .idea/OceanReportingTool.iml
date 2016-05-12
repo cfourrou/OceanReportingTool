@@ -5,5 +5,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Ocean Reporting Tool node_modules" level="project" />
+    <orderEntry type="library" name="OceanReportingTool node_modules" level="project" />
   </component>
 </module>
