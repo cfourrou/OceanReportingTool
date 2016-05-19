@@ -29,8 +29,28 @@ ortLayerOptional[3]=
 };
 ortLayerOptional[4]=
 {
-    num:'22',
+    num:'20',
     name:'Marine Minerals Leases'
+};
+ortLayerOptional[5]=
+{
+    num:null,
+    name:'Sediment Resources'
+};
+ortLayerOptional[6]=
+{
+    num:'3',
+    name:'Hydrokinetic Leases'
+};
+ortLayerOptional[7]=
+{
+    num:null,
+    name:'Surficial Sediment Classification'
+};
+ortLayerOptional[8]=
+{
+    num:19,
+    name:'Wave Power'
 };
 
 var map = L.map('bigmap',{
@@ -42,7 +62,7 @@ var map = L.map('bigmap',{
 
 var toggle = false;
 var windclass = [];
-var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites;
+//var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites,marineMineralsLeases,HydrokineticLeases;
 var toggleFull = false;
 var cLayer,mouseLayer;
 var menuitems= [];
@@ -79,14 +99,12 @@ L.esri.basemapLayer('OceansLabels').addTo(map);
 L.control.zoom({
     position:'bottomleft'
 }).addTo(map);
-map.createPane('optionalfeature1');
-map.createPane('optionalfeature2');
-map.createPane('optionalfeature3');
-map.createPane('optionalfeature4');
-map.createPane('AOIfeature');
-
+console.log("number of optional layers " +ortLayerOptional.length);
+for (var i = 0; i < ortLayerOptional.length; i++) {
+    map.createPane('optionalfeature'+i);
+};
 map.setView([33.51, -78.3], 6);
-
+map.createPane('AOIfeature');
 
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
@@ -113,9 +131,9 @@ angular.module('myApp', [
               templateUrl:'partials/splash.html',
           })
           .state('CEview', {
-           // url: '/view1',
-            templateUrl: 'partials/CE.html',
-            controller: 'AOICtrl'
+              //url: '/AOI?detail',
+              templateUrl: 'partials/CE.html',
+              controller: 'AOICtrl'
           })
           .state('view3', {
            // url: '/view3',
@@ -143,13 +161,13 @@ angular.module('myApp', [
               // controller: 'MyCtrl5'
           })
           .state('splash',{
-              //url:'/help',
+              url:'/splash',
               templateUrl:'partials/splash.html',
              // controller: 'splashCtrl'
           })
-          .state('search',{
-              //   url:'/view5',
-              templateUrl:'partials/search.html',
+          .state('menu',{
+              url:'/menu',
+              templateUrl:'partials/menu.html',
               // controller: 'splashCtrl'
           })
       ;

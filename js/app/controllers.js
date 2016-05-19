@@ -24,37 +24,38 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         //-----------------------------
 
-        //if (!cLayer) {
-        //        cLayer = L.esri.featureLayer({ //AOI poly (7)
-        //            url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
-        //            //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
-        //            where: "AOI_ID =" + $scope.AOI_ID + "",
-        //            color: '#EB660C', weight: 3, fillOpacity: .3,
-        //            pane: 'AOIfeature',
-        //            simplifyFactor: 5.0,
-        //            precision: 2,
-        //        }).addTo(map);
-        //        //console.log(" layer loaded " + $scope.AOI_ID);
-        //
-        //        cLayer.on("load", function (evt) {
-        //            // create a new empty Leaflet bounds object
-        //
-        //var mbounds = L.latLngBounds([]);
-        //            // loop through the features returned by the server
-        //            cLayer.eachFeature(function (layer) {
-        //                // get the bounds of an individual feature
-        //                var layerBounds = layer.getBounds();
-        //                // extend the bounds of the collection to fit the bounds of the new feature
-        //                mbounds.extend(layerBounds);
-        //            });
-        //            map.fitBounds(mbounds);
-        //
-        //            //console.log(mbounds);
-        //            // unwire the event listener so that it only fires once when the page is loaded
-        //            cLayer.off('load');
-        //            $scope.mout($scope.AOI_ID);
-        //        });
+        //if (! $scope.AOI.layer) {
+            //cLayer = L.esri.featureLayer({ //AOI poly (7)
+            //    url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+            //    //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
+            //    where: "AOI_ID =" + $scope.AOI.ID + "",
+            //    color: '#EB660C', weight: 3, fillOpacity: .3,
+            //    pane: 'AOIfeature',
+            //
+            //    //            simplifyFactor: 5.0,
+            //    //            precision: 2,
+            //}).addTo(map);
+            //console.log(" cLayer loaded " + $scope.AOI.ID);
 
+            AOI.layer.on("load", function (evt) {
+                // create a new empty Leaflet bounds object
+
+                var mbounds = L.latLngBounds([]);
+                // loop through the features returned by the server
+                AOI.layer.eachFeature(function (layer) {
+                    // get the bounds of an individual feature
+                    var layerBounds = layer.getBounds();
+                    // extend the bounds of the collection to fit the bounds of the new feature
+                    mbounds.extend(layerBounds);
+                });
+                map.fitBounds(mbounds);
+
+                //console.log(mbounds);
+                // unwire the event listener so that it only fires once when the page is loaded
+                AOI.layer.off('load');
+                $scope.mout($scope.AOI.ID);
+            });
+        //};
 
         //-----------------------------------
 
@@ -346,9 +347,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
          windclass[2]=65;
          */
         console.log("windclass " + windclass);
-        windclass[6] = (windclass.reduce(function (prev, cur) {
-            return prev.toFixed(2) - cur.toFixed(2);
-        }, 100));
+ //      windclass[6] = (windclass.reduce(function (prev, cur) {
+ //           return prev.toFixed(2) - cur.toFixed(2);
+ //       }, 100));
         console.log("windmill % unknown = " + windclass[6]);
         $scope.$on('$viewContentLoaded', function () {
             // Your document is ready, place your code here
@@ -363,7 +364,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         text: null
                     },
                     exporting: {enabled: false},
-                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', 'white'],
+                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
                     xAxis: {
                         title: {
                             enabled: false
@@ -440,11 +441,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     color: '#EB660C',
                     weight: 3,
                     fillOpacity: .3,
-                    simplifyFactor: 5.0,
-                    precision: 3
+                    //simplifyFactor: 5.0,
+                    //precision: 3
                     //,            pane: 'miniAOIfeature'
                 }).addTo(smallmap);
-
+                console.log(" minicLayer loaded " + $scope.AOI.ID);
                 minicLayer.on("load", function (evt) {
                     // create a new empty Leaflet bounds object
 
@@ -468,7 +469,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 });
                 //smallmap.invalidateSize();
 
-            }, 500);
+            }, 1000);
         });
         /*
          $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
@@ -562,13 +563,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.AOI = AOI;
 
         $scope.box = [];
-        $scope.menuitems = [];
-        $scope.optLayer = [];
-        var len = 2000;
-        for (var i = 0; i < len; i++) {
-            $scope.box.push({
-                myid: i,
-                isActive: false,
+//        $scope.menuitems = [];
+//        $scope.optLayer = [];
+       var len = 2000;
+       for (var i = 0; i < len; i++) {
+           $scope.box.push({
+               myid: i,
+               isActive: false,
                 level: 0,
                 future: true
             });
@@ -595,34 +596,34 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             //console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
         };
 
-        $scope.opt_layer_button = function (id) {
-            $scope.optLayer[id] = !$scope.optLayer[id];
-            //console.log("button " + id);
-            switch (id) {
-                case 0:
-                    if ($scope.optLayer[0]) {
-                        windrpLayer.addTo(map);
-                    } else map.removeLayer(windrpLayer);
-                    break;
-                case 1:
-                    if ($scope.optLayer[1]) {
-                        windLeaseLayer.addTo(map);
-                    } else map.removeLayer(windLeaseLayer);
-                    break;
-                case 2:
-                    if ($scope.optLayer[2]) {
-                        windPlanningLayer.addTo(map);
-                    } else map.removeLayer(windPlanningLayer);
-                    break;
-                case 3:
-                    if ($scope.optLayer[3]) {
-                        oceanDisposalSites.addTo(map);
-                    } else map.removeLayer(oceanDisposalSites);
-                    break;
-            }
-
-
-        };
+        //$scope.opt_layer_button = function (id) {
+        //    $scope.optLayer[id] = !$scope.optLayer[id];
+        //    //console.log("button " + id);
+        //    switch (id) {
+        //        case 0:
+        //            if ($scope.optLayer[0]) {
+        //                windrpLayer.addTo(map);
+        //            } else map.removeLayer(windrpLayer);
+        //            break;
+        //        case 1:
+        //            if ($scope.optLayer[1]) {
+        //                windLeaseLayer.addTo(map);
+        //            } else map.removeLayer(windLeaseLayer);
+        //            break;
+        //        case 2:
+        //            if ($scope.optLayer[2]) {
+        //                windPlanningLayer.addTo(map);
+        //            } else map.removeLayer(windPlanningLayer);
+        //            break;
+        //        case 3:
+        //            if ($scope.optLayer[3]) {
+        //                oceanDisposalSites.addTo(map);
+        //            } else map.removeLayer(oceanDisposalSites);
+        //            break;
+        //    }
+        //
+        //
+        //};
 
 
         $scope.reset = function () { //unloads AOI but leaves slider pane on
@@ -660,9 +661,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     where: "AOI_ID =" + AOI_id + "",
                     color: '#EB660C', weight: 3, fillOpacity: .3,
                     //pane: 'AOIfeature',
-                    simplifyFactor: 5.0,
-                    precision: 2,
+                    simplifyFactor: 2.0,
+                   // precision: 2
                 }).addTo(map);
+                console.log(" mouseLayer loaded " + AOI_id);
             }
             ;
 
@@ -674,8 +676,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             if (mouseLayer) {
                 map.removeLayer(mouseLayer);
                 mouseLayer = null;
+                console.log(" mouseLayer UNloaded " + AOI_id);
             }
-
+            //console.log("mouselayer = " + mouseLayer )
             // console.log(AOI_id);
 
         };
@@ -702,16 +705,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         //$scope.Cur_AOI = 'Grand Strand';
 
-        $scope.wind = [];
-        $scope.boem = [];
-        $scope.arel = [];
-        $scope.metadata = [];
-        $scope.disp = [];
-        $scope.test = [];
+       // $scope.wind = [];
+       // $scope.boem = [];
+       // $scope.arel = [];
+       // $scope.metadata = [];
+       // $scope.disp = [];
+       // $scope.mml = [];
+       // $scope.hydrok = [];
+       // $scope.test = [];
 
         $scope.aoismenu = [];
         $scope.aoistates = [];
-        $scope.aoistate = [];
+//        $scope.aoistate = [];
 
         var query = L.esri.query({
             url: ortMapServer + ortLayerAOI

@@ -1,21 +1,20 @@
 <div class="infographic-box-small">
     <div id="wrbox1">
-
         <div id="slider_but4" class="sliderbutton">
-            <div ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[4]]"
-                 ng-click="opt_layer_button(4)" ng-include="'img/switch_off.svg'"></div>
+            <div ng-class="AOI.marineMineralsLeasesIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.toggleMarineMineralsLeases()" ng-include="'img/switch_off.svg'"></div>
+
         </div>
         <div id="boemline1">Marine Minerals Leases</div>
         <div class="swatch"><img src="img/MarineMineralLeases.svg"></div>
-        <div ng-repeat="count in disp | filter:query as filtered">
-        </div>
-        <div ng-repeat="dispx in disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE} as filtered">
-            </div>
+
+
+
+
             <div id="boemline2">
-                <span class="boemline2b">{{filtered.length}}</span>
-                <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
+
+                <span class="boemline2b">{{AOI.mml[0].TOTAL_CNT}}</span><span class="boemline2a"> Completed Leases</span>
             </div>
-        </div>
+
     </div>
 </div>

@@ -6,8 +6,8 @@
         </div>
 
         <div id="boemline1">Ocean Disposal Sites</div>
-        <div class="swatch floatitleft"><img src="img/OceanDisposalGraphic.svg"></div>
-        <div id="boemline2" style="height: 70px">
+        <div class="swatch floatitleft">
+        <div id="boemline2" >
             <span class="boemline2a floatitleft">Within 10 miles</span>
             <!-- iButton start-->
             <div>
@@ -39,13 +39,12 @@
         <div ng-repeat="count in AOI.disp | filter:query as filtered">
         </div>
         <div ng-repeat="dispx in AOI.disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE} as filtered">
+            <div ng-repeat="count in AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
             </div>
             <div id="boemline2">
                 <span class="boemline2b">{{filtered.length}}</span>
                 <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
             </div>
         </div>
-
     </div>
 </div>

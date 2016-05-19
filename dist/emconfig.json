@@ -4,5 +4,9 @@
   { "filename":"partials/smallmap.html", "priority":2},
   { "filename":"partials/RenewableEnergyLeases.html", "priority":4},
   { "filename":"partials/MarineMineralsLeases.html", "priority":6 },
+  { "filename":"partials/sedimentResources.html", "priority":7 },
+  { "filename":"partials/hydrokineticLeases.html", "priority":8 },
+  { "filename":"partials/surficialSediment.html", "priority":9 },
+  { "filename":"partials/wavePower.html", "priority":10 },
   { "filename":"partials/OceanDisposalSites.html", "priority":5 }
 ]

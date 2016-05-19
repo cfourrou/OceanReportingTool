@@ -1,0 +1,45 @@
+<div class="infographic-box-small">
+    <div id="wrbox1">
+         <div id="boemline1">Sediment Resources</div>
+        <div class="swatch floatitleft"><!--img src="img/MarineMineralLeases.svg"></div-->
+        <div id="boemline2" style="height: 70px">
+        <span class="boemline2a floatitleft">Click on the icon for more information</span>
+        <!-- iButton start-->
+        <div>
+            <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+            <info-directive class="infobutton mainbutton" modal-template="modal5.html" message="message"
+                            modal-img="img/info.svg"></info-directive>
+
+            <script type="text/ng-template" id="modal5.html">
+                <div id="custom-modal" class="modal">
+                    <div id="overlay">
+                        <a href="" class="modal-close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        no text yet<br>
+
+
+                    </div>
+                    <div id="fade"></div>
+                </div>
+            </script>
+
+        </div>
+        <!-- iButton end-->
+
+        </div>
+        <div ng-repeat="count in disp | filter:query as filtered">
+        </div>
+        <div ng-repeat="dispx in disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+            <div ng-repeat="count in disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+            </div>
+            <div id="boemline2">
+                <span class="boemline2b">{{filtered.length}}</span>
+                <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
+            </div>
+        </div>
+    </div>
+</div>

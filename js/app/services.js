@@ -22,31 +22,39 @@ angular.module('myApp.services', []).factory('_', function () {
             arel: [],
             wind: [],
             disp: [],
+            mml: [],
+            hydrok: [],
             optLayer: [],
             test: [],
+            surfsed: [],
+            wavepwr: [],
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 this.layer = L.esri.featureLayer({ //AOI poly (7)
                     url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
-                    color: '#EB660C', weight: 3, fillOpacity:.3,
+                    color: '#EB660C', weight: 3, fillOpacity: .3,
                     where: "AOI_ID =" + this.ID + "",
-                    pane: 'AOIfeature',
-                    simplifyFactor: 5.0,
-                    precision: 2
+                    pane: 'AOIfeature'
+                    //simplifyFactor: 5.0,
+                    //precision: 2
                 }).addTo(map);
+                console.log(" this.layer loaded " + AOI_ID);
                 this.isVisible = true;
-                console.log("display: this.ID = " +AOI_ID);
+                //console.log("display: this.ID = " +AOI_ID);
             },
             hide: function () {
                 if (this.isVisible) {
                     //map.removeLayer(this.layer);
+                    console.log("hide this.layer  =" + this.ID)
                     map.removeLayer(this.layer);
+                    //map.removeLayer(cLayer);
                 }
                 // probably move this somewhere better.
                 map.setView([33.51, -78.3], 6);
                 this.isVisible = false;
             },
             zoomTo: function () {
+
                 var mbounds = L.latLngBounds([]);
                 // loop through the features returned by the server
                 this.layer.eachFeature(function (layer) {
@@ -56,16 +64,22 @@ angular.module('myApp.services', []).factory('_', function () {
                     mbounds.extend(layerBounds);
                 });
                 map.fitBounds(mbounds);
+
+
             },
             isVisible: false,
-            loadData: function (name) {
+            loadData: function (AOI_ID, name) {
+                // map.removeLayer(cLayer);
+                this.display(AOI_ID);
+                //this.isVisible = true;
                 var myThis = this;
-                console.log("loadData: mythis.ID = " +myThis.ID);
-                myThis.zoomTo();
+                console.log("loadData: mythis.ID = " + myThis.ID);
+                myThis
+                //myThis.zoomTo();
                 myThis.name = name;
                 myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
                     url: ortMapServer + ortLayerOptional[0].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
-                    pane: 'optionalfeature1',
+                    pane: 'optionalfeature0',
                     //simplifyFactor: 5.0,
                     //precision: 3,
                     style: function (feature) {
@@ -89,7 +103,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 // is this really wind leases or all renewable energy leases?
                 myThis.windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
                     url: ortMapServer + ortLayerOptional[1].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
-                    pane: 'optionalfeature2',
+                    pane: 'optionalfeature1',
                     style: function (feature) {
 
                         return {color: 'white', weight: 1, fillOpacity: .5};
@@ -97,17 +111,70 @@ angular.module('myApp.services', []).factory('_', function () {
                 });
                 myThis.windPlanningLayer = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
                     url: ortMapServer + ortLayerOptional[2].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
-                    pane: 'optionalfeature3',
+                    pane: 'optionalfeature2',
                     style: function (feature) {
 
                         return {color: 'Black', weight: 1, fillOpacity: .5};
                     }
                 });
-                myThis.oceanDisposalSites = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
+                myThis.oceanDisposalSites = L.esri.featureLayer({
                     url: ortMapServer + ortLayerOptional[3].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    pane: 'optionalfeature3',
+                    style: function (feature) {
+                        return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
+                    }
+                });
+                myThis.marineMineralsLeases = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[4].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
                     pane: 'optionalfeature4',
                     style: function (feature) {
-                        return {color: 'Black', weight: 1, fillOpacity: .5};
+                        return {color: '#7300D9', weight: 4, fillOpacity: 0};
+                    }
+                });
+                //there is no 5 yet
+
+                myThis.HydrokineticLeases = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[6].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    pane: 'optionalfeature6',
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: L.icon({
+                                iconUrl: 'img/HydrokineticLeasesGraphic.svg',
+                                iconSize: [32, 37],
+                                iconAnchor: [16, 37],
+                                popupAnchor: [0, -28]
+                            }),
+                        });
+                    }
+                });
+                //there is no 7 yet
+                myThis.wavePower = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[8].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    pane: 'optionalfeature8',
+                    style: function (feature) {
+                        if (feature.properties.ann_wef > 40) {
+                            return {color: '#B0B497', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 30.0) {
+                            return {color: '#B6BC9E', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 20.0) {
+                            return {color: '#BBC1A4', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 15.0) {
+                            return {color: '#C0C6A8', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 10.0) {
+                            return {color: '#C9D0B1', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 8.0) {
+                            return {color: '#D0D8B9', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 6) {
+                            return {color: '#D5DDC0', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 4.0) {
+                            return {color: '#DEE7C9', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef > 2.0) {
+                            return {color: '#E4EFD2', weight: 1, fillOpacity: .8};
+                        } else if (feature.properties.ann_wef < 2.01) {
+                            return {color: '#EBF6D8', weight: 1, fillOpacity: .8};
+                        } else {
+                            return {color: 'white', weight: 1, fillOpacity: .8};
+                        }
                     }
                 });
 
@@ -127,10 +194,35 @@ angular.module('myApp.services', []).factory('_', function () {
                     var bc = 0;
                     var bd = 0;
                     var be = 0;
+                    var bf = 0;
+                    var bg = 0;
+                    var bh = 0;
+                    var bi = 0;
 
                     for (var i = 0, j = featureCollection.features.length; i < j; i++) {
 
                         switch (featureCollection.features[i].properties.DATASET_NM) {
+                            case "AOI_input":
+                                myThis.wavepwr[bi] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    AVG_WAVE_POWER:(featureCollection.features[i].properties.AVG_WAVE_POWER|| 0),
+                                    PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
+                                };
+
+                                if ( (featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bi++;
+                                break;
                             case "OceanDisposalSites":
                                 myThis.disp[be] = {
                                     TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
@@ -146,10 +238,77 @@ angular.module('myApp.services', []).factory('_', function () {
                                         METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
                                     };
                                     k++;
-                                };
+                                }
+                                ;
 
                                 be++;
                                 break;
+                            case "MarineHydrokineticProjects":
+                                if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
+                                    myThis.hydrok[bg] = {
+                                        TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                        PRIMARY_USE: (featureCollection.features[i].properties.energyType ) + ' projects'
+                                    };
+                                }
+                                if ((bg === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+                                //console.log("hydrok "+myThis.hydrok);
+                                bg++;
+
+                                break;
+                            case "ecstdb2014":
+                                if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
+                                    myThis.surfsed[bh] = {
+                                        TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                        PRIMARY_USE: ((featureCollection.features[i].properties.CLASSIFICA === ' ') ? 'Unknown' : featureCollection.features[i].properties.CLASSIFICA )
+                                    };
+                                }
+                                if ((bh === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bh++;
+
+                                break;
+
+                            case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
+                                myThis.mml[bf] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0)
+                                    //PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
+                                };
+
+                                if ((bf === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bf++;
+                                break;
+
                             case "TribalLands":
                                 myThis.test[bd] = {
                                     Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
@@ -281,7 +440,12 @@ angular.module('myApp.services', []).factory('_', function () {
                                 break;
                         }
                     }
+                    console.log(myThis.surfsed);
+                    console.log(bh);
 
+                    windclass[6] = (windclass.reduce(function (prev, cur) {
+                        return prev.toFixed(2) - cur.toFixed(2);
+                    }, 100));
                     if (myThis.boem[0] == null) {
                         myThis.boem[0] = {
                             INFO: "NA",
@@ -324,22 +488,37 @@ angular.module('myApp.services', []).factory('_', function () {
                     }
                 });
                 myThis.isLoaded = true;
+
             },
             unloadData: function () {
                 if (this.isLoaded) {
                     map.removeLayer(this.oceanDisposalSites);
+                    map.removeLayer(this.HydrokineticLeases);
                     map.removeLayer(this.windPlanningLayer);
                     map.removeLayer(this.windLeaseLayer);
-                    this.windLeaseLayerIsVisible = false;
                     map.removeLayer(this.windrpLayer);
+                    map.removeLayer(this.marineMineralsLeases);
+                    map.removeLayer(this.wavePower);
+                    //map.removeLayer(cLayer);
+                    this.windLeaseLayerIsVisible = false;
                     this.windrpLayerIsVisible = false;
+                    this.windPlanningLayerIsVisible = false;
+                    this.oceanDisposalSitesIsVisible = false;
+                    this.marineMineralsLeases = false;
+                    this.HydrokineticLeasesIsVisible = false;
+                    this.wavePowerIsVisable = false;
                     this.wind.length = 0;
                     this.boem.length = 0;
                     this.metadata.length = 0;
                     this.optLayer.length = 0;
                     windclass.length = 0;
                     this.disp.length = 0;
+                    this.mml.length = 0;
+                    this.hydrok.length = 0;
                     this.test.length = 0;
+                    this.surfsed.length = 0;
+                    this.wavepwr.length = 0;
+
                     this.hide();
                     //map.setView([33.51, -68.3], 6);
                 }
@@ -348,7 +527,7 @@ angular.module('myApp.services', []).factory('_', function () {
             isLoaded: false,
             windLeaseLayerIsVisible: false,
             toggleWindLeaseLayer: function () {
-                if (!this.windLeaseLayerIsVisible){
+                if (!this.windLeaseLayerIsVisible) {
                     this.windLeaseLayer.addTo(map);
                     this.windLeaseLayerIsVisible = true;
                 } else {
@@ -358,7 +537,7 @@ angular.module('myApp.services', []).factory('_', function () {
             },
             windPlanningLayerIsVisible: false,
             toggleWindPlanningLayer: function () {
-                if (!this.windPlanningLayerIsVisible){
+                if (!this.windPlanningLayerIsVisible) {
                     this.windPlanningLayer.addTo(map);
                     this.windPlanningLayerIsVisible = true;
                 } else {
@@ -368,7 +547,7 @@ angular.module('myApp.services', []).factory('_', function () {
             },
             oceanDisposalSitesIsVisible: false,
             toggleOceanDisposalSites: function () {
-                if (!this.oceanDisposalSitesIsVisible){
+                if (!this.oceanDisposalSitesIsVisible) {
                     this.oceanDisposalSites.addTo(map);
                     this.oceanDisposalSitesIsVisible = true;
                 } else {
@@ -376,10 +555,41 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.oceanDisposalSitesIsVisible = false;
                 }
             },
+            HydrokineticLeasesIsVisible: false,
+            toggleHydrokineticLeases: function () {
+                if (!this.HydrokineticLeasesIsVisible) {
+                    this.HydrokineticLeases.addTo(map);
+                    this.HydrokineticLeasesIsVisible = true;
+                } else {
+                    map.removeLayer(this.HydrokineticLeases);
+                    this.HydrokineticLeasesIsVisible = false;
+                }
+            },
+
+            marineMineralsLeasesIsVisable: false,
+            toggleMarineMineralsLeases: function () {
+                if (!this.marineMineralsLeasesIsVisable) {
+                    this.marineMineralsLeases.addTo(map);
+                    this.marineMineralsLeasesIsVisable = true;
+                } else {
+                    map.removeLayer(this.marineMineralsLeases);
+                    this.marineMineralsLeasesIsVisable = false;
+                }
+            },
+            wavePowerIsVisable: false,
+            togglewavePower: function () {
+                if (!this.wavePowerIsVisable) {
+                    this.wavePower.addTo(map);
+                    this.wavePowerIsVisable = true;
+                } else {
+                    map.removeLayer(this.wavePower);
+                    this.wavePowerIsVisable = false;
+                }
+            },
 
             windrpLayerIsVisible: false,
-            toggleWindrpLayer: function (){
-                if (!this.windrpLayerIsVisible){
+            toggleWindrpLayer: function () {
+                if (!this.windrpLayerIsVisible) {
                     this.windrpLayer.addTo(map);
                     this.windrpLayerIsVisible = true;
                 } else {
