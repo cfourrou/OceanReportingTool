@@ -4907,6 +4907,11 @@ angular.module('myApp.services', []).factory('_', function () {
             test: [],
             surfsed: [],
             wavepwr: [],
+            tidalpwr:[],
+            currentpwr:[],
+            beachNur:[],
+            OGPlanA:[],
+
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 this.layer = L.esri.featureLayer({ //AOI poly (7)
@@ -4917,14 +4922,14 @@ angular.module('myApp.services', []).factory('_', function () {
                     //simplifyFactor: 5.0,
                     //precision: 2
                 }).addTo(map);
-                console.log(" this.layer loaded " + AOI_ID);
+                //console.log(" this.layer loaded " + AOI_ID);
                 this.isVisible = true;
                 //console.log("display: this.ID = " +AOI_ID);
             },
             hide: function () {
                 if (this.isVisible) {
                     //map.removeLayer(this.layer);
-                    console.log("hide this.layer  =" + this.ID)
+                    //console.log("hide this.layer  =" + this.ID)
                     map.removeLayer(this.layer);
                     //map.removeLayer(cLayer);
                 }
@@ -4952,7 +4957,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 this.display(AOI_ID);
                 //this.isVisible = true;
                 var myThis = this;
-                console.log("loadData: mythis.ID = " + myThis.ID);
+                //console.log("loadData: mythis.ID = " + myThis.ID);
                 myThis
                 //myThis.zoomTo();
                 myThis.name = name;
@@ -5057,7 +5062,26 @@ angular.module('myApp.services', []).factory('_', function () {
                     }
                 });
 
+                myThis.tidalPower = L.esri.dynamicMapLayer({
+                    url: ortMapServer,
+                    pane: 'optionalfeature9',
+                    layers:[ortLayerOptional[9].num],
+                    opacity:.8,
+                });
+                myThis.currentPower = L.esri.dynamicMapLayer({
+                    url: ortMapServer,
+                    pane: 'optionalfeature10',
+                    layers:[ortLayerOptional[10].num],
+                    opacity:.8,
+                });
 
+                myThis.beachNourish = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[11].num,
+                    pane: 'optionalfeature11',
+                    style: function (feature) {
+                        return {color: '#8B572A', weight: 4, fillOpacity: 0};
+                    }
+                });
                 // var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
 
                 var query = L.esri.query({
@@ -5077,15 +5101,63 @@ angular.module('myApp.services', []).factory('_', function () {
                     var bg = 0;
                     var bh = 0;
                     var bi = 0;
+                    var bj = 0;
+                    var bk = 0;
+                    var bl = 0;
+                    var bm = 0;
 
                     for (var i = 0, j = featureCollection.features.length; i < j; i++) {
 
                         switch (featureCollection.features[i].properties.DATASET_NM) {
-                            case "AOI_input":
-                                myThis.wavepwr[bi] = {
+                            case "OilandGasPlanningAreas":
+                                myThis.OGPlanA[bm] = {
                                     TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                    AVG_WAVE_POWER:(featureCollection.features[i].properties.AVG_WAVE_POWER|| 0),
-                                    PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
+                                    Region:(featureCollection.features[i].properties.Region|| 'unknown')
+
+                                };
+
+                                if ( (bm === 0) &&(featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bm++;
+                                break;
+                            case "SC_BeachProjects":
+                                myThis.beachNur[bl] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    BEACH_AREA:(featureCollection.features[i].properties.BEACH_AREA|| 'unknown'),
+                                    YEAR: (featureCollection.features[i].properties.YEAR || '0'),
+                                    SAND_VOL_C: (featureCollection.features[i].properties.SAND_VOL_C || '0'),
+                                    Dist_Mi:((featureCollection.features[i].properties.Dist_Mi === ' ') ? '0' : featureCollection.features[i].properties.Dist_Mi )
+                                };
+
+                                if ( (bl === 0) &&(featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bl++;
+                                break;
+                            case "us_oc_ms":
+                                myThis.currentpwr[bk] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    AVG_OCEAN_CURRENT:(featureCollection.features[i].properties.AVG_OCEAN_CURRENT|| 0),
+                                    SUITABILITY_OCEAN_SPEED: (featureCollection.features[i].properties.SUITABILITY_OCEAN_SPEED || 'NO')
                                 };
 
                                 if ( (featureCollection.features[i].properties.METADATA_URL != null)) {
@@ -5100,8 +5172,53 @@ angular.module('myApp.services', []).factory('_', function () {
                                 }
                                 ;
 
+                                bk++;
+                                break;
+                            case "usa_mc_wm":
+                                myThis.tidalpwr[bj] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    AVG_TIDAL_CURRENT:(featureCollection.features[i].properties.AVG_TIDAL_CURRENT|| 0),
+                                    SUITABILITY_TIDAL_DEPTH: (featureCollection.features[i].properties.SUITABILITY_TIDAL_DEPTH || 'NO'),
+                                    SUITABILITY_TIDAL_AREA: (featureCollection.features[i].properties.SUITABILITY_TIDAL_AREA || 'NO'),
+                                    SUITABILITY_TIDAL_SPEED: (featureCollection.features[i].properties.SUITABILITY_TIDAL_SPEED || 'NO')
+                                };
+
+                                if ( (featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bj++;
+                                break;
+                            case "OceanWaveResourcePotential":
+                                myThis.wavepwr[bi] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    AVG_WAVE_POWER:(featureCollection.features[i].properties.AVG_WAVE_POWER|| 0),
+                                    SUITABILITY_OCEAN_POWER: (featureCollection.features[i].properties.SUITABILITY_OCEAN_POWER || 'Unknown')
+                                };
+                                //console.log(myThis.wavepwr[bi].COLOR);
+                                if ( (featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
                                 bi++;
                                 break;
+
                             case "OceanDisposalSites":
                                 myThis.disp[be] = {
                                     TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
@@ -5319,8 +5436,40 @@ angular.module('myApp.services', []).factory('_', function () {
                                 break;
                         }
                     }
-                    console.log(myThis.surfsed);
-                    console.log(bh);
+                    console.log(myThis.metadata);
+                   //console.log(bh);
+                    //myThis.wavepwr[0].AVG_WAVE_POWER=50;
+                   // myThis.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
+                    //myThis.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
+                   // myThis.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
+                   // myThis.currentpwr[0].AVG_OCEAN_CURRENT=1;
+                   // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
+
+
+                        if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
+                            myThis.wavepwr[0].COLOR= '#B0B497';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 30.0) {
+                            myThis.wavepwr[0].COLOR= '#B6BC9E';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 20.0) {
+                            myThis.wavepwr[0].COLOR= '#BBC1A4';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 15.0) {
+                            myThis.wavepwr[0].COLOR= '#C0C6A8';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 10.0) {
+                            myThis.wavepwr[0].COLOR= '#C9D0B1';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 8.0) {
+                            myThis.wavepwr[0].COLOR= '#D0D8B9';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 6) {
+                            myThis.wavepwr[0].COLOR= '#D5DDC0';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
+                            myThis.wavepwr[0].COLOR= '#DEE7C9';
+                            //console.log("color");
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
+                            myThis.wavepwr[0].COLOR= '#E4EFD2';
+                        } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
+                            myThis.wavepwr[0].COLOR= '#EBF6D8';
+                        } else {
+                            myThis.wavepwr[0].COLOR= 'white';
+                        }
 
                     windclass[6] = (windclass.reduce(function (prev, cur) {
                         return prev.toFixed(2) - cur.toFixed(2);
@@ -5378,6 +5527,9 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.removeLayer(this.windrpLayer);
                     map.removeLayer(this.marineMineralsLeases);
                     map.removeLayer(this.wavePower);
+                    map.removeLayer(this.tidalPower);
+                    map.removeLayer(this.currentPower);
+                    map.removeLayer(this.beachNourish);
                     //map.removeLayer(cLayer);
                     this.windLeaseLayerIsVisible = false;
                     this.windrpLayerIsVisible = false;
@@ -5386,6 +5538,9 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.marineMineralsLeases = false;
                     this.HydrokineticLeasesIsVisible = false;
                     this.wavePowerIsVisable = false;
+                    this.tidalPowerIsVisable = false;
+                    this.currentPowerIsVisable = false;
+                    this.beachNourishIsVisable = false;
                     this.wind.length = 0;
                     this.boem.length = 0;
                     this.metadata.length = 0;
@@ -5397,6 +5552,10 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.test.length = 0;
                     this.surfsed.length = 0;
                     this.wavepwr.length = 0;
+                    this.tidalpwr.length = 0;
+                    this.currentpwr.length = 0;
+                    this.beachNur.length = 0;
+                    this.OGPlanA.length = 0;
 
                     this.hide();
                     //map.setView([33.51, -68.3], 6);
@@ -5463,6 +5622,36 @@ angular.module('myApp.services', []).factory('_', function () {
                 } else {
                     map.removeLayer(this.wavePower);
                     this.wavePowerIsVisable = false;
+                }
+            },
+            tidalPowerIsVisable: false,
+            toggletidalPower: function () {
+                if (!this.tidalPowerIsVisable) {
+                    this.tidalPower.addTo(map);
+                    this.tidalPowerIsVisable = true;
+                } else {
+                    map.removeLayer(this.tidalPower);
+                    this.tidalPowerIsVisable = false;
+                }
+            },
+            currentPowerIsVisable: false,
+            togglecurrentPower: function () {
+                if (!this.currentPowerIsVisable) {
+                    this.currentPower.addTo(map);
+                    this.currentPowerIsVisable = true;
+                } else {
+                    map.removeLayer(this.currentPower);
+                    this.currentPowerIsVisable = false;
+                }
+            },
+            beachNourishIsVisable: false,
+            togglebeachNourish: function () {
+                if (!this.beachNourishIsVisable) {
+                    this.beachNourish.addTo(map);
+                    this.beachNourishIsVisable = true;
+                } else {
+                    map.removeLayer(this.beachNourish);
+                    this.beachNourishIsVisable = false;
                 }
             },
 
@@ -5829,11 +6018,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
          windclass[1]=25;
          windclass[2]=65;
          */
-        console.log("windclass " + windclass);
+        //console.log("windclass " + windclass);
  //      windclass[6] = (windclass.reduce(function (prev, cur) {
  //           return prev.toFixed(2) - cur.toFixed(2);
  //       }, 100));
-        console.log("windmill % unknown = " + windclass[6]);
+        //console.log("windmill % unknown = " + windclass[6]);
         $scope.$on('$viewContentLoaded', function () {
             // Your document is ready, place your code here
             $timeout(function () {
@@ -5916,7 +6105,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 smallmap = L.map('map').setView([45.526, -122.667], 1);
                 L.esri.basemapLayer('Oceans').addTo(smallmap);
                 L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                console.log("AOI_ID =" + $scope.AOI.ID + "");
+                //console.log("AOI_ID =" + $scope.AOI.ID + "");
 
                 var minicLayer = L.esri.featureLayer({
                     url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
@@ -5928,7 +6117,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     //precision: 3
                     //,            pane: 'miniAOIfeature'
                 }).addTo(smallmap);
-                console.log(" minicLayer loaded " + $scope.AOI.ID);
+               // console.log(" minicLayer loaded " + $scope.AOI.ID);
                 minicLayer.on("load", function (evt) {
                     // create a new empty Leaflet bounds object
 
@@ -6147,7 +6336,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     simplifyFactor: 2.0,
                    // precision: 2
                 }).addTo(map);
-                console.log(" mouseLayer loaded " + AOI_id);
+                //console.log(" mouseLayer loaded " + AOI_id);
             }
             ;
 
@@ -6159,7 +6348,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             if (mouseLayer) {
                 map.removeLayer(mouseLayer);
                 mouseLayer = null;
-                console.log(" mouseLayer UNloaded " + AOI_id);
+                //console.log(" mouseLayer UNloaded " + AOI_id);
             }
             //console.log("mouselayer = " + mouseLayer )
             // console.log(AOI_id);
@@ -6370,34 +6559,34 @@ angular.module('myApp.directives', [])
 
 var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/';
 var ortLayerAOI = '7';
-var ortLayerData = '33';
+var ortLayerData = '35';
 var ortLayerOptional = [];
 
 var windChart;
 
 ortLayerOptional[0]=
 {
-    num:'18',
+    num:'19',
     name:'wind resource potential'
 };
 ortLayerOptional[1]=
 {
-    num:'17',
+    num:'18',
     name:'renewable energy leases'
 };
 ortLayerOptional[2]=
 {
-    num:'21',
+    num:'22',
     name:'BOEM_Wind_Planning_Areas'
 };
 ortLayerOptional[3]=
 {
-    num:'22',
+    num:'23',
     name:'Ocean Disposal Sites'
 };
 ortLayerOptional[4]=
 {
-    num:'20',
+    num:'21',
     name:'Marine Minerals Leases'
 };
 ortLayerOptional[5]=
@@ -6417,9 +6606,30 @@ ortLayerOptional[7]=
 };
 ortLayerOptional[8]=
 {
-    num:19,
+    num:20,
     name:'Wave Power'
 };
+ortLayerOptional[9]=
+{
+    num:32,
+    name:'Tidal Power'
+};
+ortLayerOptional[10]=
+{
+    num:31,
+    name:'Current Power'
+};
+ortLayerOptional[11]=
+{
+    num:6,
+    name:'Beach Nourishment'
+};
+ortLayerOptional[12]=
+{
+    num:null,
+    name:'Oil and Gas Planing Area'
+};
+
 
 var map = L.map('bigmap',{
     zoomControl: false
@@ -6543,10 +6753,13 @@ angular.module('myApp', [
     .config(function($animateProvider) {
       $animateProvider.classNameFilter(/angular-animate/);
     })
+
     .config(function ($analyticsProvider) {
       $analyticsProvider.firstPageview(true); /* Records pages that don't use $state or $route */
       $analyticsProvider.withAutoBase(true);  /* Records full path */
-    });
+    })
+
+;
 
 
 

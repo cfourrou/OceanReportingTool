@@ -346,11 +346,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
          windclass[1]=25;
          windclass[2]=65;
          */
-        console.log("windclass " + windclass);
+        //console.log("windclass " + windclass);
  //      windclass[6] = (windclass.reduce(function (prev, cur) {
  //           return prev.toFixed(2) - cur.toFixed(2);
  //       }, 100));
-        console.log("windmill % unknown = " + windclass[6]);
+        //console.log("windmill % unknown = " + windclass[6]);
         $scope.$on('$viewContentLoaded', function () {
             // Your document is ready, place your code here
             $timeout(function () {
@@ -433,7 +433,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 smallmap = L.map('map').setView([45.526, -122.667], 1);
                 L.esri.basemapLayer('Oceans').addTo(smallmap);
                 L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                console.log("AOI_ID =" + $scope.AOI.ID + "");
+                //console.log("AOI_ID =" + $scope.AOI.ID + "");
 
                 var minicLayer = L.esri.featureLayer({
                     url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
@@ -445,7 +445,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     //precision: 3
                     //,            pane: 'miniAOIfeature'
                 }).addTo(smallmap);
-                console.log(" minicLayer loaded " + $scope.AOI.ID);
+               // console.log(" minicLayer loaded " + $scope.AOI.ID);
                 minicLayer.on("load", function (evt) {
                     // create a new empty Leaflet bounds object
 
@@ -664,7 +664,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     simplifyFactor: 2.0,
                    // precision: 2
                 }).addTo(map);
-                console.log(" mouseLayer loaded " + AOI_id);
+                //console.log(" mouseLayer loaded " + AOI_id);
             }
             ;
 
@@ -676,7 +676,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             if (mouseLayer) {
                 map.removeLayer(mouseLayer);
                 mouseLayer = null;
-                console.log(" mouseLayer UNloaded " + AOI_id);
+                //console.log(" mouseLayer UNloaded " + AOI_id);
             }
             //console.log("mouselayer = " + mouseLayer )
             // console.log(AOI_id);

@@ -2,34 +2,34 @@
 
 var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/';
 var ortLayerAOI = '7';
-var ortLayerData = '33';
+var ortLayerData = '35';
 var ortLayerOptional = [];
 
 var windChart;
 
 ortLayerOptional[0]=
 {
-    num:'18',
+    num:'19',
     name:'wind resource potential'
 };
 ortLayerOptional[1]=
 {
-    num:'17',
+    num:'18',
     name:'renewable energy leases'
 };
 ortLayerOptional[2]=
 {
-    num:'21',
+    num:'22',
     name:'BOEM_Wind_Planning_Areas'
 };
 ortLayerOptional[3]=
 {
-    num:'22',
+    num:'23',
     name:'Ocean Disposal Sites'
 };
 ortLayerOptional[4]=
 {
-    num:'20',
+    num:'21',
     name:'Marine Minerals Leases'
 };
 ortLayerOptional[5]=
@@ -49,9 +49,30 @@ ortLayerOptional[7]=
 };
 ortLayerOptional[8]=
 {
-    num:19,
+    num:20,
     name:'Wave Power'
 };
+ortLayerOptional[9]=
+{
+    num:32,
+    name:'Tidal Power'
+};
+ortLayerOptional[10]=
+{
+    num:31,
+    name:'Current Power'
+};
+ortLayerOptional[11]=
+{
+    num:6,
+    name:'Beach Nourishment'
+};
+ortLayerOptional[12]=
+{
+    num:null,
+    name:'Oil and Gas Planing Area'
+};
+
 
 var map = L.map('bigmap',{
     zoomControl: false
@@ -175,10 +196,13 @@ angular.module('myApp', [
     .config(function($animateProvider) {
       $animateProvider.classNameFilter(/angular-animate/);
     })
+
     .config(function ($analyticsProvider) {
       $analyticsProvider.firstPageview(true); /* Records pages that don't use $state or $route */
       $analyticsProvider.withAutoBase(true);  /* Records full path */
-    });
+    })
+
+;
 
 
 

@@ -1,12 +1,16 @@
 [
-  { "filename":"partials/WindPlanningAreas.html", "priority":3 },
+  { "filename":"partials/WindPlanningAreas.html", "priority":11 },
   { "filename":"partials/WindResourcePotential.html", "priority":1},
   { "filename":"partials/smallmap.html", "priority":2},
-  { "filename":"partials/RenewableEnergyLeases.html", "priority":4},
-  { "filename":"partials/MarineMineralsLeases.html", "priority":6 },
-  { "filename":"partials/sedimentResources.html", "priority":7 },
-  { "filename":"partials/hydrokineticLeases.html", "priority":8 },
-  { "filename":"partials/surficialSediment.html", "priority":9 },
-  { "filename":"partials/wavePower.html", "priority":10 },
-  { "filename":"partials/OceanDisposalSites.html", "priority":5 }
+  { "filename":"partials/beachNourish.html", "priority":3},
+  { "filename":"partials/RenewableEnergyLeases.html", "priority":5},
+  { "filename":"partials/MarineMineralsLeases.html", "priority":12 },
+  { "filename":"partials/sedimentResources.html", "priority":4 },
+  { "filename":"partials/hydrokineticLeases.html", "priority":13 },
+  { "filename":"partials/surficialSediment.html", "priority":6 },
+  { "filename":"partials/wavePower.html", "priority":7 },
+  { "filename":"partials/currentPower.html", "priority":9 },
+  { "filename":"partials/TidalPower.html", "priority":8 },
+  { "filename":"partials/OceanDisposalSites.html", "priority":10 },
+  { "filename":"partials/EM_OG_planningAreas.html", "priority":17 }
 ]
