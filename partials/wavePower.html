@@ -9,7 +9,7 @@
 
         <div style="width:60%" class="floatitleft">
             <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
-                                                                                    ng-show="AOI.wavepwr[0].AVG_WAVE_POWER<=10">&nbsp;NOT</span>
+                                                                                    ng-hide="AOI.wavepwr[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
 
             <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
             <!-- iButton start-->
@@ -27,8 +27,9 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            This would be a great place to put some text if you were so inclined.
-                            <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
+                            Requires a minimum of 10 kW/m to be considered a potential resource location.
+                            <div class="footnote"><a target="_blank" href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf (pF-1)</a></div>
+                            <div class="footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>http://www.aquagen.com.au/market</a></div>
                         </div>
                         <div id="fade"></div>
                     </div>
@@ -36,7 +37,7 @@
             </div> <!-- iButton end-->
 
 
-            <div style="padding-bottom: 16px;" class="GreyText14 padLeft15">Wave Power Generation</div>
+            <div style="padding-bottom: 16px;width:100%" class="GreyText14 padLeft15 floatitleft">Wave Power Generation</div>
             <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[AOI.wavepwr[0].AVG_WAVE_POWER>10]">
                 Wave Power is <span ng-show="AOI.wavepwr[0].AVG_WAVE_POWER<=10">NOT</span> >10 kW/m
             </div>

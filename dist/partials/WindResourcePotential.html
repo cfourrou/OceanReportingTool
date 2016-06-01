@@ -20,7 +20,8 @@
             <!-- //metadata-url="{{wind[0].METADATA_URL}}" -->
             <info-directive class="infobutton mainbutton floatitleft" modal-template="modal0.html"
                             message="message"
-                            modal-img="img/info.svg"></info-directive>
+                            modal-img="img/info.svg"
+                            metadata-url="{{AOI.wind[0].CAPACITY}}"></info-directive>
 
             <script type="text/ng-template" id="modal0.html">
                 <div id="custom-modal">
@@ -35,7 +36,7 @@
                         90-m height are generally considered to have a wind resource suitable for offshore
                         development. The potential megawatts (MW) of rated capacity that could be installed
                         in this area, assuming 5 MW of installed capacity per square kilometer of water is:
-                        14,160 MW.
+                        {{metadataurl}} MW.
                         <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
                     </div>
                     <div id="fade"></div>

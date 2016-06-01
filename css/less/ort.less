@@ -40,17 +40,18 @@ HELPERS
     COMPONENTS 
 **************************************/
 @import "leaflet.css";
+@import "esri-leaflet-geocoder.css";
 
 /**************************************
     PAGES 
 **************************************/
 @import "print.less";
 /**************************************
-    ICONS 
+    ICONS
 **************************************/
 
 /**************************************
-    HELPERS 
+    HELPERS
 **************************************/
 
 @ortBlue-light  : #3284BC;
@@ -58,6 +59,8 @@ HELPERS
 @ortGrey-Dark:  #4a4a4a;
 @ortOrange: #EB660C;
 @ortBlue-Pale:#F4F8FC;
+@ortGrey-Background:#EFEFEF;
+
 
 
 
@@ -117,7 +120,7 @@ a:active {
   width: 190px;
   position: relative;
   //top:215px;
-  bottom:196px
+  bottom:204px
   //left:0px;
 }
 h1 {
@@ -294,7 +297,8 @@ p {
   //  min-width: 500px;
   //  max-width: 1450px;
   //  margin: 0 auto;
-
+  position: relative;
+top: 45px;
 }
 
 .header {
@@ -311,10 +315,14 @@ p {
   padding-bottom: 15px;
   overflow: hidden;
   font-weight: 300;
+  position:fixed;
+  z-index: 1001;
 }
 .nav_bar{
   height:55px;
-  position: relative;
+  //position: relative;
+  position: fixed;
+  top:45px;
   float: left;
   width: 100%;
   box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
@@ -375,7 +383,37 @@ p {
 
 }
 
-
+.drawTools{
+  width:350px;
+  height:100px;
+  position: relative;
+  top: 98px;
+  left: 35px;
+  background-color: @ortGrey-Dark;
+  opacity: .85;
+  color:white;
+  font-size:14px;
+  padding:8px;
+  border-radius: 6px;
+  z-index:500;
+}
+.geocoder-control{
+  top: 119px;
+  left: 105px;
+}
+.leaflet-bar {
+  box-shadow: 0 1px 3px white;
+  border-radius: 2px;
+}
+.geocoder-control-input {
+  background-image: url(../img/search_2.svg);
+  background-size: 22px;
+  background-color: gray;
+  color: white;
+}
+.searchmap{
+  background-color: grey;
+}
 
 .footer2 {
   font-size: 11px;
@@ -400,11 +438,13 @@ p {
 
 
 .mapclass{
-  height: 955px;
+  min-height: 955px;
   width:50%;
   //height:20%;
   //top: -55px; //cof 1
-  position: relative;
+  //position: relative;
+  position: fixed;
+  top:45px;
   float:left;
 }
 
@@ -513,6 +553,7 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans' ; font-weight: 400;
   font-size: 16px;
   color: @ortOrange;
+  padding-bottom: 8px;
 }
 #line1a{
   float: left;
@@ -816,6 +857,10 @@ body.ng-pageslide-body-closed::before {
   font-size: 10px;
   color: @ortGrey-Dark;
 }
+.GreyText9{
+  font-size: 9px;
+  color: @ortGrey-Dark;
+}
 
 .GreenText16{
   font-size: 16px;
@@ -836,6 +881,15 @@ body.ng-pageslide-body-closed::before {
   font-weight: 700;
   background-color: #869DA5;
 }
+
+.Greychart {
+  background-color: @ortGrey-Background;
+  text-align: center;
+  box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
+  border-collapse: separate;
+
+}
+
 .infobutton{
 
   //float: left;
@@ -1020,6 +1074,9 @@ body.ng-pageslide-body-closed::before {
 .padLeft15{
   padding-left: 15px;
 }
+.padLeft25{
+  padding-left: 25px;
+}
 .darkBack{
 
 }
@@ -1042,7 +1099,7 @@ body.ng-pageslide-body-closed::before {
 .toggleicon{
   // width:43px;
   // height:43px;
-  position: absolute;
+  position: fixed;
   margin-left: -25px;
   top:470px;
   // left: 50%;
@@ -1068,7 +1125,7 @@ body.ng-pageslide-body-closed::before {
   color: @ortOrange;
   margin-right: 20px;
   //padding: 10px;
-  box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
+ // box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
   //padding: 10px;
   // width: 665px;
   //height:794px;

@@ -1,15 +1,17 @@
 <div class="infographic-box-small">
     <div id="wrbox1">
-         <div id="boemline1">Oil and Gas Planning Areas</div>
+        <div id="boemline1">Oil and Gas Planning Areas</div>
 
         <div id="boemline2" style="height: 70px">
-        <div class="boemline2a">This area falls within the</div>
-        <div class="boemline2b" ng-repeat="gpplan in AOI.OGPlanA | unique: 'Region' | orderBy : 'Region'">{{gpplan.Region}}</div>
-        <div class="boemline2a">Oil and Gas Planning area(s).</div>
+            <div class="boemline2a">This area falls within the</div>
+            <div class="boemline2b" ng-repeat="gpplan in AOI.OGPlanA | unique: 'Region' | orderBy : 'Region'">
+                {{gpplan.Region}}
+            </div>
+            <div class="boemline2a">Oil and Gas Planning area(s).</div>
 
 
         </div>
 
 
-</div>
     </div>
+</div>

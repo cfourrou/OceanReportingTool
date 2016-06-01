@@ -72,10 +72,31 @@ ortLayerOptional[12]=
     num:null,
     name:'Oil and Gas Planing Area'
 };
+ortLayerOptional[13]=
+{
+    num:null,
+    name:'Oil and Gas Active Lease'
+};
+ortLayerOptional[14]=
+{
+    num:null,
+    name:'Oil and Gas Wells'
+};
+ortLayerOptional[15]=
+{
+    num:null,
+    name:'Oil and Gas Resource potential'
+};
+ortLayerOptional[16]=
+{
+    num:1,
+    name:'Coastal Energy Facilities'
+};
 
 
 var map = L.map('bigmap',{
-    zoomControl: false
+    zoomControl: false,
+    maxZoom:12
 });
 
 
@@ -85,7 +106,7 @@ var toggle = false;
 var windclass = [];
 //var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites,marineMineralsLeases,HydrokineticLeases;
 var toggleFull = false;
-var cLayer,mouseLayer;
+var cLayer,mouseLayer,searchControl;
 var menuitems= [];
 
 function preloader() {
@@ -190,6 +211,11 @@ angular.module('myApp', [
               url:'/menu',
               templateUrl:'partials/menu.html',
               // controller: 'splashCtrl'
+          })
+          .state('draw',{
+              url:'/draw',
+              templateUrl:'partials/draw.html',
+              controller: 'SearchCtrl'
           })
       ;
     }])

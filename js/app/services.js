@@ -32,7 +32,10 @@ angular.module('myApp.services', []).factory('_', function () {
             currentpwr:[],
             beachNur:[],
             OGPlanA:[],
-
+            OGLease:[],
+            OGWells:[],
+            OGresource:[],
+            coastfac:[],
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 this.layer = L.esri.featureLayer({ //AOI poly (7)
@@ -203,7 +206,21 @@ angular.module('myApp.services', []).factory('_', function () {
                         return {color: '#8B572A', weight: 4, fillOpacity: 0};
                     }
                 });
-                // var cMapLayer1 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/33';
+
+                myThis.coastalEnergyFacilities = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[16].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    pane: 'optionalfeature16',
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: L.icon({
+                                iconUrl: 'img/CoastalEnergyGraphic.svg',
+                                iconSize: [32, 37],
+                                iconAnchor: [16, 37],
+                                popupAnchor: [0, -28]
+                            }),
+                        });
+                    }
+                });
 
                 var query = L.esri.query({
                     url: ortMapServer + ortLayerData
@@ -226,10 +243,106 @@ angular.module('myApp.services', []).factory('_', function () {
                     var bk = 0;
                     var bl = 0;
                     var bm = 0;
+                    var bn = 0;
+                    var bo = 0;
+                    var bp = 0;
+                    var bq = 0;
 
                     for (var i = 0, j = featureCollection.features.length; i < j; i++) {
 
                         switch (featureCollection.features[i].properties.DATASET_NM) {
+                            case "CoastalEnergyFacilities":
+                                myThis.coastfac[bq] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    Name:(featureCollection.features[i].properties.Name|| 'None'),
+                                    Type:(featureCollection.features[i].properties.Type|| 'None'),
+                                    CAPACITY:(featureCollection.features[i].properties.CAPACITY|| 'None'),
+                                    Dist_Mi:(featureCollection.features[i].properties.Dist_Mi|| 'None')
+
+                                };
+
+                                if ( (bq === 0) &&(featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bq++;
+                                break;
+                            case "OG_ResourcePotential":
+                                myThis.OGresource[bp] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    OCS_Play:(featureCollection.features[i].properties.OCS_Play|| 'None'),
+                                    UTTR_Oil:(featureCollection.features[i].properties.UTTR_Oil|| 'None'),
+                                    UTTR_Gas:(featureCollection.features[i].properties.UTTR_Gas|| 'None'),
+                                    UTTR_BOE:(featureCollection.features[i].properties.UTTR_BOE|| 'None')
+
+                                };
+
+                                if ( (bp === 0) &&(featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bp++;
+                                break;
+                            case "OG_Wells":
+                                myThis.OGWells[bo] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    COMPANY_NA:(featureCollection.features[i].properties.COMPANY_NA|| 'None'),
+                                    STATUS:(featureCollection.features[i].properties.STATUS|| 'None')
+
+                                };
+
+                                if ( (bo === 0) &&(featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bo++;
+                                break;
+                            case "al_20160301":
+                                myThis.OGLease[bn] = {
+                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
+                                    Lease_Numb:(featureCollection.features[i].properties.Lease_Numb|| 'None'),
+                                    Lease_expt:(featureCollection.features[i].properties.Lease_expt|| 'None')
+
+                                };
+
+                                if ( (bn === 0) &&(featureCollection.features[i].properties.METADATA_URL != null)) {
+                                    myThis.metadata[k] = {
+                                        REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
+                                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                                        METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
+                                        METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
+                                        METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    };
+                                    k++;
+                                }
+                                ;
+
+                                bn++;
+                                break;
                             case "OilandGasPlanningAreas":
                                 myThis.OGPlanA[bm] = {
                                     TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
@@ -514,6 +627,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     AVG_WGHT: (featureCollection.features[i].properties.AVG_WGHT || 0).toFixed(2),
                                     PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
                                     HOUSES_SUM: (featureCollection.features[i].properties.HOUSES_SUM || 0).toLocaleString(),
+                                    CAPACITY: (featureCollection.features[i].properties.CAPACITY || 0).toLocaleString(),
                                     TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
                                     TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
                                     METADATA_URL: featureCollection.features[i].properties.METADATA_URL
@@ -557,15 +671,17 @@ angular.module('myApp.services', []).factory('_', function () {
                                 break;
                         }
                     }
-                    console.log(myThis.metadata);
-                   //console.log(bh);
+                    //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
+                   //console.log(myThis);
+                    //myThis.wavepwr.length = 0;
                     //myThis.wavepwr[0].AVG_WAVE_POWER=50;
                    // myThis.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
-                    //myThis.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
-                   // myThis.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                   // myThis.currentpwr[0].AVG_OCEAN_CURRENT=1;
+                  // myThis.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
+                  //  myThis.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
+                   // myThis.currentpwr[0].AVG_OCEAN_CURRENT=2;
                    // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
-
+                    //console.log( myThis.tidalpwr[0].TOTAL_CNT);
+                    //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
 
                         if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
                             myThis.wavepwr[0].COLOR= '#B0B497';
@@ -651,6 +767,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.removeLayer(this.tidalPower);
                     map.removeLayer(this.currentPower);
                     map.removeLayer(this.beachNourish);
+                    map.removeLayer(this.coastalEnergyFacilities);
                     //map.removeLayer(cLayer);
                     this.windLeaseLayerIsVisible = false;
                     this.windrpLayerIsVisible = false;
@@ -662,6 +779,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.tidalPowerIsVisable = false;
                     this.currentPowerIsVisable = false;
                     this.beachNourishIsVisable = false;
+                    this.coastalEnergyFacilitiesIsVisable = false;
                     this.wind.length = 0;
                     this.boem.length = 0;
                     this.metadata.length = 0;
@@ -677,6 +795,10 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.currentpwr.length = 0;
                     this.beachNur.length = 0;
                     this.OGPlanA.length = 0;
+                    this.OGLease.length = 0;
+                    this.OGWells.length = 0;
+                    this.OGresource.length = 0;
+                    this.coastfac.length = 0;
 
                     this.hide();
                     //map.setView([33.51, -68.3], 6);
@@ -773,6 +895,16 @@ angular.module('myApp.services', []).factory('_', function () {
                 } else {
                     map.removeLayer(this.beachNourish);
                     this.beachNourishIsVisable = false;
+                }
+            },
+            coastalEnergyFacilitiesIsVisable: false,
+            togglecoastalEnergyFacilities: function () {
+                if (!this.coastalEnergyFacilitiesIsVisable) {
+                    this.coastalEnergyFacilities.addTo(map);
+                    this.coastalEnergyFacilitiesIsVisable = true;
+                } else {
+                    map.removeLayer(this.coastalEnergyFacilities);
+                    this.coastalEnergyFacilitiesIsVisable = false;
                 }
             },
 

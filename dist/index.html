@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?f6200245f8ab5907">
+    <link rel="stylesheet" href="css/ort.min.css?abf3b31f57f70223">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -110,21 +110,21 @@
 
 </head>
 <body>
-
+<div id="header" class="header">
+    <strong>Marine Cadastre</strong> Ocean Reporting Tool
+    <a class="helpbutton" href="">About / Help</a>
+</div>
 <div id="wrapper">
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer" style="padding:0px" ng-controller="pageslideCtrl">
-        <div id="header" class="header">
-            <strong>Marine Cadastre</strong> Ocean Reporting Tool
-            <a class="helpbutton" href="">About / Help</a>
-        </div>
+
 
         <div id="main_content" class="inner">
             <div class="nav_bar">
                 <div class="nav_menu_left">
                     <div ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</div>
                     <div ui-sref="menu" class="areasbutton" ng-click="reset()">KNOWN AREAS</div>
-                    <div class="drawbutton" ng-click="off()">DRAW AREA</div>
+                    <div ui-sref="draw" class="drawbutton" ng-click="off()">DRAW AREA</div>
 
                 </div>
                 <div ng-show="AOI.isLoaded" class="nav_menu_right">
@@ -139,16 +139,31 @@
             </div>
             <div id="contentliquid">
 
-                <div id="bigmap" class="mapclass"></div>
+                <div id="bigmap" class="mapclass">
+                <div ng-show="drawtoolOn" id="drawtool" class="drawTools">
+                    <div style="width:100%;height: 25%;">Map Navigation</div>
+                    <div style="width:100%;height: 30%;float:left;">
+                        <div style="width:25%;float:left;"><img style="vertical-align:text-top;padding-right: 10px" src="img/texticon.svg?ccc119d74104ebd5">FIND</div>
+                       
+                    </div>
+                 
+
+                    <div style="width:100%;height: 30%;float:left;">Map Tools zoomlevel {{zoomlevel}}</div>
+                    <div style="text-align: center;width:49%;float:left;border-top-style: solid; border-right-style: solid;border-width:1px; border-color:grey;"><img style="vertical-align:text-top;padding-right: 10px" src="img/MapInput_2.svg?807dc72052709945">DRAW</div>
+                    <div style="text-align: center;width:49%;float:left;border-top-style: solid; border-width:1px; border-color:grey;"><img style="vertical-align:text-top;padding-right: 10px" src="img/basemap.svg?0618ee7a3cf7ba3c">BASEMAP</div>
+                </div>
+            </div>
                 <div id="slide_div">
 
                     <!--ng-include src="partials/CE.html"></ng-include-->
                 </div>
 
                 <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
-                      >
+                     ps-custom-top="55px"
+                >
                     <div ui-view class="h900"></div>
-                    <div class="footer2">United States Department of Commerce | National Oceanic and Atmospheric Administration |
+                    <div class="footer2">United States Department of Commerce | National Oceanic and Atmospheric
+                        Administration |
                         National Ocean Service
                     </div>
                 </div>
@@ -158,13 +173,12 @@
         </div>
 
 
-
     </div>
 </div>
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?c63f06339cd00647"></script>
+<script src="js/ort.js?aff02e03108f0312"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

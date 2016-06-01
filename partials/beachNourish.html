@@ -26,7 +26,7 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            This would be a great place to put some text if you were so inclined.
+                            This data is currently only available for South Carolina, new data will be added as it becomes available.
                             <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
                         </div>
                         <div id="fade"></div>
@@ -66,7 +66,7 @@
                         </td>
                     </tr>
                 </table>
-                <div style="width:600px" class="floatitleft"><div style="height:8px;width:165px" class="floatitleft"></div><div style="width:185px" class="floatitleft">0y<sup>3</sup></div><div style="width:175px" class="floatitleft">1.2My<sup>3</sup></div><div style="width:50px" class="floatitleft" >3.4My<sup>3</sup></div></div>
+                <div style="width:600px" class="floatitleft"><div style="height:8px;width:165px" class="floatitleft"></div><div style="width:185px" class="floatitleft">0y<sup>3</sup></div><div style="width:168px" class="floatitleft">1.2My<sup>3</sup></div><div style="width:50px" class="floatitleft" >3.4My<sup>3</sup></div></div>
 
 
 
@@ -79,7 +79,7 @@
                 <div  style="height:38px">
 
                 </div>
-                <div ng-repeat="yearx in AOI.beachNur | unique: 'YEAR' | orderBy : 'YEAR'"   class=" GreyText12 padLeft15">
+                <div ng-repeat="yearx in AOI.beachNur | unique: 'YEAR' | orderBy : 'YEAR'"   class=" GreyText12 padLeft25">
                     <svg width="8" height="8">
                         <rect width="8" height="8" ng-class="'a_'+yearx.YEAR" />
                     </svg> {{yearx.YEAR}}

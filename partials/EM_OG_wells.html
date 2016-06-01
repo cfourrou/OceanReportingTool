@@ -1,0 +1,32 @@
+<div class="infographic-box-small">
+    <div id="wrbox1">
+        <div id="boemline1">Oil and Natural Gas Wells</div>
+
+        <div id="boemline2" style="padding-bottom: 10px">
+            <span class="boemline2b ">{{AOI.OGWells[0].TOTAL_CNT}}</span>
+            <span class="boemline2a ">Oil and Gas Wells within this area</span>
+        </div>
+        <div class="GreyText10 padLeft15">
+            <table BORDERCOLOR="#D6D6D6" border="1" class="Greychart">
+
+                <tr style="height: 20px;">
+                    <th style="width: 120px;">Operator</th>
+                    <th style="width: 155px;">Status</th>
+                </tr>
+                <tr style="height: 20px;" ng-repeat="wells in AOI.OGWells | orderBy : 'COMPANY_NA'">
+                    <td>
+                        <div>{{wells.COMPANY_NA}}</div>
+                    </td>
+                    <td>
+                        <div>{{wells.STATUS}}</div>
+                    </td>
+
+
+                </tr>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>

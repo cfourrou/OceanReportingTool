@@ -23,7 +23,8 @@ angular.module('myApp.directives', [])
                 modalTemplate: '@',
                 modalImg: '@',
                 message: '=',
-                metadataUrl: '@'
+                metadataUrl: '@',
+                vardata:'@'
             },
             template: '<a href ng-click="show(modalTemplate)" ><div ng-include="" src="modalImg"></div></a>',
             controller: function ($scope, ModalService) {
@@ -34,7 +35,8 @@ angular.module('myApp.directives', [])
                         templateUrl: modalTemplate,
                         controller: "ModalController",
                         inputs: {
-                            metaurl: $scope.metadataUrl
+                            metaurl: $scope.metadataUrl,
+                            myvarData: $scope.vardata
 
                         }
                     }).then(function (modal) {

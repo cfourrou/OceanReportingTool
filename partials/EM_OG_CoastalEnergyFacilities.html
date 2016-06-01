@@ -1,0 +1,56 @@
+<div class="infographic-box-medium">
+    <div id="wrbox1">
+        <div id="slider_but16" class="sliderbutton">
+            <div ng-class="AOI.coastalEnergyFacilitiesIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.togglecoastalEnergyFacilities()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div id="slbuttxt0" class="sliderbuttontext">CLICK TO TURN LAYER ON AND OFF</div>
+        <div id="boemline1">Coastal Energy Facilities</div>
+        <div class="swatch floatitleft"><img src="img/CoastalEnergyGraphic.svg"></div>
+        <div id="boemline2" >
+            <div class="boemline2a ">Within 20 Miles</div>
+
+        </div>
+
+
+        <div id="boemline2" >
+            <span class="boemline2a ">There are</span>
+            <span class="boemline2b ">{{AOI.coastfac[0].TOTAL_CNT}}</span>
+            <span class="boemline2a ">Coastal Energy Facilities</span>
+
+        </div>
+
+        <div class="GreyText10 padLeft15">
+            <div style="height:30px;width:315px;" class="floatitleft "></div>
+
+            <table BORDERCOLOR="#D6D6D6" border="1" class="Greychart" style="width: 603.8px;">
+
+                <tr style="height: 20px;">
+                    <th style="width:315px;">Facility Name</th>
+                    <th style="width: 95px;">Type</th>
+                    <th style="width: 95px;">Capacity (MW)</th>
+                    <th style="width: 95px;">Distance (mi)</th>
+                </tr>
+                <tr style="height: 20px;" ng-repeat="facs in AOI.coastfac | orderBy : 'Dist_Mi'">
+                    <td>
+                        <div>{{facs.Name}}</div>
+                    </td>
+                    <td>
+                        <div>{{facs.Type}}</div>
+                    </td>
+                    <td>
+                        <div>{{facs.CAPACITY}}</div>
+                    </td>
+                    <td>
+                        <div>{{facs.Dist_Mi.toFixed(2)}}</div>
+                    </td>
+
+
+                </tr>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>

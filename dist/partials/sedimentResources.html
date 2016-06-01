@@ -1,46 +1,72 @@
 <div class="infographic-box-small">
     <div id="wrbox1">
-         <div id="boemline1">Sediment Resources</div>
+        <div id="boemline1">Sediment Resources</div>
         <div class="swatch floatitleft"><!--img src="img/MarineMineralLeases.svg"></div-->
-        <div id="boemline2" style="height: 70px">
-        <span class="boemline2a floatitleft">Click on the icon for more information</span>
-        <!-- iButton start-->
-        <div>
-            <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
-            <info-directive class="infobutton mainbutton" modal-template="modal5.html" message="message"
-                            modal-img="img/info.svg"></info-directive>
+            <div id="boemline2" style="height: 70px">
+                <span class="boemline2a floatitleft">Click on the icon for more information</span>
+                <!-- iButton start-->
+                <div>
+                    <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+                    <info-directive class="infobutton mainbutton" modal-template="modal5.html" message="message"
+                                    modal-img="img/info.svg"></info-directive>
 
-            <script type="text/ng-template" id="modal5.html">
-                <div id="custom-modal" class="modal">
-                    <div id="overlay">
-                        <a href="" class="modal-close" ng-click="close('Cancel')">
-                            <svg class="" viewBox="0 0 24 24">
-                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                <path d="M0 0h24v24h-24z" fill="none"/>
-                            </svg>
-                        </a>
-                        no text yet<br>
+                    <script type="text/ng-template" id="modal5.html">
+                        <div id="custom-modal" class="modal">
+                            <div id="overlay">
+                                <a href="" class="modal-close" ng-click="close('Cancel')">
+                                    <svg class="" viewBox="0 0 24 24">
+                                        <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                        <path d="M0 0h24v24h-24z" fill="none"/>
+                                    </svg>
+                                </a>
+                                This data is currently unavailable, new data will be added as it becomes available.
+                                <br>
+                                <div class="GreyText10">
+                                    Assessment of the likelihood that the area can be used as a future dredging area
+                                        as a result of reconnaissance level studies. The more available environmental
+                                        data, the more confidence there is in the presence of restoration quality
+                                        sand.<br>
+                                    <div class="GreyText10">
+                                    Possible – features identified as a result of bathymetry delineation of a
+                                        supposed shoal. No additional physical data exists to support these areas as a
+                                        resource <br>
+                                    Potential – resource areas hypothesized to exist on the basis of indirect
+                                        evidence such as acoustic subsurface profile (seismic) character or sidescan
+                                        sonar character. The presence of sand through direct sampling methods has not
+                                        yet been confirmed.<br>
+                                    Probable – resource areas whose existence has been established through the use of
+                                        vibracores, push cores and/or grab samples. Thickness and/or lateral extent has
+                                        not been fully determined. These are reserves that could be viable if additional
+                                        coring is done<br>
+                                    Proven – resource areas whose thickness and lateral extent have been fully
+                                        determined through the use of vibracore and/or push cores. Generally reserved
+                                        for shoals that have already been authorized as part of a lease.<br>
+                                    Unusable – resource areas that as a result of additional surveys, prior dredging
+                                        activity, or infrastructure development are not (or no longer) suitable for
+                                        future dredging.<br>
+                                    (adapted from Freedenberg and Hoenstine, 1999)
+                                        </div>
+                                </div>
 
+                            </div>
+                            <div id="fade"></div>
+                        </div>
+                    </script>
 
-                    </div>
-                    <div id="fade"></div>
                 </div>
-            </script>
+                <!-- iButton end-->
 
-        </div>
-        <!-- iButton end-->
-
-        </div>
-        <div ng-repeat="count in disp | filter:query as filtered">
-        </div>
-        <div ng-repeat="dispx in disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
             </div>
-            <div id="boemline2">
-                <span class="boemline2b">{{filtered.length}}</span>
-                <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
+            <div ng-repeat="count in disp | filter:query as filtered">
+            </div>
+            <div ng-repeat="dispx in disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+                <div ng-repeat="count in disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+                </div>
+                <div id="boemline2">
+                    <span class="boemline2b">{{filtered.length}}</span>
+                    <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
-    </div>
