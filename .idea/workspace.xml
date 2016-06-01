@@ -1,49 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e8090f5-02cf-46c3-b523-f4e54481fa8d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/EM_OG_CoastalEnergyFacilities.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/EM_OG_activeLeases.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/EM_OG_resourcePotential.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/EM_OG_wells.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/PageTabTop.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/draw.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/less/ort.less" afterPath="$PROJECT_DIR$/css/less/ort.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/ort.min.css" afterPath="$PROJECT_DIR$/css/ort.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/ort.min.css" afterPath="$PROJECT_DIR$/dist/css/ort.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/emconfig.json" afterPath="$PROJECT_DIR$/dist/emconfig.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/ort.js" afterPath="$PROJECT_DIR$/dist/js/ort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/ort.json" afterPath="$PROJECT_DIR$/dist/js/ort.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EM_OG_planningAreas.html" afterPath="$PROJECT_DIR$/dist/partials/EM_OG_planningAreas.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EnergyMineral.html" afterPath="$PROJECT_DIR$/dist/partials/EnergyMineral.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/OceanDisposalSites.html" afterPath="$PROJECT_DIR$/dist/partials/OceanDisposalSites.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TidalPower.html" afterPath="$PROJECT_DIR$/dist/partials/TidalPower.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/WindResourcePotential.html" afterPath="$PROJECT_DIR$/dist/partials/WindResourcePotential.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/beachNourish.html" afterPath="$PROJECT_DIR$/dist/partials/beachNourish.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/currentPower.html" afterPath="$PROJECT_DIR$/dist/partials/currentPower.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/sedimentResources.html" afterPath="$PROJECT_DIR$/dist/partials/sedimentResources.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/surficialSediment.html" afterPath="$PROJECT_DIR$/dist/partials/surficialSediment.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/wavePower.html" afterPath="$PROJECT_DIR$/dist/partials/wavePower.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emconfig.json" afterPath="$PROJECT_DIR$/emconfig.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/app.js" afterPath="$PROJECT_DIR$/js/app/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/controllers.js" afterPath="$PROJECT_DIR$/js/app/controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/directives.js" afterPath="$PROJECT_DIR$/js/app/directives.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/services.js" afterPath="$PROJECT_DIR$/js/app/services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/ort.js" afterPath="$PROJECT_DIR$/js/ort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/ort.json" afterPath="$PROJECT_DIR$/js/ort.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EnergyMineral.html" afterPath="$PROJECT_DIR$/partials/EnergyMineral.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/OceanDisposalSites.html" afterPath="$PROJECT_DIR$/partials/OceanDisposalSites.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TidalPower.html" afterPath="$PROJECT_DIR$/partials/TidalPower.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/WindResourcePotential.html" afterPath="$PROJECT_DIR$/partials/WindResourcePotential.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/beachNourish.html" afterPath="$PROJECT_DIR$/partials/beachNourish.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/currentPower.html" afterPath="$PROJECT_DIR$/partials/currentPower.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/sedimentResources.html" afterPath="$PROJECT_DIR$/partials/sedimentResources.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/surficialSediment.html" afterPath="$PROJECT_DIR$/partials/surficialSediment.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/wavePower.html" afterPath="$PROJECT_DIR$/partials/wavePower.html" />
-    </list>
+    <list default="true" id="8e8090f5-02cf-46c3-b523-f4e54481fa8d" name="Default" comment="" />
     <ignored path="Ocean Reporting Tool.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
