@@ -41,6 +41,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.off();
         map.invalidateSize();
 
+       // console.log("draw mode "+ $scope.drawtoolOn);
+
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
 
         searchControl = L.esri.Geocoding.geosearch({
@@ -66,6 +68,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 console.log(response.results[0])
             }
         });
+
 
 
     }])
@@ -313,19 +316,57 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 future: true
             });
         }
-
+        $scope.drawenabled = false;
+        $scope.drawlocked = false;
         $scope.zoomlevel = map.getZoom();
         //console.log("zoomlevel1 "+$scope.zoomlevel);
+
+
+
+
         map.on('zoomend', function() {
             $scope.zoomlevel = map.getZoom();
            // console.log("zoomlevel "+ $scope.zoomlevel);
-            $scope.$apply();
+            console.log("zoom draw mode "+$scope.drawtoolOn);
+            if ($scope.drawtoolOn) {
+                if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
+                    $scope.drawenabled = true;
+                } else {
+                    $scope.drawenabled = false;
+                }
+                $scope.$apply();
+            }
+
         });
 
 
         //$scope.name = "bababooey";
         $scope.checked = true; // This will be binded using the ps-open attribute
 
+        $scope.drawit = function () {
+            console.log("drawit clicked "+$scope.zoomlevel + " enl?"+ $scope.drawenabled);
+            if ($scope.drawenabled){
+                if ($scope.drawlocked) {
+                    map.setMinZoom(1);
+                    map.setMaxZoom(12);
+                    console.log("unlock");
+                    map.dragging.enable();
+                    $scope.drawlocked=false;
+                } else
+                 {
+                    console.log("lock");
+                     map.setMinZoom(map.getZoom());
+                     map.setMaxZoom(map.getZoom());
+                    map.dragging.disable();
+                    $scope.drawlocked=true;
+                     map.pm.addControls();
+                     map.pm.enableDraw('Poly');
+
+
+                }
+
+            }
+        };
 
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
@@ -374,6 +415,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         $scope.reset = function () { //unloads AOI but leaves slider pane on
+
+
             $scope.AOIoff();
             $scope.paneon();
             AOI.unloadData();
@@ -381,11 +424,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             for (i = 0; i < len; i++) {
                 $scope.box[i].isActive = false;
             }
-            document.getElementById("bigmap").style.width = '50%';
-            map.invalidateSize();
-            if ($scope.drawtoolOn)  map.removeControl(searchControl);
-            $scope.drawtoolOn = false;
-            map.setView([33.51, -78.3], 6);
+
+
+            if ($scope.drawtoolOn) {
+                map.setMinZoom(1);
+                map.setMaxZoom(12);
+                console.log("unlock");
+                map.dragging.enable();
+                $scope.drawlocked=false;
+                document.getElementById("bigmap").style.width = '50%';
+                map.removeControl(searchControl);
+                $scope.drawtoolOn = false;
+                // map.setView([33.51, -78.3], 6);
+                map.invalidateSize();
+            }
         };
 
         $scope.off = function () { //unloads AOI and turns off slider pane

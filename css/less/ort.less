@@ -41,6 +41,7 @@ HELPERS
 **************************************/
 @import "leaflet.css";
 @import "esri-leaflet-geocoder.css";
+@import "leaflet.pm.css";
 
 /**************************************
     PAGES 
@@ -62,7 +63,9 @@ HELPERS
 @ortGrey-Background:#EFEFEF;
 
 
-
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 
 a:link {
   text-decoration: none;
@@ -283,7 +286,8 @@ body {
   //font-family: 'Open Sans';
   font-size: 20px;
   color:#333;
-  background: #000000;
+  //background: #000000;
+  background:#7DA6D4;
   height:100%;
 
 }
@@ -397,19 +401,56 @@ top: 45px;
   border-radius: 6px;
   z-index:500;
 }
+.drawbutton1{
+  text-align: center;
+  width:49%;
+  float:left;
+  border-top-style: solid;
+  border-width:1px;
+  border-color:grey;
+
+}
+.drawbutton-dis{
+  color:#777;
+  #Main-Draw-Icon{
+    fill:#777;
+  }
+}
+.drawbutton-enl{
+  color:White;
+  &:hover{background-color: @ortBlue-light;}
+  &:visited{background-color: @ortBlue-light;}
+  #Main-Draw-Icon{
+    fill:White;
+  }
+}
+.drawbutton2{
+  text-align: center;
+  width:49%;
+  float:left;
+  border-top-style: solid;
+  border-width:1px;
+  border-color:grey;
+  //color:#777;
+
+}
+
+
 .geocoder-control{
   top: 119px;
   left: 105px;
 }
 .leaflet-bar {
-  box-shadow: 0 1px 3px white;
+  box-shadow: 0 1px 3px white !important;
   border-radius: 2px;
+  border-collapse: separate;
 }
 .geocoder-control-input {
   background-image: url(../img/search_2.svg);
-  background-size: 22px;
+  background-size: 22px !important;
   background-color: gray;
   color: white;
+  border: none !important;
 }
 .searchmap{
   background-color: grey;
@@ -1069,7 +1110,7 @@ body.ng-pageslide-body-closed::before {
   width: 312.8px;
   padding-top: 15px;
   padding-left: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 .padLeft15{
   padding-left: 15px;

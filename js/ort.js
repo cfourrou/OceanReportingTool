@@ -5845,6 +5845,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.off();
         map.invalidateSize();
 
+       // console.log("draw mode "+ $scope.drawtoolOn);
+
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
 
         searchControl = L.esri.Geocoding.geosearch({
@@ -5870,6 +5872,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 console.log(response.results[0])
             }
         });
+
 
 
     }])
@@ -6117,19 +6120,57 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 future: true
             });
         }
-
+        $scope.drawenabled = false;
+        $scope.drawlocked = false;
         $scope.zoomlevel = map.getZoom();
         //console.log("zoomlevel1 "+$scope.zoomlevel);
+
+
+
+
         map.on('zoomend', function() {
             $scope.zoomlevel = map.getZoom();
            // console.log("zoomlevel "+ $scope.zoomlevel);
-            $scope.$apply();
+            console.log("zoom draw mode "+$scope.drawtoolOn);
+            if ($scope.drawtoolOn) {
+                if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
+                    $scope.drawenabled = true;
+                } else {
+                    $scope.drawenabled = false;
+                }
+                $scope.$apply();
+            }
+
         });
 
 
         //$scope.name = "bababooey";
         $scope.checked = true; // This will be binded using the ps-open attribute
 
+        $scope.drawit = function () {
+            console.log("drawit clicked "+$scope.zoomlevel + " enl?"+ $scope.drawenabled);
+            if ($scope.drawenabled){
+                if ($scope.drawlocked) {
+                    map.setMinZoom(1);
+                    map.setMaxZoom(12);
+                    console.log("unlock");
+                    map.dragging.enable();
+                    $scope.drawlocked=false;
+                } else
+                 {
+                    console.log("lock");
+                     map.setMinZoom(map.getZoom());
+                     map.setMaxZoom(map.getZoom());
+                    map.dragging.disable();
+                    $scope.drawlocked=true;
+                     map.pm.addControls();
+                     map.pm.enableDraw('Poly');
+
+
+                }
+
+            }
+        };
 
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
@@ -6178,6 +6219,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         $scope.reset = function () { //unloads AOI but leaves slider pane on
+
+
             $scope.AOIoff();
             $scope.paneon();
             AOI.unloadData();
@@ -6185,11 +6228,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             for (i = 0; i < len; i++) {
                 $scope.box[i].isActive = false;
             }
-            document.getElementById("bigmap").style.width = '50%';
-            map.invalidateSize();
-            if ($scope.drawtoolOn)  map.removeControl(searchControl);
-            $scope.drawtoolOn = false;
-            map.setView([33.51, -78.3], 6);
+
+
+            if ($scope.drawtoolOn) {
+                map.setMinZoom(1);
+                map.setMaxZoom(12);
+                console.log("unlock");
+                map.dragging.enable();
+                $scope.drawlocked=false;
+                document.getElementById("bigmap").style.width = '50%';
+                map.removeControl(searchControl);
+                $scope.drawtoolOn = false;
+                // map.setView([33.51, -78.3], 6);
+                map.invalidateSize();
+            }
         };
 
         $scope.off = function () { //unloads AOI and turns off slider pane
@@ -6544,6 +6596,7 @@ ortLayerOptional[16]=
 var map = L.map('bigmap',{
     zoomControl: false,
     maxZoom:12
+
 });
 
 
@@ -6686,8 +6739,656 @@ angular.module('myApp', [
  * @author Ariel Mashraki <ariel@mashraki.co.il>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */!function(a,b,c){"use strict";function d(a){return D(a)?a:Object.keys(a).map(function(b){return a[b]})}function e(a){return null===a}function f(a,b){var d=Object.keys(a);return-1==d.map(function(d){return b[d]!==c&&b[d]==a[d]}).indexOf(!1)}function g(a,b){if(""===b)return a;var c=a.indexOf(b.charAt(0));return-1===c?!1:g(a.substr(c+1),b.substr(1))}function h(a,b,c){var d=0;return a.filter(function(a){var e=x(c)?b>d&&c(a):b>d;return d=e?d+1:d,e})}function i(a,b,c){return c.round(a*c.pow(10,b))/c.pow(10,b)}function j(a,b,c){b=b||[];var d=Object.keys(a);return d.forEach(function(d){if(C(a[d])&&!D(a[d])){var e=c?c+"."+d:c;j(a[d],b,e||d)}else{var f=c?c+"."+d:d;b.push(f)}}),b}function k(a){return a&&a.$evalAsync&&a.$watch}function l(){return function(a,b){return a>b}}function m(){return function(a,b){return a>=b}}function n(){return function(a,b){return b>a}}function o(){return function(a,b){return b>=a}}function p(){return function(a,b){return a==b}}function q(){return function(a,b){return a!=b}}function r(){return function(a,b){return a===b}}function s(){return function(a,b){return a!==b}}function t(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?!1:b.some(function(b){return C(b)||z(c)?a(c)(b):b===c})}}function u(a,b){return b=b||0,b>=a.length?a:D(a[b])?u(a.slice(0,b).concat(a[b],a.slice(b+1)),b):u(a,b+1)}function v(a){return function(b,c){function e(a,b){return y(b)?!1:a.some(function(a){return H(a,b)})}if(b=C(b)?d(b):b,!D(b))return b;var f=[],g=a(c);return y(c)?b.filter(function(a,b,c){return c.indexOf(a)===b}):b.filter(function(a){var b=g(a);return e(f,b)?!1:(f.push(b),!0)})}}function w(a,b,c){return b?a+c+w(a,--b,c):a}var x=b.isDefined,y=b.isUndefined,z=b.isFunction,A=b.isString,B=b.isNumber,C=b.isObject,D=b.isArray,E=b.forEach,F=b.extend,G=b.copy,H=b.equals;String.prototype.contains||(String.prototype.contains=function(){return-1!==String.prototype.indexOf.apply(this,arguments)}),b.module("a8m.angular",[]).filter("isUndefined",function(){return function(a){return b.isUndefined(a)}}).filter("isDefined",function(){return function(a){return b.isDefined(a)}}).filter("isFunction",function(){return function(a){return b.isFunction(a)}}).filter("isString",function(){return function(a){return b.isString(a)}}).filter("isNumber",function(){return function(a){return b.isNumber(a)}}).filter("isArray",function(){return function(a){return b.isArray(a)}}).filter("isObject",function(){return function(a){return b.isObject(a)}}).filter("isEqual",function(){return function(a,c){return b.equals(a,c)}}),b.module("a8m.conditions",[]).filter({isGreaterThan:l,">":l,isGreaterThanOrEqualTo:m,">=":m,isLessThan:n,"<":n,isLessThanOrEqualTo:o,"<=":o,isEqualTo:p,"==":p,isNotEqualTo:q,"!=":q,isIdenticalTo:r,"===":r,isNotIdenticalTo:s,"!==":s}),b.module("a8m.is-null",[]).filter("isNull",function(){return function(a){return e(a)}}),b.module("a8m.after-where",[]).filter("afterWhere",function(){return function(a,b){if(a=C(a)?d(a):a,!D(a)||y(b))return a;var c=a.map(function(a){return f(b,a)}).indexOf(!0);return a.slice(-1===c?0:c)}}),b.module("a8m.after",[]).filter("after",function(){return function(a,b){return a=C(a)?d(a):a,D(a)?a.slice(b):a}}),b.module("a8m.before-where",[]).filter("beforeWhere",function(){return function(a,b){if(a=C(a)?d(a):a,!D(a)||y(b))return a;var c=a.map(function(a){return f(b,a)}).indexOf(!0);return a.slice(0,-1===c?a.length:++c)}}),b.module("a8m.before",[]).filter("before",function(){return function(a,b){return a=C(a)?d(a):a,D(a)?a.slice(0,b?--b:b):a}}),b.module("a8m.chunk-by",["a8m.filter-watcher"]).filter("chunkBy",["filterWatcher",function(a){return function(b,c,d){function e(a,b){for(var c=[];a--;)c[a]=b;return c}function f(a,b,c){return D(a)?a.map(function(a,d,f){return d*=b,a=f.slice(d,d+b),!y(c)&&a.length<b?a.concat(e(b-a.length,c)):a}).slice(0,Math.ceil(a.length/b)):a}return a.isMemoized("chunkBy",arguments)||a.memoize("chunkBy",arguments,this,f(b,c,d))}}]),b.module("a8m.concat",[]).filter("concat",[function(){return function(a,b){if(y(b))return a;if(D(a))return C(b)?a.concat(d(b)):a.concat(b);if(C(a)){var c=d(a);return C(b)?c.concat(d(b)):c.concat(b)}return a}}]),b.module("a8m.contains",[]).filter({contains:["$parse",t],some:["$parse",t]}),b.module("a8m.count-by",[]).filter("countBy",["$parse",function(a){return function(b,c){var e,f={},g=a(c);return b=C(b)?d(b):b,!D(b)||y(c)?b:(b.forEach(function(a){e=g(a),f[e]||(f[e]=0),f[e]++}),f)}}]),b.module("a8m.defaults",[]).filter("defaults",["$parse",function(a){return function(b,c){if(b=C(b)?d(b):b,!D(b)||!C(c))return b;var e=j(c);return b.forEach(function(b){e.forEach(function(d){var e=a(d),f=e.assign;y(e(b))&&f(b,e(c))})}),b}}]),b.module("a8m.every",[]).filter("every",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?!0:b.every(function(b){return C(b)||z(c)?a(c)(b):b===c})}}]),b.module("a8m.filter-by",[]).filter("filterBy",["$parse",function(a){return function(b,e,f){var g;return f=A(f)||B(f)?String(f).toLowerCase():c,b=C(b)?d(b):b,!D(b)||y(f)?b:b.filter(function(b){return e.some(function(c){if(~c.indexOf("+")){var d=c.replace(new RegExp("\\s","g"),"").split("+");g=d.reduce(function(c,d,e){return 1===e?a(c)(b)+" "+a(d)(b):c+" "+a(d)(b)})}else g=a(c)(b);return A(g)||B(g)?String(g).toLowerCase().contains(f):!1})})}}]),b.module("a8m.first",[]).filter("first",["$parse",function(a){return function(b){var e,f,g;return b=C(b)?d(b):b,D(b)?(g=Array.prototype.slice.call(arguments,1),e=B(g[0])?g[0]:1,f=B(g[0])?B(g[1])?c:g[1]:g[0],g.length?h(b,e,f?a(f):f):b[0]):b}}]),b.module("a8m.flatten",[]).filter("flatten",function(){return function(a,b){return b=b||!1,a=C(a)?d(a):a,D(a)?b?[].concat.apply([],a):u(a,0):a}}),b.module("a8m.fuzzy-by",[]).filter("fuzzyBy",["$parse",function(a){return function(b,c,e,f){var h,i,j=f||!1;return b=C(b)?d(b):b,!D(b)||y(c)||y(e)?b:(i=a(c),b.filter(function(a){return h=i(a),A(h)?(h=j?h:h.toLowerCase(),e=j?e:e.toLowerCase(),g(h,e)!==!1):!1}))}}]),b.module("a8m.fuzzy",[]).filter("fuzzy",function(){return function(a,b,c){function e(a,b){var c,d,e=Object.keys(a);return 0<e.filter(function(e){return c=a[e],d?!0:A(c)?(c=f?c:c.toLowerCase(),d=g(c,b)!==!1):!1}).length}var f=c||!1;return a=C(a)?d(a):a,!D(a)||y(b)?a:(b=f?b:b.toLowerCase(),a.filter(function(a){return A(a)?(a=f?a:a.toLowerCase(),g(a,b)!==!1):C(a)?e(a,b):!1}))}}),b.module("a8m.group-by",["a8m.filter-watcher"]).filter("groupBy",["$parse","filterWatcher",function(a,b){return function(c,d){function e(a,b){var c,d={};return E(a,function(a){c=b(a),d[c]||(d[c]=[]),d[c].push(a)}),d}return!C(c)||y(d)?c:b.isMemoized("groupBy",arguments)||b.memoize("groupBy",arguments,this,e(c,a(d)))}}]),b.module("a8m.is-empty",[]).filter("isEmpty",function(){return function(a){return C(a)?!d(a).length:!a.length}}),b.module("a8m.join",[]).filter("join",function(){return function(a,b){return y(a)||!D(a)?a:(y(b)&&(b=" "),a.join(b))}}),b.module("a8m.last",[]).filter("last",["$parse",function(a){return function(b){var e,f,g,i=G(b);return i=C(i)?d(i):i,D(i)?(g=Array.prototype.slice.call(arguments,1),e=B(g[0])?g[0]:1,f=B(g[0])?B(g[1])?c:g[1]:g[0],g.length?h(i.reverse(),e,f?a(f):f).reverse():i[i.length-1]):i}}]),b.module("a8m.map",[]).filter("map",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?b:b.map(function(b){return a(c)(b)})}}]),b.module("a8m.omit",[]).filter("omit",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?b:b.filter(function(b){return!a(c)(b)})}}]),b.module("a8m.pick",[]).filter("pick",["$parse",function(a){return function(b,c){return b=C(b)?d(b):b,!D(b)||y(c)?b:b.filter(function(b){return a(c)(b)})}}]),b.module("a8m.range",[]).filter("range",function(){return function(a,b){for(var c=0;c<parseInt(b);c++)a.push(c);return a}}),b.module("a8m.remove-with",[]).filter("removeWith",function(){return function(a,b){return y(b)?a:(a=C(a)?d(a):a,a.filter(function(a){return!f(b,a)}))}}),b.module("a8m.remove",[]).filter("remove",function(){return function(a){a=C(a)?d(a):a;var b=Array.prototype.slice.call(arguments,1);return D(a)?a.filter(function(a){return!b.some(function(b){return H(b,a)})}):a}}),b.module("a8m.reverse",[]).filter("reverse",[function(){return function(a){return a=C(a)?d(a):a,A(a)?a.split("").reverse().join(""):D(a)?a.slice().reverse():a}}]),b.module("a8m.search-field",[]).filter("searchField",["$parse",function(a){return function(b){var c,e;b=C(b)?d(b):b;var f=Array.prototype.slice.call(arguments,1);return D(b)&&f.length?b.map(function(b){return e=f.map(function(d){return(c=a(d))(b)}).join(" "),F(b,{searchField:e})}):b}}]),b.module("a8m.to-array",[]).filter("toArray",function(){return function(a,b){return C(a)?b?Object.keys(a).map(function(b){return F(a[b],{$key:b})}):d(a):a}}),b.module("a8m.unique",[]).filter({unique:["$parse",v],uniq:["$parse",v]}),b.module("a8m.where",[]).filter("where",function(){return function(a,b){return y(b)?a:(a=C(a)?d(a):a,a.filter(function(a){return f(b,a)}))}}),b.module("a8m.xor",[]).filter("xor",["$parse",function(a){return function(b,c,e){function f(b,c){var d=a(e);return c.some(function(a){return e?H(d(a),d(b)):H(a,b)})}return e=e||!1,b=C(b)?d(b):b,c=C(c)?d(c):c,D(b)&&D(c)?b.concat(c).filter(function(a){return!(f(a,b)&&f(a,c))}):b}}]),b.module("a8m.math.byteFmt",["a8m.math"]).filter("byteFmt",["$math",function(a){return function(b,c){return B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)?1024>b?i(b,c,a)+" B":1048576>b?i(b/1024,c,a)+" KB":1073741824>b?i(b/1048576,c,a)+" MB":i(b/1073741824,c,a)+" GB":"NaN"}}]),b.module("a8m.math.degrees",["a8m.math"]).filter("degrees",["$math",function(a){return function(b,c){if(B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)){var d=180*b/a.PI;return a.round(d*a.pow(10,c))/a.pow(10,c)}return"NaN"}}]),b.module("a8m.math.kbFmt",["a8m.math"]).filter("kbFmt",["$math",function(a){return function(b,c){return B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)?1024>b?i(b,c,a)+" KB":1048576>b?i(b/1024,c,a)+" MB":i(b/1048576,c,a)+" GB":"NaN"}}]),b.module("a8m.math",[]).factory("$math",["$window",function(a){return a.Math}]),b.module("a8m.math.max",["a8m.math"]).filter("max",["$math","$parse",function(a,b){function c(c,d){var e=c.map(function(a){return b(d)(a)});return e.indexOf(a.max.apply(a,e))}return function(b,d){return D(b)?y(d)?a.max.apply(a,b):b[c(b,d)]:b}}]),b.module("a8m.math.min",["a8m.math"]).filter("min",["$math","$parse",function(a,b){function c(c,d){var e=c.map(function(a){return b(d)(a)});return e.indexOf(a.min.apply(a,e))}return function(b,d){return D(b)?y(d)?a.min.apply(a,b):b[c(b,d)]:b}}]),b.module("a8m.math.percent",["a8m.math"]).filter("percent",["$math","$window",function(a,b){return function(c,d,e){var f=A(c)?b.Number(c):c;return d=d||100,e=e||!1,!B(f)||b.isNaN(f)?c:e?a.round(f/d*100):f/d*100}}]),b.module("a8m.math.radians",["a8m.math"]).filter("radians",["$math",function(a){return function(b,c){if(B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)){var d=3.14159265359*b/180;return a.round(d*a.pow(10,c))/a.pow(10,c)}return"NaN"}}]),b.module("a8m.math.radix",[]).filter("radix",function(){return function(a,b){var c=/^[2-9]$|^[1-2]\d$|^3[0-6]$/;return B(a)&&c.test(b)?a.toString(b).toUpperCase():a}}),b.module("a8m.math.shortFmt",["a8m.math"]).filter("shortFmt",["$math",function(a){return function(b,c){return B(c)&&isFinite(c)&&c%1===0&&c>=0&&B(b)&&isFinite(b)?1e3>b?b:1e6>b?i(b/1e3,c,a)+" K":1e9>b?i(b/1e6,c,a)+" M":i(b/1e9,c,a)+" B":"NaN"}}]),b.module("a8m.math.sum",[]).filter("sum",function(){return function(a,b){return D(a)?a.reduce(function(a,b){return a+b},b||0):a}}),b.module("a8m.ends-with",[]).filter("endsWith",function(){return function(a,b,c){var d,e=c||!1;return!A(a)||y(b)?a:(a=e?a:a.toLowerCase(),d=a.length-b.length,-1!==a.indexOf(e?b:b.toLowerCase(),d))}}),b.module("a8m.latinize",[]).filter("latinize",[function(){function a(a){return a.replace(/[^\u0000-\u007E]/g,function(a){return c[a]||a})}for(var b=[{base:"A",letters:"AⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ"},{base:"AA",letters:"Ꜳ"},{base:"AE",letters:"ÆǼǢ"},{base:"AO",letters:"Ꜵ"},{base:"AU",letters:"Ꜷ"},{base:"AV",letters:"ꜸꜺ"},{base:"AY",letters:"Ꜽ"},{base:"B",letters:"BⒷＢḂḄḆɃƂƁ"},{base:"C",letters:"CⒸＣĆĈĊČÇḈƇȻꜾ"},{base:"D",letters:"DⒹＤḊĎḌḐḒḎĐƋƊƉꝹ"},{base:"DZ",letters:"ǱǄ"},{base:"Dz",letters:"ǲǅ"},{base:"E",letters:"EⒺＥÈÉÊỀẾỄỂẼĒḔḖĔĖËẺĚȄȆẸỆȨḜĘḘḚƐƎ"},{base:"F",letters:"FⒻＦḞƑꝻ"},{base:"G",letters:"GⒼＧǴĜḠĞĠǦĢǤƓꞠꝽꝾ"},{base:"H",letters:"HⒽＨĤḢḦȞḤḨḪĦⱧⱵꞍ"},{base:"I",letters:"IⒾＩÌÍÎĨĪĬİÏḮỈǏȈȊỊĮḬƗ"},{base:"J",letters:"JⒿＪĴɈ"},{base:"K",letters:"KⓀＫḰǨḲĶḴƘⱩꝀꝂꝄꞢ"},{base:"L",letters:"LⓁＬĿĹĽḶḸĻḼḺŁȽⱢⱠꝈꝆꞀ"},{base:"LJ",letters:"Ǉ"},{base:"Lj",letters:"ǈ"},{base:"M",letters:"MⓂＭḾṀṂⱮƜ"},{base:"N",letters:"NⓃＮǸŃÑṄŇṆŅṊṈȠƝꞐꞤ"},{base:"NJ",letters:"Ǌ"},{base:"Nj",letters:"ǋ"},{base:"O",letters:"OⓄＯÒÓÔỒỐỖỔÕṌȬṎŌṐṒŎȮȰÖȪỎŐǑȌȎƠỜỚỠỞỢỌỘǪǬØǾƆƟꝊꝌ"},{base:"OI",letters:"Ƣ"},{base:"OO",letters:"Ꝏ"},{base:"OU",letters:"Ȣ"},{base:"OE",letters:"Œ"},{base:"oe",letters:"œ"},{base:"P",letters:"PⓅＰṔṖƤⱣꝐꝒꝔ"},{base:"Q",letters:"QⓆＱꝖꝘɊ"},{base:"R",letters:"RⓇＲŔṘŘȐȒṚṜŖṞɌⱤꝚꞦꞂ"},{base:"S",letters:"SⓈＳẞŚṤŜṠŠṦṢṨȘŞⱾꞨꞄ"},{base:"T",letters:"TⓉＴṪŤṬȚŢṰṮŦƬƮȾꞆ"},{base:"TZ",letters:"Ꜩ"},{base:"U",letters:"UⓊＵÙÚÛŨṸŪṺŬÜǛǗǕǙỦŮŰǓȔȖƯỪỨỮỬỰỤṲŲṶṴɄ"},{base:"V",letters:"VⓋＶṼṾƲꝞɅ"},{base:"VY",letters:"Ꝡ"},{base:"W",letters:"WⓌＷẀẂŴẆẄẈⱲ"},{base:"X",letters:"XⓍＸẊẌ"},{base:"Y",letters:"YⓎＹỲÝŶỸȲẎŸỶỴƳɎỾ"},{base:"Z",letters:"ZⓏＺŹẐŻŽẒẔƵȤⱿⱫꝢ"},{base:"a",letters:"aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐ"},{base:"aa",letters:"ꜳ"},{base:"ae",letters:"æǽǣ"},{base:"ao",letters:"ꜵ"},{base:"au",letters:"ꜷ"},{base:"av",letters:"ꜹꜻ"},{base:"ay",letters:"ꜽ"},{base:"b",letters:"bⓑｂḃḅḇƀƃɓ"},{base:"c",letters:"cⓒｃćĉċčçḉƈȼꜿↄ"},{base:"d",letters:"dⓓｄḋďḍḑḓḏđƌɖɗꝺ"},{base:"dz",letters:"ǳǆ"},{base:"e",letters:"eⓔｅèéêềếễểẽēḕḗĕėëẻěȅȇẹệȩḝęḙḛɇɛǝ"},{base:"f",letters:"fⓕｆḟƒꝼ"},{base:"g",letters:"gⓖｇǵĝḡğġǧģǥɠꞡᵹꝿ"},{base:"h",letters:"hⓗｈĥḣḧȟḥḩḫẖħⱨⱶɥ"},{base:"hv",letters:"ƕ"},{base:"i",letters:"iⓘｉìíîĩīĭïḯỉǐȉȋịįḭɨı"},{base:"j",letters:"jⓙｊĵǰɉ"},{base:"k",letters:"kⓚｋḱǩḳķḵƙⱪꝁꝃꝅꞣ"},{base:"l",letters:"lⓛｌŀĺľḷḹļḽḻſłƚɫⱡꝉꞁꝇ"},{base:"lj",letters:"ǉ"},{base:"m",letters:"mⓜｍḿṁṃɱɯ"},{base:"n",letters:"nⓝｎǹńñṅňṇņṋṉƞɲŉꞑꞥ"},{base:"nj",letters:"ǌ"},{base:"o",letters:"oⓞｏòóôồốỗổõṍȭṏōṑṓŏȯȱöȫỏőǒȍȏơờớỡởợọộǫǭøǿɔꝋꝍɵ"},{base:"oi",letters:"ƣ"},{base:"ou",letters:"ȣ"},{base:"oo",letters:"ꝏ"},{base:"p",letters:"pⓟｐṕṗƥᵽꝑꝓꝕ"},{base:"q",letters:"qⓠｑɋꝗꝙ"},{base:"r",letters:"rⓡｒŕṙřȑȓṛṝŗṟɍɽꝛꞧꞃ"},{base:"s",letters:"sⓢｓßśṥŝṡšṧṣṩșşȿꞩꞅẛ"},{base:"t",letters:"tⓣｔṫẗťṭțţṱṯŧƭʈⱦꞇ"},{base:"tz",letters:"ꜩ"},{base:"u",letters:"uⓤｕùúûũṹūṻŭüǜǘǖǚủůűǔȕȗưừứữửựụṳųṷṵʉ"},{base:"v",letters:"vⓥｖṽṿʋꝟʌ"},{base:"vy",letters:"ꝡ"},{base:"w",letters:"wⓦｗẁẃŵẇẅẘẉⱳ"},{base:"x",letters:"xⓧｘẋẍ"},{base:"y",letters:"yⓨｙỳýŷỹȳẏÿỷẙỵƴɏỿ"},{base:"z",letters:"zⓩｚźẑżžẓẕƶȥɀⱬꝣ"}],c={},d=0;d<b.length;d++)for(var e=b[d].letters.split(""),f=0;f<e.length;f++)c[e[f]]=b[d].base;return function(b){return A(b)?a(b):b}}]),b.module("a8m.ltrim",[]).filter("ltrim",function(){return function(a,b){var c=b||"\\s";return A(a)?a.replace(new RegExp("^"+c+"+"),""):a}}),b.module("a8m.match",[]).filter("match",function(){return function(a,b,c){var d=new RegExp(b,c);return A(a)?a.match(d):null}}),b.module("a8m.repeat",[]).filter("repeat",[function(){return function(a,b,c){var d=~~b;return A(a)&&d?w(a,--b,c||""):a}}]),b.module("a8m.rtrim",[]).filter("rtrim",function(){return function(a,b){var c=b||"\\s";return A(a)?a.replace(new RegExp(c+"+$"),""):a}}),b.module("a8m.slugify",[]).filter("slugify",[function(){return function(a,b){var c=y(b)?"-":b;return A(a)?a.toLowerCase().replace(/\s+/g,c):a}}]),b.module("a8m.starts-with",[]).filter("startsWith",function(){return function(a,b,c){var d=c||!1;return!A(a)||y(b)?a:(a=d?a:a.toLowerCase(),!a.indexOf(d?b:b.toLowerCase()))}}),b.module("a8m.stringular",[]).filter("stringular",function(){return function(a){var b=Array.prototype.slice.call(arguments,1);return a.replace(/{(\d+)}/g,function(a,c){return y(b[c])?a:b[c]})}}),b.module("a8m.strip-tags",[]).filter("stripTags",function(){return function(a){return A(a)?a.replace(/<\S[^><]*>/g,""):a}}),b.module("a8m.test",[]).filter("test",function(){return function(a,b,c){var d=new RegExp(b,c);return A(a)?d.test(a):a}}),b.module("a8m.trim",[]).filter("trim",function(){return function(a,b){var c=b||"\\s";return A(a)?a.replace(new RegExp("^"+c+"+|"+c+"+$","g"),""):a}}),b.module("a8m.truncate",[]).filter("truncate",function(){return function(a,b,c,d){return b=y(b)?a.length:b,d=d||!1,c=c||"",!A(a)||a.length<=b?a:a.substring(0,d?-1===a.indexOf(" ",b)?a.length:a.indexOf(" ",b):b)+c}}),b.module("a8m.ucfirst",[]).filter("ucfirst",[function(){return function(a){return A(a)?a.split(" ").map(function(a){return a.charAt(0).toUpperCase()+a.substring(1)}).join(" "):a}}]),b.module("a8m.uri-component-encode",[]).filter("uriComponentEncode",["$window",function(a){return function(b){return A(b)?a.encodeURIComponent(b):b}}]),b.module("a8m.uri-encode",[]).filter("uriEncode",["$window",function(a){return function(b){return A(b)?a.encodeURI(b):b}}]),b.module("a8m.wrap",[]).filter("wrap",function(){return function(a,b,c){return A(a)&&x(b)?[b,a,c||b].join(""):a}}),b.module("a8m.filter-watcher",[]).provider("filterWatcher",function(){this.$get=["$window","$rootScope",function(a,b){function c(b,c){function d(){var b=[];return function(c,d){if(C(d)&&!e(d)){if(~b.indexOf(d))return"[Circular]";b.push(d)}return a==d?"$WINDOW":a.document==d?"$DOCUMENT":k(d)?"$SCOPE":d}}return[b,JSON.stringify(c,d())].join("#").replace(/"/g,"")}function d(a){var b=a.targetScope.$id;E(l[b],function(a){delete j[a]}),delete l[b]}function f(){m(function(){b.$$phase||(j={})},2e3)}function g(a,b){var c=a.$id;return y(l[c])&&(a.$on("$destroy",d),l[c]=[]),l[c].push(b)}function h(a,b){var d=c(a,b);return j[d]}function i(a,b,d,e){var h=c(a,b);return j[h]=e,k(d)?g(d,h):f(),e}var j={},l={},m=a.setTimeout;return{isMemoized:h,memoize:i}}]}),b.module("angular.filter",["a8m.ucfirst","a8m.uri-encode","a8m.uri-component-encode","a8m.slugify","a8m.latinize","a8m.strip-tags","a8m.stringular","a8m.truncate","a8m.starts-with","a8m.ends-with","a8m.wrap","a8m.trim","a8m.ltrim","a8m.rtrim","a8m.repeat","a8m.test","a8m.match","a8m.to-array","a8m.concat","a8m.contains","a8m.unique","a8m.is-empty","a8m.after","a8m.after-where","a8m.before","a8m.before-where","a8m.defaults","a8m.where","a8m.reverse","a8m.remove","a8m.remove-with","a8m.group-by","a8m.count-by","a8m.chunk-by","a8m.search-field","a8m.fuzzy-by","a8m.fuzzy","a8m.omit","a8m.pick","a8m.every","a8m.filter-by","a8m.xor","a8m.map","a8m.first","a8m.last","a8m.flatten","a8m.join","a8m.range","a8m.math","a8m.math.max","a8m.math.min","a8m.math.percent","a8m.math.radix","a8m.math.sum","a8m.math.degrees","a8m.math.radians","a8m.math.byteFmt","a8m.math.kbFmt","a8m.math.shortFmt","a8m.angular","a8m.conditions","a8m.is-null","a8m.filter-watcher"])}(window,window.angular);;
-/* esri-leaflet-geocoder - v2.0.2 - Thu Dec 03 2015 14:46:54 GMT-0800 (PST)
- * Copyright (c) 2015 Environmental Systems Research Institute, Inc.
+/* esri-leaflet-geocoder - v2.1.0 - Fri Apr 29 2016 19:10:24 GMT-0700 (PDT)
+ * Copyright (c) 2016 Environmental Systems Research Institute, Inc.
  * Apache-2.0 */
-(function(global,factory){typeof exports==="object"&&typeof module!=="undefined"?factory(exports,require("leaflet"),require("esri-leaflet")):typeof define==="function"&&define.amd?define(["exports","leaflet","esri-leaflet"],factory):factory(global.L.esri.Geocoding={},L,L.esri)})(this,function(exports,L,esri_leaflet){"use strict";exports.Geocode=esri_leaflet.Task.extend({path:"find",params:{outSr:4326,forStorage:false,outFields:"*",maxLocations:20},setters:{address:"address",neighborhood:"neighborhood",city:"city",subregion:"subregion",region:"region",postal:"postal",country:"country",text:"text",category:"category",token:"token",key:"magicKey",fields:"outFields",forStorage:"forStorage",maxLocations:"maxLocations"},initialize:function(options){options=options||{};options.url=options.url||exports.WorldGeocodingServiceUrl;esri_leaflet.Task.prototype.initialize.call(this,options)},within:function(bounds){bounds=L.latLngBounds(bounds);this.params.bbox=esri_leaflet.Util.boundsToExtent(bounds);return this},nearby:function(latlng,radius){latlng=L.latLng(latlng);this.params.location=latlng.lng+","+latlng.lat;this.params.distance=Math.min(Math.max(radius,2e3),5e4);return this},run:function(callback,context){this.path=this.params.text?"find":"findAddressCandidates";if(this.path==="findAddressCandidates"&&this.params.bbox){this.params.searchExtent=this.params.bbox;delete this.params.bbox}return this.request(function(error,response){var processor=this.path==="find"?this._processFindResponse:this._processFindAddressCandidatesResponse;var results=!error?processor(response):undefined;callback.call(context,error,{results:results},response)},this)},_processFindResponse:function(response){var results=[];for(var i=0;i<response.locations.length;i++){var location=response.locations[i];var bounds;if(location.extent){bounds=esri_leaflet.Util.extentToBounds(location.extent)}results.push({text:location.name,bounds:bounds,score:location.feature.attributes.Score,latlng:L.latLng(location.feature.geometry.y,location.feature.geometry.x),properties:location.feature.attributes})}return results},_processFindAddressCandidatesResponse:function(response){var results=[];for(var i=0;i<response.candidates.length;i++){var candidate=response.candidates[i];var bounds=esri_leaflet.Util.extentToBounds(candidate.extent);results.push({text:candidate.address,bounds:bounds,score:candidate.score,latlng:L.latLng(candidate.location.y,candidate.location.x),properties:candidate.attributes})}return results}});function geocode(options){return new exports.Geocode(options)}exports.ReverseGeocode=esri_leaflet.Task.extend({path:"reverseGeocode",params:{outSR:4326,returnIntersection:false},setters:{distance:"distance",language:"langCode",intersection:"returnIntersection"},initialize:function(options){options=options||{};options.url=options.url||exports.WorldGeocodingServiceUrl;esri_leaflet.Task.prototype.initialize.call(this,options)},latlng:function(latlng){latlng=L.latLng(latlng);this.params.location=latlng.lng+","+latlng.lat;return this},run:function(callback,context){return this.request(function(error,response){var result;if(!error){result={latlng:L.latLng(response.location.y,response.location.x),address:response.address}}else{result=undefined}callback.call(context,error,result,response)},this)}});function reverseGeocode(options){return new exports.ReverseGeocode(options)}exports.Suggest=esri_leaflet.Task.extend({path:"suggest",params:{},setters:{text:"text",category:"category",countries:"countryCode"},initialize:function(options){options=options||{};options.url=options.url||exports.WorldGeocodingServiceUrl;esri_leaflet.Task.prototype.initialize.call(this,options)},within:function(bounds){bounds=L.latLngBounds(bounds);bounds=bounds.pad(.5);var center=bounds.getCenter();var ne=bounds.getNorthWest();this.params.location=center.lng+","+center.lat;this.params.distance=Math.min(Math.max(center.distanceTo(ne),2e3),5e4);this.params.searchExtent=esri_leaflet.Util.boundsToExtent(bounds);return this},nearby:function(latlng,radius){latlng=L.latLng(latlng);this.params.location=latlng.lng+","+latlng.lat;this.params.distance=Math.min(Math.max(radius,2e3),5e4);return this},run:function(callback,context){return this.request(function(error,response){callback.call(context,error,response,response)},this)}});function suggest(options){return new exports.Suggest(options)}exports.GeocodeService=esri_leaflet.Service.extend({initialize:function(options){options=options||{};options.url=options.url||exports.WorldGeocodingServiceUrl;esri_leaflet.Service.prototype.initialize.call(this,options);this._confirmSuggestSupport()},geocode:function(){return geocode(this)},reverse:function(){return reverseGeocode(this)},suggest:function(){return suggest(this)},_confirmSuggestSupport:function(){this.metadata(function(error,response){if(error){return}if(response.capabilities.includes("Suggest")){this.options.supportsSuggest=true}else{this.options.supportsSuggest=false}},this)}});function geocodeService(options){return new exports.GeocodeService(options)}exports.Geosearch=L.Control.extend({includes:L.Mixin.Events,options:{position:"topleft",zoomToResult:true,useMapBounds:12,collapseAfterResult:true,expanded:false,allowMultipleResults:true,placeholder:"Search for places or addresses",title:"Location Search"},initialize:function(options){L.Util.setOptions(this,options);if(!options||!options.providers||!options.providers.length){throw new Error("You must specificy at least one provider")}this._providers=options.providers;for(var i=0;i<this._providers.length;i++){this._providers[i].addEventParent(this)}this._pendingSuggestions=[];L.Control.prototype.initialize.call(options)},_geocode:function(text,key,provider){var activeRequests=0;var allResults=[];var bounds;var callback=L.Util.bind(function(error,results){activeRequests--;if(error){return}if(results){allResults=allResults.concat(results)}if(activeRequests<=0){bounds=this._boundsFromResults(allResults);this.fire("results",{results:allResults,bounds:bounds,latlng:bounds?bounds.getCenter():undefined,text:text});if(this.options.zoomToResult&&bounds){this._map.fitBounds(bounds)}L.DomUtil.removeClass(this._input,"geocoder-control-loading");this.fire("load");this.clear();this._input.blur()}},this);if(key){activeRequests++;provider.results(text,key,this._searchBounds(),callback)}else{for(var i=0;i<this._providers.length;i++){activeRequests++;this._providers[i].results(text,key,this._searchBounds(),callback)}}},_suggest:function(text){L.DomUtil.addClass(this._input,"geocoder-control-loading");var activeRequests=this._providers.length;var createCallback=L.Util.bind(function(text,provider){return L.Util.bind(function(error,suggestions){if(error){return}var i;activeRequests=activeRequests-1;if(this._input.value<2){this._suggestions.innerHTML="";this._suggestions.style.display="none";return}if(suggestions){for(i=0;i<suggestions.length;i++){suggestions[i].provider=provider}}if(provider._lastRender!==text&&provider.nodes){for(i=0;i<provider.nodes.length;i++){if(provider.nodes[i].parentElement){this._suggestions.removeChild(provider.nodes[i])}}provider.nodes=[]}if(suggestions.length&&this._input.value===text){if(provider.nodes){for(var k=0;k<provider.nodes.length;k++){if(provider.nodes[k].parentElement){this._suggestions.removeChild(provider.nodes[k])}}}provider._lastRender=text;provider.nodes=this._renderSuggestions(suggestions)}if(activeRequests===0){L.DomUtil.removeClass(this._input,"geocoder-control-loading")}},this)},this);this._pendingSuggestions=[];for(var i=0;i<this._providers.length;i++){var provider=this._providers[i];var request=provider.suggestions(text,this._searchBounds(),createCallback(text,provider));this._pendingSuggestions.push(request)}},_searchBounds:function(){if(this.options.useMapBounds===false){return null}if(this.options.useMapBounds===true){return this._map.getBounds()}if(this.options.useMapBounds<=this._map.getZoom()){return this._map.getBounds()}return null},_renderSuggestions:function(suggestions){var currentGroup;this._suggestions.style.display="block";this._suggestions.style.maxHeight=this._map.getSize().y-this._suggestions.offsetTop-this._wrapper.offsetTop-10+"px";var nodes=[];var list;var header;for(var i=0;i<suggestions.length;i++){var suggestion=suggestions[i];if(!header&&this._providers.length>1&&currentGroup!==suggestion.provider.options.label){header=L.DomUtil.create("span","geocoder-control-header",this._suggestions);header.textContent=suggestion.provider.options.label;header.innerText=suggestion.provider.options.label;currentGroup=suggestion.provider.options.label;nodes.push(header)}if(!list){list=L.DomUtil.create("ul","geocoder-control-list",this._suggestions)}var suggestionItem=L.DomUtil.create("li","geocoder-control-suggestion",list);suggestionItem.innerHTML=suggestion.text;suggestionItem.provider=suggestion.provider;suggestionItem["data-magic-key"]=suggestion.magicKey}nodes.push(list);return nodes},_boundsFromResults:function(results){if(!results.length){return}var nullIsland=L.latLngBounds([0,0],[0,0]);var resultBounds=[];var resultLatlngs=[];for(var i=results.length-1;i>=0;i--){var result=results[i];resultLatlngs.push(result.latlng);if(result.bounds&&result.bounds.isValid()&&!result.bounds.equals(nullIsland)){resultBounds.push(result.bounds)}}var bounds=L.latLngBounds(resultLatlngs);for(var j=0;j<resultBounds.length;j++){bounds.extend(resultBounds[i])}return bounds},clear:function(){this._suggestions.innerHTML="";this._suggestions.style.display="none";this._input.value="";if(this.options.collapseAfterResult){this._input.placeholder="";L.DomUtil.removeClass(this._wrapper,"geocoder-control-expanded")}if(!this._map.scrollWheelZoom.enabled()&&this._map.options.scrollWheelZoom){this._map.scrollWheelZoom.enable()}},getAttribution:function(){var attribs=[];for(var i=0;i<this._providers.length;i++){if(this._providers[i].options.attribution){attribs.push(this._providers[i].options.attribution)}}return attribs.join(", ")},onAdd:function(map){this._map=map;this._wrapper=L.DomUtil.create("div","geocoder-control "+(this.options.expanded?" "+"geocoder-control-expanded":""));this._input=L.DomUtil.create("input","geocoder-control-input leaflet-bar",this._wrapper);this._input.title=this.options.title;this._suggestions=L.DomUtil.create("div","geocoder-control-suggestions leaflet-bar",this._wrapper);var credits=this.getAttribution();map.attributionControl.addAttribution(credits);L.DomEvent.addListener(this._input,"focus",function(e){this._input.placeholder=this.options.placeholder;L.DomUtil.addClass(this._wrapper,"geocoder-control-expanded")},this);L.DomEvent.addListener(this._wrapper,"click",function(e){L.DomUtil.addClass(this._wrapper,"geocoder-control-expanded");this._input.focus()},this);L.DomEvent.addListener(this._suggestions,"mousedown",function(e){var suggestionItem=e.target||e.srcElement;this._geocode(suggestionItem.innerHTML,suggestionItem["data-magic-key"],suggestionItem.provider);this.clear()},this);L.DomEvent.addListener(this._input,"blur",function(e){this.clear()},this);L.DomEvent.addListener(this._input,"keydown",function(e){L.DomUtil.addClass(this._wrapper,"geocoder-control-expanded");var list=this._suggestions.querySelectorAll("."+"geocoder-control-suggestion");var selected=this._suggestions.querySelectorAll("."+"geocoder-control-selected")[0];var selectedPosition;for(var i=0;i<list.length;i++){if(list[i]===selected){selectedPosition=i;break}}switch(e.keyCode){case 13:if(selected){this._geocode(selected.innerHTML,selected["data-magic-key"],selected.provider);this.clear()}else if(this.options.allowMultipleResults){this._geocode(this._input.value,undefined);this.clear()}else{L.DomUtil.addClass(list[0],"geocoder-control-selected")}L.DomEvent.preventDefault(e);break;case 38:if(selected){L.DomUtil.removeClass(selected,"geocoder-control-selected")}var previousItem=list[selectedPosition-1];if(selected&&previousItem){L.DomUtil.addClass(previousItem,"geocoder-control-selected")}else{L.DomUtil.addClass(list[list.length-1],"geocoder-control-selected")}L.DomEvent.preventDefault(e);break;case 40:if(selected){L.DomUtil.removeClass(selected,"geocoder-control-selected")}var nextItem=list[selectedPosition+1];if(selected&&nextItem){L.DomUtil.addClass(nextItem,"geocoder-control-selected")}else{L.DomUtil.addClass(list[0],"geocoder-control-selected")}L.DomEvent.preventDefault(e);break;default:for(var x=0;x<this._pendingSuggestions.length;x++){var request=this._pendingSuggestions[x];if(request&&request.abort&&!request.id){request.abort()}}break}},this);L.DomEvent.addListener(this._input,"keyup",L.Util.throttle(function(e){var key=e.which||e.keyCode;var text=(e.target||e.srcElement).value;if(text.length<2){this._suggestions.innerHTML="";this._suggestions.style.display="none";L.DomUtil.removeClass(this._input,"geocoder-control-loading");return}if(key===27){this._suggestions.innerHTML="";this._suggestions.style.display="none";return}if(key!==13&&key!==38&&key!==40){if(this._input.value!==this._lastValue){this._lastValue=this._input.value;this._suggest(text)}}},50,this),this);L.DomEvent.disableClickPropagation(this._wrapper);L.DomEvent.addListener(this._suggestions,"mouseover",function(e){if(map.scrollWheelZoom.enabled()&&map.options.scrollWheelZoom){map.scrollWheelZoom.disable()}});L.DomEvent.addListener(this._suggestions,"mouseout",function(e){if(!map.scrollWheelZoom.enabled()&&map.options.scrollWheelZoom){map.scrollWheelZoom.enable()}});return this._wrapper},onRemove:function(map){map.attributionControl.removeAttribution("Geocoding by Esri")}});function geosearch(options){return new exports.Geosearch(options)}exports.ArcgisOnlineProvider=exports.GeocodeService.extend({options:{label:"Places and Addresses",maxResults:5,attribution:'<a href="https://developers.arcgis.com/en/features/geocoding/">Geocoding by Esri</a>'},suggestions:function(text,bounds,callback){var request=this.suggest().text(text);if(bounds){request.within(bounds)}if(this.options.countries){request.countries(this.options.countries)}if(this.options.categories){request.category(this.options.categories)}return request.run(function(error,results,response){var suggestions=[];if(!error){while(response.suggestions.length&&suggestions.length<=this.options.maxResults-1){var suggestion=response.suggestions.shift();if(!suggestion.isCollection){suggestions.push({text:suggestion.text,magicKey:suggestion.magicKey})}}}callback(error,suggestions)},this)},results:function(text,key,bounds,callback){var request=this.geocode().text(text);if(key){request.key(key)}else{request.maxLocations(this.options.maxResults)}if(bounds){request.within(bounds)}if(this.options.forStorage){request.forStorage(true)}return request.run(function(error,response){callback(error,response.results)},this)}});function arcgisOnlineProvider(options){return new exports.ArcgisOnlineProvider(options)}exports.FeatureLayerProvider=esri_leaflet.FeatureLayerService.extend({options:{label:"Feature Layer",maxResults:5,bufferRadius:1e3,formatSuggestion:function(feature){return feature.properties[this.options.searchFields[0]]}},initialize:function(options){esri_leaflet.FeatureLayerService.prototype.initialize.call(this,options);if(typeof this.options.searchFields==="string"){this.options.searchFields=[this.options.searchFields]}},suggestions:function(text,bounds,callback){var query=this.query().where(this._buildQuery(text)).returnGeometry(false);if(bounds){query.intersects(bounds)}if(this.options.idField){query.fields([this.options.idField].concat(this.options.searchFields))}var request=query.run(function(error,results,raw){if(error){callback(error,[])}else{this.options.idField=raw.objectIdFieldName;var suggestions=[];var count=Math.min(results.features.length,this.options.maxResults);for(var i=0;i<count;i++){var feature=results.features[i];suggestions.push({text:this.options.formatSuggestion.call(this,feature),magicKey:feature.id})}callback(error,suggestions.slice(0,this.options.maxResults).reverse())}},this);return request},results:function(text,key,bounds,callback){var query=this.query();if(key){query.featureIds([key])}else{query.where(this._buildQuery(text))}if(bounds){query.within(bounds)}return query.run(L.Util.bind(function(error,features){var results=[];for(var i=0;i<features.features.length;i++){var feature=features.features[i];if(feature){var bounds=this._featureBounds(feature);var result={latlng:bounds.getCenter(),bounds:bounds,text:this.options.formatSuggestion.call(this,feature),properties:feature.properties,geojson:feature};results.push(result)}}callback(error,results)},this))},_buildQuery:function(text){var queryString=[];for(var i=this.options.searchFields.length-1;i>=0;i--){var field='upper("'+this.options.searchFields[i]+'")';queryString.push(field+" LIKE upper('%"+text+"%')")}return queryString.join(" OR ")},_featureBounds:function(feature){var geojson=L.geoJson(feature);if(feature.geometry.type==="Point"){var center=geojson.getBounds().getCenter();var lngRadius=this.options.bufferRadius/40075017*360/Math.cos(180/Math.PI*center.lat);var latRadius=this.options.bufferRadius/40075017*360;return L.latLngBounds([center.lat-latRadius,center.lng-lngRadius],[center.lat+latRadius,center.lng+lngRadius])}else{return geojson.getBounds()}}});function featureLayerProvider(options){return new exports.FeatureLayerProvider(options)}exports.MapServiceProvider=esri_leaflet.MapService.extend({options:{layers:[0],label:"Map Service",bufferRadius:1e3,maxResults:5,formatSuggestion:function(feature){return feature.properties[feature.displayFieldName]+" <small>"+feature.layerName+"</small>"}},initialize:function(options){esri_leaflet.MapService.prototype.initialize.call(this,options);this._getIdFields()},suggestions:function(text,bounds,callback){var request=this.find().text(text).fields(this.options.searchFields).returnGeometry(false).layers(this.options.layers);return request.run(function(error,results,raw){var suggestions=[];if(!error){var count=Math.min(this.options.maxResults,results.features.length);raw.results=raw.results.reverse();for(var i=0;i<count;i++){var feature=results.features[i];var result=raw.results[i];var layer=result.layerId;var idField=this._idFields[layer];feature.layerId=layer;feature.layerName=this._layerNames[layer];feature.displayFieldName=this._displayFields[layer];if(idField){suggestions.push({text:this.options.formatSuggestion.call(this,feature),magicKey:result.attributes[idField]+":"+layer})}}}callback(error,suggestions.reverse())},this)},results:function(text,key,bounds,callback){var results=[];var request;if(key){var featureId=key.split(":")[0];var layer=key.split(":")[1];request=this.query().layer(layer).featureIds(featureId)}else{request=this.find().text(text).fields(this.options.searchFields).contains(false).layers(this.options.layers)}return request.run(function(error,features,response){if(!error){if(response.results){response.results=response.results.reverse()}for(var i=0;i<features.features.length;i++){var feature=features.features[i];layer=layer||response.results[i].layerId;if(feature&&layer!==undefined){var bounds=this._featureBounds(feature);feature.layerId=layer;feature.layerName=this._layerNames[layer];feature.displayFieldName=this._displayFields[layer];var result={latlng:bounds.getCenter(),bounds:bounds,text:this.options.formatSuggestion.call(this,feature),properties:feature.properties,geojson:feature};results.push(result)}}}callback(error,results.reverse())},this)},_featureBounds:function(feature){var geojson=L.geoJson(feature);if(feature.geometry.type==="Point"){var center=geojson.getBounds().getCenter();var lngRadius=this.options.bufferRadius/40075017*360/Math.cos(180/Math.PI*center.lat);var latRadius=this.options.bufferRadius/40075017*360;return L.latLngBounds([center.lat-latRadius,center.lng-lngRadius],[center.lat+latRadius,center.lng+lngRadius])}else{return geojson.getBounds()}},_layerMetadataCallback:function(layerid){return L.Util.bind(function(error,metadata){if(error){return}this._displayFields[layerid]=metadata.displayField;this._layerNames[layerid]=metadata.name;for(var i=0;i<metadata.fields.length;i++){var field=metadata.fields[i];if(field.type==="esriFieldTypeOID"){this._idFields[layerid]=field.name;break}}},this)},_getIdFields:function(){this._idFields={};this._displayFields={};this._layerNames={};for(var i=0;i<this.options.layers.length;i++){var layer=this.options.layers[i];this.get(layer,{},this._layerMetadataCallback(layer))}}});function mapServiceProvider(options){return new exports.MapServiceProvider(options)}exports.GeocodeServiceProvider=exports.GeocodeService.extend({options:{label:"Geocode Server",maxResults:5},suggestions:function(text,bounds,callback){if(this.options.supportsSuggest){var request=this.suggest().text(text);if(bounds){request.within(bounds)}return request.run(function(error,results,response){var suggestions=[];if(!error){while(response.suggestions.length&&suggestions.length<=this.options.maxResults-1){var suggestion=response.suggestions.shift();if(!suggestion.isCollection){suggestions.push({text:suggestion.text,magicKey:suggestion.magicKey})}}}callback(error,suggestions)},this)}else{callback(undefined,[]);return false}},results:function(text,key,bounds,callback){var request=this.geocode().text(text);request.maxLocations(this.options.maxResults);if(bounds){request.within(bounds)}return request.run(function(error,response){callback(error,response.results)},this)}});function geocodeServiceProvider(options){return new exports.GeocodeServiceProvider(options)}exports.VERSION="2.0.2";exports.WorldGeocodingServiceUrl=(window.location.protocol==="https:"?"https:":"http:")+"//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/";exports.geocode=geocode;exports.reverseGeocode=reverseGeocode;exports.suggest=suggest;exports.geocodeService=geocodeService;exports.geosearch=geosearch;exports.arcgisOnlineProvider=arcgisOnlineProvider;exports.featureLayerProvider=featureLayerProvider;exports.mapServiceProvider=mapServiceProvider;exports.geocodeServiceProvider=geocodeServiceProvider});
-//# sourceMappingURL=./esri-leaflet-geocoder.js.map
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("leaflet"),require("esri-leaflet")):"function"==typeof define&&define.amd?define(["exports","leaflet","esri-leaflet"],t):t((e.L=e.L||{},e.L.esri=e.L.esri||{},e.L.esri.Geocoding=e.L.esri.Geocoding||{}),e.L,e.L.esri)}(this,function(e,t,s){"use strict";function i(e){return new g(e)}function o(e){return new f(e)}function n(e){return new v(e)}function r(e){return new m(e)}function a(e,t){return new _(e,t)}function l(e){return new y(e)}function u(e){return new b(e)}function d(e){return new x(e)}function h(e){return new C(e)}function c(e){return new S(e)}t="default"in t?t["default"]:t;var p="2.1.0",g=s.Task.extend({path:"find",params:{outSr:4326,forStorage:!1,outFields:"*",maxLocations:20},setters:{address:"address",neighborhood:"neighborhood",city:"city",subregion:"subregion",region:"region",postal:"postal",country:"country",text:"text",category:"category",token:"token",key:"magicKey",fields:"outFields",forStorage:"forStorage",maxLocations:"maxLocations"},initialize:function(e){e=e||{},e.url=e.url||L,s.Task.prototype.initialize.call(this,e)},within:function(e){return e=t.latLngBounds(e),this.params.bbox=s.Util.boundsToExtent(e),this},nearby:function(e,s){return e=t.latLng(e),this.params.location=e.lng+","+e.lat,this.params.distance=Math.min(Math.max(s,2e3),5e4),this},run:function(e,t){return this.path=this.params.text?"find":"findAddressCandidates","findAddressCandidates"===this.path&&this.params.bbox&&(this.params.searchExtent=this.params.bbox,delete this.params.bbox),this.request(function(s,i){var o="find"===this.path?this._processFindResponse:this._processFindAddressCandidatesResponse,n=s?void 0:o(i);e.call(t,s,{results:n},i)},this)},_processFindResponse:function(e){for(var i=[],o=0;o<e.locations.length;o++){var n,r=e.locations[o];r.extent&&(n=s.Util.extentToBounds(r.extent)),i.push({text:r.name,bounds:n,score:r.feature.attributes.Score,latlng:t.latLng(r.feature.geometry.y,r.feature.geometry.x),properties:r.feature.attributes})}return i},_processFindAddressCandidatesResponse:function(e){for(var i=[],o=0;o<e.candidates.length;o++){var n=e.candidates[o],r=s.Util.extentToBounds(n.extent);i.push({text:n.address,bounds:r,score:n.score,latlng:t.latLng(n.location.y,n.location.x),properties:n.attributes})}return i}}),f=s.Task.extend({path:"reverseGeocode",params:{outSR:4326,returnIntersection:!1},setters:{distance:"distance",language:"langCode",intersection:"returnIntersection"},initialize:function(e){e=e||{},e.url=e.url||L,s.Task.prototype.initialize.call(this,e)},latlng:function(e){return e=t.latLng(e),this.params.location=e.lng+","+e.lat,this},run:function(e,s){return this.request(function(i,o){var n;n=i?void 0:{latlng:t.latLng(o.location.y,o.location.x),address:o.address},e.call(s,i,n,o)},this)}}),v=s.Task.extend({path:"suggest",params:{},setters:{text:"text",category:"category",countries:"countryCode"},initialize:function(e){e=e||{},e.url=e.url||L,s.Task.prototype.initialize.call(this,e)},within:function(e){e=t.latLngBounds(e),e=e.pad(.5);var i=e.getCenter(),o=e.getNorthWest();return this.params.location=i.lng+","+i.lat,this.params.distance=Math.min(Math.max(i.distanceTo(o),2e3),5e4),this.params.searchExtent=s.Util.boundsToExtent(e),this},nearby:function(e,s){return e=t.latLng(e),this.params.location=e.lng+","+e.lat,this.params.distance=Math.min(Math.max(s,2e3),5e4),this},run:function(e,t){return this.request(function(s,i){e.call(t,s,i,i)},this)}}),m=s.Service.extend({initialize:function(e){e=e||{},e.url=e.url||L,s.Service.prototype.initialize.call(this,e),this._confirmSuggestSupport()},geocode:function(){return i(this)},reverse:function(){return o(this)},suggest:function(){return n(this)},_confirmSuggestSupport:function(){this.metadata(function(e,t){e||(t.capabilities.indexOf("Suggest")>-1?this.options.supportsSuggest=!0:this.options.supportsSuggest=!1)},this)}}),_=t.Evented.extend({options:{zoomToResult:!0,useMapBounds:12,searchBounds:null},initialize:function(e,s){if(t.Util.setOptions(this,s),this._control=e,!s||!s.providers||!s.providers.length)throw new Error("You must specify at least one provider");this._providers=s.providers},_geocode:function(e,s,i){var o,n=0,r=[],a=t.Util.bind(function(t,s){n--,t||(s&&(r=r.concat(s)),0>=n&&(o=this._boundsFromResults(r),this.fire("results",{results:r,bounds:o,latlng:o?o.getCenter():void 0,text:e},!0),this.options.zoomToResult&&o&&this._control._map.fitBounds(o),this.fire("load")))},this);if(s)n++,i.results(e,s,this._searchBounds(),a);else for(var l=0;l<this._providers.length;l++)n++,this._providers[l].results(e,s,this._searchBounds(),a)},_suggest:function(e){var s=this._providers.length,i=t.Util.bind(function(e,i){return t.Util.bind(function(t,o){if(!t){var n;if(s-=1,e.length<2)return this._suggestions.innerHTML="",void(this._suggestions.style.display="none");if(o)for(n=0;n<o.length;n++)o[n].provider=i;if(i._lastRender!==e&&i.nodes){for(n=0;n<i.nodes.length;n++)i.nodes[n].parentElement&&this._control._suggestions.removeChild(i.nodes[n]);i.nodes=[]}o.length&&this._control._input.value===e&&(this._control.clearSuggestions(i.nodes),i._lastRender=e,i.nodes=this._control._renderSuggestions(o),this._control._nodes=[])}},this)},this);this._pendingSuggestions=[];for(var o=0;o<this._providers.length;o++){var n=this._providers[o],r=n.suggestions(e,this._searchBounds(),i(e,n));this._pendingSuggestions.push(r)}},_searchBounds:function(){return null!==this.options.searchBounds?this.options.searchBounds:this.options.useMapBounds===!1?null:this.options.useMapBounds===!0?this._control._map.getBounds():this.options.useMapBounds<=this._control._map.getZoom()?this._control._map.getBounds():null},_boundsFromResults:function(e){if(e.length){for(var s=t.latLngBounds([0,0],[0,0]),i=[],o=[],n=e.length-1;n>=0;n--){var r=e[n];o.push(r.latlng),r.bounds&&r.bounds.isValid()&&!r.bounds.equals(s)&&i.push(r.bounds)}for(var a=t.latLngBounds(o),l=0;l<i.length;l++)a.extend(i[l]);return a}},_getAttribution:function(){for(var e=[],t=this._providers,s=0;s<t.length;s++)t[s].options.attribution&&e.push(t[s].options.attribution);return e.join(", ")}}),y=t.Control.extend({includes:t.Mixin.Events,options:{position:"topleft",collapseAfterResult:!0,expanded:!1,allowMultipleResults:!0,placeholder:"Search for places or addresses",title:"Location Search"},initialize:function(e){if(t.Util.setOptions(this,e),!e||!e.providers||!e.providers.length)throw new Error("You must specify at least one provider");this._geosearchCore=a(this,e),this._geosearchCore._providers=e.providers,this._geosearchCore.addEventParent(this);for(var s=0;s<this._geosearchCore._providers.length;s++)this._geosearchCore._providers[s].addEventParent(this);this._geosearchCore._pendingSuggestions=[],t.Control.prototype.initialize.call(e)},_renderSuggestions:function(e){var s;this._suggestions.style.display="block",this._suggestions.style.maxHeight=this._map.getSize().y-this._suggestions.offsetTop-this._wrapper.offsetTop-10+"px";for(var i,o,n=[],r=0;r<e.length;r++){var a=e[r];!o&&this._geosearchCore._providers.length>1&&s!==a.provider.options.label&&(o=t.DomUtil.create("span","geocoder-control-header",this._suggestions),o.textContent=a.provider.options.label,o.innerText=a.provider.options.label,s=a.provider.options.label,n.push(o)),i||(i=t.DomUtil.create("ul","geocoder-control-list",this._suggestions));var l=t.DomUtil.create("li","geocoder-control-suggestion",i);l.innerHTML=a.text,l.provider=a.provider,l["data-magic-key"]=a.magicKey}return t.DomUtil.removeClass(this._input,"geocoder-control-loading"),n.push(i),n},_boundsFromResults:function(e){if(e.length){for(var s=t.latLngBounds([0,0],[0,0]),i=[],o=[],n=e.length-1;n>=0;n--){var r=e[n];o.push(r.latlng),r.bounds&&r.bounds.isValid()&&!r.bounds.equals(s)&&i.push(r.bounds)}for(var a=t.latLngBounds(o),l=0;l<i.length;l++)a.extend(i[l]);return a}},clear:function(){this._suggestions.innerHTML="",this._suggestions.style.display="none",this._input.value="",this.options.collapseAfterResult&&(this._input.placeholder="",t.DomUtil.removeClass(this._wrapper,"geocoder-control-expanded")),!this._map.scrollWheelZoom.enabled()&&this._map.options.scrollWheelZoom&&this._map.scrollWheelZoom.enable()},clearSuggestions:function(){if(this._nodes)for(var e=0;e<this._nodes.length;e++)this._nodes[e].parentElement&&this._suggestions.removeChild(this._nodes[e])},_setupClick:function(){t.DomUtil.addClass(this._wrapper,"geocoder-control-expanded"),this._input.focus()},disable:function(){this._input.disabled=!0,t.DomUtil.addClass(this._input,"geocoder-control-input-disabled"),t.DomEvent.removeListener(this._wrapper,"click",this._setupClick,this)},enable:function(){this._input.disabled=!1,t.DomUtil.removeClass(this._input,"geocoder-control-input-disabled"),t.DomEvent.addListener(this._wrapper,"click",this._setupClick,this)},getAttribution:function(){for(var e=[],t=0;t<this._providers.length;t++)this._providers[t].options.attribution&&e.push(this._providers[t].options.attribution);return e.join(", ")},onAdd:function(e){this._map=e,this._wrapper=t.DomUtil.create("div","geocoder-control "+(this.options.expanded?" geocoder-control-expanded":"")),this._input=t.DomUtil.create("input","geocoder-control-input leaflet-bar",this._wrapper),this._input.title=this.options.title,this._suggestions=t.DomUtil.create("div","geocoder-control-suggestions leaflet-bar",this._wrapper);var s=this._geosearchCore._getAttribution();return e.attributionControl.addAttribution(s),t.DomEvent.addListener(this._input,"focus",function(e){this._input.placeholder=this.options.placeholder,t.DomUtil.addClass(this._wrapper,"geocoder-control-expanded")},this),t.DomEvent.addListener(this._wrapper,"click",this._setupClick,this),t.DomEvent.addListener(this._suggestions,"mousedown",function(e){var t=e.target||e.srcElement;this._geosearchCore._geocode(t.innerHTML,t["data-magic-key"],t.provider),this.clear()},this),t.DomEvent.addListener(this._input,"blur",function(e){this.clear()},this),t.DomEvent.addListener(this._input,"keydown",function(e){t.DomUtil.addClass(this._wrapper,"geocoder-control-expanded");for(var s,i=this._suggestions.querySelectorAll(".geocoder-control-suggestion"),o=this._suggestions.querySelectorAll(".geocoder-control-selected")[0],n=0;n<i.length;n++)if(i[n]===o){s=n;break}switch(e.keyCode){case 13:o?(this._geosearchCore._geocode(o.innerHTML,o["data-magic-key"],o.provider),this.clear()):this.options.allowMultipleResults?(this._geosearchCore._geocode(this._input.value,void 0),this.clear()):t.DomUtil.addClass(i[0],"geocoder-control-selected"),t.DomEvent.preventDefault(e);break;case 38:o&&t.DomUtil.removeClass(o,"geocoder-control-selected");var r=i[s-1];o&&r?t.DomUtil.addClass(r,"geocoder-control-selected"):t.DomUtil.addClass(i[i.length-1],"geocoder-control-selected"),t.DomEvent.preventDefault(e);break;case 40:o&&t.DomUtil.removeClass(o,"geocoder-control-selected");var a=i[s+1];o&&a?t.DomUtil.addClass(a,"geocoder-control-selected"):t.DomUtil.addClass(i[0],"geocoder-control-selected"),t.DomEvent.preventDefault(e);break;default:for(var l=0;l<this._geosearchCore._pendingSuggestions.length;l++){var u=this._geosearchCore._pendingSuggestions[l];u&&u.abort&&!u.id&&u.abort()}}},this),t.DomEvent.addListener(this._input,"keyup",t.Util.throttle(function(e){var s=e.which||e.keyCode,i=(e.target||e.srcElement).value;return i.length<2?(this._suggestions.innerHTML="",this._suggestions.style.display="none",void t.DomUtil.removeClass(this._input,"geocoder-control-loading")):27===s?(this._suggestions.innerHTML="",void(this._suggestions.style.display="none")):void(13!==s&&38!==s&&40!==s&&this._input.value!==this._lastValue&&(this._lastValue=this._input.value,t.DomUtil.addClass(this._input,"geocoder-control-loading"),this._geosearchCore._suggest(i)))},50,this),this),t.DomEvent.disableClickPropagation(this._wrapper),t.DomEvent.addListener(this._suggestions,"mouseover",function(t){e.scrollWheelZoom.enabled()&&e.options.scrollWheelZoom&&e.scrollWheelZoom.disable()}),t.DomEvent.addListener(this._suggestions,"mouseout",function(t){!e.scrollWheelZoom.enabled()&&e.options.scrollWheelZoom&&e.scrollWheelZoom.enable()}),this._geosearchCore.on("load",function(e){t.DomUtil.removeClass(this._input,"geocoder-control-loading"),this.clear(),this._input.blur()},this),this._wrapper},onRemove:function(e){e.attributionControl.removeAttribution("Geocoding by Esri")}}),b=m.extend({options:{label:"Places and Addresses",maxResults:5,attribution:'<a href="https://developers.arcgis.com/en/features/geocoding/">Geocoding by Esri</a>'},suggestions:function(e,t,s){var i=this.suggest().text(e);return t&&i.within(t),this.options.countries&&i.countries(this.options.countries),this.options.categories&&i.category(this.options.categories),i.run(function(e,t,i){var o=[];if(!e)for(;i.suggestions.length&&o.length<=this.options.maxResults-1;){var n=i.suggestions.shift();n.isCollection||o.push({text:n.text,magicKey:n.magicKey})}s(e,o)},this)},results:function(e,t,s,i){var o=this.geocode().text(e);return t?o.key(t):o.maxLocations(this.options.maxResults),s&&o.within(s),this.options.forStorage&&o.forStorage(!0),o.run(function(e,t){i(e,t.results)},this)}}),x=s.FeatureLayerService.extend({options:{label:"Feature Layer",maxResults:5,bufferRadius:1e3,formatSuggestion:function(e){return e.properties[this.options.searchFields[0]]}},initialize:function(e){s.FeatureLayerService.prototype.initialize.call(this,e),"string"==typeof this.options.searchFields&&(this.options.searchFields=[this.options.searchFields])},suggestions:function(e,t,s){var i=this.query().where(this._buildQuery(e)).returnGeometry(!1);t&&i.intersects(t),this.options.idField&&i.fields([this.options.idField].concat(this.options.searchFields));var o=i.run(function(e,t,i){if(e)s(e,[]);else{this.options.idField=i.objectIdFieldName;for(var o=[],n=Math.min(t.features.length,this.options.maxResults),r=0;n>r;r++){var a=t.features[r];o.push({text:this.options.formatSuggestion.call(this,a),magicKey:a.id})}s(e,o.slice(0,this.options.maxResults).reverse())}},this);return o},results:function(e,s,i,o){var n=this.query();return s?n.featureIds([s]):n.where(this._buildQuery(e)),i&&n.within(i),n.run(t.Util.bind(function(e,t){for(var s=[],i=0;i<t.features.length;i++){var n=t.features[i];if(n){var r=this._featureBounds(n),a={latlng:r.getCenter(),bounds:r,text:this.options.formatSuggestion.call(this,n),properties:n.properties,geojson:n};s.push(a)}}o(e,s)},this))},_buildQuery:function(e){for(var t=[],s=this.options.searchFields.length-1;s>=0;s--){var i='upper("'+this.options.searchFields[s]+'")';t.push(i+" LIKE upper('%"+e+"%')")}return t.join(" OR ")},_featureBounds:function(e){var s=t.geoJson(e);if("Point"===e.geometry.type){var i=s.getBounds().getCenter(),o=this.options.bufferRadius/40075017*360/Math.cos(180/Math.PI*i.lat),n=this.options.bufferRadius/40075017*360;return t.latLngBounds([i.lat-n,i.lng-o],[i.lat+n,i.lng+o])}return s.getBounds()}}),C=s.MapService.extend({options:{layers:[0],label:"Map Service",bufferRadius:1e3,maxResults:5,formatSuggestion:function(e){return e.properties[e.displayFieldName]+" <small>"+e.layerName+"</small>"}},initialize:function(e){s.MapService.prototype.initialize.call(this,e),this._getIdFields()},suggestions:function(e,t,s){var i=this.find().text(e).fields(this.options.searchFields).returnGeometry(!1).layers(this.options.layers);return i.run(function(e,t,i){var o=[];if(!e){var n=Math.min(this.options.maxResults,t.features.length);i.results=i.results.reverse();for(var r=0;n>r;r++){var a=t.features[r],l=i.results[r],u=l.layerId,d=this._idFields[u];a.layerId=u,a.layerName=this._layerNames[u],a.displayFieldName=this._displayFields[u],d&&o.push({text:this.options.formatSuggestion.call(this,a),magicKey:l.attributes[d]+":"+u})}}s(e,o.reverse())},this)},results:function(e,t,s,i){var o,n=[];if(t){var r=t.split(":")[0],a=t.split(":")[1];o=this.query().layer(a).featureIds(r)}else o=this.find().text(e).fields(this.options.searchFields).contains(!1).layers(this.options.layers);return o.run(function(e,t,s){if(!e){s.results&&(s.results=s.results.reverse());for(var o=0;o<t.features.length;o++){var r=t.features[o];if(a=a||s.results[o].layerId,r&&void 0!==a){var l=this._featureBounds(r);r.layerId=a,r.layerName=this._layerNames[a],r.displayFieldName=this._displayFields[a];var u={latlng:l.getCenter(),bounds:l,text:this.options.formatSuggestion.call(this,r),properties:r.properties,geojson:r};n.push(u)}}}i(e,n.reverse())},this)},_featureBounds:function(e){var s=t.geoJson(e);if("Point"===e.geometry.type){var i=s.getBounds().getCenter(),o=this.options.bufferRadius/40075017*360/Math.cos(180/Math.PI*i.lat),n=this.options.bufferRadius/40075017*360;return t.latLngBounds([i.lat-n,i.lng-o],[i.lat+n,i.lng+o])}return s.getBounds()},_layerMetadataCallback:function(e){return t.Util.bind(function(t,s){if(!t){this._displayFields[e]=s.displayField,this._layerNames[e]=s.name;for(var i=0;i<s.fields.length;i++){var o=s.fields[i];if("esriFieldTypeOID"===o.type){this._idFields[e]=o.name;break}}}},this)},_getIdFields:function(){this._idFields={},this._displayFields={},this._layerNames={};for(var e=0;e<this.options.layers.length;e++){var t=this.options.layers[e];this.get(t,{},this._layerMetadataCallback(t))}}}),S=m.extend({options:{label:"Geocode Server",maxResults:5},suggestions:function(e,t,s){if(this.options.supportsSuggest){var i=this.suggest().text(e);return t&&i.within(t),i.run(function(e,t,i){var o=[];if(!e)for(;i.suggestions.length&&o.length<=this.options.maxResults-1;){var n=i.suggestions.shift();n.isCollection||o.push({text:n.text,magicKey:n.magicKey})}s(e,o)},this)}return s(void 0,[]),!1},results:function(e,t,s,i){var o=this.geocode().text(e);return o.maxLocations(this.options.maxResults),s&&o.within(s),o.run(function(e,t){i(e,t.results)},this)}}),L="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/";e.WorldGeocodingServiceUrl=L,e.VERSION=p,e.Geocode=g,e.geocode=i,e.ReverseGeocode=f,e.reverseGeocode=o,e.Suggest=v,e.suggest=n,e.GeocodeService=m,e.geocodeService=r,e.Geosearch=y,e.geosearch=l,e.GeosearchCore=_,e.geosearchCore=a,e.ArcgisOnlineProvider=b,e.arcgisOnlineProvider=u,e.FeatureLayerProvider=x,e.featureLayerProvider=d,e.MapServiceProvider=C,e.mapServiceProvider=h,e.GeocodeServiceProvider=S,e.geocodeServiceProvider=c});
+//# sourceMappingURL=esri-leaflet-geocoder.js.map;
+/**
+*
+* A Leaflet Plugin For Editing Geometry Layers in Leaflet 1.0
+* by Sumit Kumar (@TweetsOfSumit)
+* Github Repo: https://github.com/codeofsumit/leaflet.pm
+*/
+
+L.PM = L.PM || {
+    initialize: function() {
+
+        var initLayerGroup = function() {
+            this.pm = new L.PM.Edit.LayerGroup(this);
+        };
+        L.LayerGroup.addInitHook(initLayerGroup);
+
+
+        var initPolygon = function() {
+            this.pm = new L.PM.Edit.Poly(this);
+        };
+        L.Polygon.addInitHook(initPolygon);
+
+
+        var initMap = function() {
+            this.pm = new L.PM.Draw(this);
+        };
+        L.Map.addInitHook(initMap);
+
+    },
+    Edit: {}
+};
+
+// initialize leaflet.pm
+L.PM.initialize();
+
+L.PM.Draw = L.Class.extend({
+
+    initialize: function(map) {
+
+        // save the map
+        this._map = map;
+
+        // define all possible shapes that can be drawn
+        this.shapes = ['Poly'];
+
+        // initiate drawing class for our shapes
+        for(var i=0; i<this.shapes.length; i++) {
+            var shape = this.shapes[i];
+            this[shape] = new L.PM.Draw[shape](this._map);
+        }
+
+    },
+    getShapes: function() {
+        // if somebody wants to know what shapes are available
+        return this.shapes;
+    },
+    enableDraw: function(shape) {
+
+        if(!shape) {
+            throw 'Error: Please pass a shape as a parameter. Possible shapes are: ' + this.getShapes().join(',');
+        }
+
+        // disable drawing for all shapes
+        this.disableDraw();
+
+        // enable draw for a shape
+        this[shape].enable();
+
+    },
+    disableDraw: function() {
+
+        // there can only be one drawing mode active at a time on a map
+        // so it doesn't matter which one should be disabled.
+        // just disable all of them
+        for(var i=0; i<this.shapes.length; i++) {
+            var shape = this.shapes[i];
+            this[shape].disable();
+        }
+
+    },
+    addControls: function() {
+        // add control buttons for our shapes
+        for(var i=0; i<this.shapes.length; i++) {
+            var shape = this.shapes[i];
+            this[shape].addButton();
+        }
+    }
+});
+
+L.Control.PMButton = L.Control.extend({
+    options: {
+        position: 'topleft'
+    },
+    initialize: function (options) {
+        this._button = {};
+        this.setButton(options);
+    },
+
+    onAdd: function (map) {
+
+        this._map = map;
+        var container = L.DomUtil.create('div', 'leaflet-control-button');
+
+        this._container = container;
+
+        this._makeButton(this._button);
+        return this._container;
+    },
+
+    onRemove: function (map) {
+    },
+
+    setButton: function (options) {
+        var button = {
+            'iconUrl': options.iconUrl,
+            'onClick': options.onClick,
+            'afterClick': options.afterClick,
+            'doToggle': options.doToggle,
+            'toggleStatus': options.toggleStatus
+        };
+
+        this._button = button;
+    },
+
+    getText: function () {
+        return this._button.text;
+    },
+
+    getIconUrl: function () {
+        return this._button.iconUrl;
+    },
+
+    destroy: function () {
+        this._button = {};
+        this._update();
+    },
+
+    toggle: function (e) {
+        if(typeof e === 'boolean'){
+            this._button.toggleStatus = e;
+        }
+        else{
+            this._button.toggleStatus = !this._button.toggleStatus;
+        }
+    },
+    toggled: function () {
+        return this._button.toggleStatus;
+    },
+    onCreate: function() {
+        this.toggle(false);
+    },
+    _makeButton: function(button) {
+
+        var newButton = L.DomUtil.create('div', 'leaflet-buttons-control-button', this._container);
+        if(button.toggleStatus)
+            L.DomUtil.addClass(newButton,'active');
+
+        var image = L.DomUtil.create('img', 'control-icon', newButton);
+        image.setAttribute('src', button.iconUrl);
+
+        L.DomEvent
+            .addListener(newButton, 'click', button.onClick, this)
+            .addListener(newButton, 'click', this._clicked, this)
+            .addListener(newButton, 'click', button.afterClick, this);
+
+        L.DomEvent.disableClickPropagation(newButton);
+        return newButton;
+
+    },
+
+    _clicked: function () {
+
+        if(this._button.doToggle){
+
+            if(this._button.toggleStatus) {
+                L.DomUtil.removeClass(this._container.childNodes[0],'active');
+            }
+            else {
+                L.DomUtil.addClass(this._container.childNodes[0],'active');
+            }
+            this.toggle();
+        }
+        return;
+    }
+
+});
+
+L.PM.Draw.Poly = L.PM.Draw.extend({
+
+    initialize: function(map) {
+        this._map = map;
+        this._shape = 'Poly';
+    },
+    enable: function(options) {
+        // enable draw mode
+
+        this._enabled = true;
+
+        // create a new layergroup
+        this._layerGroup = new L.LayerGroup();
+        this._layerGroup.addTo(this._map);
+
+        // this is the polyLine that'll make up the polygon
+        this._polyline = L.polyline([], {color: 'red'});
+        this._layerGroup.addLayer(this._polyline);
+
+        // this is the hintline from the mouse cursor to the last marker
+        this._hintline = L.polyline([], {
+            color: 'red',
+            dashArray: [5, 5]
+        });
+        this._layerGroup.addLayer(this._hintline);
+
+
+        // change map cursor
+        this._map._container.style.cursor = 'crosshair';
+
+        // create a polygon-point on click
+        this._map.on('click', this._createPolygonPoint, this);
+
+        // sync the hintline on mousemove
+        this._map.on('mousemove', this._syncHintLine, this);
+
+        // fire drawstart event
+        this._map.fire('pm:drawstart', {shape: this._shape});
+
+    },
+    disable: function() {
+        // disable draw mode
+
+        // cancel, if drawing mode isn't even enabled
+        if(!this._enabled) {
+            return;
+        }
+
+        this._enabled = false;
+
+        // reset cursor
+        this._map._container.style.cursor = 'default';
+
+        // unbind listeners
+        this._map.off('click', this._createPolygonPoint);
+        this._map.off('mousemove', this._syncHintLine);
+
+        // remove layer
+        this._map.removeLayer(this._layerGroup);
+
+        // fire drawend event
+        this._map.fire('pm:drawend', {shape: this._shape});
+
+    },
+    enabled: function() {
+        return this._enabled;
+    },
+    toggle: function() {
+
+        if(this.enabled()) {
+            this.disable();
+        } else {
+            this.enable();
+        }
+
+    },
+    addButton: function(map) {
+
+        var self = this;
+
+        var drawPolyButton = {
+              'iconUrl': 'assets/icons/polygon.png',
+              'onClick': function() {
+
+              },
+              'afterClick': function(e) {
+                  self.toggle();
+              },
+              'doToggle': true,
+              'toggleStatus': false
+        };
+
+        this._drawButton = new L.Control.PMButton(drawPolyButton).addTo(this._map);
+
+        this._map.on('pm:drawstart', function(e) {
+            if(e.shape === self._shape && !self._drawButton.toggled()) {
+                self._drawButton._clicked();
+            }
+        });
+
+        this._map.on('pm:drawend', function(e) {
+            if(e.shape === self._shape && self._drawButton.toggled()) {
+                self._drawButton._clicked();
+            }
+        });
+
+        return this._drawButton;
+
+    },
+    _syncHintLine: function(e) {
+
+        var polyPoints = this._polyline.getLatLngs();
+
+        if(polyPoints.length > 0) {
+            var lastPolygonPoint = polyPoints[polyPoints.length - 1];
+            this._hintline.setLatLngs([lastPolygonPoint, e.latlng]);
+        }
+
+
+
+    },
+    _createPolygonPoint: function(e) {
+
+        // is this the first point?
+        var first = this._polyline.getLatLngs().length === 0 ? true : false;
+
+        this._polyline.addLatLng(e.latlng);
+        this._createMarker(e.latlng, first);
+
+
+        this._hintline.setLatLngs([e.latlng, e.latlng]);
+
+    },
+    _finishPolygon: function() {
+
+        var coords = this._polyline.getLatLngs();
+        var polygonLayer = L.polygon(coords).addTo(this._map);
+
+        polygonLayer.pm.toggleEdit();
+
+        this.disable();
+
+        this._map.fire('pm:create', {
+            shape: this._shape,
+            layer: polygonLayer
+        });
+    },
+    _createMarker: function(latlng, first) {
+
+        var marker = new L.Marker(latlng, {
+            draggable: false,
+            icon: L.divIcon({className: 'marker-icon'})
+        });
+
+        this._layerGroup.addLayer(marker);
+
+        if(first) {
+            marker.on('click', this._finishPolygon, this);
+        }
+
+        return marker;
+
+    },
+});
+
+L.PM.Edit.Poly = L.Class.extend({
+
+    initialize: function(poly) {
+        this._poly = poly;
+        this._enabled = false;
+    },
+
+    toggleEdit: function() {
+        if(!this.enabled()) {
+            this.enable();
+        } else {
+            this.disable();
+        }
+    },
+
+    enable: function() {
+
+        var self = this;
+
+        if(!this.enabled()) {
+            this._enabled = true;
+
+            if(!this._markerGroup) {
+                this._markerGroup = new L.LayerGroup();
+
+                // init dragable markers
+                this._initMarkers();
+            }
+
+            this._poly._map.addLayer(this._markerGroup);
+
+            this._poly.on('remove', function() {
+                self.disable();
+            });
+        }
+
+    },
+
+    enabled: function() {
+        return this._enabled;
+    },
+
+    disable: function() {
+        this._enabled = false;
+        this._poly._map.removeLayer(this._markerGroup);
+    },
+
+    _initMarkers: function() {
+
+        this._markers = [];
+
+        var coords = this._poly._latlngs[0];
+
+        for(var i = 0; i < coords.length; i++) {
+            var marker = this._createMarker(coords[i], i);
+            this._markers.push(marker);
+        }
+
+        for(var k = 0; k < coords.length; k++) {
+
+            var nextIndex = k+1 >= coords.length ? 0 : k+1;
+
+            this._createMiddleMarker(
+                this._markers[k], this._markers[nextIndex]
+            );
+        }
+
+    },
+
+    // creates initial markers for coordinates
+    _createMarker: function(latlng, index) {
+
+        var marker = new L.Marker(latlng, {
+            draggable: true,
+            icon: L.divIcon({className: 'marker-icon'})
+        });
+
+        marker._origLatLng = latlng;
+        marker._index = index;
+
+        marker.on('drag', this._onMarkerDrag, this);
+        marker.on('dragend', this._onMarkerDragEnd, this);
+        marker.on('contextmenu', this._removeMarker, this);
+
+        this._markerGroup.addLayer(marker);
+
+        return marker;
+
+    },
+
+    _createMiddleMarker: function(leftM, rightM) {
+        var self = this;
+        var latlng = this._calcMiddleLatLng(leftM, rightM);
+
+        var middleMarker = this._createMarker(latlng);
+        var icon = L.divIcon({className: 'marker-icon marker-icon-middle'})
+        middleMarker.setIcon(icon);
+
+        // save middle markers to the other markers
+        leftM._middleMarkerRight = middleMarker;
+        rightM._middleMarkerLeft = middleMarker;
+
+
+        middleMarker.on('dragstart', function() {
+            self._addMarker(middleMarker, leftM, rightM);
+        });
+        middleMarker.on('click', function() {
+            self._addMarker(middleMarker, leftM, rightM);
+        });
+
+
+    },
+
+    // adds a new marker from a middlemarker
+    _addMarker: function(newM, leftM, rightM) {
+
+        // first, make this middlemarker a regular marker
+        var icon = L.divIcon({className: 'marker-icon'})
+        newM.setIcon(icon);
+        newM.off('dragstart');
+        newM.off('click');
+
+        // now, create the polygon coordinate point for that marker
+        var latlng = newM.getLatLng();
+        var coords = this._poly._latlngs[0];
+        var index = leftM._index + 1;
+
+        coords.splice(index, 0, latlng);
+
+        // associate polygon coordinate with marker coordinate
+        newM._origLatLng = coords[index];
+
+        // push into marker array update the indexes for every marker
+        this._markers.splice(index, 0, newM);
+        for(var i=0;i<this._markers.length;i++) {
+            this._markers[i]._index = i;
+        }
+
+        // create the new middlemarkers
+        this._createMiddleMarker(leftM, newM);
+        this._createMiddleMarker(newM, rightM);
+
+        // fire edit event
+        this._fireEdit();
+
+
+    },
+
+    _removeMarker: function(e) {
+        var marker = e.target;
+
+        // only continue if this is NOT a middle marker (those can't be deleted)
+        if(marker._index !== undefined) {
+
+            // remove polygon coordinate from this marker
+            var coords = this._poly._latlngs[0];
+            var index = marker._index;
+
+            coords.splice(index, 1);
+            this._poly.redraw();
+
+            // remove the marker and the middlemarkers next to it from the map
+            this._markerGroup.removeLayer(marker._middleMarkerLeft);
+            this._markerGroup.removeLayer(marker._middleMarkerRight);
+            this._markerGroup.removeLayer(marker);
+
+
+            // create the new middlemarker
+            var leftMarkerIndex = index - 1 < 0 ? this._markers.length - 1 : index - 1;
+            var rightMarkerIndex = index + 1 >= this._markers.length ? 0 : index + 1;
+
+            var leftM = this._markers[leftMarkerIndex];
+            var rightM = this._markers[rightMarkerIndex];
+            this._createMiddleMarker(leftM, rightM);
+
+
+            // remove the marker from the markers array
+            this._markers.splice(index, 1);
+
+            // update the remaining markers indexes
+            for(var i=0;i<this._markers.length;i++) {
+                this._markers[i]._index = i;
+            }
+
+            // fire edit event
+            this._fireEdit();
+
+        }
+
+
+    },
+
+    _onMarkerDrag: function(e) {
+
+        // dragged marker
+        var marker = e.target;
+
+        // the dragged markers neighbors
+        var nextMarkerIndex = marker._index + 1 >= this._markers.length ? 0 : marker._index + 1;
+        var prevMarkerIndex = marker._index - 1 < 0 ? this._markers.length - 1 : marker._index - 1;
+
+        // update marker coordinates which will update polygon coordinates
+        L.extend(marker._origLatLng, marker._latlng);
+        this._poly.redraw();
+
+        // update middle markers on the left and right
+        // be aware that "left" and "right" might be interchanged, depending on the geojson array
+        // TODO rename "left" and "right" to "prev" and "next"
+        var middleMarkerRightLatLng = this._calcMiddleLatLng(marker, this._markers[nextMarkerIndex]);
+        marker._middleMarkerRight.setLatLng(middleMarkerRightLatLng);
+
+        var middleMarkerLeftLatLng = this._calcMiddleLatLng(marker, this._markers[prevMarkerIndex]);
+        marker._middleMarkerLeft.setLatLng(middleMarkerLeftLatLng);
+
+    },
+
+    _onMarkerDragEnd: function(e) {
+
+        var marker = e.target;
+
+        this._fireEdit();
+
+    },
+
+    _fireEdit: function () {
+        this._poly.edited = true;
+        this._poly.fire('pm:edit');
+    },
+
+    _calcMiddleLatLng: function(leftM, rightM) {
+        var map = this._poly._map,
+            p1 = map.project(leftM.getLatLng()),
+            p2 = map.project(rightM.getLatLng());
+
+        var latlng = map.unproject(p1._add(p2)._divideBy(2));
+
+        return latlng;
+    }
+
+});
+
+
+L.PM.Edit.LayerGroup = L.Class.extend({
+    initialize: function(layerGroup) {
+        var self = this;
+        this._layerGroup = layerGroup;
+        this._layers = layerGroup.getLayers();
+
+        // listen to the edit event of the layers in this group
+        for(var i=0; i<this._layers.length; i++) {
+            this._layers[i].on('pm:edit', this._fireEdit, this);
+        }
+
+        // if a new layer is added to the group, reinitialize
+        this._layerGroup.on('layeradd', function(e) {
+            self.initialize(layerGroup);
+
+            // if editing was already enabled for this group, enable it again
+            // so the new layers are enabled
+            if(e.target.pm.enabled()) {
+                self.enable();
+            }
+        });
+    },
+    _fireEdit: function() {
+        this._layerGroup.fireEvent('pm:edit');
+    },
+    toggleEdit: function() {
+
+        for(var i=0; i<this._layers.length; i++) {
+            this._layers[i].pm.toggleEdit();
+        }
+    },
+    enable: function() {
+        for(var i=0; i<this._layers.length; i++) {
+            this._layers[i].pm.enable();
+        }
+    },
+    disable: function() {
+        for(var i=0; i<this._layers.length; i++) {
+            this._layers[i].pm.disable();
+        }
+    },
+    enabled: function() {
+
+        var enabled = false;
+
+        for(var i=0; i<this._layers.length; i++) {
+            enabled = this._layers[i].pm.enabled();
+            if(enabled) {
+                break;
+            }
+        }
+
+        return enabled;
+    }
+});

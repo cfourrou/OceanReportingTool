@@ -97,6 +97,7 @@ ortLayerOptional[16]=
 var map = L.map('bigmap',{
     zoomControl: false,
     maxZoom:12
+
 });
 
 
