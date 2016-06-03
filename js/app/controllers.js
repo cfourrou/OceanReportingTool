@@ -320,9 +320,33 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.drawlocked = false;
         $scope.zoomlevel = map.getZoom();
         //console.log("zoomlevel1 "+$scope.zoomlevel);
+        //map.pm.addControls();
+/*
+        var ourCustomControl = L.Control.extend({
 
+            options: {
+                position: 'topleft'
+                //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+            },
 
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
 
+                container.style.backgroundColor = 'grey';
+                container.style.width = '30px';
+                container.style.height = '30px';
+                container.style.top = '183px';
+                container.style.left= '28px';
+                container.onclick = function(){
+                    console.log('buttonClicked');
+                }
+                return container;
+            },
+
+        });
+
+        map.addControl(new ourCustomControl());
+        */
 
         map.on('zoomend', function() {
             $scope.zoomlevel = map.getZoom();
@@ -352,6 +376,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     console.log("unlock");
                     map.dragging.enable();
                     $scope.drawlocked=false;
+                    map.pm.disableDraw('Poly');
+
                 } else
                  {
                     console.log("lock");
@@ -359,7 +385,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                      map.setMaxZoom(map.getZoom());
                     map.dragging.disable();
                     $scope.drawlocked=true;
-                     map.pm.addControls();
+                     if ($scope.polylayer)  map.removeLayer($scope.polylayer);
                      map.pm.enableDraw('Poly');
 
 
@@ -367,7 +393,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             }
         };
-
+        map.on('pm:create', function(e) {
+            console.log(e);
+            $scope.polylayer= e.layer;
+            //map.removeLayer(e.layer);
+        });
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
         };
@@ -424,7 +454,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             for (i = 0; i < len; i++) {
                 $scope.box[i].isActive = false;
             }
-
+            if ($scope.polylayer)  map.removeLayer($scope.polylayer);
 
             if ($scope.drawtoolOn) {
                 map.setMinZoom(1);

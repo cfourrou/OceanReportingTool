@@ -386,20 +386,39 @@ top: 45px;
   overflow:auto;
 
 }
-
+.geocoder-control-suggestions {
+  top: 85px;
+}
 .drawTools{
-  width:350px;
-  height:100px;
-  position: relative;
+   width:350px;
+   left: 35px;
+   background-color: @ortGrey-Dark;
+   opacity: .85;
+   color:white;
+   font-size:14px;
+   padding:8px;
+  border-radius: 6px 6px 0px 0px;
+
+  height: 65px;
+  position: absolute;
   top: 98px;
+  z-index: 401;
+ }
+.drawTools2{
+  position: fixed;
+  TOP: 224PX;
+  HEIGHT: 34PX;
+ // width:350px;
   left: 35px;
   background-color: @ortGrey-Dark;
   opacity: .85;
   color:white;
   font-size:14px;
-  padding:8px;
-  border-radius: 6px;
-  z-index:500;
+  //padding:4px;
+  border-radius: 0px 0px 6px 6px;
+  z-index:402;
+  width: 366px;
+
 }
 .drawbutton1{
   text-align: center;
@@ -408,7 +427,9 @@ top: 45px;
   border-top-style: solid;
   border-width:1px;
   border-color:grey;
-
+  height: 27px;
+  border-radius: 0px 0px 0px 6px;
+  padding-top: 6px;
 }
 .drawbutton-dis{
   color:#777;
@@ -431,13 +452,14 @@ top: 45px;
   border-top-style: solid;
   border-width:1px;
   border-color:grey;
+  padding-top: 6px;
   //color:#777;
 
 }
 
 
 .geocoder-control{
-  top: 119px;
+  top: 116px;
   left: 105px;
 }
 .leaflet-bar {

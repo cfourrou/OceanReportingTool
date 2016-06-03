@@ -96,7 +96,7 @@
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?6b87f4c01ed79508">
+    <link rel="stylesheet" href="css/ort.min.css?251655ba85f89f46">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -138,25 +138,35 @@
                 </div>
             </div>
             <div id="contentliquid">
+                <div ng-cloak ng-show="drawtoolOn" id="drawtoolbottom" class="drawTools2">
+                    <div ng-class="drawenabled? 'drawbutton-enl':'drawbutton-dis'" ng-click="drawit()" class="drawbutton1" style="border-right-style: solid;">
+                        <ng-include style="vertical-align:text-top;padding-right: 10px" src="'img/MapInput_2.svg'"></ng-include>
+                        DRAW
+                    </div>
+                    <div id="basemapbutton" class="drawbutton2"><img style="vertical-align:text-top;padding-right: 10px" src="img/basemap.svg?0618ee7a3cf7ba3c">
+                        BASEMAP
+                    </div>
+                </div>
 
                 <div id="bigmap" class="mapclass">
-                <div ng-cloak ng-show="drawtoolOn" id="drawtool" class="drawTools">
-                    <div style="width:100%;height: 25%;">Map Navigation</div>
-                    <div style="width:100%;height: 30%;float:left;">
-                        <div style="width:25%;float:left;"><img style="vertical-align:text-top;padding-right: 10px" src="img/texticon.svg?ccc119d74104ebd5">FIND</div>
-                       
-                    </div>
-                 
+                    <div ng-cloak ng-show="drawtoolOn" id="drawtool" class="drawTools">
+                        <div style="width:100%;">Map Navigation</div>
+                        <div style="width:100%;float:left;">
+                            <div style="height: 30px;width:25%;float:left;"><img style="vertical-align:text-top;padding-right: 10px"
+                                                                    src="img/texticon.svg?ccc119d74104ebd5">FIND
+                            </div>
 
-                    <div style="width:100%;height: 30%;float:left;">
-                        <div style="width:35%;float:left;">Map Tools</div>
-                        <div style="width:35%;float:left;">zoomlevel {{zoomlevel}}</div>
-                        <div style="float:left;" ng-show="drawlocked">Locked</div>
+                        </div>
+
+
+                        <div style="width:100%;float:left;">
+                            <div style="width:35%;float:left;">Map Tools</div>
+                            <div style="width:35%;float:left;">zoomlevel {{zoomlevel}}</div>
+                            <div style="float:left;" ng-show="drawlocked">Locked</div>
+                        </div>
                     </div>
-                    <div ng-class="drawenabled? 'drawbutton-enl':'drawbutton-dis'" ng-click="drawit()" class="drawbutton1" style="border-right-style: solid;"><ng-include style="vertical-align:text-top;padding-right: 10px" src="'img/MapInput_2.svg'"></ng-include></ng-incude>DRAW</div>
-                    <div id="basemapbutton"  class="drawbutton2" ><img style="vertical-align:text-top;padding-right: 10px" src="img/basemap.svg?0618ee7a3cf7ba3c">BASEMAP</div>
                 </div>
-            </div>
+
                 <div id="slide_div">
 
                     <!--ng-include src="partials/CE.html"></ng-include-->
@@ -182,7 +192,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?3a939bb8eff2a6dd"></script>
+<script src="js/ort.js?93ca33636988c573"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>
