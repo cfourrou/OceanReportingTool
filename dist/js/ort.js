@@ -6487,17 +6487,27 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             var mbounds = L.latLngBounds([]);
             // loop through the features returned by the server
+
             AOI.layer.eachFeature(function (layer) {
                 // get the bounds of an individual feature
                 var layerBounds = layer.getBounds();
                 // extend the bounds of the collection to fit the bounds of the new feature
                 mbounds.extend(layerBounds);
             });
-            map.fitBounds(mbounds);
 
-            //console.log(mbounds);
-            // unwire the event listener so that it only fires once when the page is loaded
-            AOI.layer.off('load');
+            try {
+                map.fitBounds(mbounds);
+                console.log("here?");
+                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+            }
+            catch (err) {
+                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                //so for now we will zoom out on error and allow this event to fire again.
+                console.log("AOI bounds out of bounds, zooming out");
+                map.setView([33.51, -78.3], 6); //it should try again.
+            }
+
+
             $scope.mout($scope.AOI.ID);
         });
 
@@ -6508,7 +6518,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.off();
         map.invalidateSize();
 
-       // console.log("draw mode "+ $scope.drawtoolOn);
+        // console.log("draw mode "+ $scope.drawtoolOn);
 
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
 
@@ -6537,7 +6547,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-
     }])
 
 
@@ -6561,7 +6570,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //       }, 100));
         //console.log("windmill % unknown = " + windclass[6]);
         $scope.$on('$viewContentLoaded', function () {
-            // Your document is ready, place your code here
+            // document is ready, place  code here
             $timeout(function () {
                 windChart = Highcharts.chart('container', {
                     chart: {
@@ -6680,44 +6689,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             }, 1000);
         });
-        /*
-         $scope.layers_toggle = (toggle ? "Click to hide Layer" : "Click to view on Map");
-         document.getElementById("windRSel").addEventListener("click", function () {
-         toggle = !toggle;
-         if (toggle) {
-         windrpLayer.addTo(map);
-         windLeaseLayer.addTo(map);
-         windPlanningLayer.addTo(map);
-         //windrpLayer.setOpacity(.1);
-         //windrpLayer.bringToBack();
-         document.getElementById("layerviewlink").innerHTML = "Click to hide Layer";
 
-         } else {
-         map.removeLayer(windPlanningLayer);
-         map.removeLayer(windLeaseLayer);
-         map.removeLayer(windrpLayer);
-
-         document.getElementById("layerviewlink").innerHTML = "Click to view on Map";
-         }
-         });
-         */
         document.getElementById("togglefull").addEventListener("click", function () {
             toggleFull = !toggleFull;
             $scope.toggleFull = toggleFull;
             if (toggleFull) {
 
-
+            // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
                 document.getElementById("slide1").style.width = '100%';
-                //document.getElementById("slide1").style.position = 'absolute';
-
                 document.getElementById("togglefull").style.marginLeft = '0px';
-                // Code for Chrome, Safari, Opera
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-                // Code for IE9
                 document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
                 document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
-                //document.getElementById('AOItab2').style.display = 'block';
                 var elems = document.getElementsByClassName('AOItabClass2');
                 for (var i = 0; i < elems.length; i++) {
                     elems[i].style.display = 'inline-block';
@@ -6730,17 +6714,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 ;
                 smallmap.invalidateSize();
                 smallmap.fitBounds($scope.minibounds);
-                //document.getElementById('slider_but0').style.visibility = "hidden";
-                //document.getElementById('slider_but1').style.visibility = "hidden";
-                //document.getElementById('slider_but2').style.visibility = "hidden";
                 document.getElementById('slbuttxt0').style.visibility = "hidden";
             } else {
-                //document.getElementById('smallmap').style.visibility = "hidden";
+
                 document.getElementById("togglefull").style.marginLeft = "-25px";
-                //.style.marginLeft='-25px';
+
                 document.getElementById("slide1").style.width = '50%';
-                //document.getElementById("slide1").style.position = 'relative';
-                //document.getElementById('AOItab2').style.display = 'none';
                 var elems = document.getElementsByClassName('AOItabClass2');
                 for (var i = 0; i < elems.length; i++) {
                     elems[i].style.display = 'none';
@@ -6751,10 +6730,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     elems[i].style.visibility = "visible";
                 }
                 ;
-                // document.getElementById('AOItab2').style.height='0px';
-                // document.getElementById('slider_but0').style.visibility = "visible";
-                // document.getElementById('slider_but1').style.visibility = "visible";
-                // document.getElementById('slider_but2').style.visibility = "visible";
                 document.getElementById('slbuttxt0').style.visibility = "visible";
                 // Code for Chrome, Safari, Opera
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
@@ -6772,8 +6747,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.AOI = AOI;
 
         $scope.box = [];
-//        $scope.menuitems = [];
-//        $scope.optLayer = [];
         var len = 2000;
         for (var i = 0; i < len; i++) {
             $scope.box.push({
@@ -6786,39 +6759,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.drawenabled = false;
         $scope.drawlocked = false;
         $scope.zoomlevel = map.getZoom();
-        //console.log("zoomlevel1 "+$scope.zoomlevel);
-        //map.pm.addControls();
-/*
-        var ourCustomControl = L.Control.extend({
 
-            options: {
-                position: 'topleft'
-                //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
-            },
 
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-
-                container.style.backgroundColor = 'grey';
-                container.style.width = '30px';
-                container.style.height = '30px';
-                container.style.top = '183px';
-                container.style.left= '28px';
-                container.onclick = function(){
-                    console.log('buttonClicked');
-                }
-                return container;
-            },
-
-        });
-
-        map.addControl(new ourCustomControl());
-        */
-
-        map.on('zoomend', function() {
+        map.on('zoomend', function () {
             $scope.zoomlevel = map.getZoom();
-           // console.log("zoomlevel "+ $scope.zoomlevel);
-            console.log("zoom draw mode "+$scope.drawtoolOn);
+            // console.log("zoomlevel "+ $scope.zoomlevel);
+            console.log("zoom draw mode " + $scope.drawtoolOn);
             if ($scope.drawtoolOn) {
                 if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
                     $scope.drawenabled = true;
@@ -6831,39 +6777,37 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-        //$scope.name = "bababooey";
         $scope.checked = true; // This will be binded using the ps-open attribute
 
         $scope.drawit = function () {
-            console.log("drawit clicked "+$scope.zoomlevel + " enl?"+ $scope.drawenabled);
-            if ($scope.drawenabled){
+            console.log("drawit clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
+            if ($scope.drawenabled) {
                 if ($scope.drawlocked) {
                     map.setMinZoom(1);
                     map.setMaxZoom(12);
                     console.log("unlock");
                     map.dragging.enable();
-                    $scope.drawlocked=false;
+                    $scope.drawlocked = false;
                     map.pm.disableDraw('Poly');
 
-                } else
-                 {
+                } else {
                     console.log("lock");
-                     map.setMinZoom(map.getZoom());
-                     map.setMaxZoom(map.getZoom());
+                    map.setMinZoom(map.getZoom());
+                    map.setMaxZoom(map.getZoom());
                     map.dragging.disable();
-                    $scope.drawlocked=true;
-                     if ($scope.polylayer)  map.removeLayer($scope.polylayer);
-                     map.pm.enableDraw('Poly');
+                    $scope.drawlocked = true;
+                    if ($scope.polylayer)  map.removeLayer($scope.polylayer);
+                    map.pm.enableDraw('Poly');
 
 
                 }
 
             }
         };
-        map.on('pm:create', function(e) {
+        map.on('pm:create', function (e) {
             console.log(e);
-            $scope.polylayer= e.layer;
-            //map.removeLayer(e.layer);
+            $scope.polylayer = e.layer;
+
         });
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
@@ -6880,35 +6824,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }
             //console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
         };
-
-        //$scope.opt_layer_button = function (id) {
-        //    $scope.optLayer[id] = !$scope.optLayer[id];
-        //    //console.log("button " + id);
-        //    switch (id) {
-        //        case 0:
-        //            if ($scope.optLayer[0]) {
-        //                windrpLayer.addTo(map);
-        //            } else map.removeLayer(windrpLayer);
-        //            break;
-        //        case 1:
-        //            if ($scope.optLayer[1]) {
-        //                windLeaseLayer.addTo(map);
-        //            } else map.removeLayer(windLeaseLayer);
-        //            break;
-        //        case 2:
-        //            if ($scope.optLayer[2]) {
-        //                windPlanningLayer.addTo(map);
-        //            } else map.removeLayer(windPlanningLayer);
-        //            break;
-        //        case 3:
-        //            if ($scope.optLayer[3]) {
-        //                oceanDisposalSites.addTo(map);
-        //            } else map.removeLayer(oceanDisposalSites);
-        //            break;
-        //    }
-        //
-        //
-        //};
 
 
         $scope.reset = function () { //unloads AOI but leaves slider pane on
@@ -6928,7 +6843,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 map.setMaxZoom(12);
                 console.log("unlock");
                 map.dragging.enable();
-                $scope.drawlocked=false;
+                $scope.drawlocked = false;
                 document.getElementById("bigmap").style.width = '50%';
                 map.removeControl(searchControl);
                 $scope.drawtoolOn = false;
@@ -7007,39 +6922,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             toggleFull = false;
         };
 
-
-        //$scope.Cur_AOI = 'Grand Strand';
-
-        // $scope.wind = [];
-        // $scope.boem = [];
-        // $scope.arel = [];
-        // $scope.metadata = [];
-        // $scope.disp = [];
-        // $scope.mml = [];
-        // $scope.hydrok = [];
-        // $scope.test = [];
-
         $scope.aoismenu = [];
         $scope.aoistates = [];
-//        $scope.aoistate = [];
+
 
         var query = L.esri.query({
             url: ortMapServer + ortLayerAOI
 
         });
-        //query.returnGeometry = false;
-        query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
-            //query.where("COMMON_NM='*'").run(function (error, featureCollection, response) {
-            // query.where("COMMON_NM LIKE '%'").run(function (error, featureCollection, response) {
 
+        query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
 
             var ba = 0;
 
-
             for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-
-                // switch (featureCollection.features[i].properties.REPORT_TYPE) {
-                //    case  "High Priority Areas":
 
                 $scope.aoismenu[ba] = {
                     AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
@@ -7050,9 +6946,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     DESC_: featureCollection.features[i].properties.DESC_
                 };
                 ba++;
-                //      break;
 
-                //}
             }
             //console.log($scope.aoismenu);
             $scope.aoismenu.sort(function (a, b) {
@@ -7062,7 +6956,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-        //query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
         query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
                 var ba = 0;
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
@@ -7084,26 +6977,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }
         );
 
-
-        //console.log($scope.aoismenu);
-
-        //I think this would be the right place to put the menu data loop.
-
-        /*        var cMapLayer3 = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/34';
-
-         var query = L.esri.query({
-         url: cMapLayer3,
-
-         });
-
-         //console.log("2");
-
-         query.where("AOI_NAME='Grand Strand' AND DATASET_NM='AOI_input'").run(function (error, featureCollection, response) {
-
-
-         //console.log(featureCollection);
-         });
-         */
     }
     ])
 ;
@@ -7192,7 +7065,7 @@ angular.module('myApp.directives', [])
 ;
 'use strict';
 
-var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/';
+var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReports/OceanReporting/MapServer/';
 var ortLayerAOI = '7';
 var ortLayerData = '35';
 var ortLayerOptional = [];
@@ -7202,87 +7075,93 @@ var windChart;
 ortLayerOptional[0]=
 {
     num:'19',
-    name:'wind resource potential'
+    displayName:'Wind Resource Potential'
 };
 ortLayerOptional[1]=
 {
     num:'18',
-    name:'renewable energy leases'
+    displayName:'Active Renewable Energy Leases'
 };
 ortLayerOptional[2]=
 {
     num:'22',
-    name:'BOEM_Wind_Planning_Areas'
+    displayName:'BOEM_Wind_Planning_Areas'
 };
 ortLayerOptional[3]=
 {
     num:'23',
-    name:'Ocean Disposal Sites'
+    displayName:'OceanDisposalSites'
 };
 ortLayerOptional[4]=
 {
     num:'21',
-    name:'Marine Minerals Leases'
+    displayName:'Marine Minerals Leases',
+    layerName: 'Sand_n_GravelLeaseAreas'
 };
 ortLayerOptional[5]=
 {
     num:null,
-    name:'Sediment Resources'
+    displayName:'Sediment Resources'
 };
 ortLayerOptional[6]=
 {
     num:'3',
-    name:'Hydrokinetic Leases'
+    displayName:'Hydrokinetic Leases',
+    layerName: 'MarineHydrokineticProjects'
 };
 ortLayerOptional[7]=
 {
     num:null,
-    name:'Surficial Sediment Classification'
+    displayName:'Surficial Sediment Classification'
 };
 ortLayerOptional[8]=
 {
     num:20,
-    name:'Wave Power'
+    displayName:'Wave Power',
+    layerName:'Ocean Wave Resource Potential'
 };
 ortLayerOptional[9]=
 {
     num:32,
-    name:'Tidal Power'
+    displayName:'Tidal Power',
+    layerName:'usa_mc_wm'
 };
 ortLayerOptional[10]=
 {
     num:31,
-    name:'Current Power'
+    displayName:'Current Power',
+    layerName:'us_oc_ms'
 };
 ortLayerOptional[11]=
 {
     num:6,
-    name:'Beach Nourishment'
+    displayName:'Beach Nourishment',
+    layerName:'SC_BeachProjects'
 };
 ortLayerOptional[12]=
 {
     num:null,
-    name:'Oil and Gas Planing Area'
+    displayName:'Oil and Gas Planing Area'
 };
 ortLayerOptional[13]=
 {
     num:null,
-    name:'Oil and Gas Active Lease'
+    displayName:'Oil and Gas Active Lease'
 };
 ortLayerOptional[14]=
 {
     num:null,
-    name:'Oil and Gas Wells'
+    displayName:'Oil and Gas Wells'
 };
 ortLayerOptional[15]=
 {
     num:null,
-    name:'Oil and Gas Resource potential'
+    displayName:'Oil and Gas Resource potential'
 };
 ortLayerOptional[16]=
 {
     num:1,
-    name:'Coastal Energy Facilities'
+    displayName:'Coastal Energy Facilities'
 };
 
 
@@ -7297,7 +7176,6 @@ var map = L.map('bigmap',{
 
 var toggle = false;
 var windclass = [];
-//var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites,marineMineralsLeases,HydrokineticLeases;
 var toggleFull = false;
 var cLayer,mouseLayer,searchControl;
 var menuitems= [];
@@ -7305,12 +7183,8 @@ var menuitems= [];
 function preloader() {
     if (document.images) {
         var img1 = new Image();
-       // var img2 = new Image();
-       // var img3 = new Image();
 
         img1.src = "img/wind_cc.svg";
-       // img2.src = "img/GandH.png";
-       // img3.src = "img/info.png";
     }
 }
 function addLoadEvent(func) {
@@ -7357,7 +7231,6 @@ angular.module('myApp', [
 
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-      //$urlRouterProvider.otherwise('/help');
         $urlRouterProvider.otherwise('/main');
       $stateProvider
 
@@ -7373,7 +7246,6 @@ angular.module('myApp', [
           .state('view3', {
            // url: '/view3',
             templateUrl: 'partials/NRC.html',
-            //controller: 'MyCtrl3'
           })
           .state('view4',{
           //  url:'/view4',

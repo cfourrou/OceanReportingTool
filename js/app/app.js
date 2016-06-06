@@ -1,6 +1,6 @@
 'use strict';
 
-var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/';
+var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReports/OceanReporting/MapServer/';
 var ortLayerAOI = '7';
 var ortLayerData = '35';
 var ortLayerOptional = [];
@@ -10,87 +10,93 @@ var windChart;
 ortLayerOptional[0]=
 {
     num:'19',
-    name:'wind resource potential'
+    displayName:'Wind Resource Potential'
 };
 ortLayerOptional[1]=
 {
     num:'18',
-    name:'renewable energy leases'
+    displayName:'Active Renewable Energy Leases'
 };
 ortLayerOptional[2]=
 {
     num:'22',
-    name:'BOEM_Wind_Planning_Areas'
+    displayName:'BOEM_Wind_Planning_Areas'
 };
 ortLayerOptional[3]=
 {
     num:'23',
-    name:'Ocean Disposal Sites'
+    displayName:'OceanDisposalSites'
 };
 ortLayerOptional[4]=
 {
     num:'21',
-    name:'Marine Minerals Leases'
+    displayName:'Marine Minerals Leases',
+    layerName: 'Sand_n_GravelLeaseAreas'
 };
 ortLayerOptional[5]=
 {
     num:null,
-    name:'Sediment Resources'
+    displayName:'Sediment Resources'
 };
 ortLayerOptional[6]=
 {
     num:'3',
-    name:'Hydrokinetic Leases'
+    displayName:'Hydrokinetic Leases',
+    layerName: 'MarineHydrokineticProjects'
 };
 ortLayerOptional[7]=
 {
     num:null,
-    name:'Surficial Sediment Classification'
+    displayName:'Surficial Sediment Classification'
 };
 ortLayerOptional[8]=
 {
     num:20,
-    name:'Wave Power'
+    displayName:'Wave Power',
+    layerName:'Ocean Wave Resource Potential'
 };
 ortLayerOptional[9]=
 {
     num:32,
-    name:'Tidal Power'
+    displayName:'Tidal Power',
+    layerName:'usa_mc_wm'
 };
 ortLayerOptional[10]=
 {
     num:31,
-    name:'Current Power'
+    displayName:'Current Power',
+    layerName:'us_oc_ms'
 };
 ortLayerOptional[11]=
 {
     num:6,
-    name:'Beach Nourishment'
+    displayName:'Beach Nourishment',
+    layerName:'SC_BeachProjects'
 };
 ortLayerOptional[12]=
 {
     num:null,
-    name:'Oil and Gas Planing Area'
+    displayName:'Oil and Gas Planing Area'
 };
 ortLayerOptional[13]=
 {
     num:null,
-    name:'Oil and Gas Active Lease'
+    displayName:'Oil and Gas Active Lease'
 };
 ortLayerOptional[14]=
 {
     num:null,
-    name:'Oil and Gas Wells'
+    displayName:'Oil and Gas Wells'
 };
 ortLayerOptional[15]=
 {
     num:null,
-    name:'Oil and Gas Resource potential'
+    displayName:'Oil and Gas Resource potential'
 };
 ortLayerOptional[16]=
 {
     num:1,
-    name:'Coastal Energy Facilities'
+    displayName:'Coastal Energy Facilities'
 };
 
 
@@ -105,7 +111,6 @@ var map = L.map('bigmap',{
 
 var toggle = false;
 var windclass = [];
-//var windrpLayer,windLeaseLayer,windPlanningLayer,oceanDisposalSites,marineMineralsLeases,HydrokineticLeases;
 var toggleFull = false;
 var cLayer,mouseLayer,searchControl;
 var menuitems= [];
@@ -113,12 +118,8 @@ var menuitems= [];
 function preloader() {
     if (document.images) {
         var img1 = new Image();
-       // var img2 = new Image();
-       // var img3 = new Image();
 
         img1.src = "img/wind_cc.svg";
-       // img2.src = "img/GandH.png";
-       // img3.src = "img/info.png";
     }
 }
 function addLoadEvent(func) {
@@ -165,7 +166,6 @@ angular.module('myApp', [
 
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-      //$urlRouterProvider.otherwise('/help');
         $urlRouterProvider.otherwise('/main');
       $stateProvider
 
@@ -181,7 +181,6 @@ angular.module('myApp', [
           .state('view3', {
            // url: '/view3',
             templateUrl: 'partials/NRC.html',
-            //controller: 'MyCtrl3'
           })
           .state('view4',{
           //  url:'/view4',
