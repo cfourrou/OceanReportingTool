@@ -7071,7 +7071,7 @@ angular.module('myApp.directives', [])
 ;
 'use strict';
 
-var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReports/OceanReporting/MapServer/';
+var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/';
 var ortLayerAOI = '7';
 var ortLayerData = '35';
 var ortLayerOptional = [];
