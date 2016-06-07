@@ -62,7 +62,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 arcgisOnline,
 
                 new L.esri.Geocoding.FeatureLayerProvider({
-                    url: 'https://it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                    url: ortMapServer + ortLayerAOI,
                     searchFields: ['AOI_NAME'],
                     label: 'Known Areas',
                     bufferRadius: 5000,
@@ -187,7 +187,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 //console.log("AOI_ID =" + $scope.AOI.ID + "");
 
                 var minicLayer = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                    url: ortMapServer + ortLayerAOI,
                     where: "AOI_ID =" + $scope.AOI.ID + "",
                     color: '#EB660C',
                     weight: 3,
@@ -311,28 +311,38 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         $scope.checked = true; // This will be binded using the ps-open attribute
+        $scope.drawOff = function (){
+            map.setMinZoom(1);
+            map.setMaxZoom(12);
+            map.dragging.enable(); // panning
+            map.touchZoom.enable(); // 2 finger zooms from touchscreens
+            map.doubleClickZoom.enable();
+            map.boxZoom.enable(); // shift mouse drag zooming.
+            console.log("unlock");
+            map.dragging.enable();
+            $scope.drawlocked = false;
+            map.pm.disableDraw('Poly');
+        }
+        $scope.drawOn = function (){
+            console.log("lock");
+            map.setMinZoom(map.getZoom()); //lock map view at current zoom level
+            map.setMaxZoom(map.getZoom());
+            map.dragging.disable(); //no panning
+            map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+            map.doubleClickZoom.disable();
+            map.boxZoom.disable(); //no shift mouse drag zooming.
+            $scope.drawlocked = true;
+            if ($scope.polylayer)  map.removeLayer($scope.polylayer);
+            map.pm.enableDraw('Poly');
+        }
 
         $scope.drawit = function () {
             console.log("drawit clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
             if ($scope.drawenabled) {
                 if ($scope.drawlocked) {
-                    map.setMinZoom(1);
-                    map.setMaxZoom(12);
-                    console.log("unlock");
-                    map.dragging.enable();
-                    $scope.drawlocked = false;
-                    map.pm.disableDraw('Poly');
-
+                    $scope.drawOff();
                 } else {
-                    console.log("lock");
-                    map.setMinZoom(map.getZoom());
-                    map.setMaxZoom(map.getZoom());
-                    map.dragging.disable();
-                    $scope.drawlocked = true;
-                    if ($scope.polylayer)  map.removeLayer($scope.polylayer);
-                    map.pm.enableDraw('Poly');
-
-
+                    $scope.drawOn();
                 }
 
             }
@@ -372,17 +382,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             if ($scope.polylayer)  map.removeLayer($scope.polylayer);
 
             if ($scope.drawtoolOn) {
-                map.setMinZoom(1);
-                map.setMaxZoom(12);
-                console.log("unlock");
-                map.dragging.enable();
-                $scope.drawlocked = false;
+                $scope.drawOff();
                 document.getElementById("bigmap").style.width = '50%';
                 map.removeControl(searchControl);
                 $scope.drawtoolOn = false;
-                // map.setView([33.51, -78.3], 6);
+
                 map.invalidateSize();
             }
+            map.setView([33.51, -78.3], 6);
         };
 
         $scope.off = function () { //unloads AOI and turns off slider pane
@@ -408,7 +415,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             if (!mouseLayer) {
                 mouseLayer = L.esri.featureLayer({ //AOI poly (7)
-                    url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                    url: ortMapServer + ortLayerAOI,
                     //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
                     where: "AOI_ID =" + AOI_id + "",
                     color: '#EB660C', weight: 3, fillOpacity: .3,

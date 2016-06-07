@@ -39,7 +39,7 @@ angular.module('myApp.services', []).factory('_', function () {
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 this.layer = L.esri.featureLayer({ //AOI poly (7)
-                    url: ortMapServer + ortLayerAOI, //'//it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/7',
+                    url: ortMapServer + ortLayerAOI,
                     color: '#EB660C', weight: 3, fillOpacity: .3,
                     where: "AOI_ID =" + this.ID + "",
                     pane: 'AOIfeature'
@@ -52,10 +52,9 @@ angular.module('myApp.services', []).factory('_', function () {
             },
             hide: function () {
                 if (this.isVisible) {
-                    //map.removeLayer(this.layer);
+
                     //console.log("hide this.layer  =" + this.ID)
                     map.removeLayer(this.layer);
-                    //map.removeLayer(cLayer);
                 }
                 // probably move this somewhere better.
                 map.setView([33.51, -78.3], 6);
@@ -86,7 +85,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 //myThis.zoomTo();
                 myThis.name = name;
                 myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
-                    url: ortMapServer + ortLayerOptional[0].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/18',
+                    url: ortMapServer + ortLayerOptional[0].num,
                     pane: 'optionalfeature0',
                     //simplifyFactor: 5.0,
                     //precision: 3,
@@ -108,17 +107,17 @@ angular.module('myApp.services', []).factory('_', function () {
                         }
                     }
                 });
-                // is this really wind leases or all renewable energy leases?
-                myThis.windLeaseLayer = L.esri.featureLayer({ //renewable energy leases (17)
-                    url: ortMapServer + ortLayerOptional[1].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/17',
+
+                myThis.windLeaseLayer = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[1].num,
                     pane: 'optionalfeature1',
                     style: function (feature) {
 
                         return {color: 'white', weight: 1, fillOpacity: .5};
                     }
                 });
-                myThis.windPlanningLayer = L.esri.featureLayer({ //BOEM_Wind_Planning_Areas (21)
-                    url: ortMapServer + ortLayerOptional[2].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                myThis.windPlanningLayer = L.esri.featureLayer({
+                    url: ortMapServer + ortLayerOptional[2].num,
                     pane: 'optionalfeature2',
                     style: function (feature) {
 
@@ -126,14 +125,14 @@ angular.module('myApp.services', []).factory('_', function () {
                     }
                 });
                 myThis.oceanDisposalSites = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[3].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    url: ortMapServer + ortLayerOptional[3].num,
                     pane: 'optionalfeature3',
                     style: function (feature) {
                         return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
                     }
                 });
                 myThis.marineMineralsLeases = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[4].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    url: ortMapServer + ortLayerOptional[4].num,
                     pane: 'optionalfeature4',
                     style: function (feature) {
                         return {color: '#7300D9', weight: 4, fillOpacity: 0};
@@ -142,7 +141,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 //there is no 5 yet
 
                 myThis.HydrokineticLeases = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[6].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    url: ortMapServer + ortLayerOptional[6].num,
                     pane: 'optionalfeature6',
                     pointToLayer: function (feature, latlng) {
                         return L.marker(latlng, {
@@ -157,7 +156,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 });
                 //there is no 7 yet
                 myThis.wavePower = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[8].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    url: ortMapServer + ortLayerOptional[8].num,
                     pane: 'optionalfeature8',
                     style: function (feature) {
                         if (feature.properties.ann_wef > 40) {
@@ -208,7 +207,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 });
 
                 myThis.coastalEnergyFacilities = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[16].num, //it.innovateteam.com/arcgis/rest/services/ORTData/ORTDemo/MapServer/21',
+                    url: ortMapServer + ortLayerOptional[16].num,
                     pane: 'optionalfeature16',
                     pointToLayer: function (feature, latlng) {
                         return L.marker(latlng, {
@@ -768,7 +767,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.removeLayer(this.currentPower);
                     map.removeLayer(this.beachNourish);
                     map.removeLayer(this.coastalEnergyFacilities);
-                    //map.removeLayer(cLayer);
+
                     this.windLeaseLayerIsVisible = false;
                     this.windrpLayerIsVisible = false;
                     this.windPlanningLayerIsVisible = false;
