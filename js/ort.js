@@ -5165,6 +5165,11 @@ logoPosition:"bottomright",minZoom:1,maxZoom:13,subdomains:["server","services"]
  * Apache-2.0 */
 !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("leaflet"),require("esri-leaflet")):"function"==typeof define&&define.amd?define(["exports","leaflet","esri-leaflet"],t):t((e.L=e.L||{},e.L.esri=e.L.esri||{},e.L.esri.Geocoding=e.L.esri.Geocoding||{}),e.L,e.L.esri)}(this,function(e,t,s){"use strict";function i(e){return new g(e)}function o(e){return new f(e)}function n(e){return new v(e)}function r(e){return new m(e)}function a(e,t){return new _(e,t)}function l(e){return new y(e)}function u(e){return new b(e)}function d(e){return new x(e)}function h(e){return new C(e)}function c(e){return new S(e)}t="default"in t?t["default"]:t;var p="2.1.0",g=s.Task.extend({path:"find",params:{outSr:4326,forStorage:!1,outFields:"*",maxLocations:20},setters:{address:"address",neighborhood:"neighborhood",city:"city",subregion:"subregion",region:"region",postal:"postal",country:"country",text:"text",category:"category",token:"token",key:"magicKey",fields:"outFields",forStorage:"forStorage",maxLocations:"maxLocations"},initialize:function(e){e=e||{},e.url=e.url||L,s.Task.prototype.initialize.call(this,e)},within:function(e){return e=t.latLngBounds(e),this.params.bbox=s.Util.boundsToExtent(e),this},nearby:function(e,s){return e=t.latLng(e),this.params.location=e.lng+","+e.lat,this.params.distance=Math.min(Math.max(s,2e3),5e4),this},run:function(e,t){return this.path=this.params.text?"find":"findAddressCandidates","findAddressCandidates"===this.path&&this.params.bbox&&(this.params.searchExtent=this.params.bbox,delete this.params.bbox),this.request(function(s,i){var o="find"===this.path?this._processFindResponse:this._processFindAddressCandidatesResponse,n=s?void 0:o(i);e.call(t,s,{results:n},i)},this)},_processFindResponse:function(e){for(var i=[],o=0;o<e.locations.length;o++){var n,r=e.locations[o];r.extent&&(n=s.Util.extentToBounds(r.extent)),i.push({text:r.name,bounds:n,score:r.feature.attributes.Score,latlng:t.latLng(r.feature.geometry.y,r.feature.geometry.x),properties:r.feature.attributes})}return i},_processFindAddressCandidatesResponse:function(e){for(var i=[],o=0;o<e.candidates.length;o++){var n=e.candidates[o],r=s.Util.extentToBounds(n.extent);i.push({text:n.address,bounds:r,score:n.score,latlng:t.latLng(n.location.y,n.location.x),properties:n.attributes})}return i}}),f=s.Task.extend({path:"reverseGeocode",params:{outSR:4326,returnIntersection:!1},setters:{distance:"distance",language:"langCode",intersection:"returnIntersection"},initialize:function(e){e=e||{},e.url=e.url||L,s.Task.prototype.initialize.call(this,e)},latlng:function(e){return e=t.latLng(e),this.params.location=e.lng+","+e.lat,this},run:function(e,s){return this.request(function(i,o){var n;n=i?void 0:{latlng:t.latLng(o.location.y,o.location.x),address:o.address},e.call(s,i,n,o)},this)}}),v=s.Task.extend({path:"suggest",params:{},setters:{text:"text",category:"category",countries:"countryCode"},initialize:function(e){e=e||{},e.url=e.url||L,s.Task.prototype.initialize.call(this,e)},within:function(e){e=t.latLngBounds(e),e=e.pad(.5);var i=e.getCenter(),o=e.getNorthWest();return this.params.location=i.lng+","+i.lat,this.params.distance=Math.min(Math.max(i.distanceTo(o),2e3),5e4),this.params.searchExtent=s.Util.boundsToExtent(e),this},nearby:function(e,s){return e=t.latLng(e),this.params.location=e.lng+","+e.lat,this.params.distance=Math.min(Math.max(s,2e3),5e4),this},run:function(e,t){return this.request(function(s,i){e.call(t,s,i,i)},this)}}),m=s.Service.extend({initialize:function(e){e=e||{},e.url=e.url||L,s.Service.prototype.initialize.call(this,e),this._confirmSuggestSupport()},geocode:function(){return i(this)},reverse:function(){return o(this)},suggest:function(){return n(this)},_confirmSuggestSupport:function(){this.metadata(function(e,t){e||(t.capabilities.indexOf("Suggest")>-1?this.options.supportsSuggest=!0:this.options.supportsSuggest=!1)},this)}}),_=t.Evented.extend({options:{zoomToResult:!0,useMapBounds:12,searchBounds:null},initialize:function(e,s){if(t.Util.setOptions(this,s),this._control=e,!s||!s.providers||!s.providers.length)throw new Error("You must specify at least one provider");this._providers=s.providers},_geocode:function(e,s,i){var o,n=0,r=[],a=t.Util.bind(function(t,s){n--,t||(s&&(r=r.concat(s)),0>=n&&(o=this._boundsFromResults(r),this.fire("results",{results:r,bounds:o,latlng:o?o.getCenter():void 0,text:e},!0),this.options.zoomToResult&&o&&this._control._map.fitBounds(o),this.fire("load")))},this);if(s)n++,i.results(e,s,this._searchBounds(),a);else for(var l=0;l<this._providers.length;l++)n++,this._providers[l].results(e,s,this._searchBounds(),a)},_suggest:function(e){var s=this._providers.length,i=t.Util.bind(function(e,i){return t.Util.bind(function(t,o){if(!t){var n;if(s-=1,e.length<2)return this._suggestions.innerHTML="",void(this._suggestions.style.display="none");if(o)for(n=0;n<o.length;n++)o[n].provider=i;if(i._lastRender!==e&&i.nodes){for(n=0;n<i.nodes.length;n++)i.nodes[n].parentElement&&this._control._suggestions.removeChild(i.nodes[n]);i.nodes=[]}o.length&&this._control._input.value===e&&(this._control.clearSuggestions(i.nodes),i._lastRender=e,i.nodes=this._control._renderSuggestions(o),this._control._nodes=[])}},this)},this);this._pendingSuggestions=[];for(var o=0;o<this._providers.length;o++){var n=this._providers[o],r=n.suggestions(e,this._searchBounds(),i(e,n));this._pendingSuggestions.push(r)}},_searchBounds:function(){return null!==this.options.searchBounds?this.options.searchBounds:this.options.useMapBounds===!1?null:this.options.useMapBounds===!0?this._control._map.getBounds():this.options.useMapBounds<=this._control._map.getZoom()?this._control._map.getBounds():null},_boundsFromResults:function(e){if(e.length){for(var s=t.latLngBounds([0,0],[0,0]),i=[],o=[],n=e.length-1;n>=0;n--){var r=e[n];o.push(r.latlng),r.bounds&&r.bounds.isValid()&&!r.bounds.equals(s)&&i.push(r.bounds)}for(var a=t.latLngBounds(o),l=0;l<i.length;l++)a.extend(i[l]);return a}},_getAttribution:function(){for(var e=[],t=this._providers,s=0;s<t.length;s++)t[s].options.attribution&&e.push(t[s].options.attribution);return e.join(", ")}}),y=t.Control.extend({includes:t.Mixin.Events,options:{position:"topleft",collapseAfterResult:!0,expanded:!1,allowMultipleResults:!0,placeholder:"Search for places or addresses",title:"Location Search"},initialize:function(e){if(t.Util.setOptions(this,e),!e||!e.providers||!e.providers.length)throw new Error("You must specify at least one provider");this._geosearchCore=a(this,e),this._geosearchCore._providers=e.providers,this._geosearchCore.addEventParent(this);for(var s=0;s<this._geosearchCore._providers.length;s++)this._geosearchCore._providers[s].addEventParent(this);this._geosearchCore._pendingSuggestions=[],t.Control.prototype.initialize.call(e)},_renderSuggestions:function(e){var s;this._suggestions.style.display="block",this._suggestions.style.maxHeight=this._map.getSize().y-this._suggestions.offsetTop-this._wrapper.offsetTop-10+"px";for(var i,o,n=[],r=0;r<e.length;r++){var a=e[r];!o&&this._geosearchCore._providers.length>1&&s!==a.provider.options.label&&(o=t.DomUtil.create("span","geocoder-control-header",this._suggestions),o.textContent=a.provider.options.label,o.innerText=a.provider.options.label,s=a.provider.options.label,n.push(o)),i||(i=t.DomUtil.create("ul","geocoder-control-list",this._suggestions));var l=t.DomUtil.create("li","geocoder-control-suggestion",i);l.innerHTML=a.text,l.provider=a.provider,l["data-magic-key"]=a.magicKey}return t.DomUtil.removeClass(this._input,"geocoder-control-loading"),n.push(i),n},_boundsFromResults:function(e){if(e.length){for(var s=t.latLngBounds([0,0],[0,0]),i=[],o=[],n=e.length-1;n>=0;n--){var r=e[n];o.push(r.latlng),r.bounds&&r.bounds.isValid()&&!r.bounds.equals(s)&&i.push(r.bounds)}for(var a=t.latLngBounds(o),l=0;l<i.length;l++)a.extend(i[l]);return a}},clear:function(){this._suggestions.innerHTML="",this._suggestions.style.display="none",this._input.value="",this.options.collapseAfterResult&&(this._input.placeholder="",t.DomUtil.removeClass(this._wrapper,"geocoder-control-expanded")),!this._map.scrollWheelZoom.enabled()&&this._map.options.scrollWheelZoom&&this._map.scrollWheelZoom.enable()},clearSuggestions:function(){if(this._nodes)for(var e=0;e<this._nodes.length;e++)this._nodes[e].parentElement&&this._suggestions.removeChild(this._nodes[e])},_setupClick:function(){t.DomUtil.addClass(this._wrapper,"geocoder-control-expanded"),this._input.focus()},disable:function(){this._input.disabled=!0,t.DomUtil.addClass(this._input,"geocoder-control-input-disabled"),t.DomEvent.removeListener(this._wrapper,"click",this._setupClick,this)},enable:function(){this._input.disabled=!1,t.DomUtil.removeClass(this._input,"geocoder-control-input-disabled"),t.DomEvent.addListener(this._wrapper,"click",this._setupClick,this)},getAttribution:function(){for(var e=[],t=0;t<this._providers.length;t++)this._providers[t].options.attribution&&e.push(this._providers[t].options.attribution);return e.join(", ")},onAdd:function(e){this._map=e,this._wrapper=t.DomUtil.create("div","geocoder-control "+(this.options.expanded?" geocoder-control-expanded":"")),this._input=t.DomUtil.create("input","geocoder-control-input leaflet-bar",this._wrapper),this._input.title=this.options.title,this._suggestions=t.DomUtil.create("div","geocoder-control-suggestions leaflet-bar",this._wrapper);var s=this._geosearchCore._getAttribution();return e.attributionControl.addAttribution(s),t.DomEvent.addListener(this._input,"focus",function(e){this._input.placeholder=this.options.placeholder,t.DomUtil.addClass(this._wrapper,"geocoder-control-expanded")},this),t.DomEvent.addListener(this._wrapper,"click",this._setupClick,this),t.DomEvent.addListener(this._suggestions,"mousedown",function(e){var t=e.target||e.srcElement;this._geosearchCore._geocode(t.innerHTML,t["data-magic-key"],t.provider),this.clear()},this),t.DomEvent.addListener(this._input,"blur",function(e){this.clear()},this),t.DomEvent.addListener(this._input,"keydown",function(e){t.DomUtil.addClass(this._wrapper,"geocoder-control-expanded");for(var s,i=this._suggestions.querySelectorAll(".geocoder-control-suggestion"),o=this._suggestions.querySelectorAll(".geocoder-control-selected")[0],n=0;n<i.length;n++)if(i[n]===o){s=n;break}switch(e.keyCode){case 13:o?(this._geosearchCore._geocode(o.innerHTML,o["data-magic-key"],o.provider),this.clear()):this.options.allowMultipleResults?(this._geosearchCore._geocode(this._input.value,void 0),this.clear()):t.DomUtil.addClass(i[0],"geocoder-control-selected"),t.DomEvent.preventDefault(e);break;case 38:o&&t.DomUtil.removeClass(o,"geocoder-control-selected");var r=i[s-1];o&&r?t.DomUtil.addClass(r,"geocoder-control-selected"):t.DomUtil.addClass(i[i.length-1],"geocoder-control-selected"),t.DomEvent.preventDefault(e);break;case 40:o&&t.DomUtil.removeClass(o,"geocoder-control-selected");var a=i[s+1];o&&a?t.DomUtil.addClass(a,"geocoder-control-selected"):t.DomUtil.addClass(i[0],"geocoder-control-selected"),t.DomEvent.preventDefault(e);break;default:for(var l=0;l<this._geosearchCore._pendingSuggestions.length;l++){var u=this._geosearchCore._pendingSuggestions[l];u&&u.abort&&!u.id&&u.abort()}}},this),t.DomEvent.addListener(this._input,"keyup",t.Util.throttle(function(e){var s=e.which||e.keyCode,i=(e.target||e.srcElement).value;return i.length<2?(this._suggestions.innerHTML="",this._suggestions.style.display="none",void t.DomUtil.removeClass(this._input,"geocoder-control-loading")):27===s?(this._suggestions.innerHTML="",void(this._suggestions.style.display="none")):void(13!==s&&38!==s&&40!==s&&this._input.value!==this._lastValue&&(this._lastValue=this._input.value,t.DomUtil.addClass(this._input,"geocoder-control-loading"),this._geosearchCore._suggest(i)))},50,this),this),t.DomEvent.disableClickPropagation(this._wrapper),t.DomEvent.addListener(this._suggestions,"mouseover",function(t){e.scrollWheelZoom.enabled()&&e.options.scrollWheelZoom&&e.scrollWheelZoom.disable()}),t.DomEvent.addListener(this._suggestions,"mouseout",function(t){!e.scrollWheelZoom.enabled()&&e.options.scrollWheelZoom&&e.scrollWheelZoom.enable()}),this._geosearchCore.on("load",function(e){t.DomUtil.removeClass(this._input,"geocoder-control-loading"),this.clear(),this._input.blur()},this),this._wrapper},onRemove:function(e){e.attributionControl.removeAttribution("Geocoding by Esri")}}),b=m.extend({options:{label:"Places and Addresses",maxResults:5,attribution:'<a href="https://developers.arcgis.com/en/features/geocoding/">Geocoding by Esri</a>'},suggestions:function(e,t,s){var i=this.suggest().text(e);return t&&i.within(t),this.options.countries&&i.countries(this.options.countries),this.options.categories&&i.category(this.options.categories),i.run(function(e,t,i){var o=[];if(!e)for(;i.suggestions.length&&o.length<=this.options.maxResults-1;){var n=i.suggestions.shift();n.isCollection||o.push({text:n.text,magicKey:n.magicKey})}s(e,o)},this)},results:function(e,t,s,i){var o=this.geocode().text(e);return t?o.key(t):o.maxLocations(this.options.maxResults),s&&o.within(s),this.options.forStorage&&o.forStorage(!0),o.run(function(e,t){i(e,t.results)},this)}}),x=s.FeatureLayerService.extend({options:{label:"Feature Layer",maxResults:5,bufferRadius:1e3,formatSuggestion:function(e){return e.properties[this.options.searchFields[0]]}},initialize:function(e){s.FeatureLayerService.prototype.initialize.call(this,e),"string"==typeof this.options.searchFields&&(this.options.searchFields=[this.options.searchFields])},suggestions:function(e,t,s){var i=this.query().where(this._buildQuery(e)).returnGeometry(!1);t&&i.intersects(t),this.options.idField&&i.fields([this.options.idField].concat(this.options.searchFields));var o=i.run(function(e,t,i){if(e)s(e,[]);else{this.options.idField=i.objectIdFieldName;for(var o=[],n=Math.min(t.features.length,this.options.maxResults),r=0;n>r;r++){var a=t.features[r];o.push({text:this.options.formatSuggestion.call(this,a),magicKey:a.id})}s(e,o.slice(0,this.options.maxResults).reverse())}},this);return o},results:function(e,s,i,o){var n=this.query();return s?n.featureIds([s]):n.where(this._buildQuery(e)),i&&n.within(i),n.run(t.Util.bind(function(e,t){for(var s=[],i=0;i<t.features.length;i++){var n=t.features[i];if(n){var r=this._featureBounds(n),a={latlng:r.getCenter(),bounds:r,text:this.options.formatSuggestion.call(this,n),properties:n.properties,geojson:n};s.push(a)}}o(e,s)},this))},_buildQuery:function(e){for(var t=[],s=this.options.searchFields.length-1;s>=0;s--){var i='upper("'+this.options.searchFields[s]+'")';t.push(i+" LIKE upper('%"+e+"%')")}return t.join(" OR ")},_featureBounds:function(e){var s=t.geoJson(e);if("Point"===e.geometry.type){var i=s.getBounds().getCenter(),o=this.options.bufferRadius/40075017*360/Math.cos(180/Math.PI*i.lat),n=this.options.bufferRadius/40075017*360;return t.latLngBounds([i.lat-n,i.lng-o],[i.lat+n,i.lng+o])}return s.getBounds()}}),C=s.MapService.extend({options:{layers:[0],label:"Map Service",bufferRadius:1e3,maxResults:5,formatSuggestion:function(e){return e.properties[e.displayFieldName]+" <small>"+e.layerName+"</small>"}},initialize:function(e){s.MapService.prototype.initialize.call(this,e),this._getIdFields()},suggestions:function(e,t,s){var i=this.find().text(e).fields(this.options.searchFields).returnGeometry(!1).layers(this.options.layers);return i.run(function(e,t,i){var o=[];if(!e){var n=Math.min(this.options.maxResults,t.features.length);i.results=i.results.reverse();for(var r=0;n>r;r++){var a=t.features[r],l=i.results[r],u=l.layerId,d=this._idFields[u];a.layerId=u,a.layerName=this._layerNames[u],a.displayFieldName=this._displayFields[u],d&&o.push({text:this.options.formatSuggestion.call(this,a),magicKey:l.attributes[d]+":"+u})}}s(e,o.reverse())},this)},results:function(e,t,s,i){var o,n=[];if(t){var r=t.split(":")[0],a=t.split(":")[1];o=this.query().layer(a).featureIds(r)}else o=this.find().text(e).fields(this.options.searchFields).contains(!1).layers(this.options.layers);return o.run(function(e,t,s){if(!e){s.results&&(s.results=s.results.reverse());for(var o=0;o<t.features.length;o++){var r=t.features[o];if(a=a||s.results[o].layerId,r&&void 0!==a){var l=this._featureBounds(r);r.layerId=a,r.layerName=this._layerNames[a],r.displayFieldName=this._displayFields[a];var u={latlng:l.getCenter(),bounds:l,text:this.options.formatSuggestion.call(this,r),properties:r.properties,geojson:r};n.push(u)}}}i(e,n.reverse())},this)},_featureBounds:function(e){var s=t.geoJson(e);if("Point"===e.geometry.type){var i=s.getBounds().getCenter(),o=this.options.bufferRadius/40075017*360/Math.cos(180/Math.PI*i.lat),n=this.options.bufferRadius/40075017*360;return t.latLngBounds([i.lat-n,i.lng-o],[i.lat+n,i.lng+o])}return s.getBounds()},_layerMetadataCallback:function(e){return t.Util.bind(function(t,s){if(!t){this._displayFields[e]=s.displayField,this._layerNames[e]=s.name;for(var i=0;i<s.fields.length;i++){var o=s.fields[i];if("esriFieldTypeOID"===o.type){this._idFields[e]=o.name;break}}}},this)},_getIdFields:function(){this._idFields={},this._displayFields={},this._layerNames={};for(var e=0;e<this.options.layers.length;e++){var t=this.options.layers[e];this.get(t,{},this._layerMetadataCallback(t))}}}),S=m.extend({options:{label:"Geocode Server",maxResults:5},suggestions:function(e,t,s){if(this.options.supportsSuggest){var i=this.suggest().text(e);return t&&i.within(t),i.run(function(e,t,i){var o=[];if(!e)for(;i.suggestions.length&&o.length<=this.options.maxResults-1;){var n=i.suggestions.shift();n.isCollection||o.push({text:n.text,magicKey:n.magicKey})}s(e,o)},this)}return s(void 0,[]),!1},results:function(e,t,s,i){var o=this.geocode().text(e);return o.maxLocations(this.options.maxResults),s&&o.within(s),o.run(function(e,t){i(e,t.results)},this)}}),L="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/";e.WorldGeocodingServiceUrl=L,e.VERSION=p,e.Geocode=g,e.geocode=i,e.ReverseGeocode=f,e.reverseGeocode=o,e.Suggest=v,e.suggest=n,e.GeocodeService=m,e.geocodeService=r,e.Geosearch=y,e.geosearch=l,e.GeosearchCore=_,e.geosearchCore=a,e.ArcgisOnlineProvider=b,e.arcgisOnlineProvider=u,e.FeatureLayerProvider=x,e.featureLayerProvider=d,e.MapServiceProvider=C,e.mapServiceProvider=h,e.GeocodeServiceProvider=S,e.geocodeServiceProvider=c});
 //# sourceMappingURL=esri-leaflet-geocoder.js.map;
+/* esri-leaflet-gp - v2.0.0-beta.1 - Thu Jul 30 2015 14:44:23 GMT-0700 (PDT)
+ * Copyright (c) 2015 Environmental Systems Research Institute, Inc.
+ * Apache 2.0 */
+(function(global,factory){typeof exports==="object"&&typeof module!=="undefined"?factory(exports,require("esri-leaflet"),require("leaflet")):typeof define==="function"&&define.amd?define(["exports","esri-leaflet","leaflet"],factory):factory(global.L.esri.GP={},L.esri,L)})(this,function(exports,esri_leaflet,L){"use strict";exports.Task=esri_leaflet.Task.extend({includes:L.Mixin.Events,params:{},resultParams:{},initialize:function(options){esri_leaflet.Task.prototype.initialize.call(this,options);if(!this.options.path){this.options.async=false;this.options.path="execute";this._service.metadata(function(error,results){if(!error){if(results.executionType==="esriExecutionTypeSynchronous"){this.options.async=false;this.options.path="execute"}else{this.options.async=true;this.options.path="submitJob"}this.fire("initialized")}else{this.options.async=false;this.options.path="execute";return}},this)}else{if(this.options.async!==true&&this.options.path!=="submitJob"){this.options.async=false}}},setParam:function(paramName,paramValue){if(typeof paramValue==="boolean"){this.params[paramName]=paramValue;return}else if(typeof paramValue!=="object"){this.params[paramName]=paramValue;return}else{this._setGeometry(paramName,paramValue)}},setOutputParam:function(paramName){this.params.outputParam=paramName},gpAsyncResultParam:function(paramName,paramValue){this.resultParams[paramName]=paramValue},_setGeometry:function(paramName,geometry){var processedInput={geometryType:"",features:[]};if(geometry instanceof L.LatLngBounds){processedInput.features.push({geometry:L.esri.Util.boundsToExtent(geometry)});processedInput.geometryType=L.esri.Util.geojsonTypeToArcGIS(geometry.type)}if(geometry.getLatLng){geometry=geometry.getLatLng()}if(geometry instanceof L.LatLng){geometry={type:"Point",coordinates:[geometry.lng,geometry.lat]}}if(geometry instanceof L.GeoJSON){geometry=geometry.getLayers()[0].feature.geometry;processedInput.features.push({geometry:esri_leaflet.Util.geojsonToArcGIS(geometry)});processedInput.geometryType=esri_leaflet.Util.geojsonTypeToArcGIS(geometry.type)}if(geometry.toGeoJSON){geometry=geometry.toGeoJSON()}if(geometry.type==="Feature"){geometry=geometry.geometry}if(geometry.type==="Point"||geometry.type==="LineString"||geometry.type==="Polygon"){processedInput.features.push({geometry:esri_leaflet.Util.geojsonToArcGIS(geometry)});processedInput.geometryType=esri_leaflet.Util.geojsonTypeToArcGIS(geometry.type)}else{if(console&&console.warn){console.warn("invalid geometry passed as GP input. Should be an L.LatLng, L.LatLngBounds, L.Marker or GeoJSON Point Line or Polygon object")}}this.params[paramName]=processedInput;return},run:function(callback,context){this._done=false;if(this.options.async===true){this._service.request(this.options.path,this.params,function(error,response){this._currentJobId=response.jobId;this.checkJob(this._currentJobId,callback,context)},this)}else{return this._service.request(this.options.path,this.params,function(error,response){callback.call(context,error,response&&this.processGPOutput(response),response)},this)}},checkJob:function(jobId,callback,context){var pollJob=function(){this._service.request("jobs/"+jobId,{},function polledJob(error,response){if(response.jobStatus==="esriJobSucceeded"){if(!this._done){this._done=true;this._service.request("jobs/"+jobId+"/results/"+this.params.outputParam,this.resultParams,function processJobResult(error,response){callback.call(context,error,response&&this.processAsyncOutput(response),response)},this)}window.clearInterval(counter)}else if(response.jobStatus==="esriJobFailed"){callback.call(context,"Job Failed",null);window.clearInterval(counter)}},this)}.bind(this);var counter=window.setInterval(pollJob,this._service.options.asyncInterval*1e3)},processGPOutput:function(response){var processedResponse={};if(this.options.async===false){for(var i=0;i<response.results.length;i++){processedResponse[response.results[i].paramName];if(response.results[i].dataType==="GPFeatureRecordSetLayer"){var featureCollection=esri_leaflet.Util.responseToFeatureCollection(response.results[i].value);processedResponse[response.results[i].paramName]=featureCollection}else{processedResponse[response.results[i].paramName]=response.results[i].value}}}else{processedResponse.jobId=this._currentJobId}if(this.options.async===true&&response.dataType==="GPRasterDataLayer"){var baseURL=this.options.url;var n=baseURL.indexOf("GPServer");var serviceURL=baseURL.slice(0,n)+"MapServer/";processedResponse.outputMapService=serviceURL+"jobs/"+this._currentJobId}return processedResponse},processAsyncOutput:function(response){var processedResponse={};processedResponse.jobId=this._currentJobId;if(this.options.async===true&&response.dataType==="GPRasterDataLayer"){var baseURL=this.options.url;var n=baseURL.indexOf("GPServer");var serviceURL=baseURL.slice(0,n)+"MapServer/";processedResponse.outputMapService=serviceURL+"jobs/"+this._currentJobId}if(response.dataType==="GPFeatureRecordSetLayer"){var featureCollection=esri_leaflet.Util.responseToFeatureCollection(response.value);processedResponse[response.paramName]=featureCollection}else{processedResponse[response.paramName]=response.value}return processedResponse}});function task(options){return new exports.Task(options)}exports.Service=esri_leaflet.Service.extend({options:{asyncInterval:1},createTask:function(){return new exports.Task(this,this.options)}});function service(options){return new exports.Service(options)}exports.VERSION="2.0.0-beta.1";exports.task=task;exports.service=service});
+//# sourceMappingURL=./esri-leaflet-gp.js.map;
 /*
  Highcharts JS v4.2.3 (2016-02-08)
 
@@ -6478,6 +6483,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
 
     })
+    .controller('submitModalController', function ($scope, close) {
+
+        $scope.close = function (result) {
+            close(result, 500); // close, but give 500ms for to animate
+        };
+
+    })
 
     .controller('AOICtrl', ['AOI', '$scope', function (AOI, $scope) {
         $scope.AOI = AOI;
@@ -6694,7 +6706,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.toggleFull = toggleFull;
             if (toggleFull) {
 
-            // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
+                // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
                 document.getElementById("slide1").style.width = '100%';
                 document.getElementById("togglefull").style.marginLeft = '0px';
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
@@ -6742,7 +6754,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', function ($scope, AOI) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$q', function ($scope, AOI, ModalService,$q) { //this one loads once on start up
         $scope.AOI = AOI;
 
         $scope.box = [];
@@ -6758,66 +6770,132 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.drawenabled = false;
         $scope.drawlocked = false;
         $scope.zoomlevel = map.getZoom();
+        $scope.drawOrSubmitCommand = "DRAW";
 
 
         map.on('zoomend', function () {
             $scope.zoomlevel = map.getZoom();
             // console.log("zoomlevel "+ $scope.zoomlevel);
-            console.log("zoom draw mode " + $scope.drawtoolOn);
+
             if ($scope.drawtoolOn) {
-                if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
-                    $scope.drawenabled = true;
-                } else {
-                    $scope.drawenabled = false;
-                }
+                $scope.drawenabled = $scope.zoomLevelGood();
                 $scope.$apply();
             }
-
+            console.log("zoom draw mode " + $scope.drawtoolOn);
         });
+
+        $scope.zoomLevelGood = function () {
+            $scope.zoomlevel = map.getZoom();
+            if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
+                return true;
+            } else {
+                return false;
+            }
+        };
 
 
         $scope.checked = true; // This will be binded using the ps-open attribute
-        $scope.drawOff = function (){
+
+        $scope.drawOff = function () {
             map.setMinZoom(1);
             map.setMaxZoom(12);
             map.dragging.enable(); // panning
             map.touchZoom.enable(); // 2 finger zooms from touchscreens
             map.doubleClickZoom.enable();
             map.boxZoom.enable(); // shift mouse drag zooming.
-            console.log("unlock");
+            //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
             map.dragging.enable();
+            searchControl.enable();
             $scope.drawlocked = false;
+            $scope.drawOrSubmitCommand = "DRAW";
             map.pm.disableDraw('Poly');
+
         }
-        $scope.drawOn = function (){
-            console.log("lock");
+        $scope.drawOn = function () {
             map.setMinZoom(map.getZoom()); //lock map view at current zoom level
             map.setMaxZoom(map.getZoom());
             map.dragging.disable(); //no panning
             map.touchZoom.disable(); //no 2 finger zooms from touchscreens
             map.doubleClickZoom.disable();
             map.boxZoom.disable(); //no shift mouse drag zooming.
+            //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+            searchControl.disable()
             $scope.drawlocked = true;
+            $scope.drawOrSubmitCommand = "Locked";
             if ($scope.polylayer)  map.removeLayer($scope.polylayer);
             map.pm.enableDraw('Poly');
         }
 
-        $scope.drawit = function () {
-            console.log("drawit clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
-            if ($scope.drawenabled) {
-                if ($scope.drawlocked) {
-                    $scope.drawOff();
-                } else {
-                    $scope.drawOn();
-                }
+        $scope.showSubmitModal = function () {
+
+            ModalService.showModal({
+                templateUrl: "modalDraw.html",
+                controller: "submitModalController",
+            }).then(function (modal) {
+                modal.close.then(function (result) {
+                    $scope.customResult = "All good!";
+                });
+            });
+
+        };
+
+        var myGPService = L.esri.GP.service({
+           // url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
+            //url: "http://it.innovateteam.com/arcgis/rest/services/Demo/PrintAttachment/GPServer/Script/",
+            url: "http://it.innovateteam.com/arcgis/rest/services/R9/SiteStrategyReport_v3/GPServer/Multi%20Page%20Report3",
+           useCors: false,
+           async: true,
+           path: 'submitJob',
+            asyncInterval: 1
+        });
+        var myGPTask = myGPService.createTask();
+        var myGPTaskDefer = $q.defer();
+        var initPromise = myGPTask.on('initialized', function () {
+            console.log("initPromise");
+            myGPTaskDefer.resolve();
+        });
+
+        $scope.drawIt = function () {
+            console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
+            switch ($scope.drawOrSubmitCommand) {
+
+                case "DRAW":
+                    if ($scope.drawenabled) {
+                        if ($scope.drawlocked) {
+                            $scope.drawOff();
+                        } else {
+                            $scope.drawOn();
+                        }
+                    }
+                    break;
+                case "Submit":
+
+                        console.log("submit");
+                        console.log($scope.polylayer);
+                        $scope.drawOrSubmitCommand = "Please wait";
+                        var myGPTask = myGPService.createTask();
+                        myGPTask.setParam("Report_Boundary",  $scope.polylayer.toGeoJSON());
+                        myGPTask.run(function(error, geojson, response){
+                            console.log(error);
+                        });
+
+                    break;
+                case "Please wait":
+                    console.log("Please wait");
+                    $scope.showSubmitModal();
+                    break;
 
             }
         };
+
+
         map.on('pm:create', function (e) {
             console.log(e);
             $scope.polylayer = e.layer;
-
+            $scope.drawOrSubmitCommand = "Submit";
+            $scope.$apply();
         });
+
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
         };
@@ -6852,6 +6930,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("bigmap").style.width = '50%';
                 map.removeControl(searchControl);
                 $scope.drawtoolOn = false;
+                $scope.drawOrSubmitCommand = "DRAW";
 
                 map.invalidateSize();
             }
@@ -6862,6 +6941,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.AOIoff();
             $scope.paneoff();
             AOI.unloadData();
+            //map.fire('zoomend');
+
+            $scope.drawenabled = $scope.zoomLevelGood();
+
             $scope.drawtoolOn = true;
 
         };

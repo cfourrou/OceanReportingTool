@@ -12,6 +12,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
 
     })
+    .controller('submitModalController', function ($scope, close) {
+
+        $scope.close = function (result) {
+            close(result, 500); // close, but give 500ms for to animate
+        };
+
+    })
 
     .controller('AOICtrl', ['AOI', '$scope', function (AOI, $scope) {
         $scope.AOI = AOI;
@@ -228,7 +235,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.toggleFull = toggleFull;
             if (toggleFull) {
 
-            // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
+                // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
                 document.getElementById("slide1").style.width = '100%';
                 document.getElementById("togglefull").style.marginLeft = '0px';
                 document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
@@ -276,7 +283,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', function ($scope, AOI) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$q', function ($scope, AOI, ModalService,$q) { //this one loads once on start up
         $scope.AOI = AOI;
 
         $scope.box = [];
@@ -292,66 +299,132 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.drawenabled = false;
         $scope.drawlocked = false;
         $scope.zoomlevel = map.getZoom();
+        $scope.drawOrSubmitCommand = "DRAW";
 
 
         map.on('zoomend', function () {
             $scope.zoomlevel = map.getZoom();
             // console.log("zoomlevel "+ $scope.zoomlevel);
-            console.log("zoom draw mode " + $scope.drawtoolOn);
+
             if ($scope.drawtoolOn) {
-                if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
-                    $scope.drawenabled = true;
-                } else {
-                    $scope.drawenabled = false;
-                }
+                $scope.drawenabled = $scope.zoomLevelGood();
                 $scope.$apply();
             }
-
+            console.log("zoom draw mode " + $scope.drawtoolOn);
         });
+
+        $scope.zoomLevelGood = function () {
+            $scope.zoomlevel = map.getZoom();
+            if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
+                return true;
+            } else {
+                return false;
+            }
+        };
 
 
         $scope.checked = true; // This will be binded using the ps-open attribute
-        $scope.drawOff = function (){
+
+        $scope.drawOff = function () {
             map.setMinZoom(1);
             map.setMaxZoom(12);
             map.dragging.enable(); // panning
             map.touchZoom.enable(); // 2 finger zooms from touchscreens
             map.doubleClickZoom.enable();
             map.boxZoom.enable(); // shift mouse drag zooming.
-            console.log("unlock");
+            //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
             map.dragging.enable();
+            searchControl.enable();
             $scope.drawlocked = false;
+            $scope.drawOrSubmitCommand = "DRAW";
             map.pm.disableDraw('Poly');
+
         }
-        $scope.drawOn = function (){
-            console.log("lock");
+        $scope.drawOn = function () {
             map.setMinZoom(map.getZoom()); //lock map view at current zoom level
             map.setMaxZoom(map.getZoom());
             map.dragging.disable(); //no panning
             map.touchZoom.disable(); //no 2 finger zooms from touchscreens
             map.doubleClickZoom.disable();
             map.boxZoom.disable(); //no shift mouse drag zooming.
+            //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+            searchControl.disable()
             $scope.drawlocked = true;
+            $scope.drawOrSubmitCommand = "Locked";
             if ($scope.polylayer)  map.removeLayer($scope.polylayer);
             map.pm.enableDraw('Poly');
         }
 
-        $scope.drawit = function () {
-            console.log("drawit clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
-            if ($scope.drawenabled) {
-                if ($scope.drawlocked) {
-                    $scope.drawOff();
-                } else {
-                    $scope.drawOn();
-                }
+        $scope.showSubmitModal = function () {
+
+            ModalService.showModal({
+                templateUrl: "modalDraw.html",
+                controller: "submitModalController",
+            }).then(function (modal) {
+                modal.close.then(function (result) {
+                    $scope.customResult = "All good!";
+                });
+            });
+
+        };
+
+        var myGPService = L.esri.GP.service({
+           // url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
+            //url: "http://it.innovateteam.com/arcgis/rest/services/Demo/PrintAttachment/GPServer/Script/",
+            url: "http://it.innovateteam.com/arcgis/rest/services/R9/SiteStrategyReport_v3/GPServer/Multi%20Page%20Report3",
+           useCors: false,
+           async: true,
+           path: 'submitJob',
+            asyncInterval: 1
+        });
+        var myGPTask = myGPService.createTask();
+        var myGPTaskDefer = $q.defer();
+        var initPromise = myGPTask.on('initialized', function () {
+            console.log("initPromise");
+            myGPTaskDefer.resolve();
+        });
+
+        $scope.drawIt = function () {
+            console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
+            switch ($scope.drawOrSubmitCommand) {
+
+                case "DRAW":
+                    if ($scope.drawenabled) {
+                        if ($scope.drawlocked) {
+                            $scope.drawOff();
+                        } else {
+                            $scope.drawOn();
+                        }
+                    }
+                    break;
+                case "Submit":
+
+                        console.log("submit");
+                        console.log($scope.polylayer);
+                        $scope.drawOrSubmitCommand = "Please wait";
+                        var myGPTask = myGPService.createTask();
+                        myGPTask.setParam("Report_Boundary",  $scope.polylayer.toGeoJSON());
+                        myGPTask.run(function(error, geojson, response){
+                            console.log(error);
+                        });
+
+                    break;
+                case "Please wait":
+                    console.log("Please wait");
+                    $scope.showSubmitModal();
+                    break;
 
             }
         };
+
+
         map.on('pm:create', function (e) {
             console.log(e);
             $scope.polylayer = e.layer;
-
+            $scope.drawOrSubmitCommand = "Submit";
+            $scope.$apply();
         });
+
         $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
             $scope.checked = !$scope.checked;
         };
@@ -386,6 +459,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 document.getElementById("bigmap").style.width = '50%';
                 map.removeControl(searchControl);
                 $scope.drawtoolOn = false;
+                $scope.drawOrSubmitCommand = "DRAW";
 
                 map.invalidateSize();
             }
@@ -396,6 +470,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.AOIoff();
             $scope.paneoff();
             AOI.unloadData();
+            //map.fire('zoomend');
+
+            $scope.drawenabled = $scope.zoomLevelGood();
+
             $scope.drawtoolOn = true;
 
         };
