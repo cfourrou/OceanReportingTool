@@ -37,13 +37,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             try {
                 map.fitBounds(mbounds);
-                console.log("here?");
+                //console.log("here?");
                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
             }
             catch (err) {
                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                 //so for now we will zoom out on error and allow this event to fire again.
-                console.log("AOI bounds out of bounds, zooming out");
+               // console.log("AOI bounds out of bounds, zooming out");
                 map.setView([33.51, -78.3], 6); //it should try again.
             }
 
@@ -310,7 +310,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.drawenabled = $scope.zoomLevelGood();
                 $scope.$apply();
             }
-            console.log("zoom draw mode " + $scope.drawtoolOn);
+            //console.log("zoom draw mode " + $scope.drawtoolOn);
         });
 
         $scope.zoomLevelGood = function () {
@@ -350,7 +350,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
             searchControl.disable()
             $scope.drawlocked = true;
-            $scope.drawOrSubmitCommand = "Locked";
+            $scope.drawOrSubmitCommand = "Drawing";
             if ($scope.polylayer)  map.removeLayer($scope.polylayer);
             map.pm.enableDraw('Poly');
         }
@@ -369,10 +369,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
 
         var myGPService = L.esri.GP.service({
-            url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
-            //url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
-           // url: "http://it.innovateteam.com/arcgis/rest/services/Demo/PrintAttachment/GPServer/Script/",
-           // url: "http://it.innovateteam.com/arcgis/rest/services/R9/SiteStrategyReport_v3/GPServer/Multi%20Page%20Report3",
+           url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
            useCors: false,
            async: true,
            path: 'submitJob',
@@ -381,13 +378,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         var myGPTask = myGPService.createTask();
         var myGPTaskDefer = $q.defer();
         var initPromise = myGPTask.on('initialized', function () {
-            console.log("initPromise");
+            //console.log("initPromise");
             myGPTaskDefer.resolve();
         });
 
         $scope.drawIt = function () {
-            console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
-            switch ($scope.drawOrSubmitCommand) {
+           // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
+            switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
                 case "DRAW":
                     if ($scope.drawenabled) {
@@ -398,24 +395,36 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         }
                     }
                     break;
-                case "Submit":
+                case "Subm":
 
-                        console.log("submit");
-                        console.log($scope.polylayer);
-                        $scope.drawOrSubmitCommand = "Please wait";
+                        //console.log("submit");
+                        //console.log($scope.polylayer);
+                        $scope.drawOrSubmitCommand = "Working";
                         var myGPTask = myGPService.createTask();
                         myGPTask.setParam("Report_Boundary",  $scope.polylayer.toGeoJSON());
                         myGPTask.setOutputParam("Output_Report");
                         myGPTask.run(function(error, geojson, response){
-                            console.log(error);
-                            console.log(geojson);
-                            console.log(response);
+                               console.log(response);
+                            if (error) {
+                                $scope.drawOrSubmitCommand = "Error "+error;
+                            }
+                            else if (geojson){
+                                $scope.drawOrSubmitCommand = "Complete";
+                                AOI.featureCollection = geojson.Output_Report;
+                            }
+                            $scope.$apply();
                         });
 
                     break;
-                case "Please wait":
-                    console.log("Please wait");
+                case "Work":
                     $scope.showSubmitModal();
+                    break;
+                case "Erro":
+                    console.log("Error pressed");
+                    $scope.drawOrSubmitCommand = "Submit";
+                    break;
+                case "Comp":
+                    AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID,AOI.featureCollection.features[0].attributes.AOI_NAME);
                     break;
 
             }
@@ -423,7 +432,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         map.on('pm:create', function (e) {
-            console.log(e);
+            //console.log(e);
             $scope.polylayer = e.layer;
             $scope.drawOrSubmitCommand = "Submit";
             $scope.$apply();

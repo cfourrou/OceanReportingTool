@@ -143,7 +143,7 @@ L.esri.basemapLayer('OceansLabels').addTo(map);
 L.control.zoom({
     position:'bottomleft'
 }).addTo(map);
-console.log("number of optional layers " +ortLayerOptional.length);
+
 for (var i = 0; i < ortLayerOptional.length; i++) {
     map.createPane('optionalfeature'+i);
 };
