@@ -6840,18 +6840,21 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
 
         var myGPService = L.esri.GP.service({
-            url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
-            useCors: false,
-            async: true,
-            path: 'submitJob',
-            asyncInterval: 2
+            url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
+            //url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
+           // url: "http://it.innovateteam.com/arcgis/rest/services/Demo/PrintAttachment/GPServer/Script/",
+           // url: "http://it.innovateteam.com/arcgis/rest/services/R9/SiteStrategyReport_v3/GPServer/Multi%20Page%20Report3",
+           useCors: false,
+           async: true,
+           path: 'submitJob',
+            asyncInterval: 1
         });
         var myGPTask = myGPService.createTask();
         var myGPTaskDefer = $q.defer();
-        var initPromise = myGPTask.on('initialized', (function () {
+        var initPromise = myGPTask.on('initialized', function () {
             console.log("initPromise");
             myGPTaskDefer.resolve();
-        }));
+        });
 
         $scope.drawIt = function () {
             console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
@@ -6867,17 +6870,19 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     }
                     break;
                 case "Submit":
-                    myGPTaskDefer.promise.then(function () {
+
                         console.log("submit");
                         console.log($scope.polylayer);
                         $scope.drawOrSubmitCommand = "Please wait";
                         var myGPTask = myGPService.createTask();
                         myGPTask.setParam("Report_Boundary",  $scope.polylayer.toGeoJSON());
+                        myGPTask.setOutputParam("Output_Report");
                         myGPTask.run(function(error, geojson, response){
-                            console.log("then what");
+                            console.log(error);
+                            console.log(geojson);
+                            console.log(response);
                         });
 
-                    });
                     break;
                 case "Please wait":
                     console.log("Please wait");

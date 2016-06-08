@@ -6840,9 +6840,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
 
         var myGPService = L.esri.GP.service({
-           // url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
-            //url: "http://it.innovateteam.com/arcgis/rest/services/Demo/PrintAttachment/GPServer/Script/",
-            url: "http://it.innovateteam.com/arcgis/rest/services/R9/SiteStrategyReport_v3/GPServer/Multi%20Page%20Report3",
+            url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
+            //url: "http://54.201.166.81/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area/",
+           // url: "http://it.innovateteam.com/arcgis/rest/services/Demo/PrintAttachment/GPServer/Script/",
+           // url: "http://it.innovateteam.com/arcgis/rest/services/R9/SiteStrategyReport_v3/GPServer/Multi%20Page%20Report3",
            useCors: false,
            async: true,
            path: 'submitJob',
@@ -6875,8 +6876,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         $scope.drawOrSubmitCommand = "Please wait";
                         var myGPTask = myGPService.createTask();
                         myGPTask.setParam("Report_Boundary",  $scope.polylayer.toGeoJSON());
+                        myGPTask.setOutputParam("Output_Report");
                         myGPTask.run(function(error, geojson, response){
                             console.log(error);
+                            console.log(geojson);
+                            console.log(response);
                         });
 
                     break;
