@@ -5585,14 +5585,22 @@ angular.module('myApp.services', []).factory('_', function () {
             coastfac: [],
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
-                this.layer = L.esri.featureLayer({ //AOI poly (7)
-                    url: ortMapServer + ortLayerAOI,
-                    color: '#EB660C', weight: 3, fillOpacity: .3,
-                    where: "AOI_ID =" + this.ID + "",
-                    pane: 'AOIfeature'
-                    //simplifyFactor: 5.0,
-                    //precision: 2
-                }).addTo(map);
+                if (this.ID === -9999) {
+                    this.layer=L.geoJson(this.drawLayerShape,{
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+                    }).addTo(map);
+                }else{
+                    this.layer = L.esri.featureLayer({ //AOI poly (7)
+                        url: ortMapServer + ortLayerAOI,
+                        color: '#EB660C', weight: 3, fillOpacity: .3,
+                        where: "AOI_ID =" + this.ID + "",
+                        pane: 'AOIfeature'
+                        //simplifyFactor: 5.0,
+                        //precision: 2
+                    }).addTo(map);
+                }
                 //console.log(" this.layer loaded " + AOI_ID);
                 this.isVisible = true;
                 //console.log("display: this.ID = " +AOI_ID);
@@ -5773,24 +5781,35 @@ angular.module('myApp.services', []).factory('_', function () {
                 if (myThis.ID === -9999){
                     var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
                     console.log(featureCollection);
-                    myThis.massageData(featureCollection);
+                    var newarray = [];
+                    angular.forEach(featureCollection.features, function (feature) {
+                        var newobject = {};
+                        angular.forEach(featureCollection.fields, function (field) {
+                            newobject[field.name] = feature.attributes[field.name];
+                        });
+                        newarray.push(newobject);
+                    });
+
+                    myThis.massageData(newarray);
 
                 } else {
                     query.returnGeometry(false).where("AOI_ID =" + myThis.ID + "").run(function (error, featureCollection, response) {
                        // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
-                        console.log(featureCollection);
+                       // console.log(featureCollection);
                         var newarray = [];
                         angular.forEach(featureCollection.features, function (feature) {
                             var newobject = {};
-                            angular.forEach(featureCollection.fields, function (field) {
+                            angular.forEach(response.fields, function (field) {
                                 newobject[field.name] = feature.properties[field.name];
                             });
                             newarray.push(newobject);
                         });
                         //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a know structure.
                         //this is where I stopped. COF
-                        console.log(newarray);
-                        myThis.massageData(featureCollection);
+                        //console.log(newarray);
+                        //console.log(newarray.length);
+                        //console.log(newarray[0].AOI_ID);
+                        myThis.massageData(newarray);
                     });
                 }
                 myThis.isLoaded = true;
@@ -5819,26 +5838,26 @@ angular.module('myApp.services', []).factory('_', function () {
                 var bq = 0;
                 var ack=[];
 
-                for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+                for (var i = 0, j = featureCollection.length; i < j; i++) {
 
-                    switch (featureCollection.features[i].properties.DATASET_NM) {
+                    switch (featureCollection[i].DATASET_NM) {
                         case "CoastalEnergyFacilities":
                             myThis.coastfac[bq] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                Name: (featureCollection.features[i].properties.Name || 'None'),
-                                Type: (featureCollection.features[i].properties.Type || 'None'),
-                                CAPACITY: (featureCollection.features[i].properties.CAPACITY || 'None'),
-                                Dist_Mi: (featureCollection.features[i].properties.Dist_Mi || 'None')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                Name: (featureCollection[i].Name || 'None'),
+                                Type: (featureCollection[i].Type || 'None'),
+                                CAPACITY: (featureCollection[i].CAPACITY || 'None'),
+                                Dist_Mi: (featureCollection[i].Dist_Mi || 'None')
 
                             };
 
-                            if ((bq === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bq === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5848,21 +5867,21 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "OG_ResourcePotential":
                             myThis.OGresource[bp] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                OCS_Play: (featureCollection.features[i].properties.OCS_Play || 'None'),
-                                UTTR_Oil: (featureCollection.features[i].properties.UTTR_Oil || 'None'),
-                                UTTR_Gas: (featureCollection.features[i].properties.UTTR_Gas || 'None'),
-                                UTTR_BOE: (featureCollection.features[i].properties.UTTR_BOE || 'None')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                OCS_Play: (featureCollection[i].OCS_Play || 'None'),
+                                UTTR_Oil: (featureCollection[i].UTTR_Oil || 'None'),
+                                UTTR_Gas: (featureCollection[i].UTTR_Gas || 'None'),
+                                UTTR_BOE: (featureCollection[i].UTTR_BOE || 'None')
 
                             };
 
-                            if ((bp === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bp === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5872,19 +5891,19 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "OG_Wells":
                             myThis.OGWells[bo] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                COMPANY_NA: (featureCollection.features[i].properties.COMPANY_NA || 'None'),
-                                STATUS: (featureCollection.features[i].properties.STATUS || 'None')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                COMPANY_NA: (featureCollection[i].COMPANY_NA || 'None'),
+                                STATUS: (featureCollection[i].STATUS || 'None')
 
                             };
 
-                            if ((bo === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bo === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5894,19 +5913,19 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "al_20160301":
                             myThis.OGLease[bn] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                Lease_Numb: (featureCollection.features[i].properties.Lease_Numb || 'None'),
-                                Lease_expt: (featureCollection.features[i].properties.Lease_expt || 'None')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                Lease_Numb: (featureCollection[i].Lease_Numb || 'None'),
+                                Lease_expt: (featureCollection[i].Lease_expt || 'None')
 
                             };
 
-                            if ((bn === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bn === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5916,18 +5935,18 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "OilandGasPlanningAreas":
                             myThis.OGPlanA[bm] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                Region: (featureCollection.features[i].properties.Region || 'unknown')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                Region: (featureCollection[i].Region || 'unknown')
 
                             };
 
-                            if ((bm === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bm === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5937,20 +5956,20 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "SC_BeachProjects":
                             myThis.beachNur[bl] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                BEACH_AREA: (featureCollection.features[i].properties.BEACH_AREA || 'unknown'),
-                                YEAR: (featureCollection.features[i].properties.YEAR || '0'),
-                                SAND_VOL_C: (featureCollection.features[i].properties.SAND_VOL_C || '0'),
-                                Dist_Mi: ((featureCollection.features[i].properties.Dist_Mi === ' ') ? '0' : featureCollection.features[i].properties.Dist_Mi )
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                BEACH_AREA: (featureCollection[i].BEACH_AREA || 'unknown'),
+                                YEAR: (featureCollection[i].YEAR || '0'),
+                                SAND_VOL_C: (featureCollection[i].SAND_VOL_C || '0'),
+                                Dist_Mi: ((featureCollection[i].Dist_Mi === ' ') ? '0' : featureCollection[i].Dist_Mi )
                             };
 
-                            if ((bl === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bl === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5960,18 +5979,18 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "us_oc_ms":
                             myThis.currentpwr[bk] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                AVG_OCEAN_CURRENT: (featureCollection.features[i].properties.AVG_OCEAN_CURRENT || 0),
-                                SUITABILITY_OCEAN_SPEED: (featureCollection.features[i].properties.SUITABILITY_OCEAN_SPEED || 'NO')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                AVG_OCEAN_CURRENT: (featureCollection[i].AVG_OCEAN_CURRENT || 0),
+                                SUITABILITY_OCEAN_SPEED: (featureCollection[i].SUITABILITY_OCEAN_SPEED || 'NO')
                             };
 
-                            if ((featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -5981,20 +6000,20 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "usa_mc_wm":
                             myThis.tidalpwr[bj] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                AVG_TIDAL_CURRENT: (featureCollection.features[i].properties.AVG_TIDAL_CURRENT || 0),
-                                SUITABILITY_TIDAL_DEPTH: (featureCollection.features[i].properties.SUITABILITY_TIDAL_DEPTH || 'NO'),
-                                SUITABILITY_TIDAL_AREA: (featureCollection.features[i].properties.SUITABILITY_TIDAL_AREA || 'NO'),
-                                SUITABILITY_TIDAL_SPEED: (featureCollection.features[i].properties.SUITABILITY_TIDAL_SPEED || 'NO')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                AVG_TIDAL_CURRENT: (featureCollection[i].AVG_TIDAL_CURRENT || 0),
+                                SUITABILITY_TIDAL_DEPTH: (featureCollection[i].SUITABILITY_TIDAL_DEPTH || 'NO'),
+                                SUITABILITY_TIDAL_AREA: (featureCollection[i].SUITABILITY_TIDAL_AREA || 'NO'),
+                                SUITABILITY_TIDAL_SPEED: (featureCollection[i].SUITABILITY_TIDAL_SPEED || 'NO')
                             };
 
-                            if ((featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6004,18 +6023,18 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "OceanWaveResourcePotential":
                             myThis.wavepwr[bi] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                AVG_WAVE_POWER: (featureCollection.features[i].properties.AVG_WAVE_POWER || 0),
-                                SUITABILITY_OCEAN_POWER: (featureCollection.features[i].properties.SUITABILITY_OCEAN_POWER || 'Unknown')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
+                                SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
                             };
                             //console.log(myThis.wavepwr[bi].COLOR);
-                            if ((featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6026,17 +6045,17 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         case "OceanDisposalSites":
                             myThis.disp[be] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
                             };
 
-                            if ((be === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((be === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6045,19 +6064,19 @@ angular.module('myApp.services', []).factory('_', function () {
                             be++;
                             break;
                         case "MarineHydrokineticProjects":
-                            if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
+                            if (featureCollection[i].TOTAL_CNT > 0) {
                                 myThis.hydrok[bg] = {
-                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                    PRIMARY_USE: (featureCollection.features[i].properties.energyType ) + ' projects'
+                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                    PRIMARY_USE: (featureCollection[i].energyType ) + ' projects'
                                 };
                             }
-                            if ((bg === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bg === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6067,19 +6086,19 @@ angular.module('myApp.services', []).factory('_', function () {
 
                             break;
                         case "ecstdb2014":
-                            if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
+                            if (featureCollection[i].TOTAL_CNT > 0) {
                                 myThis.surfsed[bh] = {
-                                    TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                    PRIMARY_USE: ((featureCollection.features[i].properties.CLASSIFICA === ' ') ? 'Unknown' : featureCollection.features[i].properties.CLASSIFICA )
+                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                    PRIMARY_USE: ((featureCollection[i].CLASSIFICA === ' ') ? 'Unknown' : featureCollection[i].CLASSIFICA )
                                 };
                             }
-                            if ((bh === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bh === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6091,17 +6110,17 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
                             myThis.mml[bf] = {
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0)
-                                //PRIMARY_USE: (featureCollection.features[i].properties.primaryUse || 'Unknown')
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
+                                //PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
                             };
 
-                            if ((bf === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6112,24 +6131,24 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         case "TribalLands":
                             myThis.test[bd] = {
-                                Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
-                                Company: featureCollection.features[i].properties.Company,
-                                INFO: featureCollection.features[i].properties.INFO,
-                                PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
-                                LINK1: featureCollection.features[i].properties.LINK1,
-                                LINK2: featureCollection.features[i].properties.LINK2,
-                                PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
-                                TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
+                                Lease_Numb: featureCollection[i].Lease_Numb,
+                                Company: featureCollection[i].Company,
+                                INFO: featureCollection[i].INFO,
+                                PROT_NUMBE: featureCollection[i].PROT_NUMBE,
+                                LINK1: featureCollection[i].LINK1,
+                                LINK2: featureCollection[i].LINK2,
+                                PERC_COVER: (featureCollection[i].PERC_COVER || 0),
+                                TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                METADATA_URL: featureCollection[i].METADATA_URL
                             };
-                            if ((bd === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6141,22 +6160,22 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         case  "BOEM_Wind_Planning_Areas":
                             myThis.boem[ba] = {
-                                INFO: featureCollection.features[i].properties.INFO,
-                                PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
-                                LINK1: featureCollection.features[i].properties.LINK1,
-                                LINK2: featureCollection.features[i].properties.LINK2,
-                                PERC_COVER: featureCollection.features[i].properties.PERC_COVER,
-                                TOTAL_BLOC: featureCollection.features[i].properties.TOTAL_BLOC,
-                                TOTAL_CNT: featureCollection.features[i].properties.TOTAL_CNT,
-                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
+                                INFO: featureCollection[i].INFO,
+                                PROT_NUMBE: featureCollection[i].PROT_NUMBE,
+                                LINK1: featureCollection[i].LINK1,
+                                LINK2: featureCollection[i].LINK2,
+                                PERC_COVER: featureCollection[i].PERC_COVER,
+                                TOTAL_BLOC: featureCollection[i].TOTAL_BLOC,
+                                TOTAL_CNT: featureCollection[i].TOTAL_CNT,
+                                METADATA_URL: featureCollection[i].METADATA_URL
                             };
-                            if ((ba === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((ba === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 // console.log(myThis.metadata[k]);
                                 k++;
@@ -6167,24 +6186,24 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case "ActiveRenewableEnergyLeases":
                             myThis.arel[bc] = {
-                                Lease_Numb: featureCollection.features[i].properties.Lease_Numb,
-                                Company: featureCollection.features[i].properties.Company,
-                                INFO: featureCollection.features[i].properties.INFO,
-                                PROT_NUMBE: featureCollection.features[i].properties.PROT_NUMBE,
-                                LINK1: featureCollection.features[i].properties.LINK1,
-                                LINK2: featureCollection.features[i].properties.LINK2,
-                                PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
-                                TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
+                                Lease_Numb: featureCollection[i].Lease_Numb,
+                                Company: featureCollection[i].Company,
+                                INFO: featureCollection[i].INFO,
+                                PROT_NUMBE: featureCollection[i].PROT_NUMBE,
+                                LINK1: featureCollection[i].LINK1,
+                                LINK2: featureCollection[i].LINK2,
+                                PERC_COVER: (featureCollection[i].PERC_COVER || 0),
+                                TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                METADATA_URL: featureCollection[i].METADATA_URL
                             };
-                            if ((bc === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bc === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
@@ -6194,46 +6213,46 @@ angular.module('myApp.services', []).factory('_', function () {
                             break;
                         case  "WindResourcePotential":
                             myThis.wind[bb] = {
-                                WIND_CLASS: (featureCollection.features[i].properties.WIND_CLASS),
-                                AVG_WGHT: (featureCollection.features[i].properties.AVG_WGHT || 0).toFixed(2),
-                                PERC_COVER: (featureCollection.features[i].properties.PERC_COVER || 0),
-                                HOUSES_SUM: (featureCollection.features[i].properties.HOUSES_SUM || 0).toLocaleString(),
-                                CAPACITY: (featureCollection.features[i].properties.CAPACITY || 0).toLocaleString(),
-                                TOTAL_BLOC: (featureCollection.features[i].properties.TOTAL_BLOC || 0),
-                                TOTAL_CNT: (featureCollection.features[i].properties.TOTAL_CNT || 0),
-                                METADATA_URL: featureCollection.features[i].properties.METADATA_URL
+                                WIND_CLASS: (featureCollection[i].WIND_CLASS),
+                                AVG_WGHT: (featureCollection[i].AVG_WGHT || 0).toFixed(2),
+                                PERC_COVER: (featureCollection[i].PERC_COVER || 0),
+                                HOUSES_SUM: (featureCollection[i].HOUSES_SUM || 0).toLocaleString(),
+                                CAPACITY: (featureCollection[i].CAPACITY || 0).toLocaleString(),
+                                TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                METADATA_URL: featureCollection[i].METADATA_URL
                             };
-                            if ((bb === 0) && (featureCollection.features[i].properties.METADATA_URL != null)) {
+                            if ((bb === 0) && (featureCollection[i].METADATA_URL != null)) {
                                 myThis.metadata[k] = {
-                                    REPORT_CAT: featureCollection.features[i].properties.REPORT_CAT,
-                                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                                    METADATA_URL: featureCollection.features[i].properties.METADATA_URL,
-                                    METADATA_OWNER: featureCollection.features[i].properties.METADATA_OWNER,
-                                    METADATA_OWNER_ABV: featureCollection.features[i].properties.METADATA_OWNER_ABV
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
                                 k++;
                             }
                             ;
 
-                            if (featureCollection.features[i].properties.TOTAL_CNT > 0) {
-                                switch (featureCollection.features[i].properties.WIND_CLASS.substring(0, 3)) {
+                            if (featureCollection[i].TOTAL_CNT > 0) {
+                                switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
                                     case "Sup":
-                                        windclass[0] = featureCollection.features[i].properties.PERC_COVER;
+                                        windclass[0] = featureCollection[i].PERC_COVER;
                                         break;
                                     case "Out":
-                                        windclass[1] = featureCollection.features[i].properties.PERC_COVER;
+                                        windclass[1] = featureCollection[i].PERC_COVER;
                                         break;
                                     case "Exc":
-                                        windclass[2] = featureCollection.features[i].properties.PERC_COVER;
+                                        windclass[2] = featureCollection[i].PERC_COVER;
                                         break;
                                     case "Goo":
-                                        windclass[3] = featureCollection.features[i].properties.PERC_COVER;
+                                        windclass[3] = featureCollection[i].PERC_COVER;
                                         break;
                                     case "Fai":
-                                        windclass[4] = featureCollection.features[i].properties.PERC_COVER;
+                                        windclass[4] = featureCollection[i].PERC_COVER;
                                         break;
                                     case "Uns":
-                                        windclass[5] = featureCollection.features[i].properties.PERC_COVER;
+                                        windclass[5] = featureCollection[i].PERC_COVER;
                                         break;
                                 }
 
@@ -6253,32 +6272,32 @@ angular.module('myApp.services', []).factory('_', function () {
                 // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
                 //console.log( myThis.tidalpwr[0].TOTAL_CNT);
                 //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
-
-                if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
-                    myThis.wavepwr[0].COLOR = '#B0B497';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 30.0) {
-                    myThis.wavepwr[0].COLOR = '#B6BC9E';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 20.0) {
-                    myThis.wavepwr[0].COLOR = '#BBC1A4';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 15.0) {
-                    myThis.wavepwr[0].COLOR = '#C0C6A8';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 10.0) {
-                    myThis.wavepwr[0].COLOR = '#C9D0B1';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 8.0) {
-                    myThis.wavepwr[0].COLOR = '#D0D8B9';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 6) {
-                    myThis.wavepwr[0].COLOR = '#D5DDC0';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
-                    myThis.wavepwr[0].COLOR = '#DEE7C9';
-                    //console.log("color");
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
-                    myThis.wavepwr[0].COLOR = '#E4EFD2';
-                } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
-                    myThis.wavepwr[0].COLOR = '#EBF6D8';
-                } else {
-                    myThis.wavepwr[0].COLOR = 'white';
+                if (myThis.wavepwr.length>0) {
+                    if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
+                        myThis.wavepwr[0].COLOR = '#B0B497';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 30.0) {
+                        myThis.wavepwr[0].COLOR = '#B6BC9E';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 20.0) {
+                        myThis.wavepwr[0].COLOR = '#BBC1A4';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 15.0) {
+                        myThis.wavepwr[0].COLOR = '#C0C6A8';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 10.0) {
+                        myThis.wavepwr[0].COLOR = '#C9D0B1';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 8.0) {
+                        myThis.wavepwr[0].COLOR = '#D0D8B9';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 6) {
+                        myThis.wavepwr[0].COLOR = '#D5DDC0';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
+                        myThis.wavepwr[0].COLOR = '#DEE7C9';
+                        //console.log("color");
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
+                        myThis.wavepwr[0].COLOR = '#E4EFD2';
+                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
+                        myThis.wavepwr[0].COLOR = '#EBF6D8';
+                    } else {
+                        myThis.wavepwr[0].COLOR = 'white';
+                    }
                 }
-
                 windclass[6] = (windclass.reduce(function (prev, cur) {
                     return prev.toFixed(2) - cur.toFixed(2);
                 }, 100));
@@ -6688,16 +6707,25 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 L.esri.basemapLayer('OceansLabels').addTo(smallmap);
                 //console.log("AOI_ID =" + $scope.AOI.ID + "");
 
-                var minicLayer = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerAOI,
-                    where: "AOI_ID =" + $scope.AOI.ID + "",
-                    color: '#EB660C',
-                    weight: 3,
-                    fillOpacity: .3,
-                    //simplifyFactor: 5.0,
-                    //precision: 3
-                    //,            pane: 'miniAOIfeature'
-                }).addTo(smallmap);
+                if (AOI.ID === -9999) {
+                    var minicLayer=L.geoJson(AOI.drawLayerShape,{
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+                    }).addTo(smallmap);
+                }else {
+                    var minicLayer = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerAOI,
+                        where: "AOI_ID =" + $scope.AOI.ID + "",
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+                        //simplifyFactor: 5.0,
+                        //precision: 3
+                        //,            pane: 'miniAOIfeature'
+                    }).addTo(smallmap);
+                }
+
                 // console.log(" minicLayer loaded " + $scope.AOI.ID);
                 minicLayer.on("load", function (evt) {
                     // create a new empty Leaflet bounds object
@@ -6715,7 +6743,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     // once we've looped through all the features, zoom the map to the extent of the collection
                     $scope.minibounds = bounds;
                     smallmap.fitBounds(bounds);
-
+                    console.log("first small map fitbounds");
 
                     // unwire the event listener so that it only fires once when the page is loaded
                     minicLayer.off('load');
@@ -6749,6 +6777,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 ;
                 smallmap.invalidateSize();
                 smallmap.fitBounds($scope.minibounds);
+                console.log("second small map fitbounds");
                 document.getElementById('slbuttxt0').style.visibility = "hidden";
             } else {
 
@@ -6778,7 +6807,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$q', function ($scope, AOI, ModalService,$q) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$state', function ($scope, AOI, ModalService,$state) { //this one loads once on start up
         $scope.AOI = AOI;
 
         $scope.box = [];
@@ -6871,11 +6900,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             asyncInterval: 1
         });
         var myGPTask = myGPService.createTask();
-        var myGPTaskDefer = $q.defer();
-        var initPromise = myGPTask.on('initialized', function () {
-            //console.log("initPromise");
-            myGPTaskDefer.resolve();
-        });
+
 
         $scope.drawIt = function () {
            // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
@@ -6906,6 +6931,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             else if (geojson){
                                 $scope.drawOrSubmitCommand = "Complete";
                                 AOI.featureCollection = geojson.Output_Report;
+                                AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
                             }
                             $scope.$apply();
                         });
@@ -6919,6 +6945,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     $scope.drawOrSubmitCommand = "Submit";
                     break;
                 case "Comp":
+                    $scope.drawOff();
+                    map.removeLayer($scope.polylayer);
+                    map.removeControl(searchControl);
+                    $scope.drawtoolOn = false;
+                    $scope.drawOrSubmitCommand = "DRAW";
+                    $state.go('CEview');
+                    $scope.paneon();
+                    document.getElementById("bigmap").style.width = '50%';
+                    map.invalidateSize();
+                    //AOI.zoomTo();
                     AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID,AOI.featureCollection.features[0].attributes.AOI_NAME);
                     break;
 

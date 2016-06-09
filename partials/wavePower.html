@@ -39,7 +39,7 @@
 
             <div style="padding-bottom: 16px;width:100%" class="GreyText14 padLeft15 floatitleft">Wave Power Generation</div>
             <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[AOI.wavepwr[0].AVG_WAVE_POWER>10]">
-                Wave Power is <span ng-show="AOI.wavepwr[0].AVG_WAVE_POWER<=10">NOT</span> >10 kW/m
+                Wave Power is <span ng-hide="AOI.wavepwr[0].AVG_WAVE_POWER>10">NOT</span> >10 kW/m
             </div>
             <div style="width:386px;height:50px" class="GreyText14 padLeft15"></div>
             <div style="width:386px;height:50px" class="GreyText14 padLeft15">

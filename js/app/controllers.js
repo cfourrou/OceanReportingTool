@@ -193,16 +193,25 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 L.esri.basemapLayer('OceansLabels').addTo(smallmap);
                 //console.log("AOI_ID =" + $scope.AOI.ID + "");
 
-                var minicLayer = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerAOI,
-                    where: "AOI_ID =" + $scope.AOI.ID + "",
-                    color: '#EB660C',
-                    weight: 3,
-                    fillOpacity: .3,
-                    //simplifyFactor: 5.0,
-                    //precision: 3
-                    //,            pane: 'miniAOIfeature'
-                }).addTo(smallmap);
+                if (AOI.ID === -9999) {
+                    var minicLayer=L.geoJson(AOI.drawLayerShape,{
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+                    }).addTo(smallmap);
+                }else {
+                    var minicLayer = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerAOI,
+                        where: "AOI_ID =" + $scope.AOI.ID + "",
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+                        //simplifyFactor: 5.0,
+                        //precision: 3
+                        //,            pane: 'miniAOIfeature'
+                    }).addTo(smallmap);
+                }
+
                 // console.log(" minicLayer loaded " + $scope.AOI.ID);
                 minicLayer.on("load", function (evt) {
                     // create a new empty Leaflet bounds object
@@ -220,7 +229,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     // once we've looped through all the features, zoom the map to the extent of the collection
                     $scope.minibounds = bounds;
                     smallmap.fitBounds(bounds);
-
+                    console.log("first small map fitbounds");
 
                     // unwire the event listener so that it only fires once when the page is loaded
                     minicLayer.off('load');
@@ -254,6 +263,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 ;
                 smallmap.invalidateSize();
                 smallmap.fitBounds($scope.minibounds);
+                console.log("second small map fitbounds");
                 document.getElementById('slbuttxt0').style.visibility = "hidden";
             } else {
 
@@ -283,7 +293,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$q', function ($scope, AOI, ModalService,$q) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$state', function ($scope, AOI, ModalService,$state) { //this one loads once on start up
         $scope.AOI = AOI;
 
         $scope.box = [];
@@ -376,11 +386,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             asyncInterval: 1
         });
         var myGPTask = myGPService.createTask();
-        var myGPTaskDefer = $q.defer();
-        var initPromise = myGPTask.on('initialized', function () {
-            //console.log("initPromise");
-            myGPTaskDefer.resolve();
-        });
+
 
         $scope.drawIt = function () {
            // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
@@ -411,6 +417,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             else if (geojson){
                                 $scope.drawOrSubmitCommand = "Complete";
                                 AOI.featureCollection = geojson.Output_Report;
+                                AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
                             }
                             $scope.$apply();
                         });
@@ -424,6 +431,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     $scope.drawOrSubmitCommand = "Submit";
                     break;
                 case "Comp":
+                    $scope.drawOff();
+                    map.removeLayer($scope.polylayer);
+                    map.removeControl(searchControl);
+                    $scope.drawtoolOn = false;
+                    $scope.drawOrSubmitCommand = "DRAW";
+                    $state.go('CEview');
+                    $scope.paneon();
+                    document.getElementById("bigmap").style.width = '50%';
+                    map.invalidateSize();
+                    //AOI.zoomTo();
                     AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID,AOI.featureCollection.features[0].attributes.AOI_NAME);
                     break;
 
