@@ -43,7 +43,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             catch (err) {
                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                 //so for now we will zoom out on error and allow this event to fire again.
-               // console.log("AOI bounds out of bounds, zooming out");
+                // console.log("AOI bounds out of bounds, zooming out");
                 map.setView([33.51, -78.3], 6); //it should try again.
             }
 
@@ -112,6 +112,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
+
                 windChart = Highcharts.chart('container', {
                     chart: {
                         spacing: 0,
@@ -192,15 +193,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 L.esri.basemapLayer('Oceans').addTo(smallmap);
                 L.esri.basemapLayer('OceansLabels').addTo(smallmap);
                 //console.log("AOI_ID =" + $scope.AOI.ID + "");
-
+                var minicLayer;
                 if (AOI.ID === -9999) {
-                    var minicLayer=L.geoJson(AOI.drawLayerShape,{
+                    minicLayer = L.geoJson(AOI.drawLayerShape, {
                         color: '#EB660C',
                         weight: 3,
                         fillOpacity: .3,
                     }).addTo(smallmap);
-                }else {
-                    var minicLayer = L.esri.featureLayer({
+                    $scope.minibounds = minicLayer.getBounds();
+                    smallmap.fitBounds(minicLayer.getBounds(), {
+                        padding: [50, 50]
+                    });
+
+                } else {
+                    minicLayer = L.esri.featureLayer({
                         url: ortMapServer + ortLayerAOI,
                         where: "AOI_ID =" + $scope.AOI.ID + "",
                         color: '#EB660C',
@@ -210,31 +216,37 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         //precision: 3
                         //,            pane: 'miniAOIfeature'
                     }).addTo(smallmap);
-                }
 
-                // console.log(" minicLayer loaded " + $scope.AOI.ID);
-                minicLayer.on("load", function (evt) {
-                    // create a new empty Leaflet bounds object
 
-                    var bounds = L.latLngBounds([]);
-                    // loop through the features returned by the server
-                    minicLayer.eachFeature(function (layer) {
-                        // get the bounds of an individual feature
+                    //console.log(" minicLayer loaded " + typeof (minicLayer.getBounds));
 
-                        var layerBounds = layer.getBounds();
-                        // extend the bounds of the collection to fit the bounds of the new feature
-                        bounds.extend(layerBounds);
+
+                    minicLayer.on("load", function (evt) {
+                        // create a new empty Leaflet bounds object
+                        //             var geoJsonBounds = minicLayer.getBounds();
+                        //             map.fitBounds(geoJsonBounds);
+
+                        var bounds = L.latLngBounds([]);
+                        // loop through the features returned by the server
+                        minicLayer.eachFeature(function (layer) {
+                            // get the bounds of an individual feature
+
+                            var layerBounds = layer.getBounds();
+                            // extend the bounds of the collection to fit the bounds of the new feature
+                            bounds.extend(layerBounds);
+                        });
+
+                        // once we've looped through all the features, zoom the map to the extent of the collection
+                        $scope.minibounds = bounds;
+                        smallmap.fitBounds(bounds);
+
+                        console.log("first small map fitbounds");
+
+                        // unwire the event listener so that it only fires once when the page is loaded
+                        minicLayer.off('load');
                     });
-
-                    // once we've looped through all the features, zoom the map to the extent of the collection
-                    $scope.minibounds = bounds;
-                    smallmap.fitBounds(bounds);
-                    console.log("first small map fitbounds");
-
-                    // unwire the event listener so that it only fires once when the page is loaded
-                    minicLayer.off('load');
-                });
-                //smallmap.invalidateSize();
+                }
+                smallmap.invalidateSize();
 
             }, 1000);
         });
@@ -242,6 +254,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         document.getElementById("togglefull").addEventListener("click", function () {
             toggleFull = !toggleFull;
             $scope.toggleFull = toggleFull;
+
+
             if (toggleFull) {
 
                 // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
@@ -293,7 +307,29 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService','$state', function ($scope, AOI, ModalService,$state) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state','usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
+        var spinOpts = {
+            lines: 13 // The number of lines to draw
+            , length: 30 // The length of each line
+            , width: 14 // The line thickness
+            , radius: 42 // The radius of the inner circle
+            , scale: 0.75 // Scales overall size of the spinner
+            , corners: 0.9 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.3 // Opacity of the lines
+            , rotate: 0 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 0.7 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '50%' // Top position relative to parent
+            , left: '50%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+        }
         $scope.AOI = AOI;
 
         $scope.box = [];
@@ -378,18 +414,24 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         };
 
+        $scope.startSpin = function(){
+            usSpinnerService.spin('spinner-1');
+        }
+        $scope.stopSpin = function(){
+            usSpinnerService.stop('spinner-1');
+        }
         var myGPService = L.esri.GP.service({
-           url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
-           useCors: false,
-           async: true,
-           path: 'submitJob',
+            url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
+            useCors: false,
+            async: true,
+            path: 'submitJob',
             asyncInterval: 1
         });
         var myGPTask = myGPService.createTask();
 
 
         $scope.drawIt = function () {
-           // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
+            // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
             switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
                 case "DRAW":
@@ -403,24 +445,28 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     break;
                 case "Subm":
 
-                        //console.log("submit");
-                        //console.log($scope.polylayer);
-                        $scope.drawOrSubmitCommand = "Working";
-                        var myGPTask = myGPService.createTask();
-                        myGPTask.setParam("Report_Boundary",  $scope.polylayer.toGeoJSON());
-                        myGPTask.setOutputParam("Output_Report");
-                        myGPTask.run(function(error, geojson, response){
-                               console.log(response);
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error "+error;
-                            }
-                            else if (geojson){
-                                $scope.drawOrSubmitCommand = "Complete";
-                                AOI.featureCollection = geojson.Output_Report;
-                                AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
-                            }
-                            $scope.$apply();
-                        });
+                    //console.log("submit");
+                    //console.log($scope.polylayer);
+                    $scope.drawOrSubmitCommand = "Working";
+                    var myGPTask = myGPService.createTask();
+                    myGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    myGPTask.setOutputParam("Output_Report");
+
+                    $scope.startSpin();
+
+                    myGPTask.run(function (error, geojson, response) {
+                        console.log(response);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                        }
+                        else if (geojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            AOI.featureCollection = geojson.Output_Report;
+                            AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
+                        }
+                        $scope.stopSpin();
+                        $scope.$apply();
+                    });
 
                     break;
                 case "Work":
@@ -441,7 +487,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     document.getElementById("bigmap").style.width = '50%';
                     map.invalidateSize();
                     //AOI.zoomTo();
-                    AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID,AOI.featureCollection.features[0].attributes.AOI_NAME);
+                    AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID, AOI.featureCollection.features[0].attributes.AOI_NAME);
                     break;
 
             }
@@ -478,7 +524,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.AOIoff();
             $scope.paneon();
             AOI.unloadData();
-
+            $scope.stopSpin();
             for (i = 0; i < len; i++) {
                 $scope.box[i].isActive = false;
             }

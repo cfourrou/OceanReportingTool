@@ -43,7 +43,11 @@ angular.module('myApp.services', []).factory('_', function () {
                         color: '#EB660C',
                         weight: 3,
                         fillOpacity: .3,
+                        pane: 'AOIfeature'
                     }).addTo(map);
+                    map.fitBounds(this.layer.getBounds(), {
+                        padding: [50, 50]
+                    });
                 }else{
                     this.layer = L.esri.featureLayer({ //AOI poly (7)
                         url: ortMapServer + ortLayerAOI,
@@ -54,7 +58,7 @@ angular.module('myApp.services', []).factory('_', function () {
                         //precision: 2
                     }).addTo(map);
                 }
-                //console.log(" this.layer loaded " + AOI_ID);
+                console.log(" this.layer loaded " + typeof(this.layer.getBounds));
                 this.isVisible = true;
                 //console.log("display: this.ID = " +AOI_ID);
             },

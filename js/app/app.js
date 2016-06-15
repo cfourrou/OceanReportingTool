@@ -162,7 +162,8 @@ angular.module('myApp', [
       'angulartics.google.analytics',
       'pageslide-directive',
       'angularModalService',
-      'ngAnimate'
+      'ngAnimate',
+      'angularSpinner'
 
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {

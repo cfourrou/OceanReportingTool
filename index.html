@@ -93,10 +93,12 @@
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
     <!-- Fonts -->
+
     <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
 
+    
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?3371e51b6812c2e3">
+    <link rel="stylesheet" href="css/ort.min.css?734510a01345b0ee">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -138,6 +140,7 @@
                 </div>
             </div>
             <div id="contentliquid">
+
                 <div ng-cloak ng-show="drawtoolOn" id="drawtoolbottom" class="drawTools2">
                     <div ng-class="drawenabled? 'drawbutton-enl':'drawbutton-dis'" ng-click="drawIt()" class="drawbutton1" style="border-right-style: solid;">
                         <ng-include style="vertical-align:text-top;padding-right: 10px" src="'img/MapInput_2.svg'"></ng-include>
@@ -149,6 +152,7 @@
                 </div>
 
                 <div id="bigmap" class="mapclass">
+                    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
                     <div ng-cloak ng-show="drawtoolOn" id="drawtool" class="drawTools">
                         <div style="width:100%;">Map Navigation</div>
                         <div style="width:100%;float:left;">
@@ -192,12 +196,13 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?1bcf1b13c73db7e8"></script>
+<script src="js/ort.js?d5c6af52085ff4f5"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>
 
 <script src="//coast.noaa.gov/js/angulartics.js"></script>
 <script src="//coast.noaa.gov/js/angulartics-google-analytics.js"></script>
+
 </body>
 </html>
