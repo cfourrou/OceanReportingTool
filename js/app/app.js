@@ -100,11 +100,7 @@ ortLayerOptional[16]=
 };
 
 
-var map = L.map('bigmap',{
-    zoomControl: false,
-    maxZoom:12
 
-});
 
 
 
@@ -138,8 +134,56 @@ function addLoadEvent(func) {
 addLoadEvent(preloader);
 
 var marker;
-L.esri.basemapLayer('Oceans').addTo(map);
-L.esri.basemapLayer('OceansLabels').addTo(map);
+
+
+var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+    maxZoom: 16
+    }),
+    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+        maxZoom: 13
+    }),
+    esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+
+
+var nauticalchart=L.esri.imageMapLayer({
+    url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
+    //mosaicRule: mosaicRule,
+    useCors: false
+});//.addTo(map);
+
+
+
+var map = L.map('bigmap',{
+    zoomControl: false,
+    //maxZoom:12
+    //layers: [esriOceans]
+});
+var baseMaps = {
+    "Oceans": esriOceans,
+    "Streets": esriStreets,
+    "NatGeo World":esriNatGeo
+};
+var mapOverlay = {
+   "Nautical Chart": nauticalchart
+} ;
+
+var baselayer = esriOceans.addTo(map);
+
+
+//L.esri.basemapLayer('Oceans').addTo(map);
+//L.esri.basemapLayer('OceansLabels').addTo(map);
+//World_Street_Map
+//NatGeo_World_Map
+//World_Ocean_Base
+//
+
+//Use one of "Streets", "Topographic", "Oceans", "OceansLabels", "NationalGeographic", "Gray", "GrayLabels", "DarkGray", "DarkGrayLabels", "Imagery",
+// "ImageryLabels", "ImageryTransportation", "ShadedRelief", "ShadedReliefLabels", "Terrain" or "TerrainLabels"
+
 L.control.zoom({
     position:'bottomleft'
 }).addTo(map);

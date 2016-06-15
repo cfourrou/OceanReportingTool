@@ -6830,30 +6830,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
     .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state','usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
-        var spinOpts = {
-            lines: 13 // The number of lines to draw
-            , length: 30 // The length of each line
-            , width: 14 // The line thickness
-            , radius: 42 // The radius of the inner circle
-            , scale: 0.75 // Scales overall size of the spinner
-            , corners: 0.9 // Corner roundness (0..1)
-            , color: '#000' // #rgb or #rrggbb or array of colors
-            , opacity: 0.3 // Opacity of the lines
-            , rotate: 0 // The rotation offset
-            , direction: 1 // 1: clockwise, -1: counterclockwise
-            , speed: 0.7 // Rounds per second
-            , trail: 60 // Afterglow percentage
-            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-            , zIndex: 2e9 // The z-index (defaults to 2000000000)
-            , className: 'spinner' // The CSS class to assign to the spinner
-            , top: '50%' // Top position relative to parent
-            , left: '50%' // Left position relative to parent
-            , shadow: false // Whether to render a shadow
-            , hwaccel: false // Whether to use hardware acceleration
-            , position: 'absolute' // Element positioning
-        }
-        $scope.AOI = AOI;
 
+        $scope.AOI = AOI;
+        $scope.baseMapControlOn = false;
+
+        var baseMapControl = L.control.layers(baseMaps,mapOverlay,{
+            position: 'topleft',
+            collapsed:false
+        });
         $scope.box = [];
         var len = 2000;
         for (var i = 0; i < len; i++) {
@@ -6951,6 +6935,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
         var myGPTask = myGPService.createTask();
 
+        $scope.baseMapSwitch = function() {
+            console.log("basemap " + $scope.baseMapControlOn);
+            if ($scope.baseMapControlOn) {
+                map.removeControl(baseMapControl);
+                $scope.baseMapControlOn=false;
+
+            }else {
+                baseMapControl.addTo(map);
+                $scope.baseMapControlOn=true;
+            }
+        }
+
 
         $scope.drawIt = function () {
             // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
@@ -7047,6 +7043,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.paneon();
             AOI.unloadData();
             $scope.stopSpin();
+            if ($scope.baseMapControlOn) {
+                map.removeControl(baseMapControl);
+                $scope.baseMapControlOn = false;
+            }
+
             for (i = 0; i < len; i++) {
                 $scope.box[i].isActive = false;
             }
@@ -7381,11 +7382,7 @@ ortLayerOptional[16]=
 };
 
 
-var map = L.map('bigmap',{
-    zoomControl: false,
-    maxZoom:12
 
-});
 
 
 
@@ -7419,8 +7416,56 @@ function addLoadEvent(func) {
 addLoadEvent(preloader);
 
 var marker;
-L.esri.basemapLayer('Oceans').addTo(map);
-L.esri.basemapLayer('OceansLabels').addTo(map);
+
+
+var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+    maxZoom: 16
+    }),
+    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+        maxZoom: 13
+    }),
+    esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+
+
+var nauticalchart=L.esri.imageMapLayer({
+    url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
+    //mosaicRule: mosaicRule,
+    useCors: false
+});//.addTo(map);
+
+
+
+var map = L.map('bigmap',{
+    zoomControl: false,
+    //maxZoom:12
+    //layers: [esriOceans]
+});
+var baseMaps = {
+    "Oceans": esriOceans,
+    "Streets": esriStreets,
+    "NatGeo World":esriNatGeo
+};
+var mapOverlay = {
+   "Nautical Chart": nauticalchart
+} ;
+
+var baselayer = esriOceans.addTo(map);
+
+
+//L.esri.basemapLayer('Oceans').addTo(map);
+//L.esri.basemapLayer('OceansLabels').addTo(map);
+//World_Street_Map
+//NatGeo_World_Map
+//World_Ocean_Base
+//
+
+//Use one of "Streets", "Topographic", "Oceans", "OceansLabels", "NationalGeographic", "Gray", "GrayLabels", "DarkGray", "DarkGrayLabels", "Imagery",
+// "ImageryLabels", "ImageryTransportation", "ShadedRelief", "ShadedReliefLabels", "Terrain" or "TerrainLabels"
+
 L.control.zoom({
     position:'bottomleft'
 }).addTo(map);
