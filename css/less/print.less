@@ -1,6 +1,21 @@
 /**************************************
 	PRINT STYLES
 **************************************/
-@media print{
-	
+@media screen {
+  #printSection {
+    display: none;
+  }
+}
+
+@media print {
+  body * {
+    visibility:hidden;
+  }
+  #printSection, #printSection * {
+    visibility:visible;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust:exact;
+  }
+
 }

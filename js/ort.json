@@ -14,6 +14,8 @@
     "js/lib/esri-leaflet.js",
     "js/lib/esri-leaflet-geocoder.js",
     "js/lib/esri-leaflet-gp.js",
+    "js/lib/jspdf.min.js",
+    "js/lib/html2canvas.js",
     "js/lib/highcharts.js",
     "js/lib/exporting.js",
     "js/lib/svg-injector.min.js",

@@ -101,6 +101,11 @@ ortLayerOptional[16]=
 
 
 
+ortLayerOptional[26]=
+{
+    num:30,
+    displayName:'Coastal Relief Model'
+};
 
 
 
@@ -138,14 +143,15 @@ var marker;
 
 var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-    maxZoom: 16
+    maxZoom: 12
     }),
     esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-        maxZoom: 13
+        maxZoom: 12
     }),
     esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+        maxZoom: 12
     });
 
 
@@ -159,9 +165,10 @@ var nauticalchart=L.esri.imageMapLayer({
 
 var map = L.map('bigmap',{
     zoomControl: false,
-    //maxZoom:12
+    maxZoom:12
     //layers: [esriOceans]
 });
+var smallmap;
 var baseMaps = {
     "Oceans": esriOceans,
     "Streets": esriStreets,
@@ -261,6 +268,11 @@ angular.module('myApp', [
               url:'/draw',
               templateUrl:'partials/draw.html',
               controller: 'SearchCtrl'
+          })
+          .state('print',{
+             // url:'/print',
+              templateUrl:'partials/printPreview.html',
+              controller: 'printCtrl'
           })
       ;
     }])

@@ -1,0 +1,63 @@
+<div class="infographic-box-tiny">
+    <div id="wrbox1">
+        <div id="slider_but26" class="sliderbutton">
+            <div ng-class="AOI.CEElevationIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+
+        <div id="boemline1" style="width: 35%;">Elevation
+
+
+            <!-- iButton start-->
+            <div style="float: right;">
+                <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+                <info-directive class="infobutton mainbutton" modal-template="modal26.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal26.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            elevation info
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+        </div>
+        <div>
+                <span style="font-size: 15px; color: #4a4a4a;;">
+                <div class="swatch floatitleft"><img src="img/elevation.svg"></div>
+                    <div style="padding-top: 4px; padding-left: 95px;">
+                        <div><b>Min:</b> {{AOI.CEElevation[0].depth_min_m}}m</div>
+                        <div><b>Max:</b> {{AOI.CEElevation[0].depth_max_m}}m</div>
+                        <div><b>Mean:</b> {{AOI.CEElevation[0].depth_mean_m}}m</div>
+                    </div>
+                </span>
+
+        </div>
+        <div class="GreyText10 padLeft15 floatitleft">
+            <div ng-repeat="count in AOI.disp | filter:query as filtered">
+            </div>
+            <div ng-repeat="dispx in AOI.disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+                <div ng-repeat="count in AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+                </div>
+                <div id="boemline2">
+                    <!--span class="boemline2b">{{filtered.length}}</span>
+                    <span class="boemline2a">{{dispx.PRIMARY_USE}}</span-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

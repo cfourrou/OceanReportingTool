@@ -36,6 +36,8 @@ angular.module('myApp.services', []).factory('_', function () {
             OGWells: [],
             OGresource: [],
             coastfac: [],
+            CEElevation:[],
+
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 if (this.ID === -9999) {
@@ -231,6 +233,13 @@ angular.module('myApp.services', []).factory('_', function () {
                     }
                 });
 
+                myThis.CEElevation = L.esri.dynamicMapLayer({
+                    url: ortMapServer,
+                    pane: 'optionalfeature26',
+                    layers: [ortLayerOptional[26].num],
+                    opacity: .6,
+                });
+
                 var query = L.esri.query({
                     url: ortMapServer + ortLayerData
                 });
@@ -293,11 +302,35 @@ angular.module('myApp.services', []).factory('_', function () {
                 var bo = 0;
                 var bp = 0;
                 var bq = 0;
+                var br = 0;
                 var ack=[];
 
                 for (var i = 0, j = featureCollection.length; i < j; i++) {
 
                     switch (featureCollection[i].DATASET_NM) {
+                        case "crm_v1":
+                            myThis.CEElevation[br] = {
+                                TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                depth_min_m: (featureCollection[i].depth_min_m || 'Unknown'),
+                                depth_max_m: (featureCollection[i].depth_max_m || 'Unknown'),
+                                depth_mean_m: (featureCollection[i].depth_mean_m || 'Unknown')
+
+                            };
+
+                            if ((br === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                myThis.metadata[k] = {
+                                    REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                    COMMON_NM: featureCollection[i].COMMON_NM,
+                                    METADATA_URL: featureCollection[i].METADATA_URL,
+                                    METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                    METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                };
+                                k++;
+                            }
+                            ;
+
+                            bq++;
+                            break;
                         case "CoastalEnergyFacilities":
                             myThis.coastfac[bq] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -815,6 +848,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.removeLayer(this.currentPower);
                     map.removeLayer(this.beachNourish);
                     map.removeLayer(this.coastalEnergyFacilities);
+                    map.removeLayer(this.CEElevation);
 
                     this.windLeaseLayerIsVisible = false;
                     this.windrpLayerIsVisible = false;
@@ -827,6 +861,8 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.currentPowerIsVisable = false;
                     this.beachNourishIsVisable = false;
                     this.coastalEnergyFacilitiesIsVisable = false;
+                    this.CEElevationIsVisable = false;
+
                     this.wind.length = 0;
                     this.boem.length = 0;
                     this.metadata.length = 0;
@@ -846,6 +882,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.OGWells.length = 0;
                     this.OGresource.length = 0;
                     this.coastfac.length = 0;
+                    this.CEElevation.length=0;
 
                     this.hide();
                     //map.setView([33.51, -68.3], 6);
@@ -964,7 +1001,150 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.removeLayer(this.windrpLayer);
                     this.windrpLayerIsVisible = false;
                 }
-            }
+            },
+            CEElevationIsVisable: false,
+            toggleCEElevation: function () {
+                if (!this.CEElevationIsVisable) {
+                    this.CEElevation.addTo(map);
+                    this.CEElevationIsVisable = true;
+                } else {
+                    map.removeLayer(this.CEElevation);
+                    this.CEElevationIsVisable = false;
+                }
+            },
+            toggleFull:false,
+            toggleFullSlider: function(pageID){
+                console.log("nerf");
+                toggleFull = !toggleFull;
+
+                if (toggleFull) {
+
+                    // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
+                    document.getElementById("slide1").style.width = '100%';
+                    document.getElementById("togglefull").style.marginLeft = '0px';
+                    document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
+                    document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
+                    document.getElementById("togglefull").style.transform = "rotate(180deg)";
+
+                    var elems = document.getElementsByClassName('AOItabClass2');
+                    for (var i = 0; i < elems.length; i++) {
+                        elems[i].style.display = 'inline-block';
+                    }
+                    ;
+                    var elems = document.getElementsByClassName('sliderbutton');
+                    for (var i = 0; i < elems.length; i++) {
+                        elems[i].style.visibility = "hidden";
+                    }
+                    ;
+                    if (pageID==="EM") {
+                        smallmap.invalidateSize();
+                        smallmap.fitBounds(this.minibounds);
+                        console.log("second small map fitbounds");
+                    }
+                    document.getElementById('slbuttxt0').style.visibility = "hidden";
+                } else {
+
+                    document.getElementById("togglefull").style.marginLeft = "-25px";
+
+                    document.getElementById("slide1").style.width = '50%';
+                    var elems = document.getElementsByClassName('AOItabClass2');
+                    for (var i = 0; i < elems.length; i++) {
+                        elems[i].style.display = 'none';
+                    }
+                    ;
+                    var elems = document.getElementsByClassName('sliderbutton');
+                    for (var i = 0; i < elems.length; i++) {
+                        elems[i].style.visibility = "visible";
+                    }
+                    ;
+                    document.getElementById('slbuttxt0').style.visibility = "visible";
+                    // Code for Chrome, Safari, Opera
+                    document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
+                    // Code for IE9
+                    document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
+                    document.getElementById("togglefull").style.transform = "rotate(0deg)";
+
+                }
+
+
+            },
+            loadWindChart: function() {
+                windChart = Highcharts.chart('container', {
+                    chart: {
+                        spacing: 0,
+                        margin: 0,
+                        type: 'column'
+                    },
+                    title: {
+                        text: null
+                    },
+                    exporting: {enabled: false},
+                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                    xAxis: {
+                        title: {
+                            enabled: false
+                        },
+                        labels: {
+                            enabled: false
+                        },
+                        tickLength: 0
+                    },
+                    yAxis: {
+                        title: {
+                            enabled: false
+                        },
+                        labels: {
+                            enabled: false
+                        },
+                        TickLength: 0
+                    },
+                    plotOptions: {
+                        series: {
+                            pointWidth: 190
+                        },
+                        column: {
+                            stacking: 'percent'
+                        }
+                    },
+                    series: [{
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[0]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[1]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[2]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[3]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[4]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[5]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[6]]
+                    }
+                    ]
+                });
+
+                /*  //over ride windclass for testing chart
+                 // console.log(windclass[0]);
+                 windclass[0]=10;
+                 windclass[1]=25;
+                 windclass[2]=65;
+                 */
+            },
         };
 
         return AOI;

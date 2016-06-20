@@ -20,8 +20,46 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('AOICtrl', ['AOI', '$scope', function (AOI, $scope) {
+    .controller('printCtrl', ['AOI', '$scope','$http','$timeout', function (AOI, $scope,$http,$timeout) {
         $scope.AOI = AOI;
+        $http.get('CEConfig.json')
+            .then(function (res) {
+                $scope.CEConfig = res.data;
+            });
+        $http.get('emconfig.json')
+            .then(function (res) {
+                $scope.emconfig = res.data;
+            });
+        $scope.$on('$viewContentLoaded', function () {
+            // document is ready, place  code here
+            $timeout(function () {
+        AOI.loadWindChart();
+            }, 1000);
+        });
+        $scope.exportMyPDF = function (divtoExport) {
+            console.log(divtoExport);
+            html2canvas(document.getElementById(divtoExport), {
+                allowTaint: true,
+                //taintTest: false,
+                onrendered: function(canvas) {
+                    var imgData = canvas.toDataURL(
+                        'image/png');
+
+                    window.open(imgData);
+                    var doc = new jsPDF('p', 'mm');
+                    doc.addImage(imgData, 'PNG', 10, 10);
+                    doc.save('Ocean_Report.pdf');
+                }
+            });
+        };
+    }])
+
+    .controller('AOICtrl', ['AOI', '$scope','$http', function (AOI, $scope,$http) {
+        $scope.AOI = AOI;
+        $http.get('CEConfig.json')
+            .then(function (res) {
+                $scope.CEConfig = res.data;
+            });
         AOI.layer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
@@ -92,102 +130,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('MyCtrl2', ['$scope', '$timeout', 'AOI', '$http', function ($scope, $timeout, AOI, $http) {
         $scope.AOI = AOI;
-        var smallmap;
+
         $scope.name = "controller 2";
         $http.get('emconfig.json')
             .then(function (res) {
                 $scope.emconfig = res.data;
             });
-        /*//over ride windclass for testing chart
-         console.log(windclass[0]);
-         windclass[0]=10;
-         windclass[1]=25;
-         windclass[2]=65;
-         */
-        //console.log("windclass " + windclass);
-        //      windclass[6] = (windclass.reduce(function (prev, cur) {
-        //           return prev.toFixed(2) - cur.toFixed(2);
-        //       }, 100));
-        //console.log("windmill % unknown = " + windclass[6]);
+
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
 
-                windChart = Highcharts.chart('container', {
-                    chart: {
-                        spacing: 0,
-                        margin: 0,
-                        type: 'column'
-                    },
-                    title: {
-                        text: null
-                    },
-                    exporting: {enabled: false},
-                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
-                    xAxis: {
-                        title: {
-                            enabled: false
-                        },
-                        labels: {
-                            enabled: false
-                        },
-                        tickLength: 0
-                    },
-                    yAxis: {
-                        title: {
-                            enabled: false
-                        },
-                        labels: {
-                            enabled: false
-                        },
-                        TickLength: 0
-                    },
-                    plotOptions: {
-                        series: {
-                            pointWidth: 190
-                        },
-                        column: {
-                            stacking: 'percent'
-                        }
-                    },
-                    series: [{
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[0]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[1]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[2]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[3]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[4]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[5]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[6]]
-                    }
-                    ]
-                });
-
-                /*  //over ride windclass for testing chart
-                 // console.log(windclass[0]);
-                 windclass[0]=10;
-                 windclass[1]=25;
-                 windclass[2]=65;
-                 */
+                AOI.loadWindChart();
 
                 smallmap = L.map('map').setView([45.526, -122.667], 1);
                 L.esri.basemapLayer('Oceans').addTo(smallmap);
@@ -200,7 +154,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         weight: 3,
                         fillOpacity: .3,
                     }).addTo(smallmap);
-                    $scope.minibounds = minicLayer.getBounds();
+                    AOI.minibounds = minicLayer.getBounds();
                     smallmap.fitBounds(minicLayer.getBounds(), {
                         padding: [50, 50]
                     });
@@ -237,7 +191,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
 
                         // once we've looped through all the features, zoom the map to the extent of the collection
-                        $scope.minibounds = bounds;
+                        AOI.minibounds = bounds;
                         smallmap.fitBounds(bounds);
 
                         console.log("first small map fitbounds");
@@ -251,58 +205,58 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }, 1000);
         });
 
-        document.getElementById("togglefull").addEventListener("click", function () {
-            toggleFull = !toggleFull;
-            $scope.toggleFull = toggleFull;
-
-
-            if (toggleFull) {
-
-                // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-                document.getElementById("slide1").style.width = '100%';
-                document.getElementById("togglefull").style.marginLeft = '0px';
-                document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-                document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
-                document.getElementById("togglefull").style.transform = "rotate(180deg)";
-
-                var elems = document.getElementsByClassName('AOItabClass2');
-                for (var i = 0; i < elems.length; i++) {
-                    elems[i].style.display = 'inline-block';
-                }
-                ;
-                var elems = document.getElementsByClassName('sliderbutton');
-                for (var i = 0; i < elems.length; i++) {
-                    elems[i].style.visibility = "hidden";
-                }
-                ;
-                smallmap.invalidateSize();
-                smallmap.fitBounds($scope.minibounds);
-                console.log("second small map fitbounds");
-                document.getElementById('slbuttxt0').style.visibility = "hidden";
-            } else {
-
-                document.getElementById("togglefull").style.marginLeft = "-25px";
-
-                document.getElementById("slide1").style.width = '50%';
-                var elems = document.getElementsByClassName('AOItabClass2');
-                for (var i = 0; i < elems.length; i++) {
-                    elems[i].style.display = 'none';
-                }
-                ;
-                var elems = document.getElementsByClassName('sliderbutton');
-                for (var i = 0; i < elems.length; i++) {
-                    elems[i].style.visibility = "visible";
-                }
-                ;
-                document.getElementById('slbuttxt0').style.visibility = "visible";
-                // Code for Chrome, Safari, Opera
-                document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
-                // Code for IE9
-                document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
-                document.getElementById("togglefull").style.transform = "rotate(0deg)";
-
-            }
-        });
+        //document.getElementById("togglefull").addEventListener("click", function () {
+        //    toggleFull = !toggleFull;
+        //    $scope.toggleFull = toggleFull;
+        //
+        //
+        //    if (toggleFull) {
+        //
+        //        // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
+        //        document.getElementById("slide1").style.width = '100%';
+        //        document.getElementById("togglefull").style.marginLeft = '0px';
+        //        document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
+        //        document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
+        //        document.getElementById("togglefull").style.transform = "rotate(180deg)";
+        //
+        //        var elems = document.getElementsByClassName('AOItabClass2');
+        //        for (var i = 0; i < elems.length; i++) {
+        //            elems[i].style.display = 'inline-block';
+        //        }
+        //        ;
+        //        var elems = document.getElementsByClassName('sliderbutton');
+        //        for (var i = 0; i < elems.length; i++) {
+        //            elems[i].style.visibility = "hidden";
+        //        }
+        //        ;
+        //        smallmap.invalidateSize();
+        //        smallmap.fitBounds($scope.minibounds);
+        //        console.log("second small map fitbounds");
+        //        document.getElementById('slbuttxt0').style.visibility = "hidden";
+        //    } else {
+        //
+        //        document.getElementById("togglefull").style.marginLeft = "-25px";
+        //
+        //        document.getElementById("slide1").style.width = '50%';
+        //        var elems = document.getElementsByClassName('AOItabClass2');
+        //        for (var i = 0; i < elems.length; i++) {
+        //            elems[i].style.display = 'none';
+        //        }
+        //        ;
+        //        var elems = document.getElementsByClassName('sliderbutton');
+        //        for (var i = 0; i < elems.length; i++) {
+        //            elems[i].style.visibility = "visible";
+        //        }
+        //        ;
+        //        document.getElementById('slbuttxt0').style.visibility = "visible";
+        //        // Code for Chrome, Safari, Opera
+        //        document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
+        //        // Code for IE9
+        //        document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
+        //        document.getElementById("togglefull").style.transform = "rotate(0deg)";
+        //
+        //    }
+        //});
 
 
     }])
@@ -406,6 +360,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         }
         var myGPService = L.esri.GP.service({
             url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
+            //url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area",
             useCors: false,
             async: true,
             path: 'submitJob',

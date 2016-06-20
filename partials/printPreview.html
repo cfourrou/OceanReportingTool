@@ -1,0 +1,43 @@
+<script>
+    // Elements to inject
+    var mySVGsToInject = document.querySelectorAll('img.inject-it');
+
+    // Do the injection
+    SVGInjector(mySVGsToInject);
+</script>
+
+
+
+
+<div style="padding:30px;" id="slide-right">
+    <div style="width: 100%;height:5px">
+        <div id="AOIname">Print Preview</div>
+        <div id="shareIcons">
+            <div id="shareIcon"><a ng-print print-element-id="sliderData"><img src="img/Printer.svg"></a></div>
+            <div id="shareIcon"><img src="img/PDF.svg" ng-click="exportMyPDF('slide1')"></div>
+
+            </div>
+
+        </div>
+
+    <br style="clear: left;"/>
+
+    <div id="sliderData" style="height:100%">
+        <div >{{AOI.name.toUpperCase()}}</div>
+        <div id="AOItab" class="AOItabClass"> Common Elements
+            <hr width="50%" align="left" color="#F4F8FC">
+            <div ng-repeat="CEConf in CEConfig | orderBy: 'priority'">
+                <div class="zeroheightkludge" ng-include="CEConf.filename"></div>
+            </div>
+        </div>
+        <br style="clear: left;"/>
+        <div id="AOItab" class="AOItabClass"> Energy and Minerals
+            <hr width="50%" align="left" color="#F4F8FC">
+            <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
+                <div class="zeroheightkludge" ng-include="emconf.filename"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

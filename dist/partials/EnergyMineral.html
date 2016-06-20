@@ -5,14 +5,16 @@
     // Do the injection
     SVGInjector(mySVGsToInject);
 </script>
-<a href="" id="togglefull" class="toggleicon" ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="inject-it toggleimg" src="img/ArrowButton.svg"></a>
-
+<!--
+indivdual infographics ID's 1-25 for EM
+-->
+<a ng-click="AOI.toggleFullSlider('EM')" href="" id="togglefull" class="toggleicon" ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="inject-it toggleimg" src="img/ArrowButton.svg"></a>
 
 <div style="padding:30px;" id="slide-right">
     <div style="width: 100%;height:5px">
         <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
         <div id="shareIcons">
-            <div id="shareIcon"><img src="img/PDF.svg"></div>
+            <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></div>
             <div id="shareIcon"><a ui-sref="CEview({'id': '23'})"><img src="img/Export.svg"></a></div>
             <div id="shareIcon"><a ui-sref="meta" href=""><img src="img/MetadataIcon.svg"></a></div>
 
@@ -23,34 +25,10 @@
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Energy and Minerals
             <hr width="50%" align="left" color="#F4F8FC">
-            <!--div id="AOItab2" class="AOItabClass2">
-                <div id="map" class="smallmapclass"></div>
-            </div-->
-
             <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
                 <div class="zeroheightkludge" ng-include="emconf.filename"></div>
             </div>
 
-            <!--
-              <div ng-include="'partials/WindResourcePotential.html'"></div>
-
-
-
-              <renewable-energy></renewable-energy>
-              <div ng-include="'partials/WindPlanningAreas.html'"></div>
-
-              <div ng-include="'partials/MarineMineralsLeases.html'"></div>
-              <div ng-include="'partials/OceanDisposalSites.html'"></div>
-
-
-
-
-
-
-          </div>
-          <div id="AOItab2" class="AOItabClass">
-              <div id="map" class="smallmapclass"></div>
-          -->
         </div>
 
 

@@ -5,13 +5,16 @@
     // Do the injection
     SVGInjector(mySVGsToInject);
 </script>
-<a href="" id="togglefull" class="toggleicon" ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="inject-it toggleimg" src="img/ArrowButton.svg"></a>
+<!--
+indivdual infographics ID's 26-45 for CE
+-->
+<a ng-click="AOI.toggleFullSlider('CE')" href="" id="togglefull" class="toggleicon" ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="inject-it toggleimg" src="img/ArrowButton.svg"></a>
 
 <div style="padding:30px;" id="slide-right">
     <div style="width: 100%;height:5px">
         <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
         <div id="shareIcons">
-            <div id="shareIcon"><img src="img/PDF.svg"></div>
+            <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
             <div id="shareIcon"><a ui-sref="meta"href=""><img src="img/MetadataIcon.svg"></a></div>
 
@@ -22,8 +25,8 @@
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Common Elements
             <hr width="50%" align="left" color="#F4F8FC">
-            <div ng-repeat="ceconf in ceconfig | orderBy: 'priority'">
-                <div class="zeroheightkludge" ng-include="ceconf.filename"></div>
+            <div ng-repeat="CEConf in CEConfig | orderBy: 'priority'">
+                <div class="zeroheightkludge" ng-include="CEConf.filename"></div>
             </div>
         </div>
     </div>
