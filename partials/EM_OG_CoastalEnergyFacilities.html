@@ -1,10 +1,10 @@
 <div class="infographic-box-medium">
     <div id="wrbox1">
-        <div id="slider_but16" class="sliderbutton">
+        <div id="slider_but16" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="AOI.coastalEnergyFacilitiesIsVisable ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.togglecoastalEnergyFacilities()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext">CLICK TO TURN LAYER ON AND OFF</div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF</div>
         <div id="boemline1">Coastal Energy Facilities</div>
         <div class="swatch floatitleft"><img src="img/CoastalEnergyGraphic.svg"></div>
         <div id="boemline2" >

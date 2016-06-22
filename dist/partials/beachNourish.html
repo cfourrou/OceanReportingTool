@@ -1,10 +1,10 @@
 <div class="infographic-box-medium">
     <div id="wrbox1" >
-        <div id="slider_but11" class="sliderbutton">
+        <div id="slider_but11" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="AOI.beachNourishIsVisable ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.togglebeachNourish()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext">CLICK TO TURN LAYER ON AND OFF</div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF</div>
         <div id="boemline1">Beach Nourishment Projects</div>
 
         <div style="width:85%;padding-bottom: 8px" class="floatitleft">

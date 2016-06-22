@@ -112,7 +112,7 @@ ortLayerOptional[26]=
 
 var toggle = false;
 var windclass = [];
-var toggleFull = false;
+//var toggleFull = false;
 var cLayer,mouseLayer,searchControl;
 var menuitems= [];
 
@@ -165,7 +165,7 @@ var nauticalchart=L.esri.imageMapLayer({
 
 var map = L.map('bigmap',{
     zoomControl: false,
-    maxZoom:12
+    maxZoom:12,
     //layers: [esriOceans]
 });
 var smallmap;
@@ -214,7 +214,8 @@ angular.module('myApp', [
       'pageslide-directive',
       'angularModalService',
       'ngAnimate',
-      'angularSpinner'
+      'angularSpinner',
+      'highcharts-ng'
 
     ])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {

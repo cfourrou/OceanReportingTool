@@ -2,11 +2,11 @@
     <div id="wrbox1">
         <div id="line1a">Wind Resource Potential</div>
 
-        <div id="slider_but0" class="sliderbutton">
+        <div id="slider_but0" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="{true: 'flip', false: 'rotateCounterwise180'}[optLayer[0]]"
                  ng-click="opt_layer_button(0)" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext">CLICK TO TURN LAYER ON AND OFF</div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF</div>
     </div>
 
 

@@ -2,11 +2,11 @@
     <div id="wrbox1">
         <div id="line1a">Wind Resource Potential</div>
 
-        <div id="slider_but0" class="sliderbutton">
+        <div id="slider_but0" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="AOI.windrpLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.toggleWindrpLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext">CLICK TO TURN LAYER ON AND OFF</div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF</div>
     </div>
 
 
@@ -136,8 +136,12 @@
 
 
     <div class="windmillbox"><img src="img/wind_cc.svg" class="inject-it windmill">
+        <img style="border-style: none;height: 231px;width: 190px;position: relative;bottom: 237px;" id="binaryImage"/>
     </div>
-    <div id="container"></div>
+    <!--div id="container"></div-->
+    <highchart id="container" config="AOI.highchartsNG"></highchart>
+
+
     <br>
 
 </div>

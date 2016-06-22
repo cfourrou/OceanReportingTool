@@ -36,12 +36,12 @@ angular.module('myApp.services', []).factory('_', function () {
             OGWells: [],
             OGresource: [],
             coastfac: [],
-            CEElevation:[],
+            CEElevation: [],
 
             display: function (AOI_ID) {
                 this.ID = AOI_ID;
                 if (this.ID === -9999) {
-                    this.layer=L.geoJson(this.drawLayerShape,{
+                    this.layer = L.geoJson(this.drawLayerShape, {
                         color: '#EB660C',
                         weight: 3,
                         fillOpacity: .3,
@@ -50,12 +50,13 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.fitBounds(this.layer.getBounds(), {
                         padding: [50, 50]
                     });
-                }else{
+                } else {
                     this.layer = L.esri.featureLayer({ //AOI poly (7)
                         url: ortMapServer + ortLayerAOI,
                         color: '#EB660C', weight: 3, fillOpacity: .3,
                         where: "AOI_ID =" + this.ID + "",
                         pane: 'AOIfeature'
+
                         //simplifyFactor: 5.0,
                         //precision: 2
                     }).addTo(map);
@@ -244,7 +245,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     url: ortMapServer + ortLayerData
                 });
 
-                if (myThis.ID === -9999){
+                if (myThis.ID === -9999) {
                     var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
                     console.log(featureCollection);
                     var newarray = [];
@@ -260,8 +261,8 @@ angular.module('myApp.services', []).factory('_', function () {
 
                 } else {
                     query.returnGeometry(false).where("AOI_ID =" + myThis.ID + "").run(function (error, featureCollection, response) {
-                       // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
-                       // console.log(featureCollection);
+                        // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
+                        // console.log(featureCollection);
                         var newarray = [];
                         angular.forEach(featureCollection.features, function (feature) {
                             var newobject = {};
@@ -270,7 +271,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             });
                             newarray.push(newobject);
                         });
-                        //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a know structure.
+                        //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
                         //this is where I stopped. COF
                         //console.log(newarray);
                         //console.log(newarray.length);
@@ -303,7 +304,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 var bp = 0;
                 var bq = 0;
                 var br = 0;
-                var ack=[];
+                var ack = [];
 
                 for (var i = 0, j = featureCollection.length; i < j; i++) {
 
@@ -329,7 +330,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             }
                             ;
 
-                            bq++;
+                            br++;
                             break;
                         case "CoastalEnergyFacilities":
                             myThis.coastfac[bq] = {
@@ -762,7 +763,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
                 //console.log( myThis.tidalpwr[0].TOTAL_CNT);
                 //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
-                if (myThis.wavepwr.length>0) {
+                if (myThis.wavepwr.length > 0) {
                     if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
                         myThis.wavepwr[0].COLOR = '#B0B497';
                     } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 30.0) {
@@ -832,7 +833,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     myThis.arel[0].TOTAL_BLOC = 0;
                 }
 
-              //  myThis.isLoaded = true;
+                //  myThis.isLoaded = true;
 
             },
             unloadData: function () {
@@ -882,7 +883,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.OGWells.length = 0;
                     this.OGresource.length = 0;
                     this.coastfac.length = 0;
-                    this.CEElevation.length=0;
+                    this.CEElevation.length = 0;
 
                     this.hide();
                     //map.setView([33.51, -68.3], 6);
@@ -1012,12 +1013,12 @@ angular.module('myApp.services', []).factory('_', function () {
                     this.CEElevationIsVisable = false;
                 }
             },
-            toggleFull:false,
-            toggleFullSlider: function(pageID){
+            toggleFull: false,
+            toggleFullSlider: function (pageID) {
                 console.log("nerf");
-                toggleFull = !toggleFull;
+                this.toggleFull = !this.toggleFull;
 
-                if (toggleFull) {
+                if (this.toggleFull) {
 
                     // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
                     document.getElementById("slide1").style.width = '100%';
@@ -1031,17 +1032,18 @@ angular.module('myApp.services', []).factory('_', function () {
                         elems[i].style.display = 'inline-block';
                     }
                     ;
-                    var elems = document.getElementsByClassName('sliderbutton');
-                    for (var i = 0; i < elems.length; i++) {
-                        elems[i].style.visibility = "hidden";
+                    //var elems = document.getElementsByClassName('sliderbutton');
+                    //for (var i = 0; i < elems.length; i++) {
+                    //    elems[i].style.visibility = "hidden";
+                    //}
+                    //;
+                    if (pageID === "EM" || pageID === "CE") {
+                        //smallmap.invalidateSize();
+                        //smallmap.fitBounds(this.minibounds);
+                        this.loadSmallMap(false);
+                        console.log("BOOM!");
                     }
-                    ;
-                    if (pageID==="EM") {
-                        smallmap.invalidateSize();
-                        smallmap.fitBounds(this.minibounds);
-                        console.log("second small map fitbounds");
-                    }
-                    document.getElementById('slbuttxt0').style.visibility = "hidden";
+                    //document.getElementById('slbuttxt0').style.visibility = "hidden";
                 } else {
 
                     document.getElementById("togglefull").style.marginLeft = "-25px";
@@ -1052,12 +1054,12 @@ angular.module('myApp.services', []).factory('_', function () {
                         elems[i].style.display = 'none';
                     }
                     ;
-                    var elems = document.getElementsByClassName('sliderbutton');
-                    for (var i = 0; i < elems.length; i++) {
-                        elems[i].style.visibility = "visible";
-                    }
-                    ;
-                    document.getElementById('slbuttxt0').style.visibility = "visible";
+                    //var elems = document.getElementsByClassName('sliderbutton');
+                    //for (var i = 0; i < elems.length; i++) {
+                    //    elems[i].style.visibility = "visible";
+                    //}
+                    //;
+                    //document.getElementById('slbuttxt0').style.visibility = "visible";
                     // Code for Chrome, Safari, Opera
                     document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                     // Code for IE9
@@ -1068,75 +1070,170 @@ angular.module('myApp.services', []).factory('_', function () {
 
 
             },
-            loadWindChart: function() {
-                windChart = Highcharts.chart('container', {
-                    chart: {
-                        spacing: 0,
-                        margin: 0,
-                        type: 'column'
-                    },
-                    title: {
-                        text: null
-                    },
-                    exporting: {enabled: false},
-                    colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
-                    xAxis: {
-                        title: {
-                            enabled: false
-                        },
-                        labels: {
-                            enabled: false
-                        },
-                        tickLength: 0
-                    },
-                    yAxis: {
-                        title: {
-                            enabled: false
-                        },
-                        labels: {
-                            enabled: false
-                        },
-                        TickLength: 0
-                    },
-                    plotOptions: {
-                        series: {
-                            pointWidth: 190
-                        },
-                        column: {
-                            stacking: 'percent'
-                        }
-                    },
-                    series: [{
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[0]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[1]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[2]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[3]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[4]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[5]]
-                    }, {
-                        showInLegend: false,
-                        name: '',
-                        data: [windclass[6]]
-                    }
-                    ]
+            loadSmallMap: function (useCanvas) {
+                if (smallmap) {
+                    smallmap.remove();
+
+                }
+                if (this.inPrintWindow) smallmap = L.map('map3',{ preferCanvas: useCanvas }).setView([45.526, -122.667], 1);
+                else smallmap = L.map('map').setView([45.526, -122.667], 1);
+                L.esri.basemapLayer('Oceans',{useCors:true}).addTo(smallmap);
+                L.esri.basemapLayer('OceansLabels').addTo(smallmap);
+                esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                    maxZoom: 12,
+                    useCors: true
                 });
+                //var baselayerSmall = esriOceans.addTo(smallmap);
+
+                //console.log("AOI_ID =" + $scope.AOI.ID + "");
+                var minicLayer;
+                if (this.ID === -9999) {
+                    minicLayer = L.geoJson(this.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+
+                    }).addTo(smallmap);
+                    this.minibounds = minicLayer.getBounds();
+                    smallmap.fitBounds(this.minibounds);
+                    console.log(this.minibounds);
+                } else {
+                    minicLayer = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerAOI,
+                        where: "AOI_ID =" + this.ID + "",
+                        color: '#EB660C',
+                        weight: 3,
+                        fillOpacity: .3,
+
+                        //simplifyFactor: 5.0,
+                        //precision: 3
+                        //,            pane: 'miniAOIfeature'
+                    }).addTo(smallmap);
+
+
+                    //console.log(" minicLayer loaded " + typeof (minicLayer.getBounds));
+
+
+                    minicLayer.on("load", function (evt) {
+                        // create a new empty Leaflet bounds object
+                        //             var geoJsonBounds = minicLayer.getBounds();
+                        //             map.fitBounds(geoJsonBounds);
+
+                        var bounds = L.latLngBounds([]);
+                        // loop through the features returned by the server
+                        minicLayer.eachFeature(function (layer) {
+                            // get the bounds of an individual feature
+
+                            var layerBounds = layer.getBounds();
+                            // extend the bounds of the collection to fit the bounds of the new feature
+                            bounds.extend(layerBounds);
+                        });
+
+                        // once we've looped through all the features, zoom the map to the extent of the collection
+                        this.minibounds = bounds;
+                        smallmap.fitBounds(bounds);
+
+                        console.log("first small map fitbounds");
+
+                        // unwire the event listener so that it only fires once when the page is loaded
+                        minicLayer.off('load');
+                    });
+                }
+                smallmap.invalidateSize();
+                var test1=false;
+                if ((this.inPrintWindow)&&(test1)) {
+                    leafletImage(smallmap, function (err, canvas) {
+                        // now you have canvas
+                        // example thing to do with that canvas:
+                        var img = document.createElement('img');
+                        var dimensions = smallmap.getSize();
+                        img.width = dimensions.x;
+                        img.height = dimensions.y;
+                        img.src = canvas.toDataURL();
+                       // window.open(img.src);
+                        document.getElementById('map3').innerHTML = '';
+                        document.getElementById('map3').appendChild(img);
+                    });
+                }
+
+            },
+            loadWindChart: function () {
+                //windChart = Highcharts.chart('container', {
+                if (AOI.highchartsNG) AOI.highchartsNG=null
+                    AOI.highchartsNG= {
+                        options: {
+                            chart: {
+                                spacing: 0,
+                                margin: 0,
+                                type: 'column'
+                            },
+                            title: {
+                                text: null
+                            },
+                            exporting: {enabled: false},
+                            colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                            xAxis: {
+                                title: {
+                                    enabled: false
+                                },
+                                labels: {
+                                    enabled: false
+                                },
+                                tickLength: 0
+                            },
+                            yAxis: {
+                                title: {
+                                    enabled: false
+                                },
+                                labels: {
+                                    enabled: false
+                                },
+                                TickLength: 0
+                            },
+                            plotOptions: {
+                                series: {
+                                    pointWidth: 190
+                                },
+                                column: {
+                                    stacking: 'percent'
+                                }
+                            }
+
+                        },
+                        loading: false,
+                        series: [{
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[0]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[1]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[2]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[3]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[4]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[5]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [windclass[6]]
+                        }
+                        ]
+
+                    };
 
                 /*  //over ride windclass for testing chart
                  // console.log(windclass[0]);

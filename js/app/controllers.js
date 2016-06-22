@@ -20,8 +20,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('printCtrl', ['AOI', '$scope','$http','$timeout', function (AOI, $scope,$http,$timeout) {
+    .controller('printCtrl', ['AOI', '$scope','$http','$timeout','$document', function (AOI, $scope,$http,$timeout,$document) {
         $scope.AOI = AOI;
+        AOI.inPrintWindow = true;
         $http.get('CEConfig.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -33,29 +34,94 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
-        AOI.loadWindChart();
-            }, 1000);
-        });
-        $scope.exportMyPDF = function (divtoExport) {
-            console.log(divtoExport);
-            html2canvas(document.getElementById(divtoExport), {
-                allowTaint: true,
-                //taintTest: false,
-                onrendered: function(canvas) {
-                    var imgData = canvas.toDataURL(
-                        'image/png');
 
-                    window.open(imgData);
-                    var doc = new jsPDF('p', 'mm');
-                    doc.addImage(imgData, 'PNG', 10, 10);
-                    doc.save('Ocean_Report.pdf');
-                }
-            });
-        };
+            AOI.loadSmallMap(false);
+
+
+
+
+            $scope.saveAsBinary();
+
+
+            }, 1500);
+        });
+        AOI.loadWindChart();
+
+        $scope.saveAsBinary = function( ){
+
+            var svg = document.getElementById('container')
+                .children[0].innerHTML;
+            var canvas = document.createElement("canvas");
+            canvg(canvas,svg,{  });
+
+            var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
+
+            //img = img.replace('data:image/png;base64,', '');
+           // window.open(img);
+            $('#binaryImage').attr('src', img);
+                //'data:image/png;base64,'+img);
+
+
+        }
+        //$scope.exportMyPDF = function (divtoExport) {
+        //    console.log(divtoExport);
+        //    AOI.loadSmallMap(true);
+        //    //var svgElements= document.querySelectorAll("#"+divtoExport);
+        //    //var svgElements=angular.element(divtoExport).find('svg');
+        //    //var svgElements= $divtoExport.find('svg');
+        //    //var svgElements=$document.find('svg');
+        //    var svgElements=angular.element(document.querySelector("#"+divtoExport)).find('svg');
+        //    console.log(svgElements);
+        //    //replace all svgs with a temp canvas
+        //    angular.forEach(svgElements,function (svgvalue, key){
+        //    //svgElements.each(function () {
+        //        console.log(svgvalue);
+        //        var canvas, xml;
+        //
+        //        canvas = document.createElement("canvas");
+        //        canvas.className = "screenShotTempCanvas";
+        //        //console.log(this);
+        //        //convert SVG into a XML string
+        //        xml = (new XMLSerializer()).serializeToString(svgvalue);
+        //
+        //        // Removing the name space as IE throws an error
+        //        xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
+        //
+        //        //draw the SVG onto a canvas
+        //        canvg(canvas, xml);
+        //        console.log("1");
+        //        var imgData = canvas.toDataURL(
+        //            'image/png');
+        //
+        //        //window.open(imgData);
+        //        $(canvas).insertAfter(svgvalue);
+        //        console.log("2");
+        //        //hide the SVG element
+        //        this.className = "tempHide";
+        //        $(this).hide();
+        //        console.log("3");
+        //    });
+        //
+        //
+        //    html2canvas(document.getElementById(divtoExport), {
+        //        allowTaint: true,
+        //        //taintTest: false,
+        //        onrendered: function(canvas) {
+        //            var imgData = canvas.toDataURL(
+        //                'image/png');
+        //
+        //            window.open(imgData);
+        //            var doc = new jsPDF('p', 'mm','letter');
+        //            doc.addImage(imgData, 'PNG', 10, 10);
+        //            doc.save('Ocean_Report.pdf');
+        //        }
+        //    });
+        //};
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope','$http', function (AOI, $scope,$http) {
+    .controller('AOICtrl', ['AOI', '$scope','$http', '$timeout', function (AOI, $scope,$http, $timeout) {
         $scope.AOI = AOI;
+        AOI.inPrintWindow = false;
         $http.get('CEConfig.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -87,7 +153,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
             $scope.mout($scope.AOI.ID);
+
         });
+        $scope.$on('$viewContentLoaded', function () {
+            // document is ready, place  code here
+            $timeout(function () {
+
+            $scope.$apply();
+
+                //AOI.loadSmallMap();
+            }, 1250);
+        });
+
 
     }])
     .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
@@ -95,7 +172,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         document.getElementById("bigmap").style.width = '100%';
         $scope.off();
         map.invalidateSize();
-
+       AOI.inPrintWindow = false;
         // console.log("draw mode "+ $scope.drawtoolOn);
 
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
@@ -130,7 +207,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('MyCtrl2', ['$scope', '$timeout', 'AOI', '$http', function ($scope, $timeout, AOI, $http) {
         $scope.AOI = AOI;
-
+       AOI.inPrintWindow = false;
         $scope.name = "controller 2";
         $http.get('emconfig.json')
             .then(function (res) {
@@ -141,70 +218,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             // document is ready, place  code here
             $timeout(function () {
 
-                AOI.loadWindChart();
-
-                smallmap = L.map('map').setView([45.526, -122.667], 1);
-                L.esri.basemapLayer('Oceans').addTo(smallmap);
-                L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                //console.log("AOI_ID =" + $scope.AOI.ID + "");
-                var minicLayer;
-                if (AOI.ID === -9999) {
-                    minicLayer = L.geoJson(AOI.drawLayerShape, {
-                        color: '#EB660C',
-                        weight: 3,
-                        fillOpacity: .3,
-                    }).addTo(smallmap);
-                    AOI.minibounds = minicLayer.getBounds();
-                    smallmap.fitBounds(minicLayer.getBounds(), {
-                        padding: [50, 50]
-                    });
-
-                } else {
-                    minicLayer = L.esri.featureLayer({
-                        url: ortMapServer + ortLayerAOI,
-                        where: "AOI_ID =" + $scope.AOI.ID + "",
-                        color: '#EB660C',
-                        weight: 3,
-                        fillOpacity: .3,
-                        //simplifyFactor: 5.0,
-                        //precision: 3
-                        //,            pane: 'miniAOIfeature'
-                    }).addTo(smallmap);
 
 
-                    //console.log(" minicLayer loaded " + typeof (minicLayer.getBounds));
-
-
-                    minicLayer.on("load", function (evt) {
-                        // create a new empty Leaflet bounds object
-                        //             var geoJsonBounds = minicLayer.getBounds();
-                        //             map.fitBounds(geoJsonBounds);
-
-                        var bounds = L.latLngBounds([]);
-                        // loop through the features returned by the server
-                        minicLayer.eachFeature(function (layer) {
-                            // get the bounds of an individual feature
-
-                            var layerBounds = layer.getBounds();
-                            // extend the bounds of the collection to fit the bounds of the new feature
-                            bounds.extend(layerBounds);
-                        });
-
-                        // once we've looped through all the features, zoom the map to the extent of the collection
-                        AOI.minibounds = bounds;
-                        smallmap.fitBounds(bounds);
-
-                        console.log("first small map fitbounds");
-
-                        // unwire the event listener so that it only fires once when the page is loaded
-                        minicLayer.off('load');
-                    });
-                }
-                smallmap.invalidateSize();
-
+                //AOI.loadSmallMap();
             }, 1000);
         });
-
+        AOI.loadWindChart();
         //document.getElementById("togglefull").addEventListener("click", function () {
         //    toggleFull = !toggleFull;
         //    $scope.toggleFull = toggleFull;
@@ -265,7 +284,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         $scope.AOI = AOI;
         $scope.baseMapControlOn = false;
-
+        AOI.inPrintWindow = false;
         var baseMapControl = L.control.layers(baseMaps,mapOverlay,{
             position: 'topleft',
             collapsed:false

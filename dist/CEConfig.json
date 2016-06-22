@@ -1,4 +1,6 @@
 [
-    { "filename":"partials/CE_Elevation.html", "priority":26 }
+    { "filename":"partials/CE_Elevation.html", "priority":26 },
+    { "filename":"partials/smallmap_print.html", "priority":28},
+    { "filename":"partials/smallmap.html", "priority":27}
 
 ]

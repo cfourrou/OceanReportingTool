@@ -1,7 +1,7 @@
 <div class="infographic-box-small">
     <div id="wrbox1">
 
-        <div id="slider_but2" class="sliderbutton">
+        <div id="slider_but2" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="AOI.windPlanningLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.toggleWindPlanningLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
