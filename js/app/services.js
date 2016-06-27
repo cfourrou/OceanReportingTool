@@ -62,7 +62,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             });
                         } else {
                             this.layer = L.esri.featureLayer({ //AOI poly (7)
-                                url: ortMapServer + ortLayerAOI,
+                                url: config.ortMapServer + ortLayerAOI,
                                 color: '#EB660C', weight: 3, fillOpacity: .3,
                                 where: "AOI_ID =" + this.ID + "",
                                 pane: 'AOIfeature'
