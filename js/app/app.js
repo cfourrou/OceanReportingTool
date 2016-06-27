@@ -217,7 +217,7 @@ angular.module('myApp', [
       'highcharts-ng'
 
     ])
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider, AOIProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function($stateProvider, $urlRouterProvider, AOIProvider) {
         $urlRouterProvider.otherwise('/main');
 
         AOIProvider.config({
