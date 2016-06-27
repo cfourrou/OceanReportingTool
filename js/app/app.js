@@ -1,6 +1,5 @@
 'use strict';
 
-var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/';
 var ortLayerAOI = '7';
 var ortLayerData = '35';
 var ortLayerOptional = [];
@@ -218,8 +217,13 @@ angular.module('myApp', [
       'highcharts-ng'
 
     ])
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider, AOIProvider) {
         $urlRouterProvider.otherwise('/main');
+
+        AOIProvider.config({
+            ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/'
+        });
+
       $stateProvider
 
           .state('otherwise', {
