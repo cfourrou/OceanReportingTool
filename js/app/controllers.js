@@ -20,7 +20,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('printCtrl', ['AOI', '$scope','$http','$timeout','$document', function (AOI, $scope,$http,$timeout,$document) {
+    .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
         $http.get('CEConfig.json')
@@ -35,34 +35,32 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             // document is ready, place  code here
             $timeout(function () {
 
-            AOI.loadSmallMap(false);
+                AOI.loadSmallMap(false);
 
 
-
-
-            $scope.saveAsBinary();
+                $scope.saveAsBinary();
 
 
             }, 1500);
         });
         AOI.loadWindChart();
 
-        $scope.saveAsBinary = function( ){
+        $scope.saveAsBinary = function () {
 
             var svg = document.getElementById('container')
                 .children[0].innerHTML;
             var canvas = document.createElement("canvas");
-            canvg(canvas,svg,{  });
+            canvg(canvas, svg, {});
 
             var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
 
             //img = img.replace('data:image/png;base64,', '');
-           // window.open(img);
+            // window.open(img);
             $('#binaryImage').attr('src', img);
-                //'data:image/png;base64,'+img);
+            //'data:image/png;base64,'+img);
 
 
-        }
+        };
         //$scope.exportMyPDF = function (divtoExport) {
         //    console.log(divtoExport);
         //    AOI.loadSmallMap(true);
@@ -119,20 +117,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //};
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope','$http', '$timeout', function (AOI, $scope,$http, $timeout) {
+    .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
         $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
+        $scope.AOI.inPrintWindow = false;
         $http.get('CEConfig.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
-        AOI.layer.on("load", function (evt) {
+        $scope.AOI.layer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
             var mbounds = L.latLngBounds([]);
             // loop through the features returned by the server
 
-            AOI.layer.eachFeature(function (layer) {
+            $scope.AOI.layer.eachFeature(function (layer) {
                 // get the bounds of an individual feature
                 var layerBounds = layer.getBounds();
                 // extend the bounds of the collection to fit the bounds of the new feature
@@ -142,7 +140,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             try {
                 map.fitBounds(mbounds);
                 //console.log("here?");
-                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                $scope.AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
             }
             catch (err) {
                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
@@ -155,16 +153,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.mout($scope.AOI.ID);
 
         });
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-
-            $scope.$apply();
-
-                //AOI.loadSmallMap();
-            }, 1250);
-        });
-
 
     }])
     .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
@@ -172,7 +160,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         document.getElementById("bigmap").style.width = '100%';
         $scope.off();
         map.invalidateSize();
-       AOI.inPrintWindow = false;
+        AOI.inPrintWindow = false;
         // console.log("draw mode "+ $scope.drawtoolOn);
 
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
@@ -207,7 +195,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('MyCtrl2', ['$scope', '$timeout', 'AOI', '$http', function ($scope, $timeout, AOI, $http) {
         $scope.AOI = AOI;
-       AOI.inPrintWindow = false;
+        AOI.inPrintWindow = false;
         $scope.name = "controller 2";
         $http.get('emconfig.json')
             .then(function (res) {
@@ -280,14 +268,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state','usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
 
         $scope.AOI = AOI;
         $scope.baseMapControlOn = false;
-        AOI.inPrintWindow = false;
-        var baseMapControl = L.control.layers(baseMaps,mapOverlay,{
+        $scope.AOI.inPrintWindow = false;
+        var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
             position: 'topleft',
-            collapsed:false
+            collapsed: false
         });
         $scope.box = [];
         var len = 2000;
@@ -371,10 +359,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         };
 
-        $scope.startSpin = function(){
+        $scope.startSpin = function () {
             usSpinnerService.spin('spinner-1');
         }
-        $scope.stopSpin = function(){
+        $scope.stopSpin = function () {
             usSpinnerService.stop('spinner-1');
         }
         var myGPService = L.esri.GP.service({
@@ -387,15 +375,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
         var myGPTask = myGPService.createTask();
 
-        $scope.baseMapSwitch = function() {
+        $scope.baseMapSwitch = function () {
             console.log("basemap " + $scope.baseMapControlOn);
             if ($scope.baseMapControlOn) {
                 map.removeControl(baseMapControl);
-                $scope.baseMapControlOn=false;
+                $scope.baseMapControlOn = false;
 
-            }else {
+            } else {
                 baseMapControl.addTo(map);
-                $scope.baseMapControlOn=true;
+                $scope.baseMapControlOn = true;
             }
         }
 

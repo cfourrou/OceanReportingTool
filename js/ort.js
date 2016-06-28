@@ -22881,7 +22881,7 @@ a.exportDivElements[b]=e.onmouseout=e.onmouseover=e.ontouchstart=e.onclick=null,
 angular.module('myApp.services', []).factory('_', function () {
         return window._; // assumes underscore has already been loaded on the page
     })
-    .service('AOI', function () {
+    .service('AOI', function ($q, $rootScope) {
         var AOI;
 
         AOI = {
@@ -22912,6 +22912,7 @@ angular.module('myApp.services', []).factory('_', function () {
             CEElevation: [],
 
             display: function (AOI_ID) {
+                var addedDeferred = $q.defer();
                 this.ID = AOI_ID;
                 if (this.ID === -9999) {
                     this.layer = L.geoJson(this.drawLayerShape, {
@@ -22923,6 +22924,9 @@ angular.module('myApp.services', []).factory('_', function () {
                     map.fitBounds(this.layer.getBounds(), {
                         padding: [50, 50]
                     });
+
+                    this.isVisible = true;
+                    addedDeferred.resolve();
                 } else {
                     this.layer = L.esri.featureLayer({ //AOI poly (7)
                         url: ortMapServer + ortLayerAOI,
@@ -22933,10 +22937,16 @@ angular.module('myApp.services', []).factory('_', function () {
                         //simplifyFactor: 5.0,
                         //precision: 2
                     }).addTo(map);
+                    this.layer.on("load", function () {
+                        AOI.isVisible = true;
+                        addedDeferred.resolve();
+                    })
+
                 }
-                console.log(" this.layer loaded " + typeof(this.layer.getBounds));
-                this.isVisible = true;
+                //console.log(" this.layer loaded " + typeof(this.layer.getBounds));
+
                 //console.log("display: this.ID = " +AOI_ID);
+                return addedDeferred.promise;
             },
             hide: function () {
                 if (this.isVisible) {
@@ -22963,201 +22973,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
             },
             isVisible: false,
-            loadData: function (AOI_ID, name) {
-                // map.removeLayer(cLayer);
-                this.display(AOI_ID);
-                //this.isVisible = true;
-                var myThis = this;
-                //myThis.zoomTo();
-                myThis.name = name;
-                myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
-                    url: ortMapServer + ortLayerOptional[0].num,
-                    pane: 'optionalfeature0',
-                    //simplifyFactor: 5.0,
-                    //precision: 3,
-                    style: function (feature) {
-                        if (feature.properties.Speed_90 >= 8.8) {
-                            return {color: '#0E3708', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.Speed_90 >= 8.0) {
-                            return {color: '#5C9227', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.Speed_90 >= 7.5) {
-                            return {color: '#A6C900', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.Speed_90 >= 7.0) {
-                            return {color: '#EFCF06', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.Speed_90 >= 6.6) {
-                            return {color: '#D96704', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.Speed_90 < 6.6) {
-                            return {color: '#A90306', weight: 1, fillOpacity: .8};
-                        } else {
-                            return {color: 'white', weight: 1, fillOpacity: .8};
-                        }
-                    }
-                });
-
-                myThis.windLeaseLayer = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[1].num,
-                    pane: 'optionalfeature1',
-                    style: function (feature) {
-
-                        return {color: 'white', weight: 1, fillOpacity: .5};
-                    }
-                });
-                myThis.windPlanningLayer = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[2].num,
-                    pane: 'optionalfeature2',
-                    style: function (feature) {
-
-                        return {color: 'Black', weight: 1, fillOpacity: .5};
-                    }
-                });
-                myThis.oceanDisposalSites = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[3].num,
-                    pane: 'optionalfeature3',
-                    style: function (feature) {
-                        return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
-                    }
-                });
-                myThis.marineMineralsLeases = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[4].num,
-                    pane: 'optionalfeature4',
-                    style: function (feature) {
-                        return {color: '#7300D9', weight: 4, fillOpacity: 0};
-                    }
-                });
-                //there is no 5 yet
-
-                myThis.HydrokineticLeases = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[6].num,
-                    pane: 'optionalfeature6',
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng, {
-                            icon: L.icon({
-                                iconUrl: 'img/HydrokineticLeasesGraphic.svg',
-                                iconSize: [32, 37],
-                                iconAnchor: [16, 37],
-                                popupAnchor: [0, -28]
-                            }),
-                        });
-                    }
-                });
-                //there is no 7 yet
-                myThis.wavePower = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[8].num,
-                    pane: 'optionalfeature8',
-                    style: function (feature) {
-                        if (feature.properties.ann_wef > 40) {
-                            return {color: '#B0B497', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 30.0) {
-                            return {color: '#B6BC9E', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 20.0) {
-                            return {color: '#BBC1A4', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 15.0) {
-                            return {color: '#C0C6A8', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 10.0) {
-                            return {color: '#C9D0B1', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 8.0) {
-                            return {color: '#D0D8B9', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 6) {
-                            return {color: '#D5DDC0', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 4.0) {
-                            return {color: '#DEE7C9', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef > 2.0) {
-                            return {color: '#E4EFD2', weight: 1, fillOpacity: .8};
-                        } else if (feature.properties.ann_wef < 2.01) {
-                            return {color: '#EBF6D8', weight: 1, fillOpacity: .8};
-                        } else {
-                            return {color: 'white', weight: 1, fillOpacity: .8};
-                        }
-                    }
-                });
-
-                myThis.tidalPower = L.esri.dynamicMapLayer({
-                    url: ortMapServer,
-                    pane: 'optionalfeature9',
-                    layers: [ortLayerOptional[9].num],
-                    opacity: .8,
-                });
-                myThis.currentPower = L.esri.dynamicMapLayer({
-                    url: ortMapServer,
-                    pane: 'optionalfeature10',
-                    layers: [ortLayerOptional[10].num],
-                    opacity: .8,
-                });
-
-                myThis.beachNourish = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[11].num,
-                    pane: 'optionalfeature11',
-                    style: function (feature) {
-                        return {color: '#8B572A', weight: 4, fillOpacity: 0};
-                    }
-                });
-
-                myThis.coastalEnergyFacilities = L.esri.featureLayer({
-                    url: ortMapServer + ortLayerOptional[16].num,
-                    pane: 'optionalfeature16',
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng, {
-                            icon: L.icon({
-                                iconUrl: 'img/CoastalEnergyGraphic.svg',
-                                iconSize: [32, 37],
-                                iconAnchor: [16, 37],
-                                popupAnchor: [0, -28]
-                            }),
-                        });
-                    }
-                });
-
-                myThis.CEElevation = L.esri.dynamicMapLayer({
-                    url: ortMapServer,
-                    pane: 'optionalfeature26',
-                    layers: [ortLayerOptional[26].num],
-                    opacity: .6,
-                });
-
-                var query = L.esri.query({
-                    url: ortMapServer + ortLayerData
-                });
-
-                if (myThis.ID === -9999) {
-                    var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
-                    console.log(featureCollection);
-                    var newarray = [];
-                    angular.forEach(featureCollection.features, function (feature) {
-                        var newobject = {};
-                        angular.forEach(featureCollection.fields, function (field) {
-                            newobject[field.name] = feature.attributes[field.name];
-                        });
-                        newarray.push(newobject);
-                    });
-
-                    myThis.massageData(newarray);
-
-                } else {
-                    query.returnGeometry(false).where("AOI_ID =" + myThis.ID + "").run(function (error, featureCollection, response) {
-                        // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
-                        // console.log(featureCollection);
-                        var newarray = [];
-                        angular.forEach(featureCollection.features, function (feature) {
-                            var newobject = {};
-                            angular.forEach(response.fields, function (field) {
-                                newobject[field.name] = feature.properties[field.name];
-                            });
-                            newarray.push(newobject);
-                        });
-                        //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
-                        //this is where I stopped. COF
-                        //console.log(newarray);
-                        //console.log(newarray.length);
-                        //console.log(newarray[0].AOI_ID);
-                        myThis.massageData(newarray);
-                    });
-                }
-                myThis.isLoaded = true;
-            }
-            ,
-
             massageData: function (featureCollection) {
-                var myThis = this;
                 var k = 0;
                 var ba = 0;
                 var bb = 0;
@@ -23179,11 +22995,11 @@ angular.module('myApp.services', []).factory('_', function () {
                 var br = 0;
                 var ack = [];
 
-                for (var i = 0, j = featureCollection.length; i < j; i++) {
+                angular.forEach(featureCollection, function (feature, i) {
 
                     switch (featureCollection[i].DATASET_NM) {
                         case "crm_v1":
-                            myThis.CEElevation[br] = {
+                            AOI.CEElevation[br] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 depth_min_m: (featureCollection[i].depth_min_m || 'Unknown'),
                                 depth_max_m: (featureCollection[i].depth_max_m || 'Unknown'),
@@ -23192,7 +23008,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((br === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23201,12 +23017,12 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
+
 
                             br++;
                             break;
                         case "CoastalEnergyFacilities":
-                            myThis.coastfac[bq] = {
+                            AOI.coastfac[bq] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 Name: (featureCollection[i].Name || 'None'),
                                 Type: (featureCollection[i].Type || 'None'),
@@ -23216,7 +23032,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((bq === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23225,12 +23041,12 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
+
 
                             bq++;
                             break;
                         case "OG_ResourcePotential":
-                            myThis.OGresource[bp] = {
+                            AOI.OGresource[bp] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 OCS_Play: (featureCollection[i].OCS_Play || 'None'),
                                 UTTR_Oil: (featureCollection[i].UTTR_Oil || 'None'),
@@ -23240,7 +23056,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((bp === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23249,12 +23065,11 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bp++;
                             break;
                         case "OG_Wells":
-                            myThis.OGWells[bo] = {
+                            AOI.OGWells[bo] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 COMPANY_NA: (featureCollection[i].COMPANY_NA || 'None'),
                                 STATUS: (featureCollection[i].STATUS || 'None')
@@ -23262,7 +23077,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((bo === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23271,12 +23086,11 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bo++;
                             break;
                         case "al_20160301":
-                            myThis.OGLease[bn] = {
+                            AOI.OGLease[bn] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 Lease_Numb: (featureCollection[i].Lease_Numb || 'None'),
                                 Lease_expt: (featureCollection[i].Lease_expt || 'None')
@@ -23284,7 +23098,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((bn === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23293,19 +23107,18 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bn++;
                             break;
                         case "OilandGasPlanningAreas":
-                            myThis.OGPlanA[bm] = {
+                            AOI.OGPlanA[bm] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 Region: (featureCollection[i].Region || 'unknown')
 
                             };
 
                             if ((bm === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23314,12 +23127,11 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bm++;
                             break;
                         case "SC_BeachProjects":
-                            myThis.beachNur[bl] = {
+                            AOI.beachNur[bl] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 BEACH_AREA: (featureCollection[i].BEACH_AREA || 'unknown'),
                                 YEAR: (featureCollection[i].YEAR || '0'),
@@ -23328,7 +23140,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((bl === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23337,19 +23149,18 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bl++;
                             break;
                         case "us_oc_ms":
-                            myThis.currentpwr[bk] = {
+                            AOI.currentpwr[bk] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 AVG_OCEAN_CURRENT: (featureCollection[i].AVG_OCEAN_CURRENT || 0),
                                 SUITABILITY_OCEAN_SPEED: (featureCollection[i].SUITABILITY_OCEAN_SPEED || 'NO')
                             };
 
                             if ((featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23358,12 +23169,11 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bk++;
                             break;
                         case "usa_mc_wm":
-                            myThis.tidalpwr[bj] = {
+                            AOI.tidalpwr[bj] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 AVG_TIDAL_CURRENT: (featureCollection[i].AVG_TIDAL_CURRENT || 0),
                                 SUITABILITY_TIDAL_DEPTH: (featureCollection[i].SUITABILITY_TIDAL_DEPTH || 'NO'),
@@ -23372,7 +23182,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             };
 
                             if ((featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23381,19 +23191,18 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bj++;
                             break;
                         case "OceanWaveResourcePotential":
-                            myThis.wavepwr[bi] = {
+                            AOI.wavepwr[bi] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
                                 SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
                             };
-                            //console.log(myThis.wavepwr[bi].COLOR);
+                            //console.log(AOI.wavepwr[bi].COLOR);
                             if ((featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23402,19 +23211,19 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
+
 
                             bi++;
                             break;
 
                         case "OceanDisposalSites":
-                            myThis.disp[be] = {
+                            AOI.disp[be] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                 PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
                             };
 
                             if ((be === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23423,19 +23232,19 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
+
 
                             be++;
                             break;
                         case "MarineHydrokineticProjects":
                             if (featureCollection[i].TOTAL_CNT > 0) {
-                                myThis.hydrok[bg] = {
+                                AOI.hydrok[bg] = {
                                     TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                     PRIMARY_USE: (featureCollection[i].energyType ) + ' projects'
                                 };
                             }
                             if ((bg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23444,20 +23253,20 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
-                            //console.log("hydrok "+myThis.hydrok);
+
+                            //console.log("hydrok "+AOI.hydrok);
                             bg++;
 
                             break;
                         case "ecstdb2014":
                             if (featureCollection[i].TOTAL_CNT > 0) {
-                                myThis.surfsed[bh] = {
+                                AOI.surfsed[bh] = {
                                     TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                     PRIMARY_USE: ((featureCollection[i].CLASSIFICA === ' ') ? 'Unknown' : featureCollection[i].CLASSIFICA )
                                 };
                             }
                             if ((bh === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23466,20 +23275,20 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
+
 
                             bh++;
 
                             break;
 
                         case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
-                            myThis.mml[bf] = {
+                            AOI.mml[bf] = {
                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
                                 //PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
                             };
 
                             if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23488,13 +23297,12 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bf++;
                             break;
 
                         case "TribalLands":
-                            myThis.test[bd] = {
+                            AOI.test[bd] = {
                                 Lease_Numb: featureCollection[i].Lease_Numb,
                                 Company: featureCollection[i].Company,
                                 INFO: featureCollection[i].INFO,
@@ -23507,7 +23315,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 METADATA_URL: featureCollection[i].METADATA_URL
                             };
                             if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23516,14 +23324,13 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bd++;
                             break;
 
 
                         case  "BOEM_Wind_Planning_Areas":
-                            myThis.boem[ba] = {
+                            AOI.boem[ba] = {
                                 INFO: featureCollection[i].INFO,
                                 PROT_NUMBE: featureCollection[i].PROT_NUMBE,
                                 LINK1: featureCollection[i].LINK1,
@@ -23534,22 +23341,21 @@ angular.module('myApp.services', []).factory('_', function () {
                                 METADATA_URL: featureCollection[i].METADATA_URL
                             };
                             if ((ba === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
                                     METADATA_OWNER: featureCollection[i].METADATA_OWNER,
                                     METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                 };
-                                // console.log(myThis.metadata[k]);
+                                // console.log(AOI.metadata[k]);
                                 k++;
 
                             }
-                            ;
                             ba++;
                             break;
                         case "ActiveRenewableEnergyLeases":
-                            myThis.arel[bc] = {
+                            AOI.arel[bc] = {
                                 Lease_Numb: featureCollection[i].Lease_Numb,
                                 Company: featureCollection[i].Company,
                                 INFO: featureCollection[i].INFO,
@@ -23562,7 +23368,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 METADATA_URL: featureCollection[i].METADATA_URL
                             };
                             if ((bc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23571,12 +23377,11 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             bc++;
                             break;
                         case  "WindResourcePotential":
-                            myThis.wind[bb] = {
+                            AOI.wind[bb] = {
                                 WIND_CLASS: (featureCollection[i].WIND_CLASS),
                                 AVG_WGHT: (featureCollection[i].AVG_WGHT || 0).toFixed(2),
                                 PERC_COVER: (featureCollection[i].PERC_COVER || 0),
@@ -23587,7 +23392,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 METADATA_URL: featureCollection[i].METADATA_URL
                             };
                             if ((bb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                myThis.metadata[k] = {
+                                AOI.metadata[k] = {
                                     REPORT_CAT: featureCollection[i].REPORT_CAT,
                                     COMMON_NM: featureCollection[i].COMMON_NM,
                                     METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23596,7 +23401,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                 };
                                 k++;
                             }
-                            ;
 
                             if (featureCollection[i].TOTAL_CNT > 0) {
                                 switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
@@ -23624,49 +23428,49 @@ angular.module('myApp.services', []).factory('_', function () {
                             bb++;
                             break;
                     }
-                }
+                });
                 //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
-                //console.log(myThis);
-                //myThis.wavepwr.length = 0;
-                //myThis.wavepwr[0].AVG_WAVE_POWER=50;
-                // myThis.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
-                // myThis.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
-                //  myThis.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                // myThis.currentpwr[0].AVG_OCEAN_CURRENT=2;
-                // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                //console.log( myThis.tidalpwr[0].TOTAL_CNT);
-                //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
-                if (myThis.wavepwr.length > 0) {
-                    if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
-                        myThis.wavepwr[0].COLOR = '#B0B497';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 30.0) {
-                        myThis.wavepwr[0].COLOR = '#B6BC9E';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 20.0) {
-                        myThis.wavepwr[0].COLOR = '#BBC1A4';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 15.0) {
-                        myThis.wavepwr[0].COLOR = '#C0C6A8';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 10.0) {
-                        myThis.wavepwr[0].COLOR = '#C9D0B1';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 8.0) {
-                        myThis.wavepwr[0].COLOR = '#D0D8B9';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 6) {
-                        myThis.wavepwr[0].COLOR = '#D5DDC0';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
-                        myThis.wavepwr[0].COLOR = '#DEE7C9';
+                //console.log(AOI);
+                //AOI.wavepwr.length = 0;
+                //AOI.wavepwr[0].AVG_WAVE_POWER=50;
+                // AOI.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
+                // AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
+                //  AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
+                // AOI.currentpwr[0].AVG_OCEAN_CURRENT=2;
+                // AOI.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
+                //console.log( AOI.tidalpwr[0].TOTAL_CNT);
+                //console.log( AOI.tidalpwr[0].AVG_TIDAL_CURRENT);
+                if (AOI.wavepwr.length > 0) {
+                    if (AOI.wavepwr[0].AVG_WAVE_POWER > 40) {
+                        AOI.wavepwr[0].COLOR = '#B0B497';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 30.0) {
+                        AOI.wavepwr[0].COLOR = '#B6BC9E';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 20.0) {
+                        AOI.wavepwr[0].COLOR = '#BBC1A4';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 15.0) {
+                        AOI.wavepwr[0].COLOR = '#C0C6A8';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 10.0) {
+                        AOI.wavepwr[0].COLOR = '#C9D0B1';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 8.0) {
+                        AOI.wavepwr[0].COLOR = '#D0D8B9';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 6) {
+                        AOI.wavepwr[0].COLOR = '#D5DDC0';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 4.0) {
+                        AOI.wavepwr[0].COLOR = '#DEE7C9';
                         //console.log("color");
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
-                        myThis.wavepwr[0].COLOR = '#E4EFD2';
-                    } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
-                        myThis.wavepwr[0].COLOR = '#EBF6D8';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 2.0) {
+                        AOI.wavepwr[0].COLOR = '#E4EFD2';
+                    } else if (AOI.wavepwr[0].AVG_WAVE_POWER < 2.01) {
+                        AOI.wavepwr[0].COLOR = '#EBF6D8';
                     } else {
-                        myThis.wavepwr[0].COLOR = 'white';
+                        AOI.wavepwr[0].COLOR = 'white';
                     }
                 }
                 windclass[6] = (windclass.reduce(function (prev, cur) {
                     return prev.toFixed(2) - cur.toFixed(2);
                 }, 100));
-                if (myThis.boem[0] == null) {
-                    myThis.boem[0] = {
+                if (AOI.boem[0] == null) {
+                    AOI.boem[0] = {
                         INFO: "NA",
                         PROT_NUMBE: 0,
                         LINK1: "NA",
@@ -23676,8 +23480,8 @@ angular.module('myApp.services', []).factory('_', function () {
                         TOTAL_CNT: 0
                     };
                 }
-                if (myThis.arel[0] == null) {
-                    myThis.arel[0] = {
+                if (AOI.arel[0] == null) {
+                    AOI.arel[0] = {
                         Lease_Numb: 0,
                         Company: "NA",
                         INFO: "NA",
@@ -23689,26 +23493,218 @@ angular.module('myApp.services', []).factory('_', function () {
                         TOTAL_CNT: 0
                     };
                 }
-                myThis.boem.sort(function (a, b) {
+                AOI.boem.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
-                myThis.arel.sort(function (a, b) {
+                AOI.arel.sort(function (a, b) {
                     return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                 });
 
-                if (myThis.boem[0].TOTAL_CNT === 0) {
-                    myThis.boem[0].PERC_COVER = 0;
-                    myThis.boem[0].TOTAL_BLOC = 0;
+                if (AOI.boem[0].TOTAL_CNT === 0) {
+                    AOI.boem[0].PERC_COVER = 0;
+                    AOI.boem[0].TOTAL_BLOC = 0;
                 }
-                if (myThis.arel[0] == null)myThis.arel[0].TOTAL_CNT = 0;
-                if (myThis.arel[0].TOTAL_CNT === 0) {
-                    myThis.arel[0].PERC_COVER = 0;
-                    myThis.arel[0].TOTAL_BLOC = 0;
+                if (AOI.arel[0] == null)AOI.arel[0].TOTAL_CNT = 0;
+                if (AOI.arel[0].TOTAL_CNT === 0) {
+                    AOI.arel[0].PERC_COVER = 0;
+                    AOI.arel[0].TOTAL_BLOC = 0;
                 }
-
-                //  myThis.isLoaded = true;
-
+                AOI.isLoaded = true;
+                $rootScope.$apply();
             },
+
+            loadData: function (AOI_ID, name) {
+                // map.removeLayer(cLayer);
+
+                this.display(AOI_ID).then(function () {
+                    //this.isVisible = true;
+                    //AOI.zoomTo();
+                    AOI.name = name;
+                    AOI.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        url: ortMapServer + ortLayerOptional[0].num,
+                        pane: 'optionalfeature0',
+                        //simplifyFactor: 5.0,
+                        //precision: 3,
+                        style: function (feature) {
+                            if (feature.properties.Speed_90 >= 8.8) {
+                                return {color: '#0E3708', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 8.0) {
+                                return {color: '#5C9227', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 7.5) {
+                                return {color: '#A6C900', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 7.0) {
+                                return {color: '#EFCF06', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 6.6) {
+                                return {color: '#D96704', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 < 6.6) {
+                                return {color: '#A90306', weight: 1, fillOpacity: .8};
+                            } else {
+                                return {color: 'white', weight: 1, fillOpacity: .8};
+                            }
+                        }
+                    });
+
+                    AOI.windLeaseLayer = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[1].num,
+                        pane: 'optionalfeature1',
+                        style: function (feature) {
+
+                            return {color: 'white', weight: 1, fillOpacity: .5};
+                        }
+                    });
+                    AOI.windPlanningLayer = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[2].num,
+                        pane: 'optionalfeature2',
+                        style: function (feature) {
+
+                            return {color: 'Black', weight: 1, fillOpacity: .5};
+                        }
+                    });
+                    AOI.oceanDisposalSites = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[3].num,
+                        pane: 'optionalfeature3',
+                        style: function (feature) {
+                            return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
+                        }
+                    });
+                    AOI.marineMineralsLeases = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[4].num,
+                        pane: 'optionalfeature4',
+                        style: function (feature) {
+                            return {color: '#7300D9', weight: 4, fillOpacity: 0};
+                        }
+                    });
+                    //there is no 5 yet
+
+                    AOI.HydrokineticLeases = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[6].num,
+                        pane: 'optionalfeature6',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/HydrokineticLeasesGraphic.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                }),
+                            });
+                        }
+                    });
+                    //there is no 7 yet
+                    AOI.wavePower = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[8].num,
+                        pane: 'optionalfeature8',
+                        style: function (feature) {
+                            if (feature.properties.ann_wef > 40) {
+                                return {color: '#B0B497', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 30.0) {
+                                return {color: '#B6BC9E', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 20.0) {
+                                return {color: '#BBC1A4', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 15.0) {
+                                return {color: '#C0C6A8', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 10.0) {
+                                return {color: '#C9D0B1', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 8.0) {
+                                return {color: '#D0D8B9', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 6) {
+                                return {color: '#D5DDC0', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 4.0) {
+                                return {color: '#DEE7C9', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 2.0) {
+                                return {color: '#E4EFD2', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef < 2.01) {
+                                return {color: '#EBF6D8', weight: 1, fillOpacity: .8};
+                            } else {
+                                return {color: 'white', weight: 1, fillOpacity: .8};
+                            }
+                        }
+                    });
+
+                    AOI.tidalPower = L.esri.dynamicMapLayer({
+                        url: ortMapServer,
+                        pane: 'optionalfeature9',
+                        layers: [ortLayerOptional[9].num],
+                        opacity: .8
+                    });
+                    AOI.currentPower = L.esri.dynamicMapLayer({
+                        url: ortMapServer,
+                        pane: 'optionalfeature10',
+                        layers: [ortLayerOptional[10].num],
+                        opacity: .8
+                    });
+
+                    AOI.beachNourish = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[11].num,
+                        pane: 'optionalfeature11',
+                        style: function (feature) {
+                            return {color: '#8B572A', weight: 4, fillOpacity: 0};
+                        }
+                    });
+
+                    AOI.coastalEnergyFacilities = L.esri.featureLayer({
+                        url: ortMapServer + ortLayerOptional[16].num,
+                        pane: 'optionalfeature16',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/CoastalEnergyGraphic.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                })
+                            });
+                        }
+                    });
+
+                    AOI.CEElevation = L.esri.dynamicMapLayer({
+                        url: ortMapServer,
+                        pane: 'optionalfeature26',
+                        layers: [ortLayerOptional[26].num],
+                        opacity: .6
+                    });
+
+                    var query = L.esri.query({
+                        url: ortMapServer + ortLayerData
+                    });
+
+                    if (AOI.ID === -9999) {
+                        var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
+                        console.log(featureCollection);
+                        var newarray = [];
+                        angular.forEach(featureCollection.features, function (feature) {
+                            var newobject = {};
+                            angular.forEach(featureCollection.fields, function (field) {
+                                newobject[field.name] = feature.attributes[field.name];
+                            });
+                            newarray.push(newobject);
+                        });
+
+                        AOI.massageData(newarray);
+
+                    } else {
+                        query.returnGeometry(false).where("AOI_ID =" + AOI.ID + "").run(function (error, featureCollection, response) {
+                            // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
+                            // console.log(featureCollection);
+                            var newarray = [];
+                            angular.forEach(featureCollection.features, function (feature) {
+                                var newobject = {};
+                                angular.forEach(response.fields, function (field) {
+                                    newobject[field.name] = feature.properties[field.name];
+                                });
+                                newarray.push(newobject);
+                            });
+                            //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
+                            //this is where I stopped. COF
+                            //console.log(newarray);
+                            //console.log(newarray.length);
+                            //console.log(newarray[0].AOI_ID);
+                            AOI.massageData(newarray);
+                        });
+                    }
+                });
+            },
+
             unloadData: function () {
                 if (this.isLoaded) {
                     map.removeLayer(this.oceanDisposalSites);
@@ -23948,9 +23944,9 @@ angular.module('myApp.services', []).factory('_', function () {
                     smallmap.remove();
 
                 }
-                if (this.inPrintWindow) smallmap = L.map('map3',{ preferCanvas: useCanvas }).setView([45.526, -122.667], 1);
+                if (this.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
                 else smallmap = L.map('map').setView([45.526, -122.667], 1);
-                L.esri.basemapLayer('Oceans',{useCors:true}).addTo(smallmap);
+                L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
                 L.esri.basemapLayer('OceansLabels').addTo(smallmap);
                 esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
                     attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
@@ -24014,8 +24010,8 @@ angular.module('myApp.services', []).factory('_', function () {
                     });
                 }
                 smallmap.invalidateSize();
-                var test1=false;
-                if ((this.inPrintWindow)&&(test1)) {
+                var test1 = false;
+                if ((this.inPrintWindow) && (test1)) {
                     leafletImage(smallmap, function (err, canvas) {
                         // now you have canvas
                         // example thing to do with that canvas:
@@ -24024,7 +24020,7 @@ angular.module('myApp.services', []).factory('_', function () {
                         img.width = dimensions.x;
                         img.height = dimensions.y;
                         img.src = canvas.toDataURL();
-                       // window.open(img.src);
+                        // window.open(img.src);
                         document.getElementById('map3').innerHTML = '';
                         document.getElementById('map3').appendChild(img);
                     });
@@ -24033,80 +24029,80 @@ angular.module('myApp.services', []).factory('_', function () {
             },
             loadWindChart: function () {
                 //windChart = Highcharts.chart('container', {
-                if (AOI.highchartsNG) AOI.highchartsNG=null
-                    AOI.highchartsNG= {
-                        options: {
-                            chart: {
-                                spacing: 0,
-                                margin: 0,
-                                type: 'column'
-                            },
-                            title: {
-                                text: null
-                            },
-                            exporting: {enabled: false},
-                            colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
-                            xAxis: {
-                                title: {
-                                    enabled: false
-                                },
-                                labels: {
-                                    enabled: false
-                                },
-                                tickLength: 0
-                            },
-                            yAxis: {
-                                title: {
-                                    enabled: false
-                                },
-                                labels: {
-                                    enabled: false
-                                },
-                                TickLength: 0
-                            },
-                            plotOptions: {
-                                series: {
-                                    pointWidth: 190
-                                },
-                                column: {
-                                    stacking: 'percent'
-                                }
-                            }
-
+                if (AOI.highchartsNG) AOI.highchartsNG = null
+                AOI.highchartsNG = {
+                    options: {
+                        chart: {
+                            spacing: 0,
+                            margin: 0,
+                            type: 'column'
                         },
-                        loading: false,
-                        series: [{
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[0]]
-                        }, {
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[1]]
-                        }, {
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[2]]
-                        }, {
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[3]]
-                        }, {
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[4]]
-                        }, {
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[5]]
-                        }, {
-                            showInLegend: false,
-                            name: '',
-                            data: [windclass[6]]
+                        title: {
+                            text: null
+                        },
+                        exporting: {enabled: false},
+                        colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                        xAxis: {
+                            title: {
+                                enabled: false
+                            },
+                            labels: {
+                                enabled: false
+                            },
+                            tickLength: 0
+                        },
+                        yAxis: {
+                            title: {
+                                enabled: false
+                            },
+                            labels: {
+                                enabled: false
+                            },
+                            TickLength: 0
+                        },
+                        plotOptions: {
+                            series: {
+                                pointWidth: 190
+                            },
+                            column: {
+                                stacking: 'percent'
+                            }
                         }
-                        ]
 
-                    };
+                    },
+                    loading: false,
+                    series: [{
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[0]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[1]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[2]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[3]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[4]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[5]]
+                    }, {
+                        showInLegend: false,
+                        name: '',
+                        data: [windclass[6]]
+                    }
+                    ]
+
+                };
 
                 /*  //over ride windclass for testing chart
                  // console.log(windclass[0]);
@@ -24141,7 +24137,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('printCtrl', ['AOI', '$scope','$http','$timeout','$document', function (AOI, $scope,$http,$timeout,$document) {
+    .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
         $http.get('CEConfig.json')
@@ -24156,34 +24152,32 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             // document is ready, place  code here
             $timeout(function () {
 
-            AOI.loadSmallMap(false);
+                AOI.loadSmallMap(false);
 
 
-
-
-            $scope.saveAsBinary();
+                $scope.saveAsBinary();
 
 
             }, 1500);
         });
         AOI.loadWindChart();
 
-        $scope.saveAsBinary = function( ){
+        $scope.saveAsBinary = function () {
 
             var svg = document.getElementById('container')
                 .children[0].innerHTML;
             var canvas = document.createElement("canvas");
-            canvg(canvas,svg,{  });
+            canvg(canvas, svg, {});
 
             var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
 
             //img = img.replace('data:image/png;base64,', '');
-           // window.open(img);
+            // window.open(img);
             $('#binaryImage').attr('src', img);
-                //'data:image/png;base64,'+img);
+            //'data:image/png;base64,'+img);
 
 
-        }
+        };
         //$scope.exportMyPDF = function (divtoExport) {
         //    console.log(divtoExport);
         //    AOI.loadSmallMap(true);
@@ -24240,20 +24234,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //};
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope','$http', '$timeout', function (AOI, $scope,$http, $timeout) {
+    .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
         $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
+        $scope.AOI.inPrintWindow = false;
         $http.get('CEConfig.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
-        AOI.layer.on("load", function (evt) {
+        $scope.AOI.layer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
             var mbounds = L.latLngBounds([]);
             // loop through the features returned by the server
 
-            AOI.layer.eachFeature(function (layer) {
+            $scope.AOI.layer.eachFeature(function (layer) {
                 // get the bounds of an individual feature
                 var layerBounds = layer.getBounds();
                 // extend the bounds of the collection to fit the bounds of the new feature
@@ -24263,7 +24257,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             try {
                 map.fitBounds(mbounds);
                 //console.log("here?");
-                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                $scope.AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
             }
             catch (err) {
                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
@@ -24276,16 +24270,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.mout($scope.AOI.ID);
 
         });
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-
-            $scope.$apply();
-
-                //AOI.loadSmallMap();
-            }, 1250);
-        });
-
 
     }])
     .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
@@ -24293,7 +24277,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         document.getElementById("bigmap").style.width = '100%';
         $scope.off();
         map.invalidateSize();
-       AOI.inPrintWindow = false;
+        AOI.inPrintWindow = false;
         // console.log("draw mode "+ $scope.drawtoolOn);
 
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
@@ -24328,7 +24312,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('MyCtrl2', ['$scope', '$timeout', 'AOI', '$http', function ($scope, $timeout, AOI, $http) {
         $scope.AOI = AOI;
-       AOI.inPrintWindow = false;
+        AOI.inPrintWindow = false;
         $scope.name = "controller 2";
         $http.get('emconfig.json')
             .then(function (res) {
@@ -24401,14 +24385,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state','usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
 
         $scope.AOI = AOI;
         $scope.baseMapControlOn = false;
-        AOI.inPrintWindow = false;
-        var baseMapControl = L.control.layers(baseMaps,mapOverlay,{
+        $scope.AOI.inPrintWindow = false;
+        var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
             position: 'topleft',
-            collapsed:false
+            collapsed: false
         });
         $scope.box = [];
         var len = 2000;
@@ -24492,10 +24476,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         };
 
-        $scope.startSpin = function(){
+        $scope.startSpin = function () {
             usSpinnerService.spin('spinner-1');
         }
-        $scope.stopSpin = function(){
+        $scope.stopSpin = function () {
             usSpinnerService.stop('spinner-1');
         }
         var myGPService = L.esri.GP.service({
@@ -24508,15 +24492,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
         var myGPTask = myGPService.createTask();
 
-        $scope.baseMapSwitch = function() {
+        $scope.baseMapSwitch = function () {
             console.log("basemap " + $scope.baseMapControlOn);
             if ($scope.baseMapControlOn) {
                 map.removeControl(baseMapControl);
-                $scope.baseMapControlOn=false;
+                $scope.baseMapControlOn = false;
 
-            }else {
+            } else {
                 baseMapControl.addTo(map);
-                $scope.baseMapControlOn=true;
+                $scope.baseMapControlOn = true;
             }
         }
 
