@@ -1,18 +1,19 @@
 <div class="infographic-box-medium">
     <div id="wrbox1">
-        <div id="boemline1">Oil and Gas Resource Potential</div>
+        <div class="infographicline1">Oil and Gas Resource Potential</div>
 
-        <div id="boemline2" ">
+        <div class="infographicline3">
             <span class="boemline2a ">There are</span>
             <span class="boemline2b ">{{AOI.OGresource[0].TOTAL_CNT}}</span>
             <span class="boemline2a ">plays within the area</span>
 
         </div>
 
-        <div style="padding-bottom: 10px" class="boemline2a padLeft15 floatitleft">for more information on conceptual plays within the Atlantic OCS please click the link</div>
+        <div class="padbottom10 boemline2a padLeft15 floatitleft">for more information on conceptual plays within the
+            Atlantic OCS please click the link
+        </div>
         <!-- iButton start-->
         <div>
-            <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
             <info-directive class="infobutton mainbutton" modal-template="modal15.html" message="message"
                             modal-img="img/info.svg"></info-directive>
 
@@ -41,29 +42,29 @@
         <!-- iButton end-->
 
 
-
         <div class="GreyText10 padLeft15">
-            <div style="height:10px;width:315px;" class="floatitleft "></div>
-            <div Style="width: 288px; border:1px solid #D6D6D6;" class="Greychart floatitleft" >Undiscovered Technically Recoverable Oil and Gas Resources</div>
-            <table BORDERCOLOR="#D6D6D6" border="1" class="Greychart" style="width: 603.8px;">
+            <div class="floatitleft OGTablebox"></div>
+            <div class="OGTableLabel Greychart floatitleft">Undiscovered Technically Recoverable Oil and Gas Resources
+            </div>
+            <table class="Greychart OGTable">
 
-                <tr style="height: 20px;">
-                    <th style="width:315px;">OCS Play</th>
-                    <th style="width: 95px;">Oil (bbl)</th>
-                    <th style="width: 95px;">Gas (tcf)</th>
-                    <th style="width: 95px;">BOE (bbl)</th>
+                <tr class="GreychartBorder">
+                    <th class="OGTableBorderLong">OCS Play</th>
+                    <th class="OGTableBorderShort">Oil (bbl)</th>
+                    <th class="OGTableBorderShort">Gas (tcf)</th>
+                    <th class="OGTableBorderShort">BOE (bbl)</th>
                 </tr>
-                <tr style="height: 20px;" ng-repeat="lease in AOI.OGresource | orderBy : 'OCS_Play'">
-                    <td>
+                <tr class="GreychartBorder" ng-repeat="lease in AOI.OGresource | orderBy : 'OCS_Play'">
+                    <td class="GreychartBorder">
                         <div>{{lease.OCS_Play}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{lease.UTTR_Oil}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{lease.UTTR_Gas}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{lease.UTTR_BOE}}</div>
                     </td>
 

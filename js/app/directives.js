@@ -3,40 +3,37 @@
 /* Directives */
 
 
+function printDirective() {
+    var printSection = document.getElementById("printSection");
 
-    function printDirective() {
-        var printSection = document.getElementById("printSection");
-
-        function printElement(elem) {
-            // clones the element you want to print
-            var domClone = elem.cloneNode(true);
-            if (!printSection) {
-                printSection = document.createElement("div");
-                printSection.id = "printSection";
-                document.body.appendChild(printSection);
-            } else {
-                printSection.innerHTML = "";
-            }
-            printSection.appendChild(domClone);
+    function printElement(elem) {
+        // clones the element you want to print
+        var domClone = elem.cloneNode(true);
+        if (!printSection) {
+            printSection = document.createElement("div");
+            printSection.id = "printSection";
+            document.body.appendChild(printSection);
+        } else {
+            printSection.innerHTML = "";
         }
-
-        function link(scope, element, attrs) {
-            element.on("click", function () {
-                var elemToPrint = document.getElementById(attrs.printElementId);
-                if (elemToPrint) {
-                    printElement(elemToPrint);
-                    window.print();
-                }
-            });
-        }
-
-        return {
-            link: link,
-            restrict: "A"
-        };
+        printSection.appendChild(domClone);
     }
 
+    function link(scope, element, attrs) {
+        element.on("click", function () {
+            var elemToPrint = document.getElementById(attrs.printElementId);
+            if (elemToPrint) {
+                printElement(elemToPrint);
+                window.print();
+            }
+        });
+    }
 
+    return {
+        link: link,
+        restrict: "A"
+    };
+}
 
 
 angular.module('myApp.directives', [])
@@ -50,7 +47,6 @@ angular.module('myApp.directives', [])
     .directive("ngPrint", [printDirective])
 
 
-
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -59,7 +55,7 @@ angular.module('myApp.directives', [])
                 modalImg: '@',
                 message: '=',
                 metadataUrl: '@',
-                vardata:'@'
+                vardata: '@'
             },
             template: '<a href ng-click="show(modalTemplate)" ><div ng-include="" src="modalImg"></div></a>',
             controller: function ($scope, ModalService) {
@@ -90,7 +86,7 @@ angular.module('myApp.directives', [])
         return {
             restrict: 'E',
             scope: true,
-            templateUrl: 'partials/RenewableEnergyLeases.html',
+            templateUrl: 'partials/EM_RenewableEnergyLeases.html',
             controller: function ($scope, AOI) {
                 $scope.AOI = AOI;
             }

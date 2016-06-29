@@ -1,29 +1,23 @@
-<script>
-    // Elements to inject
-    var mySVGsToInject = document.querySelectorAll('img.inject-it');
+<a href="" id="togglefull" class="toggleicon"><img class="toggleimg" src="img/ArrowButton.svg"></a>
 
-    // Do the injection
-    SVGInjector(mySVGsToInject);
-</script>
-<a href="" id="togglefull" class="toggleicon"><img class="inject-it toggleimg" src="img/ArrowButton.svg"></a>
-
-<div style="padding:30px;" id="slide-right">
-    <div style="width: 100%;height:5px">
+<div class="padding30 slide-right">
+    <div class="CEHeader">
         <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
         <div id="shareIcons">
-            <div id="shareIcon"><img src="img/PDF.svg"></div>
+            <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></div>
             <div id="shareIcon"><img src="img/Export.svg"></div>
         </div>
     </div>
-    <br style="clear: left;"/>
+    <br class="clear"/>
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Metadata
             <hr width="50%" align="left" color="#F4F8FC">
             <div class="metaline1" ng-repeat="m1 in AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
                 {{m1.REPORT_CAT}}
-                <div class="metaline2" ng-repeat="m2 in AOI.metadata | filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
-            <a target="_blank" href={{m2.METADATA_URL}}>{{m2.COMMON_NM}} - {{m2.METADATA_OWNER}}</a><br>
+                <div class="metaline2"
+                     ng-repeat="m2 in AOI.metadata | filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
+                    <a target="_blank" href={{m2.METADATA_URL}}>{{m2.COMMON_NM}} - {{m2.METADATA_OWNER}}</a><br>
 
                 </div>
             </div>

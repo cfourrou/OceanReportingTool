@@ -1,15 +1,5 @@
-<script>
-    // Elements to inject
-    var mySVGsToInject = document.querySelectorAll('img.inject-it');
-
-    // Do the injection
-    SVGInjector(mySVGsToInject);
-</script>
-
-
-
-<div style="padding:30px;" id="slide-right">
-    <div style="width: 100%;height:5px"></div>
+<div class="padding30 slide-right">
+    <div class="CEHeader"></div>
 
     <div id="sliderData">
         <div class="sBox">
@@ -18,7 +8,7 @@
     </div>
     <!-- iButton start-->
     <div>
-        <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+
         <info-directive class="infobutton mainbutton" modal-template="modalDraw.html" message="message"
                         modal-img="img/info.svg"></info-directive>
 
@@ -32,7 +22,6 @@
                         </svg>
                     </a>
                     The process of submitting a custom report can take several minutes.
-
 
 
                 </div>

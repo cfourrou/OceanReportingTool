@@ -4,16 +4,17 @@
             <div ng-class="AOI.coastalEnergyFacilitiesIsVisable ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.togglecoastalEnergyFacilities()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF</div>
-        <div id="boemline1">Coastal Energy Facilities</div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF
+        </div>
+        <div class="infographicline1">Coastal Energy Facilities</div>
         <div class="swatch floatitleft"><img src="img/CoastalEnergyGraphic.svg"></div>
-        <div id="boemline2" >
+        <div class="infographicline3">
             <div class="boemline2a ">Within 20 Miles</div>
 
         </div>
 
 
-        <div id="boemline2" >
+        <div class="infographicline3">
             <span class="boemline2a ">There are</span>
             <span class="boemline2b ">{{AOI.coastfac[0].TOTAL_CNT}}</span>
             <span class="boemline2a ">Coastal Energy Facilities</span>
@@ -21,27 +22,27 @@
         </div>
 
         <div class="GreyText10 padLeft15">
-            <div style="height:30px;width:315px;" class="floatitleft "></div>
+            <div class="CoastalEnergyspace floatitleft "></div>
 
-            <table BORDERCOLOR="#D6D6D6" border="1" class="Greychart" style="width: 603.8px;">
+            <table class="Greychart CoastalEnergyTable">
 
-                <tr style="height: 20px;">
-                    <th style="width:315px;">Facility Name</th>
-                    <th style="width: 95px;">Type</th>
-                    <th style="width: 95px;">Capacity (MW)</th>
-                    <th style="width: 95px;">Distance (mi)</th>
+                <tr class="GreychartBorder">
+                    <th class="OGTableBorderLong">Facility Name</th>
+                    <th class="OGTableBorderShort">Type</th>
+                    <th class="OGTableBorderShort">Capacity (MW)</th>
+                    <th class="OGTableBorderShort">Distance (mi)</th>
                 </tr>
-                <tr style="height: 20px;" ng-repeat="facs in AOI.coastfac | orderBy : 'Dist_Mi'">
-                    <td>
+                <tr class="GreychartBorder" ng-repeat="facs in AOI.coastfac | orderBy : 'Dist_Mi'">
+                    <td class="GreychartBorder">
                         <div>{{facs.Name}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{facs.Type}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{facs.CAPACITY}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{facs.Dist_Mi.toFixed(2)}}</div>
                     </td>
 

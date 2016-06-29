@@ -20,14 +20,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('printCtrl', ['AOI', '$scope','$http','$timeout','$document', function (AOI, $scope,$http,$timeout,$document) {
+    .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
-        $http.get('CEConfig.json')
+        $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
-        $http.get('emconfig.json')
+        $http.get('EM_config.json')
             .then(function (res) {
                 $scope.emconfig = res.data;
             });
@@ -35,31 +35,29 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             // document is ready, place  code here
             $timeout(function () {
 
-            AOI.loadSmallMap(false);
+                AOI.loadSmallMap(false);
 
 
-
-
-            $scope.saveAsBinary();
+                $scope.saveAsBinary();
 
 
             }, 1500);
         });
         AOI.loadWindChart();
 
-        $scope.saveAsBinary = function( ){
+        $scope.saveAsBinary = function () {
 
             var svg = document.getElementById('container')
                 .children[0].innerHTML;
             var canvas = document.createElement("canvas");
-            canvg(canvas,svg,{  });
+            canvg(canvas, svg, {});
 
             var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
 
             //img = img.replace('data:image/png;base64,', '');
-           // window.open(img);
+            // window.open(img);
             $('#binaryImage').attr('src', img);
-                //'data:image/png;base64,'+img);
+            //'data:image/png;base64,'+img);
 
 
         }
@@ -119,10 +117,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //};
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope','$http', '$timeout', function (AOI, $scope,$http, $timeout) {
+    .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
-        $http.get('CEConfig.json')
+        $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
@@ -155,15 +153,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.mout($scope.AOI.ID);
 
         });
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-
-            $scope.$apply();
-
-                //AOI.loadSmallMap();
-            }, 1250);
-        });
+        //$scope.$on('$viewContentLoaded', function () {
+        //    // for some reason the data on the first partial in Common elements isn't visable until an action is performed like clicking on another button.
+        //    //I can't just apply scope here because it is already running. if i give the current one a little time to complete before running this, every thing works.
+        //    $timeout(function () {
+        //
+        //        $scope.$apply();
+        //
+        //
+        //    }, 1250);
+        //});
 
 
     }])
@@ -172,7 +171,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         document.getElementById("bigmap").style.width = '100%';
         $scope.off();
         map.invalidateSize();
-       AOI.inPrintWindow = false;
+        AOI.inPrintWindow = false;
         // console.log("draw mode "+ $scope.drawtoolOn);
 
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
@@ -184,7 +183,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 arcgisOnline,
 
                 new L.esri.Geocoding.FeatureLayerProvider({
-                    url: ortMapServer + ortLayerAOI,
+                    url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
                     searchFields: ['AOI_NAME'],
                     label: 'Known Areas',
                     bufferRadius: 5000,
@@ -205,24 +204,24 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('MyCtrl2', ['$scope', '$timeout', 'AOI', '$http', function ($scope, $timeout, AOI, $http) {
+    .controller('MyCtrl2', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
         $scope.AOI = AOI;
-       AOI.inPrintWindow = false;
+        AOI.inPrintWindow = false;
         $scope.name = "controller 2";
-        $http.get('emconfig.json')
+        $http.get('EM_config.json')
             .then(function (res) {
                 $scope.emconfig = res.data;
             });
 
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-
-
-
-                //AOI.loadSmallMap();
-            }, 1000);
-        });
+        //$scope.$on('$viewContentLoaded', function () {
+        //    // document is ready, place  code here
+        //    $timeout(function () {
+        //
+        //
+        //
+        //        //AOI.loadSmallMap();
+        //    }, 1000);
+        //});
         AOI.loadWindChart();
         //document.getElementById("togglefull").addEventListener("click", function () {
         //    toggleFull = !toggleFull;
@@ -280,14 +279,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state','usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
 
         $scope.AOI = AOI;
         $scope.baseMapControlOn = false;
         AOI.inPrintWindow = false;
-        var baseMapControl = L.control.layers(baseMaps,mapOverlay,{
+        var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
             position: 'topleft',
-            collapsed:false
+            collapsed: false
         });
         $scope.box = [];
         var len = 2000;
@@ -371,14 +370,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         };
 
-        $scope.startSpin = function(){
+        $scope.startSpin = function () {
             usSpinnerService.spin('spinner-1');
         }
-        $scope.stopSpin = function(){
+        $scope.stopSpin = function () {
             usSpinnerService.stop('spinner-1');
         }
         var myGPService = L.esri.GP.service({
-            url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area",
+            url: AOI.config.ortEnergyGPService,
             //url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area",
             useCors: false,
             async: true,
@@ -387,15 +386,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
         var myGPTask = myGPService.createTask();
 
-        $scope.baseMapSwitch = function() {
+        $scope.baseMapSwitch = function () {
             console.log("basemap " + $scope.baseMapControlOn);
             if ($scope.baseMapControlOn) {
                 map.removeControl(baseMapControl);
-                $scope.baseMapControlOn=false;
+                $scope.baseMapControlOn = false;
 
-            }else {
+            } else {
                 baseMapControl.addTo(map);
-                $scope.baseMapControlOn=true;
+                $scope.baseMapControlOn = true;
             }
         }
 
@@ -452,6 +451,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     map.removeControl(searchControl);
                     $scope.drawtoolOn = false;
                     $scope.drawOrSubmitCommand = "DRAW";
+                    if ($scope.baseMapControlOn) {
+                        map.removeControl(baseMapControl);
+                        $scope.baseMapControlOn = false;
+                    }
                     $state.go('CEview');
                     $scope.paneon();
                     document.getElementById("bigmap").style.width = '50%';
@@ -544,7 +547,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             if (!mouseLayer) {
                 mouseLayer = L.esri.featureLayer({ //AOI poly (7)
-                    url: ortMapServer + ortLayerAOI,
+                    url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
                     //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
                     where: "AOI_ID =" + AOI_id + "",
                     color: '#EB660C', weight: 3, fillOpacity: .3,
@@ -596,7 +599,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         var query = L.esri.query({
-            url: ortMapServer + ortLayerAOI
+            url: AOI.config.ortMapServer + AOI.config.ortLayerAOI
 
         });
 

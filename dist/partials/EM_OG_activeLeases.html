@@ -1,23 +1,23 @@
 <div class="infographic-box-small">
     <div id="wrbox1">
-        <div id="boemline1">Oil and Gas Active Leases</div>
+        <div class="infographicline1">Oil and Gas Active Leases</div>
 
-        <div id="boemline2" style="padding-bottom: 10px">
+        <div class="infographicline3 padbottom10">
             <span class="boemline2b ">{{AOI.OGLease[0].TOTAL_CNT}}</span>
             <span class="boemline2a ">Oil and Gas leases within 2 miles of this area</span>
         </div>
         <div class="GreyText10 padLeft15">
-            <table BORDERCOLOR="#D6D6D6" border="1" class="Greychart">
+            <table class="Greychart">
 
-                <tr style="height: 20px;">
-                    <th style="width: 120px;">Lease Number</th>
-                    <th style="width: 155px;">Status</th>
+                <tr class="GreychartBorder">
+                    <th class="GreychartBorder40">Lease Number</th>
+                    <th class="GreychartBorder60">Status</th>
                 </tr>
-                <tr style="height: 20px;" ng-repeat="lease in AOI.OGLease | orderBy : 'Lease_Numb'">
-                    <td>
+                <tr class="GreychartBorder" ng-repeat="lease in AOI.OGLease | orderBy : 'Lease_Numb'">
+                    <td class="GreychartBorder">
                         <div>{{lease.Lease_Numb}}</div>
                     </td>
-                    <td>
+                    <td class="GreychartBorder">
                         <div>{{lease.Lease_expt}}</div>
                     </td>
 

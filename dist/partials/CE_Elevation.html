@@ -5,12 +5,11 @@
                  ng-click="AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
         </div>
 
-        <div id="boemline1" style="width: 35%;">Elevation
+        <div class="infographicline1">Elevation
 
 
             <!-- iButton start-->
-            <div style="float: right;">
-                <!--a ng-click="show('modal2.html')" href=""><img id="infobutton2" class="inject-it mainbutton"  src="img/info.svg"></a>-->
+            <div class="floatitright">
                 <info-directive class="infobutton mainbutton" modal-template="modal26.html" message="message"
                                 modal-img="img/info.svg"></info-directive>
 
@@ -37,9 +36,9 @@
             <!-- iButton end-->
         </div>
         <div>
-                <span style="font-size: 15px; color: #4a4a4a;;">
+                <span class="CommonSwatchLine">
                 <div class="swatch floatitleft"><img src="img/elevation.svg"></div>
-                    <div style="padding-top: 4px; padding-left: 95px;">
+                    <div class="CEElevationData">
                         <div><b>Min:</b> {{AOI.CEElevation[0].depth_min_m}}m</div>
                         <div><b>Max:</b> {{AOI.CEElevation[0].depth_max_m}}m</div>
                         <div><b>Mean:</b> {{AOI.CEElevation[0].depth_mean_m}}m</div>

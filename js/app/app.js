@@ -1,120 +1,117 @@
 'use strict';
 
-var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/';
-var ortLayerAOI = '7';
-var ortLayerData = '35';
+//var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/';
+//var ortLayerAOI = '7';
+//var ortLayerData = '35';
 var ortLayerOptional = [];
 
-var windChart;
 
-ortLayerOptional[0]=
+ortLayerOptional[0] =
 {
-    num:'19',
-    displayName:'Wind Resource Potential'
+    num: '19',
+    displayName: 'Wind Resource Potential'
 };
-ortLayerOptional[1]=
+ortLayerOptional[1] =
 {
-    num:'18',
-    displayName:'Active Renewable Energy Leases'
+    num: '18',
+    displayName: 'Active Renewable Energy Leases'
 };
-ortLayerOptional[2]=
+ortLayerOptional[2] =
 {
-    num:'22',
-    displayName:'BOEM_Wind_Planning_Areas'
+    num: '22',
+    displayName: 'BOEM_Wind_Planning_Areas'
 };
-ortLayerOptional[3]=
+ortLayerOptional[3] =
 {
-    num:'23',
-    displayName:'OceanDisposalSites'
+    num: '23',
+    displayName: 'OceanDisposalSites'
 };
-ortLayerOptional[4]=
+ortLayerOptional[4] =
 {
-    num:'21',
-    displayName:'Marine Minerals Leases',
+    num: '21',
+    displayName: 'Marine Minerals Leases',
     layerName: 'Sand_n_GravelLeaseAreas'
 };
-ortLayerOptional[5]=
+ortLayerOptional[5] =
 {
-    num:null,
-    displayName:'Sediment Resources'
+    num: null,
+    displayName: 'Sediment Resources'
 };
-ortLayerOptional[6]=
+ortLayerOptional[6] =
 {
-    num:'3',
-    displayName:'Hydrokinetic Leases',
+    num: '3',
+    displayName: 'Hydrokinetic Leases',
     layerName: 'MarineHydrokineticProjects'
 };
-ortLayerOptional[7]=
+ortLayerOptional[7] =
 {
-    num:null,
-    displayName:'Surficial Sediment Classification'
+    num: null,
+    displayName: 'Surficial Sediment Classification'
 };
-ortLayerOptional[8]=
+ortLayerOptional[8] =
 {
-    num:20,
-    displayName:'Wave Power',
-    layerName:'Ocean Wave Resource Potential'
+    num: 20,
+    displayName: 'Wave Power',
+    layerName: 'Ocean Wave Resource Potential'
 };
-ortLayerOptional[9]=
+ortLayerOptional[9] =
 {
-    num:32,
-    displayName:'Tidal Power',
-    layerName:'usa_mc_wm'
+    num: 32,
+    displayName: 'Tidal Power',
+    layerName: 'usa_mc_wm'
 };
-ortLayerOptional[10]=
+ortLayerOptional[10] =
 {
-    num:31,
-    displayName:'Current Power',
-    layerName:'us_oc_ms'
+    num: 31,
+    displayName: 'Current Power',
+    layerName: 'us_oc_ms'
 };
-ortLayerOptional[11]=
+ortLayerOptional[11] =
 {
-    num:6,
-    displayName:'Beach Nourishment',
-    layerName:'SC_BeachProjects'
+    num: 6,
+    displayName: 'Beach Nourishment',
+    layerName: 'SC_BeachProjects'
 };
-ortLayerOptional[12]=
+ortLayerOptional[12] =
 {
-    num:null,
-    displayName:'Oil and Gas Planing Area'
+    num: null,
+    displayName: 'Oil and Gas Planing Area'
 };
-ortLayerOptional[13]=
+ortLayerOptional[13] =
 {
-    num:null,
-    displayName:'Oil and Gas Active Lease'
+    num: null,
+    displayName: 'Oil and Gas Active Lease'
 };
-ortLayerOptional[14]=
+ortLayerOptional[14] =
 {
-    num:null,
-    displayName:'Oil and Gas Wells'
+    num: null,
+    displayName: 'Oil and Gas Wells'
 };
-ortLayerOptional[15]=
+ortLayerOptional[15] =
 {
-    num:null,
-    displayName:'Oil and Gas Resource potential'
+    num: null,
+    displayName: 'Oil and Gas Resource potential'
 };
-ortLayerOptional[16]=
+ortLayerOptional[16] =
 {
-    num:1,
-    displayName:'Coastal Energy Facilities'
-};
-
-
-
-ortLayerOptional[26]=
-{
-    num:30,
-    displayName:'Coastal Relief Model'
+    num: 1,
+    displayName: 'Coastal Energy Facilities'
 };
 
 
+ortLayerOptional[26] =
+{
+    num: 30,
+    displayName: 'Coastal Relief Model'
+};
 
 
 var toggle = false;
-var windclass = [];
+//var windclass = [];
 //var toggleFull = false;
-var cLayer,mouseLayer,searchControl;
-var menuitems= [];
+//var cLayer,
+var mouseLayer, searchControl;
+//var menuitems = [];
 
 function preloader() {
     if (document.images) {
@@ -128,7 +125,7 @@ function addLoadEvent(func) {
     if (typeof window.onload != 'function') {
         window.onload = func;
     } else {
-        window.onload = function() {
+        window.onload = function () {
             if (oldonload) {
                 oldonload();
             }
@@ -142,8 +139,8 @@ var marker;
 
 
 var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-    maxZoom: 12
+        attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+        maxZoom: 12
     }),
     esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
@@ -155,28 +152,27 @@ var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/service
     });
 
 
-var nauticalchart=L.esri.imageMapLayer({
+var nauticalchart = L.esri.imageMapLayer({
     url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
     //mosaicRule: mosaicRule,
     useCors: false
 });//.addTo(map);
 
 
-
-var map = L.map('bigmap',{
+var map = L.map('bigmap', {
     zoomControl: false,
-    maxZoom:12,
+    maxZoom: 12,
     //layers: [esriOceans]
 });
 var smallmap;
 var baseMaps = {
     "Oceans": esriOceans,
     "Streets": esriStreets,
-    "NatGeo World":esriNatGeo
+    "NatGeo World": esriNatGeo
 };
 var mapOverlay = {
-   "Nautical Chart": nauticalchart
-} ;
+    "Nautical Chart": nauticalchart
+};
 
 var baselayer = esriOceans.addTo(map);
 
@@ -190,100 +186,112 @@ var baselayer = esriOceans.addTo(map);
 
 //Use one of "Streets", "Topographic", "Oceans", "OceansLabels", "NationalGeographic", "Gray", "GrayLabels", "DarkGray", "DarkGrayLabels", "Imagery",
 // "ImageryLabels", "ImageryTransportation", "ShadedRelief", "ShadedReliefLabels", "Terrain" or "TerrainLabels"
-
-L.control.zoom({
-    position:'bottomleft'
-}).addTo(map);
-
+/*
+ L.control.zoom({
+ position: 'bottomleft'
+ }).addTo(map);
+ */
 for (var i = 0; i < ortLayerOptional.length; i++) {
-    map.createPane('optionalfeature'+i);
-};
+    map.createPane('optionalfeature' + i);
+}
+;
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
 
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
-      'ui.router',
-      'angular.filter',
-      'myApp.filters',
-      'myApp.services',
-      'myApp.directives',
-      'myApp.controllers',
-      'angulartics',
-      'angulartics.google.analytics',
-      'pageslide-directive',
-      'angularModalService',
-      'ngAnimate',
-      'angularSpinner',
-      'highcharts-ng'
+        'ui.router',
+        'angular.filter',
+        'myApp.filters',
+        'myApp.services',
+        'myApp.directives',
+        'myApp.controllers',
+        'angulartics',
+        'angulartics.google.analytics',
+        'pageslide-directive',
+        'angularModalService',
+        'ngAnimate',
+        'angularSpinner',
+        'highcharts-ng'
 
     ])
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
         $urlRouterProvider.otherwise('/main');
-      $stateProvider
+        AOIProvider.config({
+            ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
+            ortLayerAOI: '7',
+            ortLayerData: '35',
+            ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
+            ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
+            ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer',
+        });
 
-          .state('otherwise', {
-              url : '/main',
-              templateUrl:'partials/splash.html',
-          })
-          .state('CEview', {
-              //url: '/AOI?detail',
-              templateUrl: 'partials/CE.html',
-              controller: 'AOICtrl'
-          })
-          .state('view3', {
-           // url: '/view3',
-            templateUrl: 'partials/NRC.html',
-          })
-          .state('view4',{
-          //  url:'/view4',
-            templateUrl:'partials/TI.html',
-           // controller: 'MyCtrl4'
-          })
-        .state('EMview', {
-          //  url: '/EM',
-            templateUrl: 'partials/EnergyMineral.html',
-            controller: 'MyCtrl2'
-        })
-          .state('view5',{
-           //   url:'/view5',
-              templateUrl:'partials/EC.html',
-             // controller: 'MyCtrl5'
-          })
-          .state('meta',{
-              //url:'/metadata',
-              templateUrl:'partials/metadata.html',
-              // controller: 'MyCtrl5'
-          })
-          .state('splash',{
-              url:'/splash',
-              templateUrl:'partials/splash.html',
-             // controller: 'splashCtrl'
-          })
-          .state('menu',{
-              url:'/menu',
-              templateUrl:'partials/menu.html',
-              // controller: 'splashCtrl'
-          })
-          .state('draw',{
-              url:'/draw',
-              templateUrl:'partials/draw.html',
-              controller: 'SearchCtrl'
-          })
-          .state('print',{
-             // url:'/print',
-              templateUrl:'partials/printPreview.html',
-              controller: 'printCtrl'
-          })
-      ;
+        $stateProvider
+
+            .state('otherwise', {
+                url: '/main',
+                templateUrl: 'partials/splash.html',
+            })
+            .state('CEview', {
+                //url: '/AOI?detail',
+                templateUrl: 'partials/CommonElements.html',
+                controller: 'AOICtrl'
+            })
+            .state('view3', {
+                // url: '/view3',
+                templateUrl: 'partials/NaturalResourcesAndConservation.html',
+            })
+            .state('view4', {
+                //  url:'/view4',
+                templateUrl: 'partials/TransportationAndInfrastructure.html',
+                // controller: 'MyCtrl4'
+            })
+            .state('EMview', {
+                //  url: '/EM',
+                templateUrl: 'partials/EnergyAndMinerals.html',
+                controller: 'MyCtrl2'
+            })
+            .state('view5', {
+                //   url:'/view5',
+                templateUrl: 'partials/EconomicsAndCommerce.html',
+                // controller: 'MyCtrl5'
+            })
+            .state('meta', {
+                //url:'/metadata',
+                templateUrl: 'partials/metadata.html',
+                // controller: 'MyCtrl5'
+            })
+            .state('splash', {
+                url: '/splash',
+                templateUrl: 'partials/splash.html',
+                // controller: 'splashCtrl'
+            })
+            .state('menu', {
+                url: '/menu',
+                templateUrl: 'partials/KnownAreasMenu.html',
+                // controller: 'splashCtrl'
+            })
+            .state('draw', {
+                url: '/draw',
+                templateUrl: 'partials/draw.html',
+                controller: 'SearchCtrl'
+            })
+            .state('print', {
+                // url:'/print',
+                templateUrl: 'partials/printPreview.html',
+                controller: 'printCtrl'
+            })
+        ;
     }])
-    .config(function($animateProvider) {
-      $animateProvider.classNameFilter(/angular-animate/);
+    .config(function ($animateProvider) {
+        $animateProvider.classNameFilter(/angular-animate/);
     })
 
     .config(function ($analyticsProvider) {
-      $analyticsProvider.firstPageview(true); /* Records pages that don't use $state or $route */
-      $analyticsProvider.withAutoBase(true);  /* Records full path */
+        $analyticsProvider.firstPageview(true);
+        /* Records pages that don't use $state or $route */
+        $analyticsProvider.withAutoBase(true);
+        /* Records full path */
     })
 
 ;

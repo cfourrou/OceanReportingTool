@@ -1,0 +1,96 @@
+<div class="infographic-box-medium">
+    <div id="wrbox1">
+        <div id="slider_but10" class="sliderbutton" ng-hide="AOI.toggleFull===true">
+            <div ng-class="AOI.currentPowerIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.togglecurrentPower()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF
+        </div>
+        <div class="infographicline1">Ocean Current Power</div>
+
+        <div class="Leftbox60 floatitleft">
+
+            <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
+                                                                                    ng-hide="AOI.currentpwr[0].AVG_OCEAN_CURRENT>1">&nbsp;NOT</span>
+
+            <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
+            <!-- iButton start-->
+            <div class="iButtoncontainer">
+                <info-directive class="infobutton mainbutton " modal-template="modal10.html"
+                                message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal10.html">
+                    <div id="custom-modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Requires a minimum of 1.0 m/s for an ocean current to be considered a potential resource
+                            location.
+
+
+                            <div class="footnote"><a target="_blank"
+                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/energy_production_ocean_currents_us_0.pdf'>http://energy.gov/sites/prod/files/2013/12/f5/energy_production_ocean_currents_us_0.pdf
+                                (p43)</a></div>
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+            </div> <!-- iButton end-->
+
+
+            <div class="padbottom16 GreyText14 padLeft15 floatitleft w100">Ocean Current Power
+                Generation
+            </div>
+
+            <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[AOI.currentpwr[0].AVG_OCEAN_CURRENT>1]">
+                Current Speed is <span ng-show="AOI.currentpwr[0].AVG_OCEAN_CURRENT<=1">NOT</span> >1 m/s
+            </div>
+            <div class="powerscale GreyText14 padLeft15"></div>
+            <div class="powerscale2 GreyText14 padLeft15">
+
+                <div ng-repeat="a in [1, 2, 3, 4,5,6,7,8,9]" class="powerscalediv floatitleft"></div>
+
+            </div>
+
+            <div class="powerscalenum GreyText14 padLeft15">
+
+                <div ng-repeat="b in [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6]" class="powerscalenum2 floatitleft">
+                    {{b}}
+                </div>
+
+
+                <div id="thebar" class="floatitleft powergraphbar"
+                     ng-style="{'width': (AOI.currentpwr[0].AVG_OCEAN_CURRENT*215) + 'px' };"></div>
+            </div>
+            <div class="GreyText10 text-center"> Ocean Current (m/s)</div>
+        </div>
+
+
+    </div>
+    <div class="w40 floatitleft GreyText14">
+        <div class="w100">
+            Ocean Current Speed (ms)
+        </div>
+        <div class="w30 floatitleft GreyText14">
+            <img src="img/OceanCurrentPowerGraphic.svg">
+        </div>
+        <div class="w65 floatitleft GreyText14 ">
+            <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
+                <img class="floatitleft" src="img/OceanCurrentRectangle.svg">
+            </div>
+            <div class="floatitleft GreyText14 padLeft15">
+                High: 1.72
+            </div>
+            <div class="powerchartswatch floatitleft GreyText14 padLeft15">
+                Low: 0
+            </div>
+        </div>
+    </div>
+</div>
+
+

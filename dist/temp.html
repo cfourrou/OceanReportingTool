@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" ng-app="myApp" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NOAA: Ocean Reporting Tool</title>
+    <meta name="description" content="SEO description of this app">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- iOS - mobile web app -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <!-- iOS - add specific name to home screen icon -->
+    <meta name="apple-mobile-web-app-title" content="">
+    <!-- Android - mobile web app-->
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <!-- Windows mobile Phone specific -->
+    <meta name="MobileOptimized" content="width">
+    <!-- Windows task bar - Name a pinned site on Windows task bar -->
+    <meta name="application-name" content="Sample Title">
+    <!-- Windows task bar - give pinned site a tooltip -->
+    <meta name="msapplication-tooltip" content="A description of what this site does.">
+    <!-- Windows task bar - set default page for pinned site -->
+    <meta name="msapplication-starturl" content="http://www.example.com/index.html?pinned=true">
+    <!-- Windows task bar - Recolor IE's controls manually for a Pinned Site -->
+    <meta name="msapplication-navbutton-color" content="#ff0000">
+    <!-- Blackberry specific -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- Disable implicit prefetching -->
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+    <!-- Facebook - controls the information sent to Open Graph when shared -->
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <!-- Twitter - controls the information sent to Twitter when shared -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@site_account">
+    <meta name="twitter:creator" content="@individual_account">
+    <meta name="twitter:url" content="http://www.example.com/path/to/page.html">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="http://www.example.com/path/to/image.jpg">
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- iOS specific tags -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-180x180-precomposed.png"/>
+
+    <!-- Add start up image for iOS -->
+    <!-- iPhone (Retina) SPLASHSCREEN-->
+    <link href="apple-touch-startup-image-640x920.png"
+          media="(device-width: 320px) and (device-height: 460px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+    <!-- iPhone 5 (Retina) SPLASHSCREEN-->
+    <link href="apple-touch-startup-image-640x1096.png"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+    <!-- iPad (non-Retina) (Portrait) -->
+    <link href="apple-touch-startup-image-768x1004.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)"
+          rel="apple-touch-startup-image"/>
+    <!-- iPad (non-Retina) (Landscape) -->
+    <link href="apple-touch-startup-image-1024x748.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)"
+          rel="apple-touch-startup-image"/>
+    <!-- iPad (Retina) (Portrait) -->
+    <link href="apple-touch-startup-image-1536x2008.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) and (-webkit-min-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <!-- iPad (Retina) (Landscape) -->
+    <link href="apple-touch-startup-image-2048x1496.png"
+          media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+
+    <!-- Android specific tags -->
+    <link rel="shortcut icon" sizes="196x196" href="nice-highres.png">
+    <link rel="shortcut icon" sizes="128x128" href="niceicon.png">
+
+    <!-- Direct search spiders to site map if applicable -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <!-- Fonts -->
+
+    <link rel="stylesheet" href="//coast.noaa.gov/assets/fonts/fonts.css">
+
+
+    <!-- Application CSS file -->
+    <link rel="stylesheet" href="css/ort.min.css?4bfeee573b4e4197">
+
+    <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
+    <!-- Google Analytics -->
+
+    <script src="//coast.noaa.gov/js/federated-angularlitics.js?angular=true"></script>
+
+    <script>
+
+    </script>
+
+
+</head>
+<body>
+<div id="header" class="header">
+    <strong>Marine Cadastre</strong> Ocean Reporting Tool
+    <a class="helpbutton" href="">About / Help</a>
+</div>
+<div id="wrapper">
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl">
+
+
+        <div id="main_content" class="inner">
+            <div class="nav_bar">
+                <div class="nav_menu_left">
+                    <div ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</div>
+                    <div ui-sref="menu" class="areasbutton" ng-click="reset()">KNOWN AREAS</div>
+                    <div ui-sref="draw" class="drawbutton" ng-click="off()">DRAW AREA</div>
+
+                </div>
+                <div ng-cloak ng-show="AOI.isLoaded" class="nav_menu_right">
+
+                    <a class="rightbuttonItalics" ui-sref="CEview" href="">{{AOI.name.toUpperCase()}}</a>
+                    <a class="rightbutton" ui-sref="EMview" href="">ENERGY & MINERALS</a>
+                    <a class="rightbutton" ui-sref="view3" href="">NATURAL RESOURCES & CONSERVATION</a>
+                    <a class="rightbutton" ui-sref="view4" href="">TRANSPORTATION & INFRASTRUCTURE</a>
+                    <a class="rightbutton" ui-sref="view5" href="">ECONOMICS & COMMERCE</a>
+
+                </div>
+            </div>
+            <div id="contentliquid">
+
+                <div ng-cloak ng-show="drawtoolOn" id="drawtoolbottom" class="drawTools2">
+                    <div ng-class="drawenabled? 'drawbutton-enl':'drawbutton-dis'" ng-click="drawIt()"
+                         class="drawbutton1">
+                        <ng-include class="basemap-button" src="'img/MapInput_2.svg'"></ng-include>
+                        {{drawOrSubmitCommand}}
+                    </div>
+                    <div id="basemapbutton" class="drawbutton2" ng-click="baseMapSwitch()"><img class="basemap-button"
+                                                                                                src="img/basemap.svg?0618ee7a3cf7ba3c">
+
+                        BASEMAP
+
+
+                    </div>
+
+                </div>
+
+                <div id="bigmap" class="mapclass">
+                    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
+                    <div ng-cloak ng-show="drawtoolOn" id="drawtool" class="drawTools">
+                        <div class="w100">Map Navigation</div>
+                        <div class="w100 floatitleft">
+                            <div class="drawtoolsbase" ng-class="drawlocked? 'drawbutton-dis':'findButton-enl'"><img
+                                    class="basemap-button"
+                                    src="img/texticon.svg?ccc119d74104ebd5">FIND
+                            </div>
+
+                        </div>
+
+
+                        <div class="w100 floatitleft">
+                            <div class="w35 floatitleft">Map Tools</div>
+
+                            <div class="floatitleft" ng-show="!drawenabled">Zoom in closer to draw</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="slide_div">
+
+                    <!--ng-include src="partials/CommonElements.html"></ng-include-->
+                </div>
+
+                <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
+                     ps-custom-top="55px"
+                >
+                    <div ui-view class="h900"></div>
+                    <div class="footer2">United States Department of Commerce | National Oceanic and Atmospheric
+                        Administration |
+                        National Ocean Service
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
+<script src="js/ort.js?c7f63f42262e616d"></script>
+
+<!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
+<script>AccessifyHTML5();</script>
+
+<script src="//coast.noaa.gov/js/angulartics.js"></script>
+<script src="//coast.noaa.gov/js/angulartics-google-analytics.js"></script>
+
+</body>
+</html>

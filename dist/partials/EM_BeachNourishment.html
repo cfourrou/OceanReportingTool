@@ -1,0 +1,97 @@
+<div class="infographic-box-medium">
+    <div id="wrbox1">
+        <div id="slider_but11" class="sliderbutton" ng-hide="AOI.toggleFull===true">
+            <div ng-class="AOI.beachNourishIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.togglebeachNourish()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF
+        </div>
+        <div class="infographicline1">Beach Nourishment Projects</div>
+
+        <div class="floatitleft beachswatchimg">
+            <span class="GreyText14 floatitleft padLeft15"><img class="GreyText14 floatitleft padLeft15 padtop5"
+                                                                src="img/BeachNourishmentGraphicLine.svg">Within 15 miles </span>
+
+
+            <!-- iButton start-->
+            <div class="iButtoncontainer">
+                <info-directive class="infobutton mainbutton " modal-template="modal11.html"
+                                message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal11.html">
+                    <div id="custom-modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            This data is currently only available for South Carolina, new data will be added as it
+                            becomes available.
+                            <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+            </div> <!-- iButton end-->
+            <div class="floatitleft GreyText14 padLeft15">Sand Volume (y<sup>3</sup>) per Beach Nourishment Project
+            </div>
+
+            <div class="floatitleft GreyText10 padLeft15">
+                <table class="table_beachnourishment">
+                    <tr ng-repeat="beach in AOI.beachNur | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
+
+
+                        <td ng-if="$odd" class="oddrow">
+                            <div>{{beach.BEACH_AREA}}</div>
+                            <div>({{beach.Dist_Mi.toFixed(2)}}Mi)</div>
+                        </td>
+
+                        <td ng-if="$even" class="evenrow">
+                            <div>{{beach.BEACH_AREA}}</div>
+                            <div>({{beach.Dist_Mi.toFixed(2)}}Mi)</div>
+                        </td>
+                        <td class="table_beachnourishmentchart">
+
+                            <table>
+                                <tr ng-repeat="year in AOI.beachNur | filter: {BEACH_AREA: beach.BEACH_AREA}:true | orderBy : 'YEAR'">
+
+                                    <td class="table_beachnourishmentchartrow">
+                                        <div ng-class="'a_'+year.YEAR" class="beachnourishchartbar"
+                                             ng-style="{'width': (year.SAND_VOL_C/3400000)*100 + '%' };"></div>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </td>
+                    </tr>
+                </table>
+                <div class="beachnourishchartscale floatitleft">
+                    <div class="beachnourishchartscalenull  floatitleft"></div>
+                    <div class="beachnourishchartscale0 floatitleft">0y<sup>3</sup></div>
+                    <div class="beachnourishchartscale1 floatitleft">1.2My<sup>3</sup></div>
+                    <div class="beachnourishchartscale3 floatitleft">3.4My<sup>3</sup></div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="beachnourishchartyear floatitleft">
+            <div class="beachnourishchartyearbox">
+
+            </div>
+            <div ng-repeat="yearx in AOI.beachNur | unique: 'YEAR' | orderBy : 'YEAR'" class=" GreyText12 padLeft25">
+                <svg width="8" height="8">
+                    <rect width="8" height="8" ng-class="'a_'+yearx.YEAR"/>
+                </svg>
+                {{yearx.YEAR}}
+            </div>
+
+        </div>
+
+    </div>
+</div>

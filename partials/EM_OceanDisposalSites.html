@@ -1,0 +1,59 @@
+<div class="infographic-box-small">
+    <div id="wrbox1">
+        <div id="slider_but3" class="sliderbutton" ng-hide="AOI.toggleFull===true">
+            <div ng-class="AOI.oceanDisposalSitesIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.toggleOceanDisposalSites()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+
+        <div class="infographicline1">Ocean Disposal Sites</div>
+        <div class="swatch floatitleft"><img src="img/OceanDisposalGraphic.svg"></div>
+        <div class="infographicline2">
+            <span class="boemline2a floatitleft">Within 10 miles</span>
+            <!-- iButton start-->
+            <div>
+                <info-directive class="infobutton mainbutton" modal-template="modal3.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal3.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Ocean Disposal Sites: Reference <a target="_blank"
+                                                               href="http://www.epw.senate.gov/mprsa72.pdf">the Marine
+                            Protection, Research, and Sanctuaries Act</a> and <a target="_blank"
+                                                                                 href=" http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&SID=94bc9a5a4a48ef22fc45cf2c912af3e2&mc=true&n=pt40.25.228&r=PART&ty=HTML#se40.25.228_12">
+                            Electronic Code of Federal Regulations</a> for details and definitions about Ocean Disposal
+                            Sites.
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+
+        </div>
+        <div class="GreyText10 padLeft15 floatitleft">
+            <div ng-repeat="count in AOI.disp | filter:query as filtered">
+            </div>
+            <div ng-repeat="dispx in AOI.disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+                <div ng-repeat="count in AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+                </div>
+                <div id="boemline2">
+                    <span class="boemline2b">{{filtered.length}}</span>
+                    <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

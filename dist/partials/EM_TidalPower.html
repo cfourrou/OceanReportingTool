@@ -1,0 +1,104 @@
+<div class="infographic-box-medium">
+    <div id="wrbox1">
+        <div id="slider_but9" class="sliderbutton" ng-hide="AOI.toggleFull===true">
+            <div ng-class="AOI.tidalPowerIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="AOI.toggletidalPower()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF
+        </div>
+        <div class="infographicline1">Tidal Power</div>
+
+        <div class="Leftbox60 floatitleft">
+            <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
+                                                                                    ng-hide="(AOI.tidalpwr[0].AVG_TIDAL_CURRENT>1)&& (AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH==='YES')&&(AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA==='YES')">&nbsp;NOT</span>
+
+            <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
+            <!-- iButton start-->
+            <div class="iButtoncontainer">
+                <info-directive class="infobutton mainbutton " modal-template="modal9.html"
+                                message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal9.html">
+                    <div id="custom-modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            To be considered a Tidal Power hotspot an area must meet at a minimum the three criteria
+                            outlined here:
+                            <div class="footnote"><a target="_blank"
+                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf'>http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf
+                                (p3)</a></div>
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+            </div> <!-- iButton end-->
+
+
+            <div class="padbottom16 w100 GreyText14 padLeft15 floatitleft">Tidal Power
+                Generation
+            </div>
+            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH==='YES']">
+                Depth is <span ng-hide="AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH==='YES'">NOT</span> >5 m
+            </div>
+            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA==='YES']">
+                Area is <span ng-hide="AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA==='YES'">NOT</span> >0.5 km2
+            </div>
+            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[AOI.tidalpwr[0].AVG_TIDAL_CURRENT>1]">
+                Current Speed is <span ng-hide="AOI.tidalpwr[0].AVG_TIDAL_CURRENT>1">NOT</span> >1 m/s
+            </div>
+            <div class="tpowerscale GreyText14 padLeft15"></div>
+            <div class="powerscale2 GreyText14 padLeft15">
+
+
+                <div ng-repeat="a in [1, 2, 3, 4,5]"
+                     class="tpowerscalediv floatitleft">
+
+                </div>
+
+
+            </div>
+
+            <div class="powerscalenum GreyText14 padLeft15">
+
+                <div ng-repeat="b in [0,0.5,1,1.5,2]" class="tpowerscalenum2 floatitleft">
+                    {{b}}
+                </div>
+
+
+                <div id="thebar" class="floatitleft tpowergraphbar"
+
+                     ng-style="{'width': (AOI.tidalpwr[0].AVG_TIDAL_CURRENT*154) + 'px' };"></div>
+            </div>
+            <div class="text-center GreyText10"> Tidal Current (m/s)</div>
+        </div>
+
+
+    </div>
+    <div class="w40 floatitleft GreyText14">
+        <div class="w100">
+            Tidal Current Speed (ms)
+        </div>
+        <div class="w30 floatitleft GreyText14">
+            <img src="img/TidalPowerGraphic.svg">
+        </div>
+        <div class="w65 floatitleft GreyText14 ">
+            <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
+                <img class="floatitleft" src="img/TidalCurrentRectangle.svg">
+            </div>
+            <div class="floatitleft GreyText14 padLeft15">
+                High: 2.15
+            </div>
+            <div class="powerchartswatch floatitleft GreyText14 padLeft15">
+                Low: 0
+            </div>
+        </div>
+    </div>
+</div>
+
+

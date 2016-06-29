@@ -1,0 +1,64 @@
+<div class="infographic-box-medium">
+    <div id="wrbox1">
+        <div id="boemline1">Surficial Sediment Classification</div>
+
+        <div id="boemline2">
+            <span class="boemline2a floatitleft">Number of Samples Collected</span>
+            <!-- iButton start-->
+            <div>
+
+                <info-directive class="infobutton mainbutton" modal-template="modal7.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal7.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Represents a count of samples within the AOI. Summary of these sample locations does not
+                            imply a homogenous sediment type over the whole area. Classification is based on Shepard’s
+                            pyramid.
+                            <br>
+                            <img src="img/Shepard1.png">
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+
+        </div>
+
+        <div ng-repeat="dispx in AOI.surfsed | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+            <div ng-repeat="count in AOI.surfsed | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered ">
+
+            </div>
+                <span class="floatitleft blackBoldText14 SedimentChart">
+                    <div class="SedimentCenteredData">{{filtered.length}}</div>
+                    <div ng-style="{'width': (filtered.length/AOI.surfsed.length)*100 + '%' }"
+                         class="SedimentBar floatitleft"></div>
+
+
+                 </span>
+            <div class="floatitleft w10 ">
+                &nbsp;
+            </div>
+            <div class="floatitleft PaleText14 SedimentchartType">
+                <span class="marginleft5px">{{dispx.PRIMARY_USE}}</span>
+            </div>
+        </div>
+        <div id="boemline2" ng-show="!AOI.surfsed.length">
+            <span class="boemline2b">0 </span>
+            <span class="boemline2a">Samples</span>
+        </div>
+
+
+    </div>
+</div>
