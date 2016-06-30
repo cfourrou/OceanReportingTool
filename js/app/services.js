@@ -50,6 +50,8 @@ angular.module('myApp.services', []).factory('_', function () {
                     coastfac: [],
                     CEElevation: [],
                     windclass: [],
+                    CEAreaOfPoly:[],
+                    CEFedGeoRegs:[],
 
                     display: function (AOI_ID) {
                         this.ID = AOI_ID;
@@ -317,11 +319,58 @@ angular.module('myApp.services', []).factory('_', function () {
                         var bp = 0;
                         var bq = 0;
                         var br = 0;
+                        var bs = 0;
+                        var bt = 0;
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
-
                             switch (featureCollection[i].DATASET_NM) {
+                                case "FederalGeoRegulations":
+                                    myThis.CEFedGeoRegs[bt] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        FederalGeoRegulationsName: (featureCollection[i].FederalGeoRegulationsName || 'Unknown'),
+                                        FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown')
+
+
+                                    };
+
+                                    if ((bt === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bt++;
+                                    break;
+                                case "AOI_input":
+                                    myThis.CEAreaOfPoly[bs] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown'),
+                                        Area_km2: (featureCollection[i].Area_km2 || 'Unknown'),
+                                        Area_nm2: (featureCollection[i].Area_nm2 || 'Unknown')
+
+                                    };
+
+                                    if ((bs === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bs++;
+                                    break;
                                 case "crm_v1":
                                     myThis.CEElevation[br] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -846,7 +895,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             myThis.arel[0].TOTAL_BLOC = 0;
                         }
                         //because? and until all direct DOM manipulation is removed from code, this $apply is useful to clear some digest issue that appear as timing issues.
-                        $rootScope.$apply();
+                        if (myThis.ID!==-9999)  $rootScope.$apply();
 
 
                     },
@@ -898,6 +947,8 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.OGresource.length = 0;
                             this.coastfac.length = 0;
                             this.CEElevation.length = 0;
+                            this.CEAreaOfPoly.length = 0;
+                            this.CEFedGeoRegs.length = 0;
 
                             this.hide();
                             //map.setView([33.51, -68.3], 6);

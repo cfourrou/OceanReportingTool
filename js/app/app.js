@@ -104,7 +104,11 @@ ortLayerOptional[26] =
     num: 30,
     displayName: 'Coastal Relief Model'
 };
-
+ortLayerOptional[28] =
+{
+    num: null,
+    displayName: 'Area of Polygon'
+};
 
 var toggle = false;
 //var windclass = [];
@@ -249,7 +253,7 @@ angular.module('myApp', [
             .state('EMview', {
                 //  url: '/EM',
                 templateUrl: 'partials/EnergyAndMinerals.html',
-                controller: 'MyCtrl2'
+                controller: 'EnergyAndMineralsCtrl'
             })
             .state('view5', {
                 //   url:'/view5',

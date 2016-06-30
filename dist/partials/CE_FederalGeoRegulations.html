@@ -1,0 +1,14 @@
+<div class="infographic-box-medium">
+    <div id="wrbox1">
+        <div class="infographicline1">Applicable Federal Geo Regulations</div>
+        <div class="infographicline3">
+
+        </div>
+
+        <div class="CEAreaData GreyText12"
+             ng-repeat="x in AOI.CEFedGeoRegs | unique: 'FederalGeoRegulationsName' | orderBy : 'FederalGeoRegulationsID'">
+            {{x.FederalGeoRegulationsName}}
+        </div>
+
+    </div>
+</div>

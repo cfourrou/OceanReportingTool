@@ -61,60 +61,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         }
-        //$scope.exportMyPDF = function (divtoExport) {
-        //    console.log(divtoExport);
-        //    AOI.loadSmallMap(true);
-        //    //var svgElements= document.querySelectorAll("#"+divtoExport);
-        //    //var svgElements=angular.element(divtoExport).find('svg');
-        //    //var svgElements= $divtoExport.find('svg');
-        //    //var svgElements=$document.find('svg');
-        //    var svgElements=angular.element(document.querySelector("#"+divtoExport)).find('svg');
-        //    console.log(svgElements);
-        //    //replace all svgs with a temp canvas
-        //    angular.forEach(svgElements,function (svgvalue, key){
-        //    //svgElements.each(function () {
-        //        console.log(svgvalue);
-        //        var canvas, xml;
-        //
-        //        canvas = document.createElement("canvas");
-        //        canvas.className = "screenShotTempCanvas";
-        //        //console.log(this);
-        //        //convert SVG into a XML string
-        //        xml = (new XMLSerializer()).serializeToString(svgvalue);
-        //
-        //        // Removing the name space as IE throws an error
-        //        xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
-        //
-        //        //draw the SVG onto a canvas
-        //        canvg(canvas, xml);
-        //        console.log("1");
-        //        var imgData = canvas.toDataURL(
-        //            'image/png');
-        //
-        //        //window.open(imgData);
-        //        $(canvas).insertAfter(svgvalue);
-        //        console.log("2");
-        //        //hide the SVG element
-        //        this.className = "tempHide";
-        //        $(this).hide();
-        //        console.log("3");
-        //    });
-        //
-        //
-        //    html2canvas(document.getElementById(divtoExport), {
-        //        allowTaint: true,
-        //        //taintTest: false,
-        //        onrendered: function(canvas) {
-        //            var imgData = canvas.toDataURL(
-        //                'image/png');
-        //
-        //            window.open(imgData);
-        //            var doc = new jsPDF('p', 'mm','letter');
-        //            doc.addImage(imgData, 'PNG', 10, 10);
-        //            doc.save('Ocean_Report.pdf');
-        //        }
-        //    });
-        //};
+
     }])
 
     .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
@@ -204,77 +151,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('MyCtrl2', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
-        $scope.name = "controller 2";
+        $scope.name = "EnergyAndMineralsCtrl";
         $http.get('EM_config.json')
             .then(function (res) {
                 $scope.emconfig = res.data;
             });
 
-        //$scope.$on('$viewContentLoaded', function () {
-        //    // document is ready, place  code here
-        //    $timeout(function () {
-        //
-        //
-        //
-        //        //AOI.loadSmallMap();
-        //    }, 1000);
-        //});
+
         AOI.loadWindChart();
-        //document.getElementById("togglefull").addEventListener("click", function () {
-        //    toggleFull = !toggleFull;
-        //    $scope.toggleFull = toggleFull;
-        //
-        //
-        //    if (toggleFull) {
-        //
-        //        // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-        //        document.getElementById("slide1").style.width = '100%';
-        //        document.getElementById("togglefull").style.marginLeft = '0px';
-        //        document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-        //        document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
-        //        document.getElementById("togglefull").style.transform = "rotate(180deg)";
-        //
-        //        var elems = document.getElementsByClassName('AOItabClass2');
-        //        for (var i = 0; i < elems.length; i++) {
-        //            elems[i].style.display = 'inline-block';
-        //        }
-        //        ;
-        //        var elems = document.getElementsByClassName('sliderbutton');
-        //        for (var i = 0; i < elems.length; i++) {
-        //            elems[i].style.visibility = "hidden";
-        //        }
-        //        ;
-        //        smallmap.invalidateSize();
-        //        smallmap.fitBounds($scope.minibounds);
-        //        console.log("second small map fitbounds");
-        //        document.getElementById('slbuttxt0').style.visibility = "hidden";
-        //    } else {
-        //
-        //        document.getElementById("togglefull").style.marginLeft = "-25px";
-        //
-        //        document.getElementById("slide1").style.width = '50%';
-        //        var elems = document.getElementsByClassName('AOItabClass2');
-        //        for (var i = 0; i < elems.length; i++) {
-        //            elems[i].style.display = 'none';
-        //        }
-        //        ;
-        //        var elems = document.getElementsByClassName('sliderbutton');
-        //        for (var i = 0; i < elems.length; i++) {
-        //            elems[i].style.visibility = "visible";
-        //        }
-        //        ;
-        //        document.getElementById('slbuttxt0').style.visibility = "visible";
-        //        // Code for Chrome, Safari, Opera
-        //        document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
-        //        // Code for IE9
-        //        document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
-        //        document.getElementById("togglefull").style.transform = "rotate(0deg)";
-        //
-        //    }
-        //});
 
 
     }])
@@ -376,15 +263,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.stopSpin = function () {
             usSpinnerService.stop('spinner-1');
         }
-        var myGPService = L.esri.GP.service({
+        var EMGPService = L.esri.GP.service({
             url: AOI.config.ortEnergyGPService,
-            //url: "http://54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area",
             useCors: false,
             async: true,
             path: 'submitJob',
             asyncInterval: 1
         });
-        var myGPTask = myGPService.createTask();
+        var CEGPService = L.esri.GP.service({
+            url: AOI.config.ortCommonGPService,
+            useCors: false,
+            async: true,
+            path: 'submitJob',
+            asyncInterval: 1
+        });
 
         $scope.baseMapSwitch = function () {
             console.log("basemap " + $scope.baseMapControlOn);
@@ -416,25 +308,54 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                     //console.log("submit");
                     //console.log($scope.polylayer);
+                    AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
                     $scope.drawOrSubmitCommand = "Working";
-                    var myGPTask = myGPService.createTask();
-                    myGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                    myGPTask.setOutputParam("Output_Report");
+                    var EMGPTask = EMGPService.createTask();
+                    var CEGPTask = CEGPService.createTask();
+
+                    EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    EMGPTask.setOutputParam("Output_Report");
+                    CEGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    CEGPTask.setOutputParam("Output_Report");
 
                     $scope.startSpin();
+                    var EMReport,CEReport;
 
-                    myGPTask.run(function (error, geojson, response) {
-                        console.log(response);
-                        if (error) {
-                            $scope.drawOrSubmitCommand = "Error " + error;
-                        }
-                        else if (geojson) {
-                            $scope.drawOrSubmitCommand = "Complete";
-                            AOI.featureCollection = geojson.Output_Report;
-                            AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
-                        }
+                    var stopSpinnerRequest = _.after(2, function () {
+                        AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                        console.log("Stop Spinner");
                         $scope.stopSpin();
                         $scope.$apply();
+                    });
+                    EMGPTask.run(function (error, EMgeojson, EMresponse) {
+                        console.log(EMresponse);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                            console.log("EM "+ error);
+                        }
+                        else if (EMgeojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            //AOI.featureCollection = EMgeojson.Output_Report;
+                            EMReport =  EMgeojson.Output_Report;
+                            console.log("EM Complete");
+                        }
+                        stopSpinnerRequest();
+
+                    });
+                    CEGPTask.run(function (error, CEgeojson, CEresponse) {
+                        console.log(CEresponse);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                            console.log("CE "+ error);
+                        }
+                        else if (CEgeojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            CEReport =  CEgeojson.Output_Report;
+                            console.log("CE Complete");
+
+                        }
+                        stopSpinnerRequest();
+
                     });
 
                     break;

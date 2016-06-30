@@ -46,17 +46,6 @@
                 </span>
 
         </div>
-        <div class="GreyText10 padLeft15 floatitleft">
-            <div ng-repeat="count in AOI.disp | filter:query as filtered">
-            </div>
-            <div ng-repeat="dispx in AOI.disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-                <div ng-repeat="count in AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
-                </div>
-                <div id="boemline2">
-                    <!--span class="boemline2b">{{filtered.length}}</span>
-                    <span class="boemline2a">{{dispx.PRIMARY_USE}}</span-->
-                </div>
-            </div>
-        </div>
+ 
     </div>
 </div>
