@@ -23,6 +23,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
+        $scope.congressIsActive =true;
+        $scope.senateIsActive= true;
+        $scope.houseIsActive= true;
+        $scope.congressMenu="-";
+        $scope.senateMenu="-";
+        $scope.houseMenu="-";
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -67,10 +73,40 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
+        $scope.congressIsActive =true;
+        $scope.senateIsActive= false;
+        $scope.houseIsActive= false;
+        $scope.congressMenu="-";
+        $scope.senateMenu="+";
+        $scope.houseMenu="+";
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
+        $scope.congressActivate= function(){
+            $scope.congressIsActive =true;
+            $scope.senateIsActive= false;
+            $scope.houseIsActive= false;
+            $scope.congressMenu="-";
+            $scope.senateMenu="+";
+            $scope.houseMenu="+";
+        }
+        $scope.houseActivate= function(){
+            $scope.congressIsActive =false;
+            $scope.senateIsActive= false;
+            $scope.houseIsActive= true;
+            $scope.congressMenu="+";
+            $scope.senateMenu="+";
+            $scope.houseMenu="-";
+        }
+        $scope.senateActivate= function(){
+            $scope.congressIsActive =false;
+            $scope.senateIsActive= true;
+            $scope.houseIsActive= false;
+            $scope.congressMenu="+";
+            $scope.senateMenu="-";
+            $scope.houseMenu="+";
+        }
         AOI.layer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
@@ -322,13 +358,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     var EMReport,CEReport;
 
                     var stopSpinnerRequest = _.after(2, function () {
-                        AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                        //AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                        //AOI.featureCollection =angular.merge([],EMReport, CEReport);
+                        AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
+                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
+
                         console.log("Stop Spinner");
+                        console.log(AOI.featureCollection);
                         $scope.stopSpin();
                         $scope.$apply();
                     });
                     EMGPTask.run(function (error, EMgeojson, EMresponse) {
-                        console.log(EMresponse);
+                       // console.log(EMresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("EM "+ error);
@@ -337,13 +378,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             $scope.drawOrSubmitCommand = "Complete";
                             //AOI.featureCollection = EMgeojson.Output_Report;
                             EMReport =  EMgeojson.Output_Report;
+                            console.log(EMReport);
                             console.log("EM Complete");
                         }
                         stopSpinnerRequest();
 
                     });
                     CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                        console.log(CEresponse);
+                       // console.log(CEresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("CE "+ error);
@@ -351,6 +393,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         else if (CEgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             CEReport =  CEgeojson.Output_Report;
+                            console.log(CEReport);
                             console.log("CE Complete");
 
                         }

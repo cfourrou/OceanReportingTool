@@ -22737,7 +22737,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     mml: [],
                     hydrok: [],
                     optLayer: [],
-                    test: [],
+                    CETribalLands: [],
                     surfsed: [],
                     wavepwr: [],
                     tidalpwr: [],
@@ -22752,6 +22752,10 @@ angular.module('myApp.services', []).factory('_', function () {
                     windclass: [],
                     CEAreaOfPoly:[],
                     CEFedGeoRegs:[],
+                    CECongress:[],
+                    CEHouse:[],
+                    CESenate:[],
+                    CECoastalCounties:[],
 
                     display: function (AOI_ID) {
                         this.ID = AOI_ID;
@@ -22776,14 +22780,14 @@ angular.module('myApp.services', []).factory('_', function () {
                                 //precision: 2
                             }).addTo(map);
                         }
-                        console.log(" this.layer loaded " + typeof(this.layer.getBounds));
+                        //console.log(" this.layer loaded " + typeof(this.layer.getBounds));
                         this.isVisible = true;
                         //console.log("display: this.ID = " +AOI_ID);
                     },
                     hide: function () {
                         if (this.isVisible) {
 
-                            console.log("hide this.layer  =" + this.ID)
+                            //console.log("hide this.layer  =" + this.ID)
                             map.removeLayer(this.layer);
                         }
                         // probably move this somewhere better.
@@ -22949,11 +22953,12 @@ angular.module('myApp.services', []).factory('_', function () {
                             }
                         });
 
-                        myThis.CEElevation = L.esri.dynamicMapLayer({
-                            url: config.ortMapServer,
+                        myThis.CEElevation = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[26].num,
                             pane: 'optionalfeature26',
-                            layers: [ortLayerOptional[26].num],
-                            opacity: .6,
+                            style: function (feature) {
+                                return {color: '#3283BB', weight: 2, fillOpacity: 0};
+                            }
                         });
 
                         var query = L.esri.query({
@@ -22962,7 +22967,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         if (myThis.ID === -9999) {
                             var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
-                            console.log(featureCollection);
+                            //console.log(featureCollection);
                             var newarray = [];
                             angular.forEach(featureCollection.features, function (feature) {
                                 var newobject = {};
@@ -22971,7 +22976,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 });
                                 newarray.push(newobject);
                             });
-
+                            //console.log(newarray);
                             myThis.massageData(newarray);
 
                         } else {
@@ -23021,15 +23026,118 @@ angular.module('myApp.services', []).factory('_', function () {
                         var br = 0;
                         var bs = 0;
                         var bt = 0;
+                        var bu = 0;
+                        var bv = 0;
+                        var bw = 0;
+                        var bx = 0;
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "CoastalCounties":
+                                    myThis.CECoastalCounties[bx] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
+                                        st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
+                                        ctystate: (featureCollection[i].st_abbr || 'Unknown'),
+                                        st_name: (featureCollection[i].st_name || 'Unknown')
+
+
+
+                                    };
+
+                                    if ((bx === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bx++;
+                                    break;
+                                case "Coastal_State_Legislative_Districts_House":
+                                    myThis.CEHouse[bv] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
+                                        stateName: (featureCollection[i].stateName || 'Unknown')
+
+
+
+                                    };
+
+                                    if ((bv === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bv++;
+                                    break;
+                                case "Coastal_State_Legislative_Districts_Senate":
+                                    myThis.CESenate[bw] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
+                                        stateName: (featureCollection[i].stateName || 'Unknown')
+
+
+
+                                    };
+
+                                    if ((bw === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bw++;
+                                    break;
+                                case "Coastal_Congressional_Districts_114th":
+                                    myThis.CECongress[bu] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
+                                        stateName: (featureCollection[i].stateName || 'Unknown')
+
+
+
+                                    };
+
+                                    if ((bu === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bu++;
+                                    break;
                                 case "FederalGeoRegulations":
                                     myThis.CEFedGeoRegs[bt] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         FederalGeoRegulationsName: (featureCollection[i].FederalGeoRegulationsName || 'Unknown'),
-                                        FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown')
+                                        FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown'),
+                                        DescriptionURL:(featureCollection[i].DescriptionURL ||'')
 
 
                                     };
@@ -23383,17 +23491,10 @@ angular.module('myApp.services', []).factory('_', function () {
                                     break;
 
                                 case "TribalLands":
-                                    myThis.test[bd] = {
-                                        Lease_Numb: featureCollection[i].Lease_Numb,
-                                        Company: featureCollection[i].Company,
-                                        INFO: featureCollection[i].INFO,
-                                        PROT_NUMBE: featureCollection[i].PROT_NUMBE,
-                                        LINK1: featureCollection[i].LINK1,
-                                        LINK2: featureCollection[i].LINK2,
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0),
-                                        TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
+                                    myThis.CETribalLands[bd] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        METADATA_URL: featureCollection[i].METADATA_URL
+                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
+                                        stateName: (featureCollection[i].stateName || 'Unknown')
                                     };
                                     if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
                                         myThis.metadata[k] = {
@@ -23514,6 +23615,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     break;
                             }
                         }
+                        console.log(myThis.CECoastalCounties);
                         //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
                         //console.log(myThis);
                         //myThis.wavepwr.length = 0;
@@ -23635,7 +23737,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.disp.length = 0;
                             this.mml.length = 0;
                             this.hydrok.length = 0;
-                            this.test.length = 0;
+                            this.CETribalLands.length = 0;
                             this.surfsed.length = 0;
                             this.wavepwr.length = 0;
                             this.tidalpwr.length = 0;
@@ -23649,8 +23751,13 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.CEElevation.length = 0;
                             this.CEAreaOfPoly.length = 0;
                             this.CEFedGeoRegs.length = 0;
+                            this.CECongress.length = 0;
+                            this.CEHouse.length = 0;
+                            this.CESenate.length = 0;
+                            this.CECoastalCounties.length = 0;
 
-                            this.hide();
+
+                                this.hide();
                             //map.setView([33.51, -68.3], 6);
                         }
                         this.isLoaded = false;
@@ -23806,7 +23913,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 //smallmap.invalidateSize();
                                 //smallmap.fitBounds(this.minibounds);
                                 this.loadSmallMap(false);
-                                console.log("BOOM!");
+                               // console.log("BOOM!");
                             }
                             //document.getElementById('slbuttxt0').style.visibility = "hidden";
                         } else {
@@ -23862,7 +23969,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             }).addTo(smallmap);
                             this.minibounds = minicLayer.getBounds();
                             smallmap.fitBounds(this.minibounds);
-                            console.log(this.minibounds);
+                         //   console.log(this.minibounds);
                         } else {
                             minicLayer = L.esri.featureLayer({
                                 url: config.ortMapServer + config.ortLayerAOI,
@@ -23899,7 +24006,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 this.minibounds = bounds;
                                 smallmap.fitBounds(bounds);
 
-                                console.log("first small map fitbounds");
+                              //  console.log("first small map fitbounds");
 
                                 // unwire the event listener so that it only fires once when the page is loaded
                                 minicLayer.off('load');
@@ -24038,6 +24145,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
+        $scope.congressIsActive =true;
+        $scope.senateIsActive= true;
+        $scope.houseIsActive= true;
+        $scope.congressMenu="-";
+        $scope.senateMenu="-";
+        $scope.houseMenu="-";
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -24082,10 +24195,40 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
+        $scope.congressIsActive =true;
+        $scope.senateIsActive= false;
+        $scope.houseIsActive= false;
+        $scope.congressMenu="-";
+        $scope.senateMenu="+";
+        $scope.houseMenu="+";
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
+        $scope.congressActivate= function(){
+            $scope.congressIsActive =true;
+            $scope.senateIsActive= false;
+            $scope.houseIsActive= false;
+            $scope.congressMenu="-";
+            $scope.senateMenu="+";
+            $scope.houseMenu="+";
+        }
+        $scope.houseActivate= function(){
+            $scope.congressIsActive =false;
+            $scope.senateIsActive= false;
+            $scope.houseIsActive= true;
+            $scope.congressMenu="+";
+            $scope.senateMenu="+";
+            $scope.houseMenu="-";
+        }
+        $scope.senateActivate= function(){
+            $scope.congressIsActive =false;
+            $scope.senateIsActive= true;
+            $scope.houseIsActive= false;
+            $scope.congressMenu="+";
+            $scope.senateMenu="-";
+            $scope.houseMenu="+";
+        }
         AOI.layer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
@@ -24337,13 +24480,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     var EMReport,CEReport;
 
                     var stopSpinnerRequest = _.after(2, function () {
-                        AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                        //AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                        //AOI.featureCollection =angular.merge([],EMReport, CEReport);
+                        AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
+                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
+
                         console.log("Stop Spinner");
+                        console.log(AOI.featureCollection);
                         $scope.stopSpin();
                         $scope.$apply();
                     });
                     EMGPTask.run(function (error, EMgeojson, EMresponse) {
-                        console.log(EMresponse);
+                       // console.log(EMresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("EM "+ error);
@@ -24352,13 +24500,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             $scope.drawOrSubmitCommand = "Complete";
                             //AOI.featureCollection = EMgeojson.Output_Report;
                             EMReport =  EMgeojson.Output_Report;
+                            console.log(EMReport);
                             console.log("EM Complete");
                         }
                         stopSpinnerRequest();
 
                     });
                     CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                        console.log(CEresponse);
+                       // console.log(CEresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("CE "+ error);
@@ -24366,6 +24515,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         else if (CEgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             CEReport =  CEgeojson.Output_Report;
+                            console.log(CEReport);
                             console.log("CE Complete");
 
                         }
@@ -24807,14 +24957,39 @@ ortLayerOptional[16] =
 
 ortLayerOptional[26] =
 {
-    num: 30,
-    displayName: 'Coastal Relief Model'
+    num: 5,
+    displayName: 'bathymetric_Contours'
+};
+ortLayerOptional[27] =
+{
+    num: null,
+    displayName: 'smallmap'
 };
 ortLayerOptional[28] =
 {
     num: null,
+    displayName: 'smallmapprint'
+};
+ortLayerOptional[29] =
+{
+    num: null,
     displayName: 'Area of Polygon'
 };
+ortLayerOptional[30] =
+{
+    num: null,
+    displayName: 'FederalGeoRegulations'
+};
+ortLayerOptional[31] =
+{
+    num: null,
+    displayName: 'PoliticalBoundaries'
+};
+ortLayerOptional[32]=
+{
+    num:null,
+    displayName: 'CoastalCounties'
+}
 
 var toggle = false;
 //var windclass = [];
@@ -24928,9 +25103,10 @@ angular.module('myApp', [
     .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
         $urlRouterProvider.otherwise('/main');
         AOIProvider.config({
-            ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
+            //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
+            ortMapServer:'//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
             ortLayerAOI: '7',
-            ortLayerData: '35',
+            ortLayerData: '45',
             ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
             ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
             ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer',

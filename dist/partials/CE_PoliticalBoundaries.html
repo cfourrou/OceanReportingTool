@@ -1,0 +1,30 @@
+<div class="infographic-box-medium">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft">Political Boundaries</div>
+
+
+
+        </div>
+        <div class="infomenu">
+            <div class="infoDropDownMenu" ng-click="congressActivate()" >Congressional Districts<div class="infomenuplus">{{congressMenu}}</div></div>
+            <div class="infoDropDownList" ng-show="congressIsActive" ng-repeat="congress in AOI.CECongress">
+            {{congress.stateName}} {{congress.NAMELSAD}}
+                </div>
+            <div class="infomenuspacer"></div>
+            <div class="infoDropDownMenu" ng-click="senateActivate()" >State Senate<div class="infomenuplus">{{senateMenu}}</div></div>
+            <div class="infoDropDownList" ng-show="senateIsActive" ng-repeat="senate in AOI.CESenate">
+                {{senate.stateName}} {{senate.NAMELSAD}}
+            </div>
+            <div class="infomenuspacer"></div>
+            <div class="infoDropDownMenu"ng-click="houseActivate()" >State House<div class="infomenuplus">{{houseMenu}}</div></div>
+            <div class="infoDropDownList" ng-show="houseIsActive" ng-repeat="house in AOI.CEHouse">
+                {{house.stateName}} {{house.NAMELSAD}}
+            </div>
+
+        </div>
+
+    </div>
+</div>

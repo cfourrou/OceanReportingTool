@@ -1,15 +1,11 @@
 <div class="infographic-box-tiny">
-    <div id="wrbox1">
-        <div id="slider_but26" class="sliderbutton" ng-hide="AOI.toggleFull===true">
-            <div ng-class="AOI.CEElevationIsVisable ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
-        </div>
-
-        <div class="infographicline1">Elevation
+    <div>
 
 
+        <div class="infographicTitle">
+            <div class="floatitleft">Elevation</div>
             <!-- iButton start-->
-            <div class="floatitright">
+            <div class="floatitleft">
                 <info-directive class="infobutton mainbutton" modal-template="modal26.html" message="message"
                                 modal-img="img/info.svg"></info-directive>
 
@@ -34,18 +30,23 @@
 
             </div>
             <!-- iButton end-->
+            <div id="slider_but26" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
+                <div ng-class="AOI.CEElevationIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
+            </div>
+
         </div>
         <div>
-                <span class="CommonSwatchLine">
-                <div class="swatch floatitleft"><img src="img/elevation.svg"></div>
+                <div class="CommonSwatchLine floatitleft">
+                <div class="swatch floatitleft "><img src="img/elevation.svg"></div>
                     <div class="CEElevationData">
                         <div><b>Min:</b> {{AOI.CEElevation[0].depth_min_m}}m</div>
                         <div><b>Max:</b> {{AOI.CEElevation[0].depth_max_m}}m</div>
                         <div><b>Mean:</b> {{AOI.CEElevation[0].depth_mean_m}}m</div>
                     </div>
-                </span>
+                </div>
 
         </div>
- 
+
     </div>
 </div>

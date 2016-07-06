@@ -101,14 +101,39 @@ ortLayerOptional[16] =
 
 ortLayerOptional[26] =
 {
-    num: 30,
-    displayName: 'Coastal Relief Model'
+    num: 5,
+    displayName: 'bathymetric_Contours'
+};
+ortLayerOptional[27] =
+{
+    num: null,
+    displayName: 'smallmap'
 };
 ortLayerOptional[28] =
 {
     num: null,
+    displayName: 'smallmapprint'
+};
+ortLayerOptional[29] =
+{
+    num: null,
     displayName: 'Area of Polygon'
 };
+ortLayerOptional[30] =
+{
+    num: null,
+    displayName: 'FederalGeoRegulations'
+};
+ortLayerOptional[31] =
+{
+    num: null,
+    displayName: 'PoliticalBoundaries'
+};
+ortLayerOptional[32]=
+{
+    num:null,
+    displayName: 'CoastalCounties'
+}
 
 var toggle = false;
 //var windclass = [];
@@ -222,9 +247,10 @@ angular.module('myApp', [
     .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
         $urlRouterProvider.otherwise('/main');
         AOIProvider.config({
-            ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
+            //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
+            ortMapServer:'//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
             ortLayerAOI: '7',
-            ortLayerData: '35',
+            ortLayerData: '45',
             ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
             ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
             ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer',
