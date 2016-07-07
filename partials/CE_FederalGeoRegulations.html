@@ -6,7 +6,7 @@
         </div>
 
         <div class="CEAreaData GreyText12"
-             ng-repeat="x in AOI.CEFedGeoRegs | unique: 'FederalGeoRegulationsName' | orderBy : 'FederalGeoRegulationsID'">
+             ng-repeat="x in AOI.CEFedGeoRegs | unique: 'FederalGeoRegulationsName' | orderBy : 'FederalGeoRegulationsName'">
             <a target="_blank" href="{{x.DescriptionURL}}"> {{x.FederalGeoRegulationsName}} </a>
         </div>
 

@@ -23,12 +23,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
-        $scope.congressIsActive =true;
-        $scope.senateIsActive= true;
-        $scope.houseIsActive= true;
-        $scope.congressMenu="-";
-        $scope.senateMenu="-";
-        $scope.houseMenu="-";
+        $scope.congressIsActive = true;
+        $scope.senateIsActive = true;
+        $scope.houseIsActive = true;
+        $scope.congressMenu = "-";
+        $scope.senateMenu = "-";
+        $scope.houseMenu = "-";
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -70,43 +70,44 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope', '$http', '$timeout', function (AOI, $scope, $http, $timeout) {
+    .controller('AOICtrl', ['AOI', '$scope', '$http', function (AOI, $scope, $http) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
-        $scope.congressIsActive =true;
-        $scope.senateIsActive= false;
-        $scope.houseIsActive= false;
-        $scope.congressMenu="-";
-        $scope.senateMenu="+";
-        $scope.houseMenu="+";
+        $scope.congressIsActive = true;
+        $scope.senateIsActive = false;
+        $scope.houseIsActive = false;
+        $scope.congressMenu = "-";
+        $scope.senateMenu = "+";
+        $scope.houseMenu = "+";
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
-        $scope.congressActivate= function(){
-            $scope.congressIsActive =true;
-            $scope.senateIsActive= false;
-            $scope.houseIsActive= false;
-            $scope.congressMenu="-";
-            $scope.senateMenu="+";
-            $scope.houseMenu="+";
+        $scope.congressActivate = function () {
+            $scope.congressIsActive = true;
+            $scope.senateIsActive = false;
+            $scope.houseIsActive = false;
+            $scope.congressMenu = "-";
+            $scope.senateMenu = "+";
+            $scope.houseMenu = "+";
         }
-        $scope.houseActivate= function(){
-            $scope.congressIsActive =false;
-            $scope.senateIsActive= false;
-            $scope.houseIsActive= true;
-            $scope.congressMenu="+";
-            $scope.senateMenu="+";
-            $scope.houseMenu="-";
+        $scope.houseActivate = function () {
+            $scope.congressIsActive = false;
+            $scope.senateIsActive = false;
+            $scope.houseIsActive = true;
+            $scope.congressMenu = "+";
+            $scope.senateMenu = "+";
+            $scope.houseMenu = "-";
         }
-        $scope.senateActivate= function(){
-            $scope.congressIsActive =false;
-            $scope.senateIsActive= true;
-            $scope.houseIsActive= false;
-            $scope.congressMenu="+";
-            $scope.senateMenu="-";
-            $scope.houseMenu="+";
+        $scope.senateActivate = function () {
+            $scope.congressIsActive = false;
+            $scope.senateIsActive = true;
+            $scope.houseIsActive = false;
+            $scope.congressMenu = "+";
+            $scope.senateMenu = "-";
+            $scope.houseMenu = "+";
         }
+
         AOI.layer.on("load", function (evt) {
             // create a new empty Leaflet bounds object
 
@@ -135,7 +136,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             $scope.mout($scope.AOI.ID);
 
+
         });
+
+        console.log("in CE ctrl=" + AOI.CEFederalTotal);
+
         //$scope.$on('$viewContentLoaded', function () {
         //    // for some reason the data on the first partial in Common elements isn't visable until an action is performed like clicking on another button.
         //    //I can't just apply scope here because it is already running. if i give the current one a little time to complete before running this, every thing works.
@@ -202,7 +207,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', function ($scope, AOI, ModalService, $state, usSpinnerService) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams) { //this one loads once on start up
 
         $scope.AOI = AOI;
         $scope.baseMapControlOn = false;
@@ -355,7 +360,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     CEGPTask.setOutputParam("Output_Report");
 
                     $scope.startSpin();
-                    var EMReport,CEReport;
+                    var EMReport, CEReport;
 
                     var stopSpinnerRequest = _.after(2, function () {
                         //AOI.featureCollection = _.extend({}, EMReport,CEReport);
@@ -369,15 +374,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         $scope.$apply();
                     });
                     EMGPTask.run(function (error, EMgeojson, EMresponse) {
-                       // console.log(EMresponse);
+                        // console.log(EMresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("EM "+ error);
+                            console.log("EM " + error);
                         }
                         else if (EMgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             //AOI.featureCollection = EMgeojson.Output_Report;
-                            EMReport =  EMgeojson.Output_Report;
+                            EMReport = EMgeojson.Output_Report;
                             console.log(EMReport);
                             console.log("EM Complete");
                         }
@@ -385,14 +390,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                     });
                     CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                       // console.log(CEresponse);
+                        // console.log(CEresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("CE "+ error);
+                            console.log("CE " + error);
                         }
                         else if (CEgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
-                            CEReport =  CEgeojson.Output_Report;
+                            CEReport = CEgeojson.Output_Report;
                             console.log(CEReport);
                             console.log("CE Complete");
 
@@ -613,6 +618,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }
         );
 
+        console.log("AOIdetail is " + $stateParams.AOIdetail);
+        if ($location.search().AOI) {
+            query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
+                    AOI.name = featureCollection.features[0].properties.AOI_NAME;
+                }
+            );
+            AOI.loadData($location.search().AOI, AOI.name);
+            // $state.go('CEview');
+        }
     }
     ])
 ;

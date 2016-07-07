@@ -1,39 +1,39 @@
 <div class="infographic-box-medium">
     <div>
 
-
+  <span>
         <div class="infographicTitle">
-            <div class="floatitleft">State and County</div>
-
+            <div class=" ">State and County</div>
 
 
         </div>
-        <div >
-            <div ng-repeat="istate in AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
 
-
-
+            <div class="floatitleft">
+                <div ng-repeat="istate in AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
 
 
                     <div class="infolisthead">{{istate.st_name}}
 
                     </div>
-                <div class="infolist">
+                    <div class="infolist">
 
 
                         <div ng-repeat="icounty in AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
 
 
-                                <div class="infolistitem" >{{icounty.cntyname}}</div>
+                            <div class="infolistitem">{{icounty.cntyname}}</div>
 
                         </div>
 
+                    </div>
+
+
                 </div>
-
-
             </div>
+            <highchart id="stateAndFedContainer" config="AOI.highchartsNGState" class="stateandFedchart"></highchart>
+        </span>
+        <div>
 
         </div>
-
     </div>
 </div>

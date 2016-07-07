@@ -19,7 +19,7 @@ angular.module('myApp.services', []).factory('_', function () {
             config: function (value) {
                 config = value;
             },
-            $get: ['$rootScope', function ($rootScope) {
+            $get: ['$rootScope','$window', function ($rootScope,$window) {
 
 
                 AOI = {
@@ -50,12 +50,15 @@ angular.module('myApp.services', []).factory('_', function () {
                     coastfac: [],
                     CEElevation: [],
                     windclass: [],
-                    CEAreaOfPoly:[],
-                    CEFedGeoRegs:[],
-                    CECongress:[],
-                    CEHouse:[],
-                    CESenate:[],
-                    CECoastalCounties:[],
+                    CEAreaOfPoly: [],
+                    CEFedGeoRegs: [],
+                    CECongress: [],
+                    CEHouse: [],
+                    CESenate: [],
+                    CECoastalCounties: [],
+                    CEFederalAndState: [],
+                    CEFederalTotal: 0,
+                    CEStateTotal: 0,
 
                     display: function (AOI_ID) {
                         this.ID = AOI_ID;
@@ -330,10 +333,45 @@ angular.module('myApp.services', []).factory('_', function () {
                         var bv = 0;
                         var bw = 0;
                         var bx = 0;
+                        var by = 0;
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "FederalAndStateWaters":
+                                    myThis.CEFederalAndState[by] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        jurisdiction: (featureCollection[i].jurisdiction || 'Unknown'),
+                                        perc_jurisdiction: (featureCollection[i].perc_jurisdiction || 'Unknown'),
+                                        Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown')
+
+                                    };
+
+                                    if ((by === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+                                    if (featureCollection[i].TOTAL_CNT > 0) {
+
+                                        if ((featureCollection[i].jurisdiction.substring(0, 3)) === "Fed") {
+
+                                            myThis.CEFederalTotal = parseInt(myThis.CEFederalTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
+
+
+                                        } else  myThis.CEStateTotal = parseInt(myThis.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
+
+                                    }
+                                    console.log("in load loop fed= " + myThis.CEFederalTotal);
+                                    console.log("in load loop state= " + myThis.CEStateTotal);
+                                    by++;
+                                    break;
                                 case "CoastalCounties":
                                     myThis.CECoastalCounties[bx] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -341,7 +379,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
                                         ctystate: (featureCollection[i].st_abbr || 'Unknown'),
                                         st_name: (featureCollection[i].st_name || 'Unknown')
-
 
 
                                     };
@@ -367,7 +404,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         stateName: (featureCollection[i].stateName || 'Unknown')
 
 
-
                                     };
 
                                     if ((bv === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -389,7 +425,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
                                         stateName: (featureCollection[i].stateName || 'Unknown')
-
 
 
                                     };
@@ -415,7 +450,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         stateName: (featureCollection[i].stateName || 'Unknown')
 
 
-
                                     };
 
                                     if ((bu === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -437,7 +471,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         FederalGeoRegulationsName: (featureCollection[i].FederalGeoRegulationsName || 'Unknown'),
                                         FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown'),
-                                        DescriptionURL:(featureCollection[i].DescriptionURL ||'')
+                                        DescriptionURL: (featureCollection[i].DescriptionURL || '')
 
 
                                     };
@@ -915,7 +949,8 @@ angular.module('myApp.services', []).factory('_', function () {
                                     break;
                             }
                         }
-                        console.log(myThis.CECoastalCounties);
+                        console.log("end of loop fed=" + myThis.CEFederalTotal);
+                        console.log("end of loop state=" + myThis.CEStateTotal);
                         //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
                         //console.log(myThis);
                         //myThis.wavepwr.length = 0;
@@ -996,8 +1031,10 @@ angular.module('myApp.services', []).factory('_', function () {
                             myThis.arel[0].PERC_COVER = 0;
                             myThis.arel[0].TOTAL_BLOC = 0;
                         }
+
+                        this.loadStateChart();
                         //because? and until all direct DOM manipulation is removed from code, this $apply is useful to clear some digest issue that appear as timing issues.
-                        if (myThis.ID!==-9999)  $rootScope.$apply();
+                        if (myThis.ID !== -9999)  $rootScope.$apply();
 
 
                     },
@@ -1055,9 +1092,12 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.CEHouse.length = 0;
                             this.CESenate.length = 0;
                             this.CECoastalCounties.length = 0;
+                            this.CEFederalAndState.length = 0;
+                            this.CEFederalTotal = 0;
+                            this.CEStateTotal = 0;
 
 
-                                this.hide();
+                            this.hide();
                             //map.setView([33.51, -68.3], 6);
                         }
                         this.isLoaded = false;
@@ -1213,7 +1253,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 //smallmap.invalidateSize();
                                 //smallmap.fitBounds(this.minibounds);
                                 this.loadSmallMap(false);
-                               // console.log("BOOM!");
+                                // console.log("BOOM!");
                             }
                             //document.getElementById('slbuttxt0').style.visibility = "hidden";
                         } else {
@@ -1269,7 +1309,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             }).addTo(smallmap);
                             this.minibounds = minicLayer.getBounds();
                             smallmap.fitBounds(this.minibounds);
-                         //   console.log(this.minibounds);
+                            //   console.log(this.minibounds);
                         } else {
                             minicLayer = L.esri.featureLayer({
                                 url: config.ortMapServer + config.ortLayerAOI,
@@ -1306,7 +1346,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 this.minibounds = bounds;
                                 smallmap.fitBounds(bounds);
 
-                              //  console.log("first small map fitbounds");
+                                //  console.log("first small map fitbounds");
 
                                 // unwire the event listener so that it only fires once when the page is loaded
                                 minicLayer.off('load');
@@ -1327,6 +1367,56 @@ angular.module('myApp.services', []).factory('_', function () {
                                 document.getElementById('map3').innerHTML = '';
                                 document.getElementById('map3').appendChild(img);
                             });
+                        }
+
+                    },
+                    loadStateChart: function () {
+                        if (AOI.highchartsNGState) AOI.highchartsNGState = null
+                        console.log("loadstatechart fed=" + AOI.CEFederalTotal);
+                        console.log("loadstatechart state=" + AOI.CEStateTotal);
+
+                        AOI.highchartsNGState = {
+                            options: {
+                                chart: {
+                                    plotBackgroundColor: '#f4f8fc',
+                                    plotBorderWidth: null,
+                                    plotShadow: false,
+                                    type: 'pie'
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'top',
+                                    floating: true,
+                                    backgroundColor: '#f4f8fc'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.percentage:.1f}%</b>'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        dataLabels: {
+                                            enabled: false
+                                        },
+                                        showInLegend: true
+                                    }
+                                }
+                            },
+                            series: [{
+                                data: [{
+                                    color: '#4a4a4a',
+                                    y: AOI.CEFederalTotal,
+                                    name: 'Federal'
+                                }, {
+                                    color: '#3284BC',
+                                    y: AOI.CEStateTotal,
+                                    name: 'State'
+                                }]
+                            }],
+                            title: {
+                                text: null
+                            },
+                            loading: false
                         }
 
                     },
@@ -1414,9 +1504,13 @@ angular.module('myApp.services', []).factory('_', function () {
                          windclass[2]=65;
                          */
                     },
+                    ShowURL: function () {
+                        $window.alert("Share this URL: "+this.ID);
+                    },
                 };
 
                 return AOI;
             }]
         }
-    });
+    })
+;

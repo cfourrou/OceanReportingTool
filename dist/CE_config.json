@@ -1,10 +1,10 @@
 [
-    { "filename":"partials/CE_Elevation.html", "priority":26 },
-    { "filename":"partials/smallmap_print.html", "priority":28},
-    { "filename":"partials/smallmap.html", "priority":27},
-    { "filename":"partials/CE_Area.html", "priority":29 },
-    { "filename":"partials/CE_FederalGeoRegulations.html", "priority":30 },
-    { "filename":"partials/CE_PoliticalBoundaries.html", "priority":31 },
-    { "filename":"partials/CE_StateAndCounty.html", "priority":32 }
+    { "filename":"partials/CE_Elevation.html", "priority":27 },
+    { "filename":"partials/smallmap_print.html", "priority":29},
+    { "filename":"partials/smallmap.html", "priority":28},
+    { "filename":"partials/CE_Area.html", "priority":30 },
+    { "filename":"partials/CE_FederalGeoRegulations.html", "priority":31 },
+    { "filename":"partials/CE_PoliticalBoundaries.html", "priority":32 },
+    { "filename":"partials/CE_StateAndCounty.html", "priority":26 }
 
 ]

@@ -134,6 +134,11 @@ ortLayerOptional[32]=
     num:null,
     displayName: 'CoastalCounties'
 }
+ortLayerOptional[33]=
+{
+    num:null,
+    displayName: 'FederalAndStateWaters'
+}
 
 var toggle = false;
 //var windclass = [];
@@ -267,11 +272,16 @@ angular.module('myApp', [
                 templateUrl: 'partials/CommonElements.html',
                 controller: 'AOICtrl'
             })
+            .state('LoadAOI', {
+                url: '/AOI?AOIdetail',
+                templateUrl: 'partials/CommonElements.html',
+                controller: 'AOICtrl'
+            })
             .state('view3', {
                 // url: '/view3',
                 templateUrl: 'partials/NaturalResourcesAndConservation.html',
             })
-            .state('view4', {
+            .state('TIview', {
                 //  url:'/view4',
                 templateUrl: 'partials/TransportationAndInfrastructure.html',
                 // controller: 'MyCtrl4'
