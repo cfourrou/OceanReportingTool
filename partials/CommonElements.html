@@ -5,21 +5,11 @@ indivdual infographics ID's 26-45 for CE
    ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="toggleimg" src="img/ArrowButton.svg"></a>
 
 <div class="padding30 slide-right">
-    <div class="CEHeader">
-
-        <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
-        <div id="shareIcons">
-            <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></a></div>
-            <div id="shareIcon"><img src="img/Export.svg"  ></div>
-            <div id="shareIcon"><a ui-sref="meta" href=""><img src="img/MetadataIcon.svg"></a></div>
-
-        </div>
-    </div>
-    <br class="clear"/>
+    <ng-include src="'partials/AOI_head.html'"></ng-include>
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Common Elements
-            <hr width="50%" align="left" color="#F4F8FC">
+            <div class="narrative" ng-bind-html="AOI.narratives[0].narrative | unsafe"></div>
             <div ng-repeat="CEConf in CEConfig | orderBy: 'priority'">
                 <div class="zeroheightkludge" ng-include="CEConf.filename"></div>
             </div>

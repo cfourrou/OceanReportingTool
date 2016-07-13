@@ -1,0 +1,60 @@
+<div class="infographic-box-tiny">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft">Submarine Cables</div>
+            <!-- iButton start-->
+            <div class="floatitleft">
+                <info-directive class="infobutton mainbutton" modal-template="modal46.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal46.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Submarine cables represent cables and information gathered from NASCA and digitized NOAA
+                            nautical charts. Cables within an area of interest may require avoidance during any
+                            construction projects or anchoring.
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+            <div id="slider_but46" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
+                <div ng-class="AOI.TISubmarineIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
+            </div>
+
+        </div>
+        <div>
+            <div class="GreyText14 floatitleft padLeft15 w100">
+
+                <span class="boemline2b"><ng-hide ng-hide="AOI.TISubmarine[0].TOTAL_CNT>=0">0</ng-hide>{{AOI.TISubmarine[0].TOTAL_CNT}}</span><span class="boemline2a"> within 1nm</span>
+
+            <div class="CommonlineSwatchLine ">
+                <div class="lineswatch floatitleft "><img src="img/svg-elements_submarine-cable.svg"></div>
+                <div class="TILineData">
+
+                    <div class="GreyText10">Cable</div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in AOI.TISubmarine">
+            {{x.Owner}} - {{x.STATUS}}
+        </div>
+    </div>
+</div>

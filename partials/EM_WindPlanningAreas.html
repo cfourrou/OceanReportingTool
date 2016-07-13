@@ -5,7 +5,37 @@
             <div ng-class="AOI.windPlanningLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.toggleWindPlanningLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div class="infographicline1">Wind Planning Areas</div>
+        <div class="infographicline1">
+            <div class="floatitleft">Wind Planning Areas</div>
+            <!-- iButton start-->
+            <div>
+
+                <info-directive class="infobutton mainbutton" modal-template="modal2.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal2.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Wind Planning Areas delineate an area that is being considered for Wind Power Development
+                            and can represent up to six different types of announcements within the US Federal Register
+                            (FR) that can be used to show the current status of wind power development.
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+        </div>
+        <!-- iButton end-->
         <div class="swatch"><img src="img/Wind_Planning_Areas.svg"></div>
         <div class="infographicline2">
             <span class="boemline2b">{{AOI.boem[0].TOTAL_CNT}}</span>

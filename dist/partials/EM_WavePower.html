@@ -1,5 +1,5 @@
 <div class="infographic-box-medium">
-    <div id="wrbox1">
+    <div class="pwrbox">
         <div id="slider_but8" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="AOI.wavePowerIsVisable ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.togglewavePower()" ng-include="'img/switch_off.svg'"></div>
@@ -28,11 +28,13 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            Requires a minimum of 10 kW/m to be considered a potential resource location.
+                            Wave Power is a renewable resource that captures the energy stored in wave height to produce
+                            electricity. To develop this resource a minimum of 10 kW/m must be available to be
+                            considered a potential location for development.
                             <div class="footnote"><a target="_blank"
-                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf
-                                (pF-1)</a></div>
-                            <div class="footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>http://www.aquagen.com.au/market</a>
+                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping
+                                and Assessment of the United States Ocean Wave Energy Resource</a></div>
+                            <div class="footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>AquaGen Technologies: Why Wave Energy?</a>
                             </div>
                         </div>
                         <div id="fade"></div>
@@ -70,80 +72,80 @@
             <div class="text-center GreyText10"> Wave Power kW/m</div>
         </div>
 
-
-    </div>
-    <div class="w40 floatitleft GreyText14">
-        <div class="w100">
-            Annual Wave Energy (kW/m)
-        </div>
-        <div class="w30 floatitleft GreyText14">
-            <img src="img/WavePowerGraphic.svg">
-        </div>
-        <div class="w65 floatitleft GreyText14">
-            <div id="wrscale" class="line3a"><!--<img src="img/GandH.png?168a886aba220a3d">-->
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#EBF6D8" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    0.00-2.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#E4EFD2" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    2.01-4.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#DEE7C9" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    4.01-6.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#D5DDC0" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    6.01-8.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#D0D8B9" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    8.01-10.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#C9D0B1" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    10.01-15.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#C0C6A8" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    15.01-20.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#BBC1A4" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    20.01-30.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#B6BC9E" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    30.01-40.00 kW/m
-                </div>
-                <div class="stackedlines">
-                    <svg class="stackedlineicon">
-                        <circle cx="7" cy="7" r="7" fill="#B0B497" stroke="#9B9B9B" stroke-width="1"/>
-                    </svg>
-                    40.01-50.00 kW/m
+        <div class="w40 floatitleft GreyText14">
+            <div class="w100">
+                Annual Wave Energy (kW/m)
+            </div>
+            <div class="w30 floatitleft GreyText14">
+                <img src="img/WavePowerGraphic.svg">
+            </div>
+            <div class="w65 floatitleft GreyText14">
+                <div id="wrscale" class=""><!--<img src="img/GandH.png?168a886aba220a3d">-->
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#EBF6D8" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        0.00-2.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#E4EFD2" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        2.01-4.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#DEE7C9" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        4.01-6.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#D5DDC0" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        6.01-8.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#D0D8B9" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        8.01-10.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#C9D0B1" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        10.01-15.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#C0C6A8" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        15.01-20.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#BBC1A4" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        20.01-30.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#B6BC9E" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        30.01-40.00 kW/m
+                    </div>
+                    <div class="stackedlines">
+                        <svg class="stackedlineicon">
+                            <circle cx="7" cy="7" r="7" fill="#B0B497" stroke="#9B9B9B" stroke-width="1"/>
+                        </svg>
+                        40.01-50.00 kW/m
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 

@@ -23,6 +23,48 @@
 @media print {
   body * {
     visibility: hidden;
+    //display:none;
+  }
+
+  .header, .header * {
+    display: none;
+  }
+
+  .nav_bar, .nav_bar * {
+    display: none;
+  }
+
+  #bigmap, #bigmap * {
+    display: none;
+  }
+
+  .h900, .h900 * {
+    display: none;
+  }
+
+  #foot, #foot * {
+    display: none;
+  }
+
+  .ng-pageslide, .ng-pageslide * {
+    display: none;
+  }
+
+  .slide-right, .slide-right * {
+    display: none;
+  }
+  .clear {
+    clear: left;
+    //page-break-after: always;
+    //page-break-before: always;
+
+  }
+
+  .AOItabClass {
+   // display: inline-block;
+    page-break-before: always;
+    //page-break-inside: avoid;
+    //break-inside: avoid;
   }
 
   #printSection, #printSection * {
@@ -30,24 +72,47 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
+    //page-break-inside: avoid;
+    //display:block;
+
+
+  }
+  .zeroheightkludge,.zeroheightkludge * {
+      //widows:3;
+      //orphans:3;
+     //page-break-before: always;
+     //page-break-after: always;
+     page-break-inside: avoid;
+    break-inside: avoid;
+
+   }
+  .pwrbox,.pwrbox * {
+    widows:5;
+    //orphans:4;
+    //page-break-before: always;
+    //page-break-after: always;
     page-break-inside: avoid;
-  }
+    break-inside: avoid;
 
+  }
   #printSection {
-    page-break-after: auto;
+    //page-break-after: auto;
 
-    page-break-before: auto;
+    //page-break-before: auto;
+
   }
+
   #printSection:last-child {
 
-    page-break-after: auto;
-
+    //page-break-after: auto;
 
   }
+
 }
+
 @page {
-  margin-top: 0.75in;
-  margin-bottom: 0.75in;
-  margin-left: 0.75in;
-  margin-right: 0.75in;
+  margin-top: 0.5in;
+  margin-bottom: 0.5in;
+  margin-left: 0.5in;
+  margin-right: 0.5in;
 }

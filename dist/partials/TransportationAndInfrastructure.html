@@ -1,21 +1,19 @@
+<!--
+indivdual infographics ID's 46-55 for CE
+-->
 <a ng-click="AOI.toggleFullSlider('TI')" href="" id="togglefull" class="toggleicon"
    ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="toggleimg" src="img/ArrowButton.svg"></a>
 
 
 <div class="padding30 slide-right">
-    <div class="CEHeader">
-        <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
-        <div id="shareIcons">
-            <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></div>
-            <div id="shareIcon"><img src="img/Export.svg"></div>
-            <div id="shareIcon"><a ui-sref="meta" href=""><img src="img/MetadataIcon.svg"></a></div>
-        </div>
-    </div>
-    <br class="clear"/>
+    <ng-include src="'partials/AOI_head.html'"></ng-include>
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Transportation and Infrastructure
-            <hr width="50%" align="left" color="#F4F8FC">
+            <div class="narrative" ng-bind-html="AOI.narratives[3].narrative | unsafe"></div>
+            <div ng-repeat="TIConf in TIConfig | orderBy: 'priority'">
+                <div class="zeroheightkludge" ng-include="TIConf.filename"></div>
+            </div>
         </div>
     </div>
 </div>

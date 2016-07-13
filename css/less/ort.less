@@ -104,6 +104,7 @@ a:active {
   // opacity: 1;
   //top:214px;
   bottom: 40px;
+  overflow:hidden;
 }
 
 .windmill {
@@ -123,7 +124,7 @@ a:active {
   width: 190px;
   position: relative;
   //top:215px;
-  bottom: 204px
+  bottom: 271px;
   //left:0px;
 }
 
@@ -679,11 +680,22 @@ body.ng-pageslide-body-closed::before {
 }
 
 #wrbox1 {
+   font-family: 'Open Sans';
+   font-weight: 400;
+   font-size: 16px;
+   color: @ortOrange;
+   padding-bottom: 8px;
+   //height: 276px;
+ }
+.pwrbox {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 16px;
   color: @ortOrange;
   padding-bottom: 8px;
+  height: 276px;
+  //left: -2px;
+  //position: relative;
 }
 
 #line1a {
@@ -1071,8 +1083,6 @@ body.ng-pageslide-body-closed::before {
   box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
   border-collapse: separate;
 
-
-
 }
 
 .infobutton {
@@ -1189,12 +1199,13 @@ body.ng-pageslide-body-closed::before {
 
 .infographic-box-tiny {
   background: @ortBlue-Pale;
-  min-height: 142px;
+  min-height: 121px;
   width: 312.8px;
   box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .infographic-box-medium {
@@ -1335,12 +1346,20 @@ body.ng-pageslide-body-closed::before {
   // width: 665px;
   //height:794px;
 }
+.AOItabClassPrint {
+  font-size: 20px;
+  // float: left;
+  color: @ortOrange;
+  padding: 10px;
+  // width: 665px;
+  //height:794px;
+}
 
 .AOItabClass2 {
   font-size: 20px;
   float: left;
   color: @ortOrange;
-  margin-right: 20px;
+  //margin-right: 20px;
   //padding: 10px;
   // box-shadow: 0px 2px 4px 0px rgba(180,180,180,0.50);
   //padding: 10px;
@@ -1348,7 +1367,14 @@ body.ng-pageslide-body-closed::before {
   //height:794px;
   display: none;
 }
-
+.AOItabClass3 {
+  font-size: 20px;
+  // float: left;
+  color: @ortOrange;
+ // padding: 10px;
+  // width: 665px;
+  //height:794px;
+}
 /*#map{
   height:60%;
   width:100%;
@@ -1604,7 +1630,7 @@ body.ng-pageslide-body-closed::before {
 .sliderbutton {
   float: right;
   //width: 300px;
-  padding-top: 15px;
+  padding-top: 11px;
   padding-right: 15px;
   text-align: left;
   font-family: 'Open Sans';
@@ -1616,7 +1642,7 @@ body.ng-pageslide-body-closed::before {
 .sliderbuttontext {
   float: right;
   //width: 300px;
-  padding-top: 20px;
+  padding-top: 16px;
   padding-right: 15px;
   text-align: middle;
   font-family: 'Open Sans';
@@ -1654,11 +1680,13 @@ body.ng-pageslide-body-closed::before {
 }
 
 .w35 {
-   width: 35%;
- }
+  width: 35%;
+}
+
 .w38 {
   width: 38%;
 }
+
 .w25 {
   width: 25%;
 }
@@ -1674,8 +1702,11 @@ body.ng-pageslide-body-closed::before {
 .w65 {
   width: 65%;
 }
-.w10{
-  width:10px;
+.w70{
+  width:70%;
+}
+.w10 {
+  width: 10px;
 }
 
 .drawtoolsbase {
@@ -1772,6 +1803,8 @@ body.ng-pageslide-body-closed::before {
 
 .clear {
   clear: left;
+  height:1px;
+  //page-break-after: always;
 }
 
 .slide-right {
@@ -1788,7 +1821,7 @@ body.ng-pageslide-body-closed::before {
 .infographicline1 {
   //width: 35%;
 
-  padding-top: 15px;
+  padding-top: 10px;
   padding-left: 15px;
   padding-bottom: 10px;
 }
@@ -1804,70 +1837,77 @@ body.ng-pageslide-body-closed::before {
   padding-bottom: 10px;
   width: 100%;
 }
+
 .inlinesliderbutton {
   float: right;
   //width: 300px;
- // padding-top: 15px;
+  // padding-top: 15px;
   padding-right: 30px;
 
-
-
 }
-.infolisthead{
+
+.infolisthead {
   //margin:25px;
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 16px;
-  color:#4a4a4a;
+  color: #4a4a4a;
   margin-top: 25px;
   margin-left: 15px;
   margin-bottom: 5px;
 }
-.infolist{
+
+.infolist {
   //margin:25px;
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 12px;
-  color:#4a4a4a;
+  color: #4a4a4a;
 }
-.infolistitem{
+
+.infolistitem {
   //margin:25px;
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 12px;
-  color:#4a4a4a;
+  color: #4a4a4a;
   margin-left: 15px;
 }
-.infomenu{
-   margin:25px;
- }
-.infoDropDownMenu{
+
+.infomenu {
+  margin: 25px;
+}
+
+.infoDropDownMenu {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 14px;
-  color:white;
+  color: white;
   background-color: @ortBlue-light;
   padding-left: 10px;
 }
-.infoDropDownList{
+
+.infoDropDownList {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 12px;
-  color:#4a4a4a;
+  color: #4a4a4a;
   background-color: white;
   padding-left: 10px;
 }
-.infomenuspacer{
+
+.infomenuspacer {
   height: 10px;
 }
-.infomenuplus{
+
+.infomenuplus {
   float: right;
   padding-right: 5px;
 }
 
 .CommonSwatchLine {
   font-size: 15px;
-  padding-top: 15px;
+ // padding-top: 15px;
   color: #4a4a4a;
 }
 
@@ -2002,41 +2042,45 @@ body.ng-pageslide-body-closed::before {
 
 //printPreview.html
 .overflowauto {
- overflow:auto;
+  overflow: auto;
 }
 
 //splash.html
-.valign-middle
-{
-  vertical-align:middle;
+.valign-middle {
+  vertical-align: middle;
 }
+
 //EM_SurficialSediment.html
 
-.SedimentChart{
-  width:70%;
+.SedimentChart {
+  width: 70%;
   text-align: center;
-  box-shadow: 2px 2px 2px 0px rgba(180,180,180,0.50);
+  box-shadow: 2px 2px 2px 0px rgba(180, 180, 180, 0.50);
   margin-bottom: 4px;
   margin-left: 11px;
 }
 
-.SedimentCenteredData{
-float: left;
+.SedimentCenteredData {
+  float: left;
   position: relative;
   left: 50%;
   width: 0;
 }
+
 .SedimentBar {
- height: 19px;
- background-color: #FEE893;
+  height: 19px;
+  background-color: #FEE893;
 }
+
 .SedimentchartType {
- width:25%;
-  box-shadow: 2px 2px 2px 0px rgba(180,180,180,0.50);
+  width: 25%;
+  box-shadow: 2px 2px 2px 0px rgba(180, 180, 180, 0.50);
 }
-.marginleft5px{
+
+.marginleft5px {
   margin-left: 5px;
 }
+
 //EM_HydrokineticLeases.html
 .infographicline2 {
   height: 70px;
@@ -2053,46 +2097,55 @@ float: left;
   position: relative;
   bottom: 237px;
 }
+
 .infographicline3 {
- // height: 70px;
+  // height: 70px;
   width: 312.8px;
   padding-left: 12px;
   vertical-align: bottom;
 }
-.GreychartBorder{
+
+.GreychartBorder {
   border: 1px solid #D6D6D6;
   height: 20px;
 }
-.GreychartBorder40{
+
+.GreychartBorder40 {
   border: 1px solid #D6D6D6;
   height: 20px;
   width: 120px;
 }
-.GreychartBorder60{
+
+.GreychartBorder60 {
   border: 1px solid #D6D6D6;
   height: 20px;
   width: 155px;
 
 }
+
 //EM_OG_resourcePotential.html
-.OGTablebox{
-  height:10px;
-  width:315px;
+.OGTablebox {
+  height: 10px;
+  width: 315px;
 }
-.OGTableLabel{
+
+.OGTableLabel {
   width: 288px;
-  border:1px solid #D6D6D6;
+  border: 1px solid #D6D6D6;
 }
-.OGTable{
+
+.OGTable {
   //border:1px solid #D6D6D6;
   width: 603.8px;
 }
-.OGTableBorderShort{
+
+.OGTableBorderShort {
   border: 1px solid #D6D6D6;
   height: 20px;
   width: 95px;
 }
-.OGTableBorderLong{
+
+.OGTableBorderLong {
   border: 1px solid #D6D6D6;
   height: 20px;
   width: 315px;
@@ -2100,28 +2153,147 @@ float: left;
 }
 
 //EM_OG_CoastalEnergyFacilities.html
-.CoastalEnergyspace{
-height:30px;
-  width:315px;
+.CoastalEnergyspace {
+  height: 30px;
+  width: 315px;
 }
-.CoastalEnergyTable{
+
+.CoastalEnergyTable {
   width: 603.8px;
 }
+
 //CE_Area.html
 .CEAreaData {
   //padding-top: 4px;
   padding-left: 95px;
 }
 
-.stateandFedchart{
-  background-color:@ortBlue-Pale ;
-  fill:@ortBlue-Pale ;
+.stateandFedchart {
+  background-color: @ortBlue-Pale;
+  fill: @ortBlue-Pale;
   width: 66%;
   height: 235px;
-  float:right;
+  float: right;
   position: relative;
   top: -20px;
 }
-.highcharts-background{
-  fill:@ortBlue-Pale ;
+
+.highcharts-background {
+  fill: @ortBlue-Pale;
+}
+
+.CommonlineSwatchLine {
+  font-size: 15px;
+  //padding-top: 15px;
+  color: #4a4a4a;
+}
+
+.TILineData {
+  //padding-top: 3px;
+  padding-left: 70px;
+}
+
+.lineswatch {
+  //float: right;
+  width: 48px;
+  //height: 66px;
+  // padding-top: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: left;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: #060606;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.GreyText16 {
+  font-size: 16px;
+  color: @ortGrey-Dark;
+}
+
+.c_NASA {
+  background-color: #1a5dad;
+  fill: #1a5dad;
+
+  //stroke-width: 1;
+  //stroke: rgb(0, 0, 0);
+}
+
+.c_orce { //Air Force
+  background-color: #7dc7ec;
+  fill: #7dc7ec;
+
+  //stroke-width: 1;
+  //stroke: rgb(0, 0, 0);
+}
+
+.c_Army {
+  background-color: #ffd800;
+  fill: #ffd800;
+
+  //stroke-width: 1;
+  //stroke: rgb(0, 0, 0);
+}
+
+.c_orps { //marine Corps
+  background-color: #b6100c;
+  fill: #b6100c;
+
+  //stroke-width: 1;
+  //stroke: rgb(0, 0, 0);
+}
+
+.c_Navy {
+  background-color: #1c2f6b;
+  fill: #1c2f6b;
+
+  // stroke-width: 1;
+  //stroke: rgb(0, 0, 0);
+}
+
+.c_uard { //Coast Guard
+  background-color: #f3871a;
+  fill: #f3871a;
+
+  // stroke-width: 1;
+  //stroke: rgb(0, 0, 0);
+}
+
+.c_nown { //unknown
+  background-color: #b1b1b1;
+  fill: #b1b1b1;
+
+  // stroke-width: 1;
+  // stroke: rgb(0, 0, 0);
+}
+
+.danger_svg {
+  float: right;
+}
+.narrative{
+  color:@ortGrey-Dark;
+  font-size: 14px;
+  max-width: 751.5px;
+  margin-bottom: 10px;
+}
+.h20{
+  height:20px;
+}
+.h12{
+  height:12px;
+}
+.menutitle {
+  height: 100%;
+  padding-top: 20px;
+}
+.doublemenubox{
+  width: 46%;
+  margin-left: 17px;
+  margin-bottom: 8px;
+  background-color: white;
+}
+.w79{
+  width:79%;
 }

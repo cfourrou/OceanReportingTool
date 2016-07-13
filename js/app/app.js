@@ -139,6 +139,16 @@ ortLayerOptional[33]=
     num:null,
     displayName: 'FederalAndStateWaters'
 }
+ortLayerOptional[34]=
+{
+    num:34,
+    displayName: 'SubmarineCables'
+}
+ortLayerOptional[35]=
+{
+    num:37,
+    displayName: 'DangerZones'
+}
 
 var toggle = false;
 //var windclass = [];
@@ -255,10 +265,11 @@ angular.module('myApp', [
             //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
             ortMapServer:'//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
             ortLayerAOI: '7',
-            ortLayerData: '45',
+            ortLayerData: '54',
             ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
             ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
-            ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer',
+            ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/T%26I%20Draw%20Area',
+            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area'
         });
 
         $stateProvider
@@ -277,14 +288,15 @@ angular.module('myApp', [
                 templateUrl: 'partials/CommonElements.html',
                 controller: 'AOICtrl'
             })
-            .state('view3', {
+            .state('NRCview', {
                 // url: '/view3',
                 templateUrl: 'partials/NaturalResourcesAndConservation.html',
+                controller: 'NaturalResourcesCtrl'
             })
             .state('TIview', {
                 //  url:'/view4',
                 templateUrl: 'partials/TransportationAndInfrastructure.html',
-                // controller: 'MyCtrl4'
+                 controller: 'TransportationAndInfrastructureCtrl'
             })
             .state('EMview', {
                 //  url: '/EM',

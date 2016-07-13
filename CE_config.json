@@ -1,6 +1,6 @@
 [
-    { "filename":"partials/CE_Elevation.html", "priority":27 },
-    { "filename":"partials/smallmap_print.html", "priority":29},
+    { "filename":"partials/CE_Elevation.html", "priority":29 },
+    { "filename":"partials/smallmap_print.html", "priority":27},
     { "filename":"partials/smallmap.html", "priority":28},
     { "filename":"partials/CE_Area.html", "priority":30 },
     { "filename":"partials/CE_FederalGeoRegulations.html", "priority":31 },

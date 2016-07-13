@@ -1,7 +1,36 @@
 <div class="infographic-box-small">
     <div id="wrbox1">
-        <div class="infographicline1">Oil and Gas Planning Areas</div>
+        <div class="infographicline1">
+            <div class="floatitleft">Oil and Gas Planning Areas</div>
+            <!-- iButton start-->
+            <div>
 
+                <info-directive class="infobutton mainbutton" modal-template="modal12.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal12.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Planning areas are administrative boundaries used to divide the Outer Continental Shelf into
+                            smaller more manageable regions for the purpose of planning and defining areas of potential
+                            lease sales within the Oil and Gas Leasing 5 year Program Plan.
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+        </div>
+        <!-- iButton end-->
         <div class="infographicline2">
             <div class="boemline2a">This area falls within the</div>
             <div class="boemline2b" ng-repeat="gpplan in AOI.OGPlanA | unique: 'Region' | orderBy : 'Region'">

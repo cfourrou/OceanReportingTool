@@ -1,5 +1,5 @@
 <div class="infographic-box-medium">
-    <div id="wrbox1">
+    <div class="pwrbox">
         <div id="slider_but9" class="sliderbutton" ng-hide="AOI.toggleFull===true">
             <div ng-class="AOI.tidalPowerIsVisable ? 'flip' : 'rotateCounterwise180'"
                  ng-click="AOI.toggletidalPower()" ng-include="'img/switch_off.svg'"></div>
@@ -28,11 +28,15 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            To be considered a Tidal Power hotspot an area must meet at a minimum the three criteria
-                            outlined here:
+                            Tidal streams are high velocity currents created by the ebb and flow of the tides through
+                            narrow channels. Tidal power is a predictable, concentrated, renewable energy source. To be
+                            considered a Tidal Power hotspot an area must meet at a minimum the three criteria outlined
+                            here:
                             <div class="footnote"><a target="_blank"
-                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf'>http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf
-                                (p3)</a></div>
+                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf'>Assessment
+                                of Energy Production
+                                Potential from Tidal Streams in the
+                                United States</a></div>
                         </div>
                         <div id="fade"></div>
                     </div>
@@ -78,27 +82,27 @@
             <div class="text-center GreyText10"> Tidal Current (m/s)</div>
         </div>
 
+        <div class="w40 floatitleft GreyText14">
+            <div class="w100">
+                Tidal Current Speed (ms)
+            </div>
+            <div class="w30 floatitleft GreyText14">
+                <img src="img/TidalPowerGraphic.svg">
+            </div>
+            <div class="w65 floatitleft GreyText14 ">
+                <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
+                    <img class="floatitleft" src="img/TidalCurrentRectangle.svg">
+                </div>
+                <div class="floatitleft GreyText14 padLeft15">
+                    High: 2.15
+                </div>
+                <div class="powerchartswatch floatitleft GreyText14 padLeft15">
+                    Low: 0
+                </div>
+            </div>
+        </div>
+    </div>
 
-    </div>
-    <div class="w40 floatitleft GreyText14">
-        <div class="w100">
-            Tidal Current Speed (ms)
-        </div>
-        <div class="w30 floatitleft GreyText14">
-            <img src="img/TidalPowerGraphic.svg">
-        </div>
-        <div class="w65 floatitleft GreyText14 ">
-            <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
-                <img class="floatitleft" src="img/TidalCurrentRectangle.svg">
-            </div>
-            <div class="floatitleft GreyText14 padLeft15">
-                High: 2.15
-            </div>
-            <div class="powerchartswatch floatitleft GreyText14 padLeft15">
-                Low: 0
-            </div>
-        </div>
-    </div>
 </div>
 
 

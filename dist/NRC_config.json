@@ -1,0 +1,7 @@
+[
+    { "filename":"partials/NRC_HabitatConcern.html", "priority":56 },
+    { "filename":"partials/smallmap.html", "priority":57},
+    {"filename":"partials/NRC_CriticalHabitat.html","priority":58},
+    {"filename":"partials/NRC_MigratorySpecies.html","priority":59}
+
+]

@@ -11,7 +11,10 @@ angular.module('myApp.services', []).factory('_', function () {
                 ortMapServer: '',
                 ortLayerAOI: '',
                 ortLayerData: '',
-                ortEnergyGPService: ''
+                ortEnergyGPService: '',
+                ortCommonGPService: '',
+                ortTranspoGPService: '',
+                ortNaturalGPService: '',
             },
             AOI;
 
@@ -19,10 +22,11 @@ angular.module('myApp.services', []).factory('_', function () {
             config: function (value) {
                 config = value;
             },
-            $get: ['$rootScope','$window', function ($rootScope,$window) {
+            $get: ['$rootScope', '$window', function ($rootScope, $window) {
 
 
                 AOI = {
+                    url: $window.location.href.split('#'),
                     config: config,
                     layer: null,
                     feature: null,
@@ -59,6 +63,13 @@ angular.module('myApp.services', []).factory('_', function () {
                     CEFederalAndState: [],
                     CEFederalTotal: 0,
                     CEStateTotal: 0,
+                    TISubmarine: [],
+                    TICoastal: [],
+                    TIDangerZones: [],
+                    NRCHabConcern: [],
+                    NRCCriticalHab: [],
+                    NRCMigratorySharks: [],
+                    NRCMigratoryFish: [],
 
                     display: function (AOI_ID) {
                         this.ID = AOI_ID;
@@ -263,6 +274,37 @@ angular.module('myApp.services', []).factory('_', function () {
                                 return {color: '#3283BB', weight: 2, fillOpacity: 0};
                             }
                         });
+                        myThis.TISubmarineLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[34].num,
+                            pane: 'optionalfeature34',
+                            style: function (feature) {
+                                return {color: '#3283BB', weight: 2, fillOpacity: 0};
+                            }
+                        });
+                        myThis.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
+                            url: config.ortMapServer + ortLayerOptional[35].num,
+                            pane: 'optionalfeature35',
+                            //simplifyFactor: 5.0,
+                            //precision: 3,
+                            style: function (feature) {
+                                if (feature.properties.agencyOfUse === 'NASA') {
+                                    return {color: '#1a5dad', weight: 1, fillOpacity: .7};
+                                } else if (feature.properties.agencyOfUse === 'U.S. Air Force') {
+                                    return {color: '#7dc7ec', weight: 1, fillOpacity: .7};
+                                } else if (feature.properties.agencyOfUse === 'U.S. Army') {
+                                    return {color: '#ffd800', weight: 1, fillOpacity: .7};
+                                } else if (feature.properties.agencyOfUse === 'U.S. Marine Corps') {
+                                    return {color: '#b6100c', weight: 1, fillOpacity: .7};
+                                } else if (feature.properties.agencyOfUse === 'U.S. Navy') {
+                                    return {color: '#1c2f6b', weight: 1, fillOpacity: .7};
+                                } else if (feature.properties.agencyOfUse === 'U.S. Coast Guard') {
+                                    return {color: '#f3871a', weight: 1, fillOpacity: .7};
+                                } else {
+                                    return {color: '#b1b1b1', weight: 1, fillOpacity: .7};
+                                }
+                            }
+                        });
+
 
                         var query = L.esri.query({
                             url: config.ortMapServer + config.ortLayerData
@@ -334,10 +376,176 @@ angular.module('myApp.services', []).factory('_', function () {
                         var bw = 0;
                         var bx = 0;
                         var by = 0;
+                        var bz = 0;
+                        var ca = 0;
+                        var cb = 0;
+                        var cc = 0;
+                        var cd = 0;
+                        var ce = 0;
+                        var cf = 0;
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "NMFS_HMS_Fish":
+                                    myThis.NRCMigratoryFish[ce] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
+                                        SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
+
+                                    };
+
+                                    if ((ce === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    ce++;
+                                    break;
+
+                                case "NMFS_HMS_Sharks":
+                                    myThis.NRCMigratorySharks[cf] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
+                                        SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
+
+                                    };
+
+                                    if ((cf === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    cf++;
+                                    break;
+                                case "NMFS_CHD_SouthAtl":
+                                    myThis.NRCCriticalHab[cd] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        AREANAME: (featureCollection[i].AREANAME || 'Unknown'),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
+
+                                    };
+
+                                    if ((cd === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    cd++;
+                                    break;
+                                case "SERO_HAPC_PartK":
+                                    myThis.NRCHabConcern[cc] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        AREA_NAME: (featureCollection[i].AREA_NAME || 'Unknown'),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
+
+                                    };
+
+                                    if ((cc === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    cc++;
+                                    break;
+                                case "Danger_Zones_and_Restricted_Areas":
+                                    myThis.TIDangerZones[cb] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        boundaryType: (featureCollection[i].boundaryType || 'Unknown'),
+                                        agencyOfUse: (featureCollection[i].agencyOfUse || 'Unknown'),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown'),
+                                        Style: 'c_' + (featureCollection[i].agencyOfUse || 'Unknown').substr(-4, 4)
+
+                                    };
+
+                                    if ((cb === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    cb++;
+                                    break;
+                                case "Coastal_Maintained_Channels":
+                                    myThis.TICoastal[ca] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
+
+
+                                    };
+
+                                    if ((ca === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    ca++;
+                                    break;
+                                case "SubmarineCables":
+                                    myThis.TISubmarine[bz] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        Owner: (featureCollection[i].Owner || 'Unknown'),
+                                        STATUS: (featureCollection[i].STATUS || 'Unknown')
+
+
+                                    };
+
+                                    if ((bz === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    bz++;
+                                    break;
                                 case "FederalAndStateWaters":
                                     myThis.CEFederalAndState[by] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -368,8 +576,8 @@ angular.module('myApp.services', []).factory('_', function () {
                                         } else  myThis.CEStateTotal = parseInt(myThis.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
 
                                     }
-                                    console.log("in load loop fed= " + myThis.CEFederalTotal);
-                                    console.log("in load loop state= " + myThis.CEStateTotal);
+                                    // console.log("in load loop fed= " + myThis.CEFederalTotal);
+                                    // console.log("in load loop state= " + myThis.CEStateTotal);
                                     by++;
                                     break;
                                 case "CoastalCounties":
@@ -564,9 +772,9 @@ angular.module('myApp.services', []).factory('_', function () {
                                     myThis.OGresource[bp] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         OCS_Play: (featureCollection[i].OCS_Play || 'None'),
-                                        UTTR_Oil: (featureCollection[i].UTTR_Oil || 'None'),
-                                        UTTR_Gas: (featureCollection[i].UTTR_Gas || 'None'),
-                                        UTTR_BOE: (featureCollection[i].UTTR_BOE || 'None')
+                                        UTRR_Oil: (featureCollection[i].UTRR_Oil || 'None'),
+                                        UTRR_Gas: (featureCollection[i].UTRR_Gas || 'None'),
+                                        UTRR_BOE: (featureCollection[i].UTRR_BOE || 'None')
 
                                     };
 
@@ -949,10 +1157,12 @@ angular.module('myApp.services', []).factory('_', function () {
                                     break;
                             }
                         }
-                        console.log("end of loop fed=" + myThis.CEFederalTotal);
-                        console.log("end of loop state=" + myThis.CEStateTotal);
+                        // console.log("end of loop fed=" + myThis.CEFederalTotal);
+                        // console.log("end of loop state=" + myThis.CEStateTotal);
                         //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
                         //console.log(myThis);
+                        //console.log(myThis.TIDangerZones);
+                        //console.log(myThis.CEElevation);
                         //myThis.wavepwr.length = 0;
                         //myThis.wavepwr[0].AVG_WAVE_POWER=50;
                         // myThis.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
@@ -1040,6 +1250,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     },
                     unloadData: function () {
                         if (this.isLoaded) {
+
                             map.removeLayer(this.oceanDisposalSites);
                             map.removeLayer(this.HydrokineticLeases);
                             map.removeLayer(this.windPlanningLayer);
@@ -1052,6 +1263,8 @@ angular.module('myApp.services', []).factory('_', function () {
                             map.removeLayer(this.beachNourish);
                             map.removeLayer(this.coastalEnergyFacilities);
                             map.removeLayer(this.CEElevation);
+                            map.removeLayer(this.TISubmarineLayer);
+                            map.removeLayer(this.TIDangerZonesLayer);
 
                             this.windLeaseLayerIsVisible = false;
                             this.windrpLayerIsVisible = false;
@@ -1065,6 +1278,9 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.beachNourishIsVisable = false;
                             this.coastalEnergyFacilitiesIsVisable = false;
                             this.CEElevationIsVisable = false;
+                            this.TISubmarineIsVisable = false;
+                            this.TIDangerZonesIsVisable = false;
+
 
                             this.wind.length = 0;
                             this.boem.length = 0;
@@ -1095,6 +1311,13 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.CEFederalAndState.length = 0;
                             this.CEFederalTotal = 0;
                             this.CEStateTotal = 0;
+                            this.TISubmarine.length = 0;
+                            this.TICoastal.length = 0;
+                            this.TIDangerZones.length = 0;
+                            this.NRCHabConcern.length = 0;
+                            this.NRCCriticalHab.length = 0;
+                            this.NRCMigratoryFish.length = 0;
+                            this.NRCMigratorySharks.Length = 0;
 
 
                             this.hide();
@@ -1225,6 +1448,26 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.CEElevationIsVisable = false;
                         }
                     },
+                    TISubmarineIsVisable: false,
+                    toggleTISubmarine: function () {
+                        if (!this.TISubmarineIsVisable) {
+                            this.TISubmarineLayer.addTo(map);
+                            this.TISubmarineIsVisable = true;
+                        } else {
+                            map.removeLayer(this.TISubmarineLayer);
+                            this.TISubmarineIsVisable = false;
+                        }
+                    },
+                    TIDangerZonesIsVisable: false,
+                    toggleTIDangerZones: function () {
+                        if (!this.TIDangerZonesIsVisable) {
+                            this.TIDangerZonesLayer.addTo(map);
+                            this.TIDangerZonesIsVisable = true;
+                        } else {
+                            map.removeLayer(this.TIDangerZonesLayer);
+                            this.TIDangerZonesIsVisable = false;
+                        }
+                    },
                     toggleFull: false,
                     toggleFullSlider: function (pageID) {
 
@@ -1249,7 +1492,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             //    elems[i].style.visibility = "hidden";
                             //}
                             //;
-                            if (pageID === "EM" || pageID === "CE") {
+                            if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC") {
                                 //smallmap.invalidateSize();
                                 //smallmap.fitBounds(this.minibounds);
                                 this.loadSmallMap(false);
@@ -1372,8 +1615,8 @@ angular.module('myApp.services', []).factory('_', function () {
                     },
                     loadStateChart: function () {
                         if (AOI.highchartsNGState) AOI.highchartsNGState = null
-                        console.log("loadstatechart fed=" + AOI.CEFederalTotal);
-                        console.log("loadstatechart state=" + AOI.CEStateTotal);
+                        //.log("loadstatechart fed=" + AOI.CEFederalTotal);
+                        //console.log("loadstatechart state=" + AOI.CEStateTotal);
 
                         AOI.highchartsNGState = {
                             options: {
@@ -1505,7 +1748,7 @@ angular.module('myApp.services', []).factory('_', function () {
                          */
                     },
                     ShowURL: function () {
-                        $window.alert("Share this URL: "+this.ID);
+                        $window.alert("Share this URL: " + this.ID);
                     },
                 };
 

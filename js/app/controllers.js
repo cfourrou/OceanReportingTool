@@ -37,6 +37,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             .then(function (res) {
                 $scope.emconfig = res.data;
             });
+        $http.get('TI_config.json')
+            .then(function (res) {
+                $scope.TIConfig = res.data;
+            });
+        $http.get('NRC_config.json')
+            .then(function (res) {
+                $scope.NRCConfig = res.data;
+            });
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
@@ -83,6 +91,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             .then(function (res) {
                 $scope.CEConfig = res.data;
             });
+
+        $http.get('narratives.json')
+            .then(function (res) {
+                AOI.narratives = res.data;
+            });
+
         $scope.congressActivate = function () {
             $scope.congressIsActive = true;
             $scope.senateIsActive = false;
@@ -139,7 +153,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         });
 
-        console.log("in CE ctrl=" + AOI.CEFederalTotal);
+        // console.log("in CE ctrl=" + AOI.CEFederalTotal);
 
         //$scope.$on('$viewContentLoaded', function () {
         //    // for some reason the data on the first partial in Common elements isn't visable until an action is performed like clicking on another button.
@@ -203,6 +217,35 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         AOI.loadWindChart();
+
+
+    }])
+
+    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+        $scope.AOI = AOI;
+        AOI.inPrintWindow = false;
+        $scope.name = "TransportationAndInfrastructureCtrl";
+        $http.get('TI_config.json')
+            .then(function (res) {
+                $scope.TIConfig = res.data;
+            });
+
+
+        //AOI.loadWindChart();
+
+
+    }])
+    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+        $scope.AOI = AOI;
+        AOI.inPrintWindow = false;
+        $scope.name = "NaturalResourcesCtrl";
+        $http.get('NRC_config.json')
+            .then(function (res) {
+                $scope.NRCConfig = res.data;
+            });
+
+
+        //AOI.loadWindChart();
 
 
     }])
@@ -318,9 +361,23 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             path: 'submitJob',
             asyncInterval: 1
         });
+        var TIGPService = L.esri.GP.service({
+            url: AOI.config.ortTranspoGPService,
+            useCors: false,
+            async: true,
+            path: 'submitJob',
+            asyncInterval: 1
+        });
+        var NRCGPService = L.esri.GP.service({
+            url: AOI.config.ortNaturalGPService,
+            useCors: false,
+            async: true,
+            path: 'submitJob',
+            asyncInterval: 1
+        });
 
         $scope.baseMapSwitch = function () {
-            console.log("basemap " + $scope.baseMapControlOn);
+            //console.log("basemap " + $scope.baseMapControlOn);
             if ($scope.baseMapControlOn) {
                 map.removeControl(baseMapControl);
                 $scope.baseMapControlOn = false;
@@ -353,22 +410,29 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     $scope.drawOrSubmitCommand = "Working";
                     var EMGPTask = EMGPService.createTask();
                     var CEGPTask = CEGPService.createTask();
+                    var TIGPTask = TIGPService.createTask();
+                    var NRCGPTask = NRCGPService.createTask();
 
                     EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
                     EMGPTask.setOutputParam("Output_Report");
                     CEGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
                     CEGPTask.setOutputParam("Output_Report");
+                    TIGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    TIGPTask.setOutputParam("Output_Report");
+                    NRCGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    NRCGPTask.setOutputParam("Output_Report");
 
                     $scope.startSpin();
-                    var EMReport, CEReport;
+                    var EMReport, CEReport, TIReport,NRCReport;
 
-                    var stopSpinnerRequest = _.after(2, function () {
+                    var stopSpinnerRequest = _.after(4, function () {
                         //AOI.featureCollection = _.extend({}, EMReport,CEReport);
                         //AOI.featureCollection =angular.merge([],EMReport, CEReport);
                         AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
-
-                        console.log("Stop Spinner");
+                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
+                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
+                        // console.log("Stop Spinner");
                         console.log(AOI.featureCollection);
                         $scope.stopSpin();
                         $scope.$apply();
@@ -405,13 +469,45 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         stopSpinnerRequest();
 
                     });
+                    TIGPTask.run(function (error, TIgeojson, TIresponse) {
+                        // console.log(CEresponse);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                            console.log("TI " + error);
+                        }
+                        else if (TIgeojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            TIReport = TIgeojson.Output_Report;
+                            console.log(TIReport);
+                            console.log("TI Complete");
+
+                        }
+                        stopSpinnerRequest();
+
+                    });
+                    NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
+                        // console.log(CEresponse);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                            console.log("NRC " + error);
+                        }
+                        else if (NRCgeojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            NRCReport = NRCgeojson.Output_Report;
+                            console.log(NRCReport);
+                            console.log("NRC Complete");
+
+                        }
+                        stopSpinnerRequest();
+
+                    });
 
                     break;
                 case "Work":
                     $scope.showSubmitModal();
                     break;
                 case "Erro":
-                    console.log("Error pressed");
+                    // console.log("Error pressed");
                     $scope.drawOrSubmitCommand = "Submit";
                     break;
                 case "Comp":
@@ -618,7 +714,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }
         );
 
-        console.log("AOIdetail is " + $stateParams.AOIdetail);
+        // console.log("AOIdetail is " + $stateParams.AOIdetail);
         if ($location.search().AOI) {
             query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
                     AOI.name = featureCollection.features[0].properties.AOI_NAME;
