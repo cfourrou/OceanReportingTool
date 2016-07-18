@@ -1,26 +1,39 @@
-<a href="" id="togglefull" class="toggleicon"><img class="toggleimg" src="img/ArrowButton.svg"></a>
+<a ng-click="AOI.toggleFullSlider('CE')" href="" id="togglefull" class="toggleicon"
+   ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="toggleimg" src="img/ArrowButton.svg"></a>
 
 <div class="padding30 slide-right">
     <div class="CEHeader">
         <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
         <div id="shareIcons">
-            <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></div>
-            <div id="shareIcon"><img src="img/Export.svg"></div>
+            <!--<div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></a></div>-->
+            <!--<div id="shareIcon"><img src="img/Export.svg"></div>-->
         </div>
     </div>
     <br class="clear"/>
 
     <div id="sliderData">
-        <div id="AOItab" class="AOItabClass"> Metadata
+        <div id="AOItab" class="AOItabClass"> Metadata</div>
             <hr width="50%" align="left" color="#F4F8FC">
             <div class="metaline1" ng-repeat="m1 in AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
-                {{m1.REPORT_CAT}}
-                <div class="metaline2"
-                     ng-repeat="m2 in AOI.metadata | filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
-                    <a target="_blank" href={{m2.METADATA_URL}}>{{m2.COMMON_NM}} - {{m2.METADATA_OWNER}}</a><br>
+               <div class="text-center font-bold "> {{m1.REPORT_CAT}}</div>
+                <table class="metaTable">
+                    <tbody>
+                    <tr>
+                        <th >Name</th>
+                        <th >Owner</th>
 
-                </div>
+
+
+                    </tr>
+                <tr class="metaline2"
+                     ng-repeat="m2 in AOI.metadata | filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
+                    <td>{{m2.COMMON_NM}}</td>
+                    <td><a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a></td>
+
+                </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
+
     </div>
 </div>

@@ -10,6 +10,7 @@
     "js/lib/angular-animate.js",
     "js/lib/angular-filter.min.js",
     "js/lib/angular-spinner.min.js",
+    "js/lib/angular-aria.js",
     "js/lib/highcharts-ng.js",
     "js/lib/leaflet.js",
     "js/lib/leaflet.pm.js",

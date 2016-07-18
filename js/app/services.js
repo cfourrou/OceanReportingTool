@@ -527,7 +527,8 @@ angular.module('myApp.services', []).factory('_', function () {
                                     myThis.TISubmarine[bz] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Owner: (featureCollection[i].Owner || 'Unknown'),
-                                        STATUS: (featureCollection[i].STATUS || 'Unknown')
+                                        STATUS: (featureCollection[i].STATUS || 'Unknown'),
+                                        OwnerStatus: (featureCollection[i].Owner || 'Unknown') + " - " + (featureCollection[i].STATUS || 'Unknown')
 
 
                                     };
@@ -707,17 +708,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
                                     };
 
-                                    if ((bs === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
-                                        };
-                                        k++;
-                                    }
-                                    ;
+
 
                                     bs++;
                                     break;
@@ -1472,6 +1463,9 @@ angular.module('myApp.services', []).factory('_', function () {
                     toggleFullSlider: function (pageID) {
 
                         this.toggleFull = !this.toggleFull;
+                        this.doFullSlider(pageID);
+                    },
+                    doFullSlider: function (pageID) {
 
                         if (this.toggleFull) {
 
@@ -1493,10 +1487,11 @@ angular.module('myApp.services', []).factory('_', function () {
                             //}
                             //;
                             if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC") {
+
                                 //smallmap.invalidateSize();
                                 //smallmap.fitBounds(this.minibounds);
                                 this.loadSmallMap(false);
-                                // console.log("BOOM!");
+                                //console.log("BOOM!");
                             }
                             //document.getElementById('slbuttxt0').style.visibility = "hidden";
                         } else {

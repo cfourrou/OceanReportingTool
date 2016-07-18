@@ -3,7 +3,9 @@
 * A Leaflet Plugin For Editing Geometry Layers in Leaflet 1.0
 * by Sumit Kumar (@TweetsOfSumit)
 * Github Repo: https://github.com/codeofsumit/leaflet.pm
-*/
+*
+* modified at line 335 to allow first marker to be different
+ */
 
 L.PM = L.PM || {
     initialize: function() {
@@ -193,7 +195,6 @@ L.PM.Draw.Poly = L.PM.Draw.extend({
     enable: function(options) {
         // enable draw mode
 
-
         this._enabled = true;
 
         // create a new layergroup
@@ -244,7 +245,6 @@ L.PM.Draw.Poly = L.PM.Draw.extend({
 
         // remove layer
         this._map.removeLayer(this._layerGroup);
-       // this._map.removeLayer(polygonLayer); //cof
 
         // fire drawend event
         this._map.fire('pm:drawend', {shape: this._shape});
@@ -284,7 +284,6 @@ L.PM.Draw.Poly = L.PM.Draw.extend({
             if(e.shape === self._shape && !self._drawButton.toggled()) {
                 self._drawButton._clicked();
             }
-
         });
 
         this._map.on('pm:drawend', function(e) {
@@ -328,7 +327,7 @@ L.PM.Draw.Poly = L.PM.Draw.extend({
         polygonLayer.pm.toggleEdit();
 
         this.disable();
-       //console.log(polygonLayer);
+
         this._map.fire('pm:create', {
             shape: this._shape,
             layer: polygonLayer
@@ -336,11 +335,17 @@ L.PM.Draw.Poly = L.PM.Draw.extend({
     },
     _createMarker: function(latlng, first) {
 
-        var marker = new L.Marker(latlng, {
-            draggable: false,
-            icon: L.divIcon({className: 'marker-icon'})
-        });
-
+        if (first){
+            var marker = new L.Marker(latlng, {
+                draggable: false,
+                icon: L.divIcon({className: 'first-marker-icon'})
+            });
+        }else {
+            var marker = new L.Marker(latlng, {
+                draggable: false,
+                icon: L.divIcon({className: 'marker-icon'})
+            });
+        }
         this._layerGroup.addLayer(marker);
 
         if(first) {

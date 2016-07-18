@@ -165,7 +165,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //
         //    }, 1250);
         //});
-
+        //AOI.doFullSlider('CE');
+        $scope.paneon();
 
     }])
     .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
@@ -218,7 +219,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         AOI.loadWindChart();
 
-
+        //AOI.doFullSlider('EM');
+        $scope.paneon();
     }])
 
     .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
@@ -232,7 +234,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
         //AOI.loadWindChart();
-
+        //AOI.doFullSlider('TI');
+        $scope.paneon();
 
     }])
     .controller('NaturalResourcesCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
@@ -247,7 +250,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         //AOI.loadWindChart();
 
-
+        //AOI.doFullSlider('ERC');
+        $scope.paneon();
     }])
 
     .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams) { //this one loads once on start up
@@ -650,13 +654,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         $scope.paneoff = function () {
             $scope.checked = false;
-            toggleFull = false;
+            AOI.toggleFull = false;
         };
 
         $scope.paneon = function () {
             $scope.checked = true;
             document.getElementById("slide1").style.width = '50%';
-            toggleFull = false;
+            AOI.toggleFull = false;
         };
 
         $scope.aoismenu = [];

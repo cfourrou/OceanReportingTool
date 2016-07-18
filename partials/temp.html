@@ -1,0 +1,74 @@
+<table class="servicesTable">
+    <tbody><tr>
+        <th rowspan="2">Name</th>
+        <th rowspan="2">Description</th>
+        <th colspan="2">Where to Get It</th>
+        <th rowspan="2">Significance</th>
+    </tr>
+    <tr>
+        <td class="text-center">Map Service</td>
+        <td class="text-center">Authoritative Source</td>
+    </tr>
+    <!-- ngRepeat: layer in profile.layers -->
+    <tr ng-repeat="layer in profile.layers" class="ng-scope">
+        <td class="ng-binding">Coastal Flood Hazard Composite</td>
+        <td ng-bind-html="layer.description" class="ng-binding">Spatial extents of multiple flood hazard data sets combined. Flood hazard data sets include shallow coastal flooding, Federal Emergency Management Agency (FEMA) flood data (V zones, A zones, and 500-year zones treated as individual layers), storm surge for Category 3 hurricane (from FEMA Hurricane Evacuation Studies), and sea level rise of three feet above mean high tide.</td>
+        <td>
+            <a ng-href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_CoastalFloodHazardComposite/MapServer" target="_blank" class="ng-binding" href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_CoastalFloodHazardComposite/MapServer">Coastal Flood Hazard Composite Map Service</a>
+        </td>
+        <td>
+            <!-- ngRepeat: source in layer.authoritativeSources --><a ng-repeat="source in layer.authoritativeSources" ng-href="/floodexposure" target="_blank" class="ng-scope ng-binding" href="/floodexposure">
+            Coastal Flood Exposure Mapper  <br><br>
+        </a><!-- end ngRepeat: source in layer.authoritativeSources -->
+        </td>
+        <td class="ng-binding">Provides a quick visual assessment of areas most prone to flood hazard events.</td>
+    </tr><!-- end ngRepeat: layer in profile.layers --><tr ng-repeat="layer in profile.layers" class="ng-scope">
+        <td class="ng-binding">Shallow Coastal Flooding</td>
+        <td ng-bind-html="layer.description" class="ng-binding">Areas that flood when coastal flood warning thresholds are exceeded. Derived from the flood frequency layer within the Sea Level Rise and Coastal Flooding Impacts Viewer.</td>
+        <td>
+            <a ng-href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_ShallowCoastalFlooding/MapServer" target="_blank" class="ng-binding" href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_ShallowCoastalFlooding/MapServer">Shallow Coastal Flooding Map Service</a>
+        </td>
+        <td>
+            <!-- ngRepeat: source in layer.authoritativeSources --><a ng-repeat="source in layer.authoritativeSources" ng-href="//coast.noaa.gov/digitalcoast/tools/slr" target="_blank" class="ng-scope ng-binding" href="//coast.noaa.gov/digitalcoast/tools/slr">
+            Sea Level Rise and Coastal Flooding Impacts Viewer <br><br>
+        </a><!-- end ngRepeat: source in layer.authoritativeSources -->
+        </td>
+        <td class="ng-binding">Areas subject to shallow coastal flooding.</td>
+    </tr><!-- end ngRepeat: layer in profile.layers --><tr ng-repeat="layer in profile.layers" class="ng-scope">
+        <td class="ng-binding">FEMA Flood Zones</td>
+        <td ng-bind-html="layer.description" class="ng-binding">Digital FEMA flood data. The data represent the digital riverine and coastal flood zones available as of June 2014 and are a combination of Digital Flood Insurance Rate Maps and Q3 flood data.</td>
+        <td>
+            <a ng-href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_FEMAFloodZones/MapServer" target="_blank" class="ng-binding" href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_FEMAFloodZones/MapServer">FEMA Flood Zones Map Service</a>
+        </td>
+        <td>
+            <!-- ngRepeat: source in layer.authoritativeSources --><a ng-repeat="source in layer.authoritativeSources" ng-href="https://msc.fema.gov/portal" target="_blank" class="ng-scope ng-binding" href="https://msc.fema.gov/portal">
+            FEMA’s Map Service Center <br><br>
+        </a><!-- end ngRepeat: source in layer.authoritativeSources -->
+        </td>
+        <td class="ng-binding">Areas at risk from flooding.</td>
+    </tr><!-- end ngRepeat: layer in profile.layers --><tr ng-repeat="layer in profile.layers" class="ng-scope">
+        <td class="ng-binding">Storm Surge</td>
+        <td ng-bind-html="layer.description" class="ng-binding">Areas of near-worst-case storm surge flooding scenarios for coastal areas along the Gulf of Mexico and Continental U.S. Atlantic coasts. Data were derived from <a href="http://www.nhc.noaa.gov/news/20141106_pa_natlSurgeMap.pdf" target="_blank" title="Visit Site">storm surge inundation maps created by the National Hurricane Center (NHC)</a> Storm Surge Unit with the Sea, Lake, and Overland Surges from Hurricanes (SLOSH) model. <br><br> Note: this storm surge layer was created with newer NHC surge data and is not the same layer found in the coastal flood hazard composite map. The data were developed during hurricane season 2014.</td>
+        <td>
+            <a ng-href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_StormSurge/MapServer" target="_blank" class="ng-binding" href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_StormSurge/MapServer">Storm Surge Map Service</a>
+        </td>
+        <td>
+            <!-- ngRepeat: source in layer.authoritativeSources --><a ng-repeat="source in layer.authoritativeSources" ng-href="http://www.nhc.noaa.gov/surge/" target="_blank" class="ng-scope ng-binding" href="http://www.nhc.noaa.gov/surge/">
+            National Hurricane Program Center Storm Surge Unit <br><br>
+        </a><!-- end ngRepeat: source in layer.authoritativeSources -->
+        </td>
+        <td class="ng-binding">Areas at risk from storm surge.</td>
+    </tr><!-- end ngRepeat: layer in profile.layers --><tr ng-repeat="layer in profile.layers" class="ng-scope">
+        <td class="ng-binding">Sea Level Rise</td>
+        <td ng-bind-html="layer.description" class="ng-binding">Sea level rise inundation scenarios ranging from zero to six feet above mean higher high water (MHHW). Derived from data created for the Sea Level Rise and Coastal Flooding Impacts Viewer.</td>
+        <td>
+            <a ng-href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_SeaLevelRise/MapServer" target="_blank" class="ng-binding" href="//coast.noaa.gov/arcgis/rest/services/FloodExposureMapper/CFEM_SeaLevelRise/MapServer">Sea Level Rise Map Service</a>
+        </td>
+        <td>
+            <!-- ngRepeat: source in layer.authoritativeSources --><a ng-repeat="source in layer.authoritativeSources" ng-href="//coast.noaa.gov/digitalcoast/tools/slr" target="_blank" class="ng-scope ng-binding" href="//coast.noaa.gov/digitalcoast/tools/slr">
+            Sea Level Rise and Coastal Flooding Impacts Viewer <br><br>
+        </a><!-- end ngRepeat: source in layer.authoritativeSources -->
+        </td>
+        <td class="ng-binding">Areas likely to be inundated by sea level rise.</td>
+    </tr><!-- end ngRepeat: layer in profile.layers -->
+    </tbody></table>

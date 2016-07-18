@@ -41,20 +41,23 @@
         <div>
             <div class="GreyText14 floatitleft padLeft15 w100">
 
-                <span class="boemline2b"><ng-hide ng-hide="AOI.TISubmarine[0].TOTAL_CNT>=0">0</ng-hide>{{AOI.TISubmarine[0].TOTAL_CNT}}</span><span class="boemline2a"> within 1nm</span>
+                <span class="boemline2b"><ng-hide ng-hide="AOI.TISubmarine[0].TOTAL_CNT>=0">0</ng-hide>{{AOI.TISubmarine[0].TOTAL_CNT}}</span><span
+                    class="boemline2a"> within 1nm</span>
 
-            <div class="CommonlineSwatchLine ">
-                <div class="lineswatch floatitleft "><img src="img/svg-elements_submarine-cable.svg"></div>
-                <div class="TILineData">
+                <div class="CommonlineSwatchLine ">
+                    <div class="lineswatch floatitleft "><img src="img/svg-elements_submarine-cable.svg"></div>
+                    <div class="TILineData">
 
-                    <div class="GreyText10">Cable</div>
+                        <div class="GreyText10">Cable</div>
 
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in AOI.TISubmarine">
-            {{x.Owner}} - {{x.STATUS}}
+            </div>
+            <div class="GreyText12 floatitleft padLeft15 w100"
+                 ng-repeat="x in AOI.TISubmarine| orderBy : 'OwnerStatus'| unique: 'OwnerStatus'">
+                {{x.OwnerStatus}}
+            </div>
         </div>
     </div>
 </div>

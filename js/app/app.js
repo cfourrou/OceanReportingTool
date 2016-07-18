@@ -256,7 +256,8 @@ angular.module('myApp', [
         'angularModalService',
         'ngAnimate',
         'angularSpinner',
-        'highcharts-ng'
+        'highcharts-ng',
+        'ngAria'
 
     ])
     .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {

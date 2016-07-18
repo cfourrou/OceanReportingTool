@@ -1,3 +1,6 @@
+/*modified at line 48 to allow different first marker
+*/
+
 .leaflet-buttons-control-button {
   background-color: #fff;
   border-bottom: 1px solid #ccc;
@@ -42,6 +45,17 @@
   margin: -8px 0 0 -8px !important;
   width: 14px !important;
   height: 14px !important;
+  outline: 0;
+  transition: opacity ease .3s;
+}
+.first-marker-icon,
+.first-marker-icon:focus {
+  background-color: #ffffff;
+  border: 1px solid yellow;
+  border-radius: 50%;
+  margin: -8px 0 0 -8px !important;
+  width: 16px !important;
+  height: 16px !important;
   outline: 0;
   transition: opacity ease .3s;
 }

@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?bf7c039ee23e4042">
+    <link rel="stylesheet" href="css/ort.min.css?ddcef06580db3a30">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -114,7 +114,7 @@
 <body>
 <div id="header" class="header">
     <strong>Marine Cadastre</strong> Ocean Reporting Tool
-    <a class="helpbutton" href="">About / Help</a>
+    <a class="helpbutton" href="" role="button">About / Help</a>
 </div>
 <div id="wrapper">
     <!-- MAIN CONTENT -->
@@ -138,9 +138,9 @@
         <div id="main_content" class="inner">
             <div class="nav_bar">
                 <div class="nav_menu_left">
-                    <div ui-sref="splash" class="resetbutton" ng-click="reset()">RESET</div>
-                    <div ui-sref="menu" class="areasbutton" ng-click="reset()">KNOWN AREAS</div>
-                    <div ui-sref="draw" class="drawbutton" ng-click="off()">DRAW AREA</div>
+                    <div ui-sref="splash" class="resetbutton" ng-click="reset()" role="button">RESET</div>
+                    <div ui-sref="menu" class="areasbutton" ng-click="reset()" role="button">KNOWN AREAS</div>
+                    <div ui-sref="draw" class="drawbutton" ng-click="off()" role="button">DRAW AREA</div>
 
                 </div>
                 <div ng-cloak ng-show="AOI.isLoaded" class="nav_menu_right">
@@ -217,7 +217,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?6827b458a3d7ba5b"></script>
+<script src="js/ort.js?2db8b7331d45a855"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>
