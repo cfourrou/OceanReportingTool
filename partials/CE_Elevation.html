@@ -18,7 +18,9 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            Elevation data was derived from NOAA's 3 arc-second <a href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html" target="_blank">Coastal Relief Model</a>
+                            Elevation data was derived from NOAA's 3 arc-second <a
+                                href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html" target="_blank">Coastal Relief
+                            Model</a>
 
                             <br>
 
@@ -37,14 +39,17 @@
 
         </div>
         <div>
-                <div class="CommonSwatchLine floatitleft">
-                <div class="swatch floatitleft "><img src="img/elevation.svg"></div>
-                    <div class="CEElevationData">
-                        <div><b>Min:</b> {{AOI.CEElevation[0].depth_min_m}}m</div>
-                        <div><b>Max:</b> {{AOI.CEElevation[0].depth_max_m}}m</div>
-                        <div><b>Mean:</b> {{AOI.CEElevation[0].depth_mean_m}}m</div>
-                    </div>
+            <div class="CommonSwatchLine floatitleft">
+                <div class="swatch floatitleft "><img src="img/contours-01.svg"></div>
+                <div class="CEElevationData">
+                    <div><b>Min:</b> {{AOI.CEElevation[0].depth_min_m}}<span
+                            ng-show="AOI.CEElevation[0].depth_min_m != 'Unknown'">m</span></div>
+                    <div><b>Max:</b> {{AOI.CEElevation[0].depth_max_m}}<span
+                            ng-show="AOI.CEElevation[0].depth_max_m != 'Unknown'">m</span></div>
+                    <div><b>Mean:</b> {{AOI.CEElevation[0].depth_mean_m}}<span
+                            ng-show="AOI.CEElevation[0].depth_mean_m != 'Unknown'">m</span></div>
                 </div>
+            </div>
 
         </div>
 

@@ -45,6 +45,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             .then(function (res) {
                 $scope.NRCConfig = res.data;
             });
+        $http.get('EC_config.json')
+            .then(function (res) {
+                $scope.ECConfig = res.data;
+            });
+
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
@@ -254,6 +259,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
     }])
 
+    .controller('EconCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+        $scope.AOI = AOI;
+        AOI.inPrintWindow = false;
+        $scope.name = "EconCtrl";
+        $http.get('EC_config.json')
+            .then(function (res) {
+                $scope.ECConfig = res.data;
+            });
+
+
+        //AOI.loadWindChart();
+
+        //AOI.doFullSlider('ERC');
+        $scope.paneon();
+    }])
+
     .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams) { //this one loads once on start up
 
         $scope.AOI = AOI;
@@ -278,6 +299,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.zoomlevel = map.getZoom();
         $scope.drawOrSubmitCommand = "DRAW";
 
+        Highcharts.setOptions({
+            global: {
+                useUTC: false,
+
+            },
+            lang: {
+                decimalPoint: '.',
+                thousandsSep: ',',
+                numericSymbols:[ "k" , "M" , "B" , "T" , "P" , "E"]
+            }
+        });
 
         map.on('zoomend', function () {
             $scope.zoomlevel = map.getZoom();
@@ -379,6 +411,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             path: 'submitJob',
             asyncInterval: 1
         });
+        var ECGPService = L.esri.GP.service({
+            url: AOI.config.ortEconGPService,
+            useCors: false,
+            async: true,
+            path: 'submitJob',
+            asyncInterval: 1
+        });
 
         $scope.baseMapSwitch = function () {
             //console.log("basemap " + $scope.baseMapControlOn);
@@ -416,6 +455,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     var CEGPTask = CEGPService.createTask();
                     var TIGPTask = TIGPService.createTask();
                     var NRCGPTask = NRCGPService.createTask();
+                    var ECGPTask = ECGPService.createTask();
 
                     EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
                     EMGPTask.setOutputParam("Output_Report");
@@ -425,17 +465,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     TIGPTask.setOutputParam("Output_Report");
                     NRCGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
                     NRCGPTask.setOutputParam("Output_Report");
+                    ECGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    ECGPTask.setOutputParam("Output_Report");
 
                     $scope.startSpin();
-                    var EMReport, CEReport, TIReport,NRCReport;
+                    var EMReport, CEReport, TIReport, NRCReport, ECReport;
 
-                    var stopSpinnerRequest = _.after(4, function () {
+                    var stopSpinnerRequest = _.after(5, function () {
                         //AOI.featureCollection = _.extend({}, EMReport,CEReport);
                         //AOI.featureCollection =angular.merge([],EMReport, CEReport);
                         AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
+                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
                         // console.log("Stop Spinner");
                         console.log(AOI.featureCollection);
                         $scope.stopSpin();
@@ -500,6 +543,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             NRCReport = NRCgeojson.Output_Report;
                             console.log(NRCReport);
                             console.log("NRC Complete");
+
+                        }
+                        stopSpinnerRequest();
+
+                    });
+                    ECGPTask.run(function (error, ECgeojson, ECresponse) {
+                        // console.log(CEresponse);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                            console.log("EC " + error);
+                        }
+                        else if (ECgeojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            ECReport = ECgeojson.Output_Report;
+                            console.log(ECReport);
+                            console.log("EC Complete");
 
                         }
                         stopSpinnerRequest();

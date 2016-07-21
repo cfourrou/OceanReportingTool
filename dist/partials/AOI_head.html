@@ -1,12 +1,12 @@
 <div class="CEHeader">
     <div id="AOIname">{{AOI.name.toUpperCase()}}</div>
     <div id="shareIcons">
-        <div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></a></div>
-        <div id="shareIcon"> <info-directive class="infobutton mainbutton floatitright" modal-template="Share1.html"
+        <div id="shareIcon" class="tooltip"><a ui-sref="print" href=""><img src="img/Printer.svg" alt="Print"></a><span class="tooltiptext">Print</span></div>
+        <div id="shareIcon" class="tooltip"> <info-directive class="infobutton mainbutton floatitright" modal-template="Share1.html"
                                              message="message"
                                              metadata-url="{{AOI.url[0]}}#/AOI?AOI={{AOI.ID}}"
-                                             modal-img="img/Export.svg"></info-directive></div>
-        <div id="shareIcon"><a ui-sref="meta" href=""><img src="img/MetadataIcon.svg"></a></div>
+                                             modal-img="img/Export.svg" alt="Share"></info-directive><span class="tooltiptext">Share</span></div>
+        <div id="shareIcon" class="tooltip"><a ui-sref="meta" href=""><img src="img/MetadataIcon.svg" alt="Metadata"></a><span class="tooltiptext">Metadata</span></div>
 
     </div>
 </div>

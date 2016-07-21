@@ -16,7 +16,7 @@
             <div>{{AOI.name.toUpperCase()}}</div>
             <div id="AOItab" class="AOItabClassPrint"> Common Elements
                 <div class="narrative" ng-bind-html="AOI.narratives[0].narrative | unsafe"></div>
-                <div  ng-repeat="CEConf in CEConfig | orderBy: 'priority'">
+                <div ng-repeat="CEConf in CEConfig | orderBy: 'priority'">
 
                     <div class="zeroheightkludge" ng-include="CEConf.filename"></div>
 
@@ -27,7 +27,7 @@
 
             <div id="AOItab" class="AOItabClass"> Energy and Minerals
                 <div class="narrative" ng-bind-html="AOI.narratives[1].narrative | unsafe"></div>
-                <div  ng-repeat="emconf in emconfig | orderBy: 'priority'">
+                <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
 
                     <div class="zeroheightkludge" ng-include="emconf.filename"></div>
 
@@ -38,7 +38,7 @@
 
             <div id="AOItab" class="AOItabClass"> Natural Resources and Conservation
                 <div class="narrative" ng-bind-html="AOI.narratives[2].narrative | unsafe"></div>
-                <div  ng-repeat="NRCConf in NRCConfig | orderBy: 'priority'">
+                <div ng-repeat="NRCConf in NRCConfig | orderBy: 'priority'">
 
                     <div class="zeroheightkludge" ng-include="NRCConf.filename"></div>
 
@@ -50,9 +50,20 @@
 
             <div id="AOItab" class="AOItabClass"> Transportation and Infrastructure
                 <div class="narrative" ng-bind-html="AOI.narratives[3].narrative | unsafe"></div>
-                <div  ng-repeat="TIConf in TIConfig | orderBy: 'priority'">
+                <div ng-repeat="TIConf in TIConfig | orderBy: 'priority'">
 
                     <div class="zeroheightkludge" ng-include="TIConf.filename"></div>
+
+                </div>
+
+            </div>
+            <div class="clear">&nbsp;</div>
+
+            <div id="AOItab" class="AOItabClass"> Economics And Commerce
+                <div class="narrative" ng-bind-html="AOI.narratives[4].narrative | unsafe"></div>
+                <div ng-repeat="ECConf in ECConfig | orderBy: 'priority'">
+
+                    <div class="zeroheightkludge" ng-include="ECConf.filename"></div>
 
                 </div>
 

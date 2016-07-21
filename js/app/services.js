@@ -15,6 +15,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 ortCommonGPService: '',
                 ortTranspoGPService: '',
                 ortNaturalGPService: '',
+                ortEconGPService: '',
             },
             AOI;
 
@@ -26,6 +27,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
 
                 AOI = {
+                    OceanJobContributionsSeries: [],
                     url: $window.location.href.split('#'),
                     config: config,
                     layer: null,
@@ -70,6 +72,12 @@ angular.module('myApp.services', []).factory('_', function () {
                     NRCCriticalHab: [],
                     NRCMigratorySharks: [],
                     NRCMigratoryFish: [],
+                    ECEcon: [],
+                    ECEconEmploy: [],
+                    ECEconGDP: [],
+                    ECEconWages: [],
+                    ECStateGDP: [],
+                    ECCountyGDP: [],
 
                     display: function (AOI_ID) {
                         this.ID = AOI_ID;
@@ -278,7 +286,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             url: config.ortMapServer + ortLayerOptional[34].num,
                             pane: 'optionalfeature34',
                             style: function (feature) {
-                                return {color: '#3283BB', weight: 2, fillOpacity: 0};
+                                return {color: '#880cf4', weight: 2, fillOpacity: 0};
                             }
                         });
                         myThis.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
@@ -383,10 +391,104 @@ angular.module('myApp.services', []).factory('_', function () {
                         var cd = 0;
                         var ce = 0;
                         var cf = 0;
+                        var cg = 0;
+                        var ch = 0;
+                        var ci = 0;
                         var ack = [];
+                        // var za = 0;
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "Coastal_Shoreline_Counties_2010":
+                                    myThis.ECCountyGDP[ci] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
+                                        MedHHInc: (featureCollection[i].MedHHInc || 0),
+                                        TotalHouses: (featureCollection[i].TotalHouses || 0),
+                                        Population: (featureCollection[i].Population || 0),
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
+                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
+                                    };
+
+
+                                    if ((ci === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    ci++;
+                                    break;
+
+                                case "CoastalStates":
+                                    myThis.ECStateGDP[ch] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        st_name: (featureCollection[i].st_name || 'Unknown'),
+                                        MedHHInc: (featureCollection[i].MedHHInc || 0),
+                                        TotalHouses: (featureCollection[i].TotalHouses || 0),
+                                        Population: (featureCollection[i].Population || 0),
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
+                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
+                                    };
+
+
+                                    if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    ch++;
+                                    break;
+                                case "ENOW_2013":
+                                    myThis.ECEcon[cg] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
+                                        st_name: (featureCollection[i].st_name || 'Unknown'),
+                                        OceanSector: (featureCollection[i].OceanSector || 'Unknown'),
+                                        Employment: (featureCollection[i].Employment || 0),
+                                        Wages: (featureCollection[i].Wages || 0),
+                                        GDP: (featureCollection[i].GDP || 0),
+                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
+                                    };
+                                    switch (featureCollection[i].OceanSector) {
+                                        case "All Ocean Sectors":
+                                            myThis.ECEconEmploy[myThis.ECEconEmploy.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Employment || 0)];
+                                            myThis.ECEconGDP[myThis.ECEconGDP.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].GDP || 0)];
+                                            myThis.ECEconWages[myThis.ECEconWages.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Wages || 0)];
+                                            break;
+
+                                    }
+
+                                    if ((cg === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    cg++;
+                                    break;
                                 case "NMFS_HMS_Fish":
                                     myThis.NRCMigratoryFish[ce] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -707,7 +809,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         Area_nm2: (featureCollection[i].Area_nm2 || 'Unknown')
 
                                     };
-
 
 
                                     bs++;
@@ -1148,6 +1249,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     break;
                             }
                         }
+
                         // console.log("end of loop fed=" + myThis.CEFederalTotal);
                         // console.log("end of loop state=" + myThis.CEStateTotal);
                         //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
@@ -1234,6 +1336,9 @@ angular.module('myApp.services', []).factory('_', function () {
                         }
 
                         this.loadStateChart();
+                        this.loadOceanJobEmployeesChart();
+                        this.loadOceanJobDollarsChart();
+                        this.loadOceanJobContributionsChart();
                         //because? and until all direct DOM manipulation is removed from code, this $apply is useful to clear some digest issue that appear as timing issues.
                         if (myThis.ID !== -9999)  $rootScope.$apply();
 
@@ -1308,7 +1413,12 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.NRCHabConcern.length = 0;
                             this.NRCCriticalHab.length = 0;
                             this.NRCMigratoryFish.length = 0;
-                            this.NRCMigratorySharks.Length = 0;
+                            this.NRCMigratorySharks.length = 0;
+                            this.ECEcon.length = 0;
+                            this.ECEconEmploy.length = 0;
+                            this.ECEconGDP.length = 0;
+                            this.ECEconWages.length = 0;
+                            this.ECStateGDP.length = 0;
 
 
                             this.hide();
@@ -1486,7 +1596,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             //    elems[i].style.visibility = "hidden";
                             //}
                             //;
-                            if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC") {
+                            if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
 
                                 //smallmap.invalidateSize();
                                 //smallmap.fitBounds(this.minibounds);
@@ -1657,6 +1767,269 @@ angular.module('myApp.services', []).factory('_', function () {
                             loading: false
                         }
 
+                    },
+                    loadOceanJobContributionsChart: function () {
+                        //windChart = Highcharts.chart('container', {
+                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
+                        AOI.OceanJobContributionsSeries[0] = [{
+                            center: [20, null],
+                            "name": 'County Cork',
+                            "data": [
+                                ["Marine Construction", 3570000],
+                                ["Living Resources", 15128000],
+                                ["Offshore Mineral Extraction", 5281000]
+                            ]
+                        }, {
+                            center: [150, null],
+                            "name": 'County Galway',
+                            "data": [
+                                ["Marine Construction", 35700000],
+                                ["Living Resources", 50128000],
+                                ["Offshore Mineral Extraction", 52810000]
+                            ]
+                        }
+                        ];
+                        //console.log(AOI.OceanJobContributionsSeries[0]);
+                        AOI.OceanJobContributionsChart = {
+                            options: {
+
+                                legend: {
+                                    enabled: true,
+                                    //align:'right',
+                                    //layout:'vertical',
+                                    //verticalAlign: 'center',
+                                    itemStyle: {
+                                        //color: '#000000',
+                                        fontSize: '10px',
+                                        lineHeight: '10px',
+                                    }
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>${point.y:,.2f}</b>'
+                                },
+                                chart: {
+                                    //spacing: 0,
+                                    //margin: 0,
+                                    type: 'pie'
+                                },
+                                title: {
+                                    enabled: true,
+                                    text: null,
+                                    align: 'left',
+                                    //x: 10
+                                },
+                                exporting: {enabled: false},
+                                colors: ['#4572a7', '#aa4643', '#89a54e', '#71588f', '#4198af', '#db843d', '#93a9cf'],
+                                yAxis: {
+
+                                    title: {
+                                        enabled: true
+                                    },
+                                    //    labels: {
+                                    //        enabled: false
+                                    //    },
+                                    //    tickLength: 0
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    title: {
+                                        enabled: true
+                                    },
+                                    labels: {
+                                        enabled: true
+                                    },
+                                    //TickLength: 0
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        size: 100,
+                                        dataLabels: {
+                                            enabled: false,
+                                        }
+                                    }
+                                }
+
+                                //plotOptions: {
+                                //    //series: {
+                                //    //    pointWidth: 190
+                                //    //},
+                                //   // column: {
+                                //        //stacking: 'percent'
+                                //   // }
+                                //}
+
+                            },
+                            loading: false,
+                            series: AOI.OceanJobContributionsSeries[0]
+
+                        }
+
+                        ;
+                        AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
+                        /*  //over ride windclass for testing chart
+                         // console.log(windclass[0]);
+                         windclass[0]=10;
+                         windclass[1]=25;
+                         windclass[2]=65;
+                         */
+                    },
+                    loadOceanJobDollarsChart: function () {
+                        //windChart = Highcharts.chart('container', {
+                        if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null
+                        AOI.OceanJobDollarsChart = {
+                            options: {
+                                legend: {
+                                    enabled: true,
+
+                                    layout: 'horizontal',
+                                    align: 'right',
+                                    verticalAlign: 'top',
+                                    floating: true,
+
+
+                                    //align:'right',
+                                    //layout:'vertical',
+                                    //verticalAlign: 'center',
+                                    itemStyle: {
+                                        //color: '#000000',
+                                        fontSize: '10px',
+                                        lineHeight: '10px',
+                                    }
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>${point.y:,.2f}</b>'
+                                },
+                                chart: {
+                                    //spacing: 0,
+                                    //margin: 0,
+                                    type: 'column'
+                                },
+                                title: {
+                                    enabled: false,
+                                    text: null,
+                                    align: 'left',
+                                    //x: 10
+                                },
+                                exporting: {enabled: false},
+                                colors: ['#ffc000', '#92d050', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                                yAxis: {
+
+                                    title: {
+                                        enabled: false
+                                    },
+                                    //    labels: {
+                                    //        enabled: false
+                                    //    },
+                                    //    tickLength: 0
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    title: {
+                                        enabled: false
+                                    },
+                                    labels: {
+                                        enabled: true
+                                    },
+                                    //TickLength: 0
+                                },
+                                //plotOptions: {
+                                //    //series: {
+                                //    //    pointWidth: 190
+                                //    //},
+                                //   // column: {
+                                //        //stacking: 'percent'
+                                //   // }
+                                //}
+
+                            },
+                            loading: false,
+                            series: [{
+                                "name": 'Wages',
+                                "data": this.ECEconWages
+                            }, {
+                                "name": 'Goods & Services',
+                                "data": this.ECEconGDP
+                            }
+                            ]
+
+                        };
+
+                        /*  //over ride windclass for testing chart
+                         // console.log(windclass[0]);
+                         windclass[0]=10;
+                         windclass[1]=25;
+                         windclass[2]=65;
+                         */
+                    },
+                    loadOceanJobEmployeesChart: function () {
+                        //windChart = Highcharts.chart('container', {
+                        if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null
+                        AOI.OceanJobEmployeesChart = {
+                            options: {
+                                legend: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y:,.0f}</b>'
+                                },
+                                chart: {
+                                    //spacing: 0,
+                                    //margin: 0,
+                                    type: 'column'
+                                },
+                                title: {
+                                    text: "Employees",
+                                    align: 'left',
+                                    //x: 10
+                                },
+                                exporting: {enabled: false},
+                                colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                                yAxis: {
+
+                                    title: {
+                                        enabled: false
+                                    },
+                                    //    labels: {
+                                    //        enabled: false
+                                    //    },
+                                    //    tickLength: 0
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    title: {
+                                        enabled: false
+                                    },
+                                    labels: {
+                                        enabled: true
+                                    },
+                                    //TickLength: 0
+                                },
+                                //plotOptions: {
+                                //    //series: {
+                                //    //    pointWidth: 190
+                                //    //},
+                                //   // column: {
+                                //        //stacking: 'percent'
+                                //   // }
+                                //}
+
+                            },
+                            loading: false,
+                            series: [{
+                                "name": 'Employees',
+                                "data": this.ECEconEmploy
+                            }]
+
+                        };
+
+                        /*  //over ride windclass for testing chart
+                         // console.log(windclass[0]);
+                         windclass[0]=10;
+                         windclass[1]=25;
+                         windclass[2]=65;
+                         */
                     },
                     loadWindChart: function () {
                         //windChart = Highcharts.chart('container', {

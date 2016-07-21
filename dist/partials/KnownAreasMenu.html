@@ -25,7 +25,7 @@
 
                 <div class="menuboxofboxes" ng-show="box[{{$index}}].isActive">
                     <div ng-repeat="aoil in aoismenu | filter: {REPORT_TYPE: aoix.REPORT_TYPE} | orderBy : 'AOI_NAME'">
-                        <div class="menuBoxdark" ui-sref="CEview" ng-mouseover="mover(aoil.AOI_ID)"
+                        <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="mover(aoil.AOI_ID)"
                              ng-mouseout="mout(aoil.AOI_ID)" ng-click="AOI.loadData(aoil.AOI_ID,aoil.AOI_NAME)">
                             {{aoil.AOI_NAME}}
                         </div>
@@ -56,7 +56,7 @@
 
                 <div class="menuboxofboxes" ng-show="box[{{$index}}].isActive">
                     <div ng-repeat="statel in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
-                        <div class="menuBoxdark" ui-sref="CEview" ng-mouseover="mover(statel.AOI_ID)"
+                        <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="mover(statel.AOI_ID)"
                              ng-mouseout="mout(statel.AOI_ID)" ng-click="AOI.loadData(statel.AOI_ID,statel.AOI_NAME)">
                             {{statel.AOI_NAME}} ({{statel.DESC_}})
                         </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="menuboxofboxes" ng-show="box[{{$index+100}}].isActive">
                         <div ng-repeat="statey in aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
-                            <div class="menuBoxdark" ui-sref="CEview" ng-mouseover="mover(statey.AOI_ID)"
+                            <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="mover(statey.AOI_ID)"
                                  ng-mouseout="mout(statey.AOI_ID)"
                                  ng-click="AOI.loadData(statey.AOI_ID,statey.AOI_NAME)">
                                 {{statey.AOI_NAME}}

@@ -237,10 +237,10 @@ h6 {
     background-color: @ortBlue-Dark;
     border: none;
   }
-  &:visited {
-    background-color: @ortBlue-Dark;
-    border: none;
-  }
+  //&:visited {
+  //  background-color: @ortBlue-Dark;
+  //  border: none;
+ // }
   //&:active{background-color: @ortBlue-Dark;border:none;}
 
 }
@@ -2183,7 +2183,7 @@ body.ng-pageslide-body-closed::before {
   top: -20px;
 }
 
-.highcharts-background {
+.stateandFedchart .highcharts-background {
   fill: @ortBlue-Pale;
 }
 
@@ -2313,14 +2313,96 @@ body.ng-pageslide-body-closed::before {
   font-size: 14px;
 }
 .metaTable tr {
-  //border: 1px solid #000;
+  border: 1px solid #000;
   padding: 5px;
 }
 .metaTable td {
-  //border: 1px solid #000;
+  border: 1px solid #000;
   padding: 5px;
 }
 .metaTable th {
-  //border: 1px solid #000;
+  border: 1px solid #000;
   padding: 5px;
+}
+
+
+.tooltip {
+  position: relative;
+  //display: inline-block;
+
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 65px;
+  background-color: #4a4a4a;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  //padding: 5px 0;
+  position: absolute;
+  z-index: 1002;
+  bottom: 135%;
+  left: 50%;
+  margin-left: -21px;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.OceanJobEmployeesChart {
+  border: 1px solid #000;
+  // background-color: white;
+ // fill: @ortBlue-Pale;
+  width: 283px;
+  height: 220px;
+ // float: right;
+ // position: relative;
+ // top: -20px;
+  margin-left: 10px;
+
+}
+.OceanJobDollarsChart {
+  border: 1px solid #000;
+  // background-color: white;
+  // fill: @ortBlue-Pale;
+  width: 329px;
+  height: 220px;
+  // float: right;
+  // position: relative;
+  // top: -20px;
+  margin-left: 10px;
+
+}
+
+.OceanJobContributionsChart{
+  //border: 1px solid #000;
+  // background-color: white;
+   fill: @ortBlue-Pale;
+  width: 625px;
+  height: 220px;
+  // float: right;
+  // position: relative;
+  // top: -20px;
+  margin-left: 10px;
+  .highcharts-background {
+    fill: @ortBlue-Pale;
+  }
 }

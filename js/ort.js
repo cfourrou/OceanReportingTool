@@ -23114,6 +23114,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 ortCommonGPService: '',
                 ortTranspoGPService: '',
                 ortNaturalGPService: '',
+                ortEconGPService: '',
             },
             AOI;
 
@@ -23125,6 +23126,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
 
                 AOI = {
+                    OceanJobContributionsSeries: [],
                     url: $window.location.href.split('#'),
                     config: config,
                     layer: null,
@@ -23169,6 +23171,12 @@ angular.module('myApp.services', []).factory('_', function () {
                     NRCCriticalHab: [],
                     NRCMigratorySharks: [],
                     NRCMigratoryFish: [],
+                    ECEcon: [],
+                    ECEconEmploy: [],
+                    ECEconGDP: [],
+                    ECEconWages: [],
+                    ECStateGDP: [],
+                    ECCountyGDP: [],
 
                     display: function (AOI_ID) {
                         this.ID = AOI_ID;
@@ -23377,7 +23385,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             url: config.ortMapServer + ortLayerOptional[34].num,
                             pane: 'optionalfeature34',
                             style: function (feature) {
-                                return {color: '#3283BB', weight: 2, fillOpacity: 0};
+                                return {color: '#880cf4', weight: 2, fillOpacity: 0};
                             }
                         });
                         myThis.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
@@ -23482,10 +23490,104 @@ angular.module('myApp.services', []).factory('_', function () {
                         var cd = 0;
                         var ce = 0;
                         var cf = 0;
+                        var cg = 0;
+                        var ch = 0;
+                        var ci = 0;
                         var ack = [];
+                        // var za = 0;
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "Coastal_Shoreline_Counties_2010":
+                                    myThis.ECCountyGDP[ci] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
+                                        MedHHInc: (featureCollection[i].MedHHInc || 0),
+                                        TotalHouses: (featureCollection[i].TotalHouses || 0),
+                                        Population: (featureCollection[i].Population || 0),
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
+                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
+                                    };
+
+
+                                    if ((ci === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    ci++;
+                                    break;
+
+                                case "CoastalStates":
+                                    myThis.ECStateGDP[ch] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        st_name: (featureCollection[i].st_name || 'Unknown'),
+                                        MedHHInc: (featureCollection[i].MedHHInc || 0),
+                                        TotalHouses: (featureCollection[i].TotalHouses || 0),
+                                        Population: (featureCollection[i].Population || 0),
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
+                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
+                                    };
+
+
+                                    if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    ch++;
+                                    break;
+                                case "ENOW_2013":
+                                    myThis.ECEcon[cg] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
+                                        st_name: (featureCollection[i].st_name || 'Unknown'),
+                                        OceanSector: (featureCollection[i].OceanSector || 'Unknown'),
+                                        Employment: (featureCollection[i].Employment || 0),
+                                        Wages: (featureCollection[i].Wages || 0),
+                                        GDP: (featureCollection[i].GDP || 0),
+                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
+                                    };
+                                    switch (featureCollection[i].OceanSector) {
+                                        case "All Ocean Sectors":
+                                            myThis.ECEconEmploy[myThis.ECEconEmploy.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Employment || 0)];
+                                            myThis.ECEconGDP[myThis.ECEconGDP.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].GDP || 0)];
+                                            myThis.ECEconWages[myThis.ECEconWages.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Wages || 0)];
+                                            break;
+
+                                    }
+
+                                    if ((cg === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        myThis.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+                                    ;
+
+                                    cg++;
+                                    break;
                                 case "NMFS_HMS_Fish":
                                     myThis.NRCMigratoryFish[ce] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -23806,7 +23908,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         Area_nm2: (featureCollection[i].Area_nm2 || 'Unknown')
 
                                     };
-
 
 
                                     bs++;
@@ -24247,6 +24348,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     break;
                             }
                         }
+
                         // console.log("end of loop fed=" + myThis.CEFederalTotal);
                         // console.log("end of loop state=" + myThis.CEStateTotal);
                         //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
@@ -24333,6 +24435,9 @@ angular.module('myApp.services', []).factory('_', function () {
                         }
 
                         this.loadStateChart();
+                        this.loadOceanJobEmployeesChart();
+                        this.loadOceanJobDollarsChart();
+                        this.loadOceanJobContributionsChart();
                         //because? and until all direct DOM manipulation is removed from code, this $apply is useful to clear some digest issue that appear as timing issues.
                         if (myThis.ID !== -9999)  $rootScope.$apply();
 
@@ -24407,7 +24512,12 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.NRCHabConcern.length = 0;
                             this.NRCCriticalHab.length = 0;
                             this.NRCMigratoryFish.length = 0;
-                            this.NRCMigratorySharks.Length = 0;
+                            this.NRCMigratorySharks.length = 0;
+                            this.ECEcon.length = 0;
+                            this.ECEconEmploy.length = 0;
+                            this.ECEconGDP.length = 0;
+                            this.ECEconWages.length = 0;
+                            this.ECStateGDP.length = 0;
 
 
                             this.hide();
@@ -24585,7 +24695,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             //    elems[i].style.visibility = "hidden";
                             //}
                             //;
-                            if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC") {
+                            if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
 
                                 //smallmap.invalidateSize();
                                 //smallmap.fitBounds(this.minibounds);
@@ -24757,6 +24867,269 @@ angular.module('myApp.services', []).factory('_', function () {
                         }
 
                     },
+                    loadOceanJobContributionsChart: function () {
+                        //windChart = Highcharts.chart('container', {
+                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
+                        AOI.OceanJobContributionsSeries[0] = [{
+                            center: [20, null],
+                            "name": 'County Cork',
+                            "data": [
+                                ["Marine Construction", 3570000],
+                                ["Living Resources", 15128000],
+                                ["Offshore Mineral Extraction", 5281000]
+                            ]
+                        }, {
+                            center: [150, null],
+                            "name": 'County Galway',
+                            "data": [
+                                ["Marine Construction", 35700000],
+                                ["Living Resources", 50128000],
+                                ["Offshore Mineral Extraction", 52810000]
+                            ]
+                        }
+                        ];
+                        //console.log(AOI.OceanJobContributionsSeries[0]);
+                        AOI.OceanJobContributionsChart = {
+                            options: {
+
+                                legend: {
+                                    enabled: true,
+                                    //align:'right',
+                                    //layout:'vertical',
+                                    //verticalAlign: 'center',
+                                    itemStyle: {
+                                        //color: '#000000',
+                                        fontSize: '10px',
+                                        lineHeight: '10px',
+                                    }
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>${point.y:,.2f}</b>'
+                                },
+                                chart: {
+                                    //spacing: 0,
+                                    //margin: 0,
+                                    type: 'pie'
+                                },
+                                title: {
+                                    enabled: true,
+                                    text: null,
+                                    align: 'left',
+                                    //x: 10
+                                },
+                                exporting: {enabled: false},
+                                colors: ['#4572a7', '#aa4643', '#89a54e', '#71588f', '#4198af', '#db843d', '#93a9cf'],
+                                yAxis: {
+
+                                    title: {
+                                        enabled: true
+                                    },
+                                    //    labels: {
+                                    //        enabled: false
+                                    //    },
+                                    //    tickLength: 0
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    title: {
+                                        enabled: true
+                                    },
+                                    labels: {
+                                        enabled: true
+                                    },
+                                    //TickLength: 0
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        size: 100,
+                                        dataLabels: {
+                                            enabled: false,
+                                        }
+                                    }
+                                }
+
+                                //plotOptions: {
+                                //    //series: {
+                                //    //    pointWidth: 190
+                                //    //},
+                                //   // column: {
+                                //        //stacking: 'percent'
+                                //   // }
+                                //}
+
+                            },
+                            loading: false,
+                            series: AOI.OceanJobContributionsSeries[0]
+
+                        }
+
+                        ;
+                        AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
+                        /*  //over ride windclass for testing chart
+                         // console.log(windclass[0]);
+                         windclass[0]=10;
+                         windclass[1]=25;
+                         windclass[2]=65;
+                         */
+                    },
+                    loadOceanJobDollarsChart: function () {
+                        //windChart = Highcharts.chart('container', {
+                        if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null
+                        AOI.OceanJobDollarsChart = {
+                            options: {
+                                legend: {
+                                    enabled: true,
+
+                                    layout: 'horizontal',
+                                    align: 'right',
+                                    verticalAlign: 'top',
+                                    floating: true,
+
+
+                                    //align:'right',
+                                    //layout:'vertical',
+                                    //verticalAlign: 'center',
+                                    itemStyle: {
+                                        //color: '#000000',
+                                        fontSize: '10px',
+                                        lineHeight: '10px',
+                                    }
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>${point.y:,.2f}</b>'
+                                },
+                                chart: {
+                                    //spacing: 0,
+                                    //margin: 0,
+                                    type: 'column'
+                                },
+                                title: {
+                                    enabled: false,
+                                    text: null,
+                                    align: 'left',
+                                    //x: 10
+                                },
+                                exporting: {enabled: false},
+                                colors: ['#ffc000', '#92d050', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                                yAxis: {
+
+                                    title: {
+                                        enabled: false
+                                    },
+                                    //    labels: {
+                                    //        enabled: false
+                                    //    },
+                                    //    tickLength: 0
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    title: {
+                                        enabled: false
+                                    },
+                                    labels: {
+                                        enabled: true
+                                    },
+                                    //TickLength: 0
+                                },
+                                //plotOptions: {
+                                //    //series: {
+                                //    //    pointWidth: 190
+                                //    //},
+                                //   // column: {
+                                //        //stacking: 'percent'
+                                //   // }
+                                //}
+
+                            },
+                            loading: false,
+                            series: [{
+                                "name": 'Wages',
+                                "data": this.ECEconWages
+                            }, {
+                                "name": 'Goods & Services',
+                                "data": this.ECEconGDP
+                            }
+                            ]
+
+                        };
+
+                        /*  //over ride windclass for testing chart
+                         // console.log(windclass[0]);
+                         windclass[0]=10;
+                         windclass[1]=25;
+                         windclass[2]=65;
+                         */
+                    },
+                    loadOceanJobEmployeesChart: function () {
+                        //windChart = Highcharts.chart('container', {
+                        if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null
+                        AOI.OceanJobEmployeesChart = {
+                            options: {
+                                legend: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y:,.0f}</b>'
+                                },
+                                chart: {
+                                    //spacing: 0,
+                                    //margin: 0,
+                                    type: 'column'
+                                },
+                                title: {
+                                    text: "Employees",
+                                    align: 'left',
+                                    //x: 10
+                                },
+                                exporting: {enabled: false},
+                                colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                                yAxis: {
+
+                                    title: {
+                                        enabled: false
+                                    },
+                                    //    labels: {
+                                    //        enabled: false
+                                    //    },
+                                    //    tickLength: 0
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    title: {
+                                        enabled: false
+                                    },
+                                    labels: {
+                                        enabled: true
+                                    },
+                                    //TickLength: 0
+                                },
+                                //plotOptions: {
+                                //    //series: {
+                                //    //    pointWidth: 190
+                                //    //},
+                                //   // column: {
+                                //        //stacking: 'percent'
+                                //   // }
+                                //}
+
+                            },
+                            loading: false,
+                            series: [{
+                                "name": 'Employees',
+                                "data": this.ECEconEmploy
+                            }]
+
+                        };
+
+                        /*  //over ride windclass for testing chart
+                         // console.log(windclass[0]);
+                         windclass[0]=10;
+                         windclass[1]=25;
+                         windclass[2]=65;
+                         */
+                    },
                     loadWindChart: function () {
                         //windChart = Highcharts.chart('container', {
                         if (AOI.highchartsNG) AOI.highchartsNG = null
@@ -24898,6 +25271,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             .then(function (res) {
                 $scope.NRCConfig = res.data;
             });
+        $http.get('EC_config.json')
+            .then(function (res) {
+                $scope.ECConfig = res.data;
+            });
+
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
@@ -25107,6 +25485,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
     }])
 
+    .controller('EconCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+        $scope.AOI = AOI;
+        AOI.inPrintWindow = false;
+        $scope.name = "EconCtrl";
+        $http.get('EC_config.json')
+            .then(function (res) {
+                $scope.ECConfig = res.data;
+            });
+
+
+        //AOI.loadWindChart();
+
+        //AOI.doFullSlider('ERC');
+        $scope.paneon();
+    }])
+
     .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams) { //this one loads once on start up
 
         $scope.AOI = AOI;
@@ -25131,6 +25525,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.zoomlevel = map.getZoom();
         $scope.drawOrSubmitCommand = "DRAW";
 
+        Highcharts.setOptions({
+            global: {
+                useUTC: false,
+
+            },
+            lang: {
+                decimalPoint: '.',
+                thousandsSep: ',',
+                numericSymbols:[ "k" , "M" , "B" , "T" , "P" , "E"]
+            }
+        });
 
         map.on('zoomend', function () {
             $scope.zoomlevel = map.getZoom();
@@ -25232,6 +25637,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             path: 'submitJob',
             asyncInterval: 1
         });
+        var ECGPService = L.esri.GP.service({
+            url: AOI.config.ortEconGPService,
+            useCors: false,
+            async: true,
+            path: 'submitJob',
+            asyncInterval: 1
+        });
 
         $scope.baseMapSwitch = function () {
             //console.log("basemap " + $scope.baseMapControlOn);
@@ -25269,6 +25681,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     var CEGPTask = CEGPService.createTask();
                     var TIGPTask = TIGPService.createTask();
                     var NRCGPTask = NRCGPService.createTask();
+                    var ECGPTask = ECGPService.createTask();
 
                     EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
                     EMGPTask.setOutputParam("Output_Report");
@@ -25278,17 +25691,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     TIGPTask.setOutputParam("Output_Report");
                     NRCGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
                     NRCGPTask.setOutputParam("Output_Report");
+                    ECGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                    ECGPTask.setOutputParam("Output_Report");
 
                     $scope.startSpin();
-                    var EMReport, CEReport, TIReport,NRCReport;
+                    var EMReport, CEReport, TIReport, NRCReport, ECReport;
 
-                    var stopSpinnerRequest = _.after(4, function () {
+                    var stopSpinnerRequest = _.after(5, function () {
                         //AOI.featureCollection = _.extend({}, EMReport,CEReport);
                         //AOI.featureCollection =angular.merge([],EMReport, CEReport);
                         AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
                         AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
+                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
                         // console.log("Stop Spinner");
                         console.log(AOI.featureCollection);
                         $scope.stopSpin();
@@ -25353,6 +25769,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             NRCReport = NRCgeojson.Output_Report;
                             console.log(NRCReport);
                             console.log("NRC Complete");
+
+                        }
+                        stopSpinnerRequest();
+
+                    });
+                    ECGPTask.run(function (error, ECgeojson, ECresponse) {
+                        // console.log(CEresponse);
+                        if (error) {
+                            $scope.drawOrSubmitCommand = "Error " + error;
+                            console.log("EC " + error);
+                        }
+                        else if (ECgeojson) {
+                            $scope.drawOrSubmitCommand = "Complete";
+                            ECReport = ECgeojson.Output_Report;
+                            console.log(ECReport);
+                            console.log("EC Complete");
 
                         }
                         stopSpinnerRequest();
@@ -25832,24 +26264,24 @@ ortLayerOptional[31] =
     num: null,
     displayName: 'PoliticalBoundaries'
 };
-ortLayerOptional[32]=
+ortLayerOptional[32] =
 {
-    num:null,
+    num: null,
     displayName: 'CoastalCounties'
 }
-ortLayerOptional[33]=
+ortLayerOptional[33] =
 {
-    num:null,
+    num: null,
     displayName: 'FederalAndStateWaters'
 }
-ortLayerOptional[34]=
+ortLayerOptional[34] =
 {
-    num:34,
+    num: 34,
     displayName: 'SubmarineCables'
 }
-ortLayerOptional[35]=
+ortLayerOptional[35] =
 {
-    num:37,
+    num: 37,
     displayName: 'DangerZones'
 }
 
@@ -25967,13 +26399,14 @@ angular.module('myApp', [
         $urlRouterProvider.otherwise('/main');
         AOIProvider.config({
             //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
-            ortMapServer:'//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
+            ortMapServer: '//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
             ortLayerAOI: '7',
-            ortLayerData: '54',
+            ortLayerData: '57',
             ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
             ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
             ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/T%26I%20Draw%20Area',
-            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area'
+            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area',
+            ortEconGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/EC%20Draw%20Area'
         });
 
         $stateProvider
@@ -26000,17 +26433,17 @@ angular.module('myApp', [
             .state('TIview', {
                 //  url:'/view4',
                 templateUrl: 'partials/TransportationAndInfrastructure.html',
-                 controller: 'TransportationAndInfrastructureCtrl'
+                controller: 'TransportationAndInfrastructureCtrl'
             })
             .state('EMview', {
                 //  url: '/EM',
                 templateUrl: 'partials/EnergyAndMinerals.html',
                 controller: 'EnergyAndMineralsCtrl'
             })
-            .state('view5', {
+            .state('ECview', {
                 //   url:'/view5',
                 templateUrl: 'partials/EconomicsAndCommerce.html',
-                // controller: 'MyCtrl5'
+                controller: 'EconCtrl'
             })
             .state('meta', {
                 //url:'/metadata',

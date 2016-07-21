@@ -1,0 +1,47 @@
+<div class="infographic-box-medium">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft">Ocean Job Contributions (in Dollars)</div>
+            <!-- iButton start-->
+            <div class="floatitleft">
+                <info-directive class="infobutton mainbutton" modal-template="modal66.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal66.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Data represents contributions to the GDP based on number of employees, wages earned, and
+                            goods and services provided from the ocean industry. Based on 2013 ENOW data
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+        </div>
+        <div class="h20"></div>
+        <div class="floatitleft">
+
+        </div>
+        <highchart id="OceanJobEmployeesChart" config="AOI.OceanJobEmployeesChart"
+                   class="OceanJobEmployeesChart floatitleft"></highchart>
+        <highchart id="OceanJobDollarsChart" config="AOI.OceanJobDollarsChart"
+                   class="OceanJobDollarsChart floatitleft"></highchart>
+        <div>
+
+        </div>
+    </div>
+</div>

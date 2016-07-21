@@ -129,24 +129,24 @@ ortLayerOptional[31] =
     num: null,
     displayName: 'PoliticalBoundaries'
 };
-ortLayerOptional[32]=
+ortLayerOptional[32] =
 {
-    num:null,
+    num: null,
     displayName: 'CoastalCounties'
 }
-ortLayerOptional[33]=
+ortLayerOptional[33] =
 {
-    num:null,
+    num: null,
     displayName: 'FederalAndStateWaters'
 }
-ortLayerOptional[34]=
+ortLayerOptional[34] =
 {
-    num:34,
+    num: 34,
     displayName: 'SubmarineCables'
 }
-ortLayerOptional[35]=
+ortLayerOptional[35] =
 {
-    num:37,
+    num: 37,
     displayName: 'DangerZones'
 }
 
@@ -264,13 +264,14 @@ angular.module('myApp', [
         $urlRouterProvider.otherwise('/main');
         AOIProvider.config({
             //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
-            ortMapServer:'//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
+            ortMapServer: '//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
             ortLayerAOI: '7',
-            ortLayerData: '54',
+            ortLayerData: '57',
             ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
             ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
             ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/T%26I%20Draw%20Area',
-            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area'
+            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area',
+            ortEconGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/EC%20Draw%20Area'
         });
 
         $stateProvider
@@ -297,17 +298,17 @@ angular.module('myApp', [
             .state('TIview', {
                 //  url:'/view4',
                 templateUrl: 'partials/TransportationAndInfrastructure.html',
-                 controller: 'TransportationAndInfrastructureCtrl'
+                controller: 'TransportationAndInfrastructureCtrl'
             })
             .state('EMview', {
                 //  url: '/EM',
                 templateUrl: 'partials/EnergyAndMinerals.html',
                 controller: 'EnergyAndMineralsCtrl'
             })
-            .state('view5', {
+            .state('ECview', {
                 //   url:'/view5',
                 templateUrl: 'partials/EconomicsAndCommerce.html',
-                // controller: 'MyCtrl5'
+                controller: 'EconCtrl'
             })
             .state('meta', {
                 //url:'/metadata',
