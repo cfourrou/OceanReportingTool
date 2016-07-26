@@ -179,6 +179,8 @@ function addLoadEvent(func) {
 }
 addLoadEvent(preloader);
 
+
+
 var marker;
 
 

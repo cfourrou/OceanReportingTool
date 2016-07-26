@@ -23554,14 +23554,37 @@ angular.module('myApp.services', []).factory('_', function () {
                                     ch++;
                                     break;
                                 case "ENOW_2013":
+
+
                                     myThis.ECEcon[cg] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        Name: (featureCollection[i].Name || 'Unknown'),
                                         cntyname: (featureCollection[i].cntyname || 'Unknown'),
                                         st_name: (featureCollection[i].st_name || 'Unknown'),
                                         OceanSector: (featureCollection[i].OceanSector || 'Unknown'),
                                         Employment: (featureCollection[i].Employment || 0),
                                         Wages: (featureCollection[i].Wages || 0),
                                         GDP: (featureCollection[i].GDP || 0),
+
+                                        Emp_LivingResources: (featureCollection[i].Emp_LivingResources || 0),
+                                        Emp_MarineConstruction: (featureCollection[i].Emp_MarineConstruction || 0),
+                                        Emp_MarineTransp: (featureCollection[i].Emp_MarineTransp || 0),
+                                        Emp_OffshoreMineralExt: (featureCollection[i].Emp_OffshoreMineralExt || 0),
+                                        Emp_ShipAndBoatBuilding: (featureCollection[i].Emp_ShipAndBoatBuilding || 0),
+                                        Emp_TourismAndRec: (featureCollection[i].Emp_TourismAndRec || 0),
+                                        Wages_LivingResources: (featureCollection[i].Wages_LivingResources || 0),
+                                        Wages_MarineConstruction: (featureCollection[i].Wages_MarineConstruction || 0),
+                                        Wages_MarineTransp: (featureCollection[i].Wages_MarineTransp || 0),
+                                        Wages_OffshoreMineralExt: (featureCollection[i].Wages_OffshoreMineralExt || 0),
+                                        Wages_ShipAndBoatBuilding: (featureCollection[i].Wages_ShipAndBoatBuilding || 0),
+                                        Wages_TourismAndRec: (featureCollection[i].Wages_TourismAndRec || 0),
+                                        //((featureCollection[i].Dist_Mi === ' ') ? '0' : featureCollection[i].Dist_Mi )
+                                        GDP_LivingResources: ((featureCollection[i].GDP_LivingResources === -9999) ? 0 : (featureCollection[i].GDP_LivingResources || 0)),
+                                        GDP_MarineConstruction: ((featureCollection[i].GDP_MarineConstruction === -9999) ? 0 : (featureCollection[i].GDP_MarineConstruction || 0)),
+                                        GDP_MarineTransp: ((featureCollection[i].GDP_MarineTransp === -9999) ? 0 : (featureCollection[i].GDP_MarineTransp || 0)),
+                                        GDP_OffshoreMineralExt: ((featureCollection[i].GDP_OffshoreMineralExt === -9999) ? 0 : (featureCollection[i].GDP_OffshoreMineralExt || 0)),
+                                        GDP_ShipAndBoatBuilding: ((featureCollection[i].GDP_ShipAndBoatBuilding === -9999) ? 0 : (featureCollection[i].GDP_ShipAndBoatBuilding || 0)),
+                                        GDP_TourismAndRec: ((featureCollection[i].GDP_TourismAndRec === -9999) ? 0 : (featureCollection[i].GDP_TourismAndRec || 0))
                                         // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
 
                                     };
@@ -24364,6 +24387,45 @@ angular.module('myApp.services', []).factory('_', function () {
                         // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
                         //console.log( myThis.tidalpwr[0].TOTAL_CNT);
                         //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
+                        var y = 35;
+                        var x = 35; //good
+                        var chartrow = 1;
+
+                        for (i = 0; i < myThis.ECEcon.length; i++) {
+
+                            if (i && (i % 3 === 0)) {
+                                y += 120;
+                                x = 35;
+                                chartrow++;
+                            } else if (i) x += 135;
+
+                            myThis.OceanJobContributionsSeries[i] = {
+                                center: [x, y],
+                                "name": myThis.ECEcon[i].Name,
+                                "showInLegend": (i === 0 ? true : false),
+                                "data": [
+                                    ["Marine Construction", myThis.ECEcon[i].GDP_MarineConstruction],
+                                    ["Living Resources", myThis.ECEcon[i].GDP_LivingResources],
+                                    ["Marine Transportation", myThis.ECEcon[i].GDP_MarineTransp],
+                                    ["Offshore Mineral Extraction", myThis.ECEcon[i].GDP_OffshoreMineralExt],
+                                    ["Ship and Boat Building", myThis.ECEcon[i].GDP_ShipAndBoatBuilding],
+                                    ["Tourism and Recreation", myThis.ECEcon[i].GDP_TourismAndRec]
+                                ],
+                                title: {
+                                    // align: 'left',
+                                    // x: 0
+                                    // style: { color: XXX, fontStyle: etc }
+                                    align: 'left',
+                                    format: '<b>{name}</b><br>Title left',
+                                    verticalAlign: 'top',
+                                    y: -40
+                                },
+                            }
+
+                        }
+                        myThis.OceanJobContributionsChartHeight = ((chartrow * 120)+18) ;
+                        console.log(myThis.OceanJobContributionsChartHeight);
+
                         if (myThis.wavepwr.length > 0) {
                             if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
                                 myThis.wavepwr[0].COLOR = '#B0B497';
@@ -24518,6 +24580,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.ECEconGDP.length = 0;
                             this.ECEconWages.length = 0;
                             this.ECStateGDP.length = 0;
+                            this.OceanJobContributionsSeries.length = 0;
 
 
                             this.hide();
@@ -24870,33 +24933,17 @@ angular.module('myApp.services', []).factory('_', function () {
                     loadOceanJobContributionsChart: function () {
                         //windChart = Highcharts.chart('container', {
                         if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
-                        AOI.OceanJobContributionsSeries[0] = [{
-                            center: [20, null],
-                            "name": 'County Cork',
-                            "data": [
-                                ["Marine Construction", 3570000],
-                                ["Living Resources", 15128000],
-                                ["Offshore Mineral Extraction", 5281000]
-                            ]
-                        }, {
-                            center: [150, null],
-                            "name": 'County Galway',
-                            "data": [
-                                ["Marine Construction", 35700000],
-                                ["Living Resources", 50128000],
-                                ["Offshore Mineral Extraction", 52810000]
-                            ]
-                        }
-                        ];
-                        //console.log(AOI.OceanJobContributionsSeries[0]);
+
+                        console.log(AOI.OceanJobContributionsSeries);
+
                         AOI.OceanJobContributionsChart = {
                             options: {
 
                                 legend: {
                                     enabled: true,
-                                    //align:'right',
-                                    //layout:'vertical',
-                                    //verticalAlign: 'center',
+                                    align: 'right',
+                                    layout: 'vertical',
+                                    verticalAlign: 'center',
                                     itemStyle: {
                                         //color: '#000000',
                                         fontSize: '10px',
@@ -24904,17 +24951,18 @@ angular.module('myApp.services', []).factory('_', function () {
                                     }
                                 },
                                 tooltip: {
-                                    pointFormat: '<b>${point.y:,.2f}</b>'
+                                    pointFormat: '<b>{point.percentage:.1f}%</b>'
                                 },
                                 chart: {
                                     //spacing: 0,
-                                    //margin: 0,
+                                    // margin: 5,
+                                    height: AOI.OceanJobContributionsChartHeight,
                                     type: 'pie'
                                 },
                                 title: {
-                                    enabled: true,
+                                    enabled: false,
                                     text: null,
-                                    align: 'left',
+                                    align: 'center',
                                     //x: 10
                                 },
                                 exporting: {enabled: false},
@@ -24940,12 +24988,17 @@ angular.module('myApp.services', []).factory('_', function () {
                                     //TickLength: 0
                                 },
                                 plotOptions: {
+
                                     pie: {
                                         allowPointSelect: true,
                                         cursor: 'pointer',
                                         size: 100,
+                                        //showInLegend: true,
                                         dataLabels: {
                                             enabled: false,
+                                        },
+                                        column: {
+                                            stacking: 'percent'
                                         }
                                     }
                                 }
@@ -24961,12 +25014,12 @@ angular.module('myApp.services', []).factory('_', function () {
 
                             },
                             loading: false,
-                            series: AOI.OceanJobContributionsSeries[0]
+                            series: AOI.OceanJobContributionsSeries
 
                         }
 
                         ;
-                        AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
+                        //AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
                         /*  //over ride windclass for testing chart
                          // console.log(windclass[0]);
                          windclass[0]=10;
@@ -26313,6 +26366,56 @@ function addLoadEvent(func) {
     }
 }
 addLoadEvent(preloader);
+
+/**
+ * Pie title plugin
+ * Author: Torstein Hønsi
+ * Original: http://jsfiddle.net/highcharts/tnSRA/
+ * Last revision: 2015-08-31
+ */
+(function (Highcharts) {
+    console.log("Highcharts does happen");
+    Highcharts.seriesTypes.pie.prototype.setTitle = function (titleOption) {
+        var chart = this.chart,
+            center = this.center || (this.yAxis && this.yAxis.center),
+            labelBBox,
+            box,
+            format;
+
+        if (center && titleOption) {
+            box = {
+                x: chart.plotLeft + center[0] - 0.5 * center[2],
+                y: chart.plotTop + center[1] - 0.5 * center[2],
+                width: center[2],
+                height: center[2]
+            };
+
+            format = titleOption.text || titleOption.format;
+            format = Highcharts.format(format, this);
+
+            if (this.title) {
+                this.title.attr({
+                    text: format
+                });
+
+            } else {
+                this.title = this.chart.renderer.label(format)
+                    .css(titleOption.style)
+                    .add()
+            }
+            labelBBox = this.title.getBBox();
+            titleOption.width = labelBBox.width;
+            titleOption.height = labelBBox.height;
+            this.title.align(titleOption, null, box);
+        }
+    };
+
+    Highcharts.wrap(Highcharts.seriesTypes.pie.prototype, 'render', function (proceed) {
+        proceed.call(this);
+        this.setTitle(this.options.title);
+    });
+
+} (Highcharts));
 
 var marker;
 

@@ -38,8 +38,8 @@
 
         <highchart id="OceanJobContributionsChart" config="AOI.OceanJobContributionsChart"
                    class="OceanJobContributionsChart floatitleft"></highchart>
-        <div>
-
+        <div class="JobChartPieName" ng-repeat="x in AOI.OceanJobContributionsSeries">
+            {{x.name}}
         </div>
     </div>
 </div>
