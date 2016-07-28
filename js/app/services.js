@@ -108,7 +108,7 @@ angular.module('myApp.services', [])
                                 pane: 'AOIfeature'
                             }).addTo(map);
                             map.fitBounds(this.layer.getBounds(), {
-                                padding: [50, 50]
+                                padding: [1, 1]
                             });
                         } else {
                             this.layer = L.esri.featureLayer({ //AOI poly (7)

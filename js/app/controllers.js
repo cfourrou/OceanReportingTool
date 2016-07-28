@@ -256,7 +256,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', '$q',
+        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q) { //this one loads once on start up
 
         $scope.AOI = AOI;
         $scope.baseMapControlOn = false;
@@ -792,6 +793,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 AOI.drawAreaJobId['EM'] = $location.search().EM;
                 AOI.name = "Shared Draw Area";
                 AOI.ID = -9999;
+
+                var promise1 = $q.defer(), promise2 = $q.defer();
+                var promises = [promise1.promise, promise2.promise];
+
                 L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
                     if (error) {
                         console.log(error);
@@ -806,8 +811,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                             }
 
-                        }
+                        };
                         console.log(AOI.drawLayerShape);
+                        promise1.resolve();
                     }
                 });
 
@@ -819,11 +825,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
                         console.log(AOI.featureCollection);
-                        AOI.loadData(AOI.ID, AOI.name);
+                        promise2.resolve();
                     }
                 });
 
-
+                $q.all(promises).then(function () {
+                    AOI.loadData(AOI.ID, AOI.name);
+                });
 
                 //console.log(AOI.featureCollection);
 
