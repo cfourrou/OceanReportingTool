@@ -18,10 +18,14 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            Activites allowed to be performed in the ocean may be influenced by state and federal representatives.
-                            If you are interested in conveying your opinion on  any of the ocean activities occurring in this area please
-                            contact the represenatitves of the districts listed below. For Federal representatives, check here:
-                            <a href="https://www.govtrack.us/congress/members/map" target="_blank">US Congressional District</a>
+                            Activites allowed to be performed in the ocean may be influenced by state and federal
+                            representatives.
+                            If you are interested in conveying your opinion on any of the ocean activities occurring in
+                            this area please
+                            contact the represenatitves of the districts listed below. For Federal representatives,
+                            check here:
+                            <a href="https://www.govtrack.us/congress/members/map" target="_blank">US Congressional
+                                District</a>
 
                             <br>
 
@@ -37,25 +41,42 @@
 
         </div>
         <div class="infomenu">
-            <div class="infoDropDownMenu" ng-click="congressActivate()">Congressional Districts
-                <div class="infomenuplus">{{congressMenu}}</div>
-            </div>
-            <div class="infoDropDownList" ng-show="congressIsActive" ng-repeat="congress in AOI.CECongress">
-                {{congress.stateName}} {{congress.NAMELSAD}}
+            <div class="infoDropDownMenu2" ng-click="congressActivate()">
+                <div class="boundaryItem">
+                    <div class="floatitleft w79"> Congressional Districts</div>
+                    <div class="infomenuplus">{{congressMenu}}</div>
+                </div>
+
+                <div class="infoDropDownList" ng-show="congressIsActive" ng-repeat="congress in AOI.CECongress">
+                    <div class="politicallist floatitleft" ng-if="$odd">{{congress.stateName}} {{congress.NAMELSAD}}
+                    </div>
+                    <div class="politicallist floatitleft" ng-if="$even">{{congress.stateName}} {{congress.NAMELSAD}}
+                    </div>
+                </div>
             </div>
             <div class="infomenuspacer"></div>
-            <div class="infoDropDownMenu" ng-click="senateActivate()">State Senate
-                <div class="infomenuplus">{{senateMenu}}</div>
-            </div>
-            <div class="infoDropDownList" ng-show="senateIsActive" ng-repeat="senate in AOI.CESenate">
-                {{senate.stateName}} {{senate.NAMELSAD}}
+            <div class="infoDropDownMenu2" ng-click="senateActivate()">
+                <div class="boundaryItem">
+                    <div class="floatitleft w79"> State Senate</div>
+                    <div class="infomenuplus">{{senateMenu}}</div>
+                </div>
+
+                <div class="infoDropDownList" ng-show="senateIsActive" ng-repeat="senate in AOI.CESenate">
+                    <div class="politicallist floatitleft" ng-if="$odd">{{senate.stateName}} {{senate.NAMELSAD}}</div>
+                    <div class="politicallist floatitleft" ng-if="$even">{{senate.stateName}} {{senate.NAMELSAD}}</div>
+                </div>
             </div>
             <div class="infomenuspacer"></div>
-            <div class="infoDropDownMenu" ng-click="houseActivate()">State House
-                <div class="infomenuplus">{{houseMenu}}</div>
-            </div>
-            <div class="infoDropDownList" ng-show="houseIsActive" ng-repeat="house in AOI.CEHouse">
-                {{house.stateName}} {{house.NAMELSAD}}
+            <div class="infoDropDownMenu2" ng-click="houseActivate()">
+                <div class="boundaryItem">
+                    <div class="floatitleft w79"> State House</div>
+                    <div class="infomenuplus">{{houseMenu}}</div>
+                </div>
+
+                <div class="infoDropDownList" ng-show="houseIsActive" ng-repeat="house in AOI.CEHouse">
+                    <div class="politicallist floatitleft" ng-if="$odd">{{house.stateName}} {{house.NAMELSAD}}</div>
+                    <div class="politicallist floatitleft" ng-if="even">{{house.stateName}} {{house.NAMELSAD}}</div>
+                </div>
             </div>
 
         </div>

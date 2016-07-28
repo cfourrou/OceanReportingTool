@@ -24414,17 +24414,17 @@ angular.module('myApp.services', []).factory('_', function () {
                                 title: {
                                     // align: 'left',
                                     // x: 0
-                                    // style: { color: XXX, fontStyle: etc }
-                                    align: 'left',
-                                    format: '<b>{name}</b><br>Title left',
+                                    style: {color: '#4a4a4a'},
+                                    align: 'center',
+                                    format: '{name}',
                                     verticalAlign: 'top',
-                                    y: -40
+                                    y: -20
                                 },
                             }
 
                         }
-                        myThis.OceanJobContributionsChartHeight = ((chartrow * 120)+18) ;
-                        console.log(myThis.OceanJobContributionsChartHeight);
+                        myThis.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
+                        //console.log(myThis.OceanJobContributionsChartHeight);
 
                         if (myThis.wavepwr.length > 0) {
                             if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
@@ -24580,6 +24580,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.ECEconGDP.length = 0;
                             this.ECEconWages.length = 0;
                             this.ECStateGDP.length = 0;
+                            this.ECCountyGDP.length = 0;
                             this.OceanJobContributionsSeries.length = 0;
 
 
@@ -24934,7 +24935,7 @@ angular.module('myApp.services', []).factory('_', function () {
                         //windChart = Highcharts.chart('container', {
                         if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
 
-                        console.log(AOI.OceanJobContributionsSeries);
+                        //console.log(AOI.OceanJobContributionsSeries);
 
                         AOI.OceanJobContributionsChart = {
                             options: {
@@ -24947,7 +24948,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     itemStyle: {
                                         //color: '#000000',
                                         fontSize: '10px',
-                                        lineHeight: '10px',
+                                        //lineHeight: '10px',
                                     }
                                 },
                                 tooltip: {
@@ -24990,15 +24991,19 @@ angular.module('myApp.services', []).factory('_', function () {
                                 plotOptions: {
 
                                     pie: {
-                                        allowPointSelect: true,
+                                        allowPointSelect: false,
                                         cursor: 'pointer',
                                         size: 100,
                                         //showInLegend: true,
                                         dataLabels: {
                                             enabled: false,
                                         },
-                                        column: {
-                                            stacking: 'percent'
+                                        point: {
+                                            events: {
+                                                legendItemClick: function (e) {
+                                                    e.preventDefault();
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -25014,11 +25019,13 @@ angular.module('myApp.services', []).factory('_', function () {
 
                             },
                             loading: false,
-                            series: AOI.OceanJobContributionsSeries
+                            series: AOI.OceanJobContributionsSeries,
+
 
                         }
 
                         ;
+                        //AOI.chartObj.renderer.text('This text is <span style="color: red">styled</span> and <a href="http://example.com">linked</a>', 150, 80);
                         //AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
                         /*  //over ride windclass for testing chart
                          // console.log(windclass[0]);
@@ -25727,8 +25734,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 case "Subm":
 
                     //console.log("submit");
-                    //console.log($scope.polylayer);
+                    console.log($scope.polylayer);
                     AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
+
                     $scope.drawOrSubmitCommand = "Working";
                     var EMGPTask = EMGPService.createTask();
                     var CEGPTask = CEGPService.createTask();
@@ -25753,21 +25761,24 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     var stopSpinnerRequest = _.after(5, function () {
                         //AOI.featureCollection = _.extend({}, EMReport,CEReport);
                         //AOI.featureCollection =angular.merge([],EMReport, CEReport);
-                        AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
+                        if (EMReport) AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
+                        if (CEReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
+                        if (TIReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
+                        if (NRCReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
+                        if (ECReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
                         // console.log("Stop Spinner");
-                        console.log(AOI.featureCollection);
+                        //console.log(AOI.featureCollection);
                         $scope.stopSpin();
                         $scope.$apply();
                     });
                     EMGPTask.run(function (error, EMgeojson, EMresponse) {
-                        // console.log(EMresponse);
+                        console.log("errorcode is "+error);
+                        console.log(EMresponse);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("EM " + error);
+
+                            $scope.$apply();
                         }
                         else if (EMgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
@@ -25784,6 +25795,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("CE " + error);
+
+                            $scope.$apply();
                         }
                         else if (CEgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
@@ -25800,6 +25813,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("TI " + error);
+
+                            $scope.$apply();
                         }
                         else if (TIgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
@@ -25816,6 +25831,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("NRC " + error);
+
+                            $scope.$apply();
                         }
                         else if (NRCgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
@@ -25832,6 +25849,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("EC " + error);
+
+                            $scope.$apply();
                         }
                         else if (ECgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
@@ -26374,7 +26393,6 @@ addLoadEvent(preloader);
  * Last revision: 2015-08-31
  */
 (function (Highcharts) {
-    console.log("Highcharts does happen");
     Highcharts.seriesTypes.pie.prototype.setTitle = function (titleOption) {
         var chart = this.chart,
             center = this.center || (this.yAxis && this.yAxis.center),
@@ -26416,6 +26434,7 @@ addLoadEvent(preloader);
     });
 
 } (Highcharts));
+
 
 var marker;
 

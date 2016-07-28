@@ -2,8 +2,25 @@
 
 /* Services */
 
+angular.module('myApp.services', [])
+    .factory('webService', function($http) {
 
-angular.module('myApp.services', []).factory('_', function () {
+        var getData = function() {
+
+            // Angular $http() and then() both return promises themselves
+            return $http({method:"GET", url:"CE_config.json"}).then(function(result){
+
+                // What we return here is the data that will be accessible
+                // to us after the promise resolves
+                return result.data;
+            });
+        };
+
+
+        return { getData: getData };
+    })
+
+    .factory('_', function () {
         return window._; // assumes underscore has already been loaded on the page
     })
     .provider('AOI', function () {
@@ -28,6 +45,8 @@ angular.module('myApp.services', []).factory('_', function () {
 
                 AOI = {
                     OceanJobContributionsSeries: [],
+                    drawAreaJobId: [],
+                    Shared: false,
                     url: $window.location.href.split('#'),
                     config: config,
                     layer: null,
@@ -103,6 +122,37 @@ angular.module('myApp.services', []).factory('_', function () {
                             }).addTo(map);
                         }
                         //console.log(" this.layer loaded " + typeof(this.layer.getBounds));
+                        this.layer.on("load", function (evt) {
+                            // create a new empty Leaflet bounds object
+
+                            var mbounds = L.latLngBounds([]);
+                            // loop through the features returned by the server
+
+                            AOI.layer.eachFeature(function (layer) {
+                                // get the bounds of an individual feature
+                                var layerBounds = layer.getBounds();
+                                // extend the bounds of the collection to fit the bounds of the new feature
+                                mbounds.extend(layerBounds);
+                            });
+
+                            try {
+                                map.fitBounds(mbounds);
+                                //console.log("here?");
+                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                            }
+                            catch (err) {
+                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                //so for now we will zoom out on error and allow this event to fire again.
+                                // console.log("AOI bounds out of bounds, zooming out");
+                                map.setView([33.51, -78.3], 6); //it should try again.
+                            }
+
+
+                           // $scope.mout($scope.AOI.ID);
+
+
+                        });
+
                         this.isVisible = true;
                         //console.log("display: this.ID = " +AOI_ID);
                     },
@@ -1315,17 +1365,17 @@ angular.module('myApp.services', []).factory('_', function () {
                                 title: {
                                     // align: 'left',
                                     // x: 0
-                                    // style: { color: XXX, fontStyle: etc }
-                                    align: 'left',
-                                    format: '<b>{name}</b><br>Title left',
+                                    style: {color: '#4a4a4a'},
+                                    align: 'center',
+                                    format: '{name}',
                                     verticalAlign: 'top',
-                                    y: -40
+                                    y: -20
                                 },
                             }
 
                         }
-                        myThis.OceanJobContributionsChartHeight = ((chartrow * 120)+18) ;
-                        console.log(myThis.OceanJobContributionsChartHeight);
+                        myThis.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
+                        //console.log(myThis.OceanJobContributionsChartHeight);
 
                         if (myThis.wavepwr.length > 0) {
                             if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
@@ -1481,8 +1531,10 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.ECEconGDP.length = 0;
                             this.ECEconWages.length = 0;
                             this.ECStateGDP.length = 0;
+                            this.ECCountyGDP.length = 0;
                             this.OceanJobContributionsSeries.length = 0;
-
+                            this.drawAreaJobId.length = 0;
+                            this.Shared = false;
 
                             this.hide();
                             //map.setView([33.51, -68.3], 6);
@@ -1835,7 +1887,7 @@ angular.module('myApp.services', []).factory('_', function () {
                         //windChart = Highcharts.chart('container', {
                         if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
 
-                        console.log(AOI.OceanJobContributionsSeries);
+                        //console.log(AOI.OceanJobContributionsSeries);
 
                         AOI.OceanJobContributionsChart = {
                             options: {
@@ -1848,7 +1900,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     itemStyle: {
                                         //color: '#000000',
                                         fontSize: '10px',
-                                        lineHeight: '10px',
+                                        //lineHeight: '10px',
                                     }
                                 },
                                 tooltip: {
@@ -1898,9 +1950,9 @@ angular.module('myApp.services', []).factory('_', function () {
                                         dataLabels: {
                                             enabled: false,
                                         },
-                                        point:{
-                                            events : {
-                                                legendItemClick: function(e){
+                                        point: {
+                                            events: {
+                                                legendItemClick: function (e) {
                                                     e.preventDefault();
                                                 }
                                             }
@@ -2175,7 +2227,14 @@ angular.module('myApp.services', []).factory('_', function () {
                          */
                     },
                     ShowURL: function () {
-                        $window.alert("Share this URL: " + this.ID);
+                        window.prompt("Share this report with: Ctrl+C, Enter", '' +
+                            AOI.url[0] + '#/AOI?AOI=' + AOI.ID +
+                            '&TI=' + AOI.drawAreaJobId['TI'] +
+                            '&EC=' + AOI.drawAreaJobId['EC'] +
+                            '&CE=' + AOI.drawAreaJobId['CE'] +
+                            '&NRC=' + AOI.drawAreaJobId['NRC'] +
+                            '&EM=' + AOI.drawAreaJobId['EM'])
+                        ;
                     },
                 };
 
@@ -2184,3 +2243,4 @@ angular.module('myApp.services', []).factory('_', function () {
         }
     })
 ;
+

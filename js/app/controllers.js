@@ -83,7 +83,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope', '$http', function (AOI, $scope, $http) {
+    .controller('AOICtrl', ['AOI', '$scope', '$http','webService', function (AOI, $scope, $http,webService) {
+
+
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.congressIsActive = true;
@@ -92,6 +94,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.congressMenu = "-";
         $scope.senateMenu = "+";
         $scope.houseMenu = "+";
+
+        var myDataPromise = webService.getData();
+        myDataPromise.then(function(result) {
+
+            // this is only run after getData() resolves
+            $scope.ddata = result;
+            console.log("data.name"+$scope.ddata);
+        });
+
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -127,37 +138,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.houseMenu = "+";
         }
 
-        AOI.layer.on("load", function (evt) {
-            // create a new empty Leaflet bounds object
-
-            var mbounds = L.latLngBounds([]);
-            // loop through the features returned by the server
-
-            AOI.layer.eachFeature(function (layer) {
-                // get the bounds of an individual feature
-                var layerBounds = layer.getBounds();
-                // extend the bounds of the collection to fit the bounds of the new feature
-                mbounds.extend(layerBounds);
-            });
-
-            try {
-                map.fitBounds(mbounds);
-                //console.log("here?");
-                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
-            }
-            catch (err) {
-                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                //so for now we will zoom out on error and allow this event to fire again.
-                // console.log("AOI bounds out of bounds, zooming out");
-                map.setView([33.51, -78.3], 6); //it should try again.
-            }
-
-
-            $scope.mout($scope.AOI.ID);
-
-
-        });
-
+        $scope.mout($scope.AOI.ID);
         // console.log("in CE ctrl=" + AOI.CEFederalTotal);
 
         //$scope.$on('$viewContentLoaded', function () {
@@ -307,7 +288,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             lang: {
                 decimalPoint: '.',
                 thousandsSep: ',',
-                numericSymbols:[ "k" , "M" , "B" , "T" , "P" , "E"]
+                numericSymbols: ["k", "M", "B", "T", "P", "E"]
             }
         });
 
@@ -450,6 +431,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     //console.log("submit");
                     //console.log($scope.polylayer);
                     AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
+                    console.log(AOI.drawLayerShape);
                     $scope.drawOrSubmitCommand = "Working";
                     var EMGPTask = EMGPService.createTask();
                     var CEGPTask = CEGPService.createTask();
@@ -474,91 +456,109 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     var stopSpinnerRequest = _.after(5, function () {
                         //AOI.featureCollection = _.extend({}, EMReport,CEReport);
                         //AOI.featureCollection =angular.merge([],EMReport, CEReport);
-                        AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
+                        if (EMReport) AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
+                        if (CEReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
+                        if (TIReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
+                        if (NRCReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
+                        if (ECReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
                         // console.log("Stop Spinner");
-                        console.log(AOI.featureCollection);
+                        //console.log(AOI.featureCollection);
                         $scope.stopSpin();
                         $scope.$apply();
+                        //console.log(AOI.drawAreaJobId['TI']);
                     });
                     EMGPTask.run(function (error, EMgeojson, EMresponse) {
-                        // console.log(EMresponse);
+
+                        console.log("EM jobId is " + EMgeojson.jobId);
+
+
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("EM " + error);
+
+                            $scope.$apply();
                         }
                         else if (EMgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             //AOI.featureCollection = EMgeojson.Output_Report;
                             EMReport = EMgeojson.Output_Report;
-                            console.log(EMReport);
+                            //console.log(EMReport);
                             console.log("EM Complete");
+                            AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
                         }
                         stopSpinnerRequest();
 
                     });
                     CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                        // console.log(CEresponse);
+                        console.log("CE jobId is " + CEgeojson.jobId);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("CE " + error);
+
+                            $scope.$apply();
                         }
                         else if (CEgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             CEReport = CEgeojson.Output_Report;
                             console.log(CEReport);
                             console.log("CE Complete");
+                            AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
 
                         }
                         stopSpinnerRequest();
 
                     });
                     TIGPTask.run(function (error, TIgeojson, TIresponse) {
-                        // console.log(CEresponse);
+                        console.log("TI jobId is " + TIgeojson.jobId);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("TI " + error);
+
+                            $scope.$apply();
                         }
                         else if (TIgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             TIReport = TIgeojson.Output_Report;
-                            console.log(TIReport);
+                            //console.log(TIReport);
                             console.log("TI Complete");
+                            AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
 
                         }
                         stopSpinnerRequest();
 
                     });
                     NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-                        // console.log(CEresponse);
+                        console.log("NRC jobId is " + NRCgeojson.jobId);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("NRC " + error);
+
+                            $scope.$apply();
                         }
                         else if (NRCgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             NRCReport = NRCgeojson.Output_Report;
-                            console.log(NRCReport);
+                            //console.log(NRCReport);
                             console.log("NRC Complete");
-
+                            AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
                         }
                         stopSpinnerRequest();
 
                     });
                     ECGPTask.run(function (error, ECgeojson, ECresponse) {
-                        // console.log(CEresponse);
+                        console.log("EC jobId is " + ECgeojson.jobId);
                         if (error) {
                             $scope.drawOrSubmitCommand = "Error " + error;
                             console.log("EC " + error);
+
+                            $scope.$apply();
                         }
                         else if (ECgeojson) {
                             $scope.drawOrSubmitCommand = "Complete";
                             ECReport = ECgeojson.Output_Report;
-                            console.log(ECReport);
+                            //console.log(ECReport);
                             console.log("EC Complete");
+                            AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
 
                         }
                         stopSpinnerRequest();
@@ -777,14 +777,58 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             }
         );
 
-        // console.log("AOIdetail is " + $stateParams.AOIdetail);
+        //console.log($location.search().AOI);
         if ($location.search().AOI) {
-            query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
-                    AOI.name = featureCollection.features[0].properties.AOI_NAME;
-                }
-            );
-            AOI.loadData($location.search().AOI, AOI.name);
-            // $state.go('CEview');
+            AOI.Shared = true;
+            if ($location.search().AOI !== '-9999') {
+                query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
+                        AOI.name = featureCollection.features[0].properties.AOI_NAME;
+                    }
+                );
+                AOI.loadData($location.search().AOI, AOI.name);
+                // $state.go('CEview');
+            } else {
+                AOI.drawAreaJobId['CE'] = $location.search().CE;
+                AOI.drawAreaJobId['EM'] = $location.search().EM;
+                AOI.name = "Shared Draw Area";
+                AOI.ID = -9999;
+                L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        //console.log(response.value.features[0]);
+                        console.log("the next one");
+                        AOI.drawLayerShape = {
+                            type: "Feature",
+                            geometry: {
+                                type: "Polygon",
+                                coordinates: response.value.features[0].geometry.rings,
+
+                            }
+
+                        }
+                        console.log(AOI.drawLayerShape);
+                    }
+                });
+
+
+                L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/results/Output_Report', {}, function (error, response) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+
+                        AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
+                        console.log(AOI.featureCollection);
+                        AOI.loadData(AOI.ID, AOI.name);
+                    }
+                });
+
+
+
+                //console.log(AOI.featureCollection);
+
+
+            }
         }
     }
     ])
