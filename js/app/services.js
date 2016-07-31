@@ -3,12 +3,12 @@
 /* Services */
 
 angular.module('myApp.services', [])
-    .factory('webService', function($http) {
+    .factory('webService', function ($http) {
 
-        var getData = function() {
+        var getData = function () {
 
             // Angular $http() and then() both return promises themselves
-            return $http({method:"GET", url:"CE_config.json"}).then(function(result){
+            return $http({method: "GET", url: "CE_config.json"}).then(function (result) {
 
                 // What we return here is the data that will be accessible
                 // to us after the promise resolves
@@ -17,7 +17,7 @@ angular.module('myApp.services', [])
         };
 
 
-        return { getData: getData };
+        return {getData: getData};
     })
 
     .factory('_', function () {
@@ -32,7 +32,7 @@ angular.module('myApp.services', [])
                 ortCommonGPService: '',
                 ortTranspoGPService: '',
                 ortNaturalGPService: '',
-                ortEconGPService: '',
+                ortEconGPService: ''
             },
             AOI;
 
@@ -99,7 +99,7 @@ angular.module('myApp.services', [])
                     ECCountyGDP: [],
 
                     display: function (AOI_ID) {
-                        this.ID = AOI_ID;
+                        this.ID = parseInt(AOI_ID);
                         if (this.ID === -9999) {
                             this.layer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
@@ -108,7 +108,7 @@ angular.module('myApp.services', [])
                                 pane: 'AOIfeature'
                             }).addTo(map);
                             map.fitBounds(this.layer.getBounds(), {
-                                padding: [50, 50]
+                                padding: [1, 1]
                             });
                         } else {
                             this.layer = L.esri.featureLayer({ //AOI poly (7)
@@ -121,7 +121,7 @@ angular.module('myApp.services', [])
                                 //precision: 2
                             }).addTo(map);
                         }
-                        //console.log(" this.layer loaded " + typeof(this.layer.getBounds));
+
                         this.layer.on("load", function (evt) {
                             // create a new empty Leaflet bounds object
 
@@ -137,7 +137,7 @@ angular.module('myApp.services', [])
 
                             try {
                                 map.fitBounds(mbounds);
-                                //console.log("here?");
+
                                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
                             }
                             catch (err) {
@@ -146,23 +146,15 @@ angular.module('myApp.services', [])
                                 // console.log("AOI bounds out of bounds, zooming out");
                                 map.setView([33.51, -78.3], 6); //it should try again.
                             }
-
-
-                           // $scope.mout($scope.AOI.ID);
-
-
                         });
 
                         this.isVisible = true;
-                        //console.log("display: this.ID = " +AOI_ID);
+
                     },
                     hide: function () {
                         if (this.isVisible) {
-
-                            //console.log("hide this.layer  =" + this.ID)
                             map.removeLayer(this.layer);
                         }
-                        // probably move this somewhere better.
                         map.setView([33.51, -78.3], 6);
                         this.isVisible = false;
                     },
@@ -182,11 +174,11 @@ angular.module('myApp.services', [])
                     },
                     isVisible: false,
                     loadData: function (AOI_ID, name) {
-                        // map.removeLayer(cLayer);
+
                         this.display(AOI_ID);
-                        //this.isVisible = true;
+
                         var myThis = this;
-                        //myThis.zoomTo();
+
                         myThis.name = name;
                         myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
                             url: config.ortMapServer + ortLayerOptional[0].num,
@@ -254,7 +246,7 @@ angular.module('myApp.services', [])
                                         iconSize: [32, 37],
                                         iconAnchor: [16, 37],
                                         popupAnchor: [0, -28]
-                                    }),
+                                    })
                                 });
                             }
                         });
@@ -293,13 +285,13 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer,
                             pane: 'optionalfeature9',
                             layers: [ortLayerOptional[9].num],
-                            opacity: .8,
+                            opacity: .8
                         });
                         myThis.currentPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
                             pane: 'optionalfeature10',
                             layers: [ortLayerOptional[10].num],
-                            opacity: .8,
+                            opacity: .8
                         });
 
                         myThis.beachNourish = L.esri.featureLayer({
@@ -320,7 +312,7 @@ angular.module('myApp.services', [])
                                         iconSize: [32, 37],
                                         iconAnchor: [16, 37],
                                         popupAnchor: [0, -28]
-                                    }),
+                                    })
                                 });
                             }
                         });
@@ -370,7 +362,7 @@ angular.module('myApp.services', [])
 
                         if (myThis.ID === -9999) {
                             var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
-                            //console.log(featureCollection);
+
                             var newarray = [];
                             angular.forEach(featureCollection.features, function (feature) {
                                 var newobject = {};
@@ -379,13 +371,12 @@ angular.module('myApp.services', [])
                                 });
                                 newarray.push(newobject);
                             });
-                            //console.log(newarray);
+
                             myThis.massageData(newarray);
 
                         } else {
                             query.returnGeometry(false).where("AOI_ID =" + myThis.ID + "").run(function (error, featureCollection, response) {
-                                // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
-                                // console.log(featureCollection);
+
                                 var newarray = [];
                                 angular.forEach(featureCollection.features, function (feature) {
                                     var newobject = {};
@@ -396,9 +387,6 @@ angular.module('myApp.services', [])
                                 });
                                 //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                                //console.log(newarray);
-                                //console.log(newarray.length);
-                                //console.log(newarray[0].AOI_ID);
                                 myThis.massageData(newarray);
                             });
                         }
@@ -445,7 +433,6 @@ angular.module('myApp.services', [])
                         var ch = 0;
                         var ci = 0;
                         var ack = [];
-                        // var za = 0;
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
@@ -456,8 +443,7 @@ angular.module('myApp.services', [])
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
                                         TotalHouses: (featureCollection[i].TotalHouses || 0),
                                         Population: (featureCollection[i].Population || 0),
-                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
-                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
                                     };
 
@@ -472,7 +458,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ci++;
                                     break;
@@ -484,8 +470,7 @@ angular.module('myApp.services', [])
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
                                         TotalHouses: (featureCollection[i].TotalHouses || 0),
                                         Population: (featureCollection[i].Population || 0),
-                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
-                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
                                     };
 
@@ -500,7 +485,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ch++;
                                     break;
@@ -529,14 +514,14 @@ angular.module('myApp.services', [])
                                         Wages_OffshoreMineralExt: (featureCollection[i].Wages_OffshoreMineralExt || 0),
                                         Wages_ShipAndBoatBuilding: (featureCollection[i].Wages_ShipAndBoatBuilding || 0),
                                         Wages_TourismAndRec: (featureCollection[i].Wages_TourismAndRec || 0),
-                                        //((featureCollection[i].Dist_Mi === ' ') ? '0' : featureCollection[i].Dist_Mi )
+
                                         GDP_LivingResources: ((featureCollection[i].GDP_LivingResources === -9999) ? 0 : (featureCollection[i].GDP_LivingResources || 0)),
                                         GDP_MarineConstruction: ((featureCollection[i].GDP_MarineConstruction === -9999) ? 0 : (featureCollection[i].GDP_MarineConstruction || 0)),
                                         GDP_MarineTransp: ((featureCollection[i].GDP_MarineTransp === -9999) ? 0 : (featureCollection[i].GDP_MarineTransp || 0)),
                                         GDP_OffshoreMineralExt: ((featureCollection[i].GDP_OffshoreMineralExt === -9999) ? 0 : (featureCollection[i].GDP_OffshoreMineralExt || 0)),
                                         GDP_ShipAndBoatBuilding: ((featureCollection[i].GDP_ShipAndBoatBuilding === -9999) ? 0 : (featureCollection[i].GDP_ShipAndBoatBuilding || 0)),
                                         GDP_TourismAndRec: ((featureCollection[i].GDP_TourismAndRec === -9999) ? 0 : (featureCollection[i].GDP_TourismAndRec || 0))
-                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
 
                                     };
                                     switch (featureCollection[i].OceanSector) {
@@ -558,7 +543,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cg++;
                                     break;
@@ -581,7 +566,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ce++;
                                     break;
@@ -605,7 +590,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cf++;
                                     break;
@@ -627,7 +612,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cd++;
                                     break;
@@ -649,7 +634,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cc++;
                                     break;
@@ -673,7 +658,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cb++;
                                     break;
@@ -694,7 +679,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ca++;
                                     break;
@@ -718,7 +703,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bz++;
                                     break;
@@ -741,7 +726,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
                                     if (featureCollection[i].TOTAL_CNT > 0) {
 
                                         if ((featureCollection[i].jurisdiction.substring(0, 3)) === "Fed") {
@@ -752,8 +737,7 @@ angular.module('myApp.services', [])
                                         } else  myThis.CEStateTotal = parseInt(myThis.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
 
                                     }
-                                    // console.log("in load loop fed= " + myThis.CEFederalTotal);
-                                    // console.log("in load loop state= " + myThis.CEStateTotal);
+
                                     by++;
                                     break;
                                 case "CoastalCounties":
@@ -763,8 +747,6 @@ angular.module('myApp.services', [])
                                         st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
                                         ctystate: (featureCollection[i].st_abbr || 'Unknown'),
                                         st_name: (featureCollection[i].st_name || 'Unknown')
-
-
                                     };
 
                                     if ((bx === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -777,7 +759,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bx++;
                                     break;
@@ -800,7 +782,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bv++;
                                     break;
@@ -823,7 +805,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bw++;
                                     break;
@@ -846,7 +828,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bu++;
                                     break;
@@ -870,7 +852,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bt++;
                                     break;
@@ -905,7 +887,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     br++;
                                     break;
@@ -929,7 +911,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bq++;
                                     break;
@@ -953,7 +935,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bp++;
                                     break;
@@ -975,7 +957,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bo++;
                                     break;
@@ -997,7 +979,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bn++;
                                     break;
@@ -1018,7 +1000,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bm++;
                                     break;
@@ -1041,7 +1023,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bl++;
                                     break;
@@ -1062,7 +1044,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bk++;
                                     break;
@@ -1085,7 +1067,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bj++;
                                     break;
@@ -1095,7 +1077,7 @@ angular.module('myApp.services', [])
                                         AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
                                         SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
                                     };
-                                    //console.log(myThis.wavepwr[bi].COLOR);
+
                                     if ((featureCollection[i].METADATA_URL != null)) {
                                         myThis.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
@@ -1106,7 +1088,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bi++;
                                     break;
@@ -1127,7 +1109,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     be++;
                                     break;
@@ -1148,8 +1130,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
-                                    //console.log("hydrok "+myThis.hydrok);
+
                                     bg++;
 
                                     break;
@@ -1170,7 +1151,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bh++;
 
@@ -1179,7 +1160,7 @@ angular.module('myApp.services', [])
                                 case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
                                     myThis.mml[bf] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-                                        //PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
+
                                     };
 
                                     if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -1192,7 +1173,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bf++;
                                     break;
@@ -1213,7 +1194,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bd++;
                                     break;
@@ -1242,7 +1223,7 @@ angular.module('myApp.services', [])
                                         k++;
 
                                     }
-                                    ;
+
                                     ba++;
                                     break;
                                 case "ActiveRenewableEnergyLeases":
@@ -1268,7 +1249,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bc++;
                                     break;
@@ -1293,7 +1274,7 @@ angular.module('myApp.services', [])
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     if (featureCollection[i].TOTAL_CNT > 0) {
                                         switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
@@ -1323,21 +1304,7 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                        // console.log("end of loop fed=" + myThis.CEFederalTotal);
-                        // console.log("end of loop state=" + myThis.CEStateTotal);
-                        //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
-                        //console.log(myThis);
-                        //console.log(myThis.TIDangerZones);
-                        //console.log(myThis.CEElevation);
-                        //myThis.wavepwr.length = 0;
-                        //myThis.wavepwr[0].AVG_WAVE_POWER=50;
-                        // myThis.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
-                        // myThis.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
-                        //  myThis.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                        // myThis.currentpwr[0].AVG_OCEAN_CURRENT=2;
-                        // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                        //console.log( myThis.tidalpwr[0].TOTAL_CNT);
-                        //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
+
                         var y = 35;
                         var x = 35; //good
                         var chartrow = 1;
@@ -1363,19 +1330,18 @@ angular.module('myApp.services', [])
                                     ["Tourism and Recreation", myThis.ECEcon[i].GDP_TourismAndRec]
                                 ],
                                 title: {
-                                    // align: 'left',
-                                    // x: 0
+
                                     style: {color: '#4a4a4a'},
                                     align: 'center',
                                     format: '{name}',
                                     verticalAlign: 'top',
                                     y: -20
-                                },
+                                }
                             }
 
                         }
                         myThis.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
-                        //console.log(myThis.OceanJobContributionsChartHeight);
+
 
                         if (myThis.wavepwr.length > 0) {
                             if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
@@ -1394,7 +1360,7 @@ angular.module('myApp.services', [])
                                 myThis.wavepwr[0].COLOR = '#D5DDC0';
                             } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
                                 myThis.wavepwr[0].COLOR = '#DEE7C9';
-                                //console.log("color");
+
                             } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
                                 myThis.wavepwr[0].COLOR = '#E4EFD2';
                             } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
@@ -1537,7 +1503,7 @@ angular.module('myApp.services', [])
                             this.Shared = false;
 
                             this.hide();
-                            //map.setView([33.51, -68.3], 6);
+
                         }
                         this.isLoaded = false;
                     },
@@ -1705,20 +1671,15 @@ angular.module('myApp.services', [])
                             for (var i = 0; i < elems.length; i++) {
                                 elems[i].style.display = 'inline-block';
                             }
-                            ;
-                            //var elems = document.getElementsByClassName('sliderbutton');
-                            //for (var i = 0; i < elems.length; i++) {
-                            //    elems[i].style.visibility = "hidden";
-                            //}
-                            //;
+
+
                             if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
 
-                                //smallmap.invalidateSize();
-                                //smallmap.fitBounds(this.minibounds);
+
                                 this.loadSmallMap(false);
-                                //console.log("BOOM!");
+
                             }
-                            //document.getElementById('slbuttxt0').style.visibility = "hidden";
+
                         } else {
 
                             document.getElementById("togglefull").style.marginLeft = "-25px";
@@ -1728,14 +1689,7 @@ angular.module('myApp.services', [])
                             for (var i = 0; i < elems.length; i++) {
                                 elems[i].style.display = 'none';
                             }
-                            ;
-                            //var elems = document.getElementsByClassName('sliderbutton');
-                            //for (var i = 0; i < elems.length; i++) {
-                            //    elems[i].style.visibility = "visible";
-                            //}
-                            //;
-                            //document.getElementById('slbuttxt0').style.visibility = "visible";
-                            // Code for Chrome, Safari, Opera
+
                             document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                             // Code for IE9
                             document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
@@ -1759,59 +1713,38 @@ angular.module('myApp.services', [])
                             maxZoom: 12,
                             useCors: true
                         });
-                        //var baselayerSmall = esriOceans.addTo(smallmap);
 
-                        //console.log("AOI_ID =" + $scope.AOI.ID + "");
                         var minicLayer;
                         if (this.ID === -9999) {
                             minicLayer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
                                 weight: 3,
-                                fillOpacity: .3,
+                                fillOpacity: .3
 
                             }).addTo(smallmap);
                             this.minibounds = minicLayer.getBounds();
                             smallmap.fitBounds(this.minibounds);
-                            //   console.log(this.minibounds);
+
                         } else {
                             minicLayer = L.esri.featureLayer({
                                 url: config.ortMapServer + config.ortLayerAOI,
                                 where: "AOI_ID =" + this.ID + "",
                                 color: '#EB660C',
                                 weight: 3,
-                                fillOpacity: .3,
+                                fillOpacity: .3
 
-                                //simplifyFactor: 5.0,
-                                //precision: 3
-                                //,            pane: 'miniAOIfeature'
                             }).addTo(smallmap);
 
 
-                            //console.log(" minicLayer loaded " + typeof (minicLayer.getBounds));
-
-
                             minicLayer.on("load", function (evt) {
-                                // create a new empty Leaflet bounds object
-                                //             var geoJsonBounds = minicLayer.getBounds();
-                                //             map.fitBounds(geoJsonBounds);
 
                                 var bounds = L.latLngBounds([]);
-                                // loop through the features returned by the server
                                 minicLayer.eachFeature(function (layer) {
-                                    // get the bounds of an individual feature
-
                                     var layerBounds = layer.getBounds();
-                                    // extend the bounds of the collection to fit the bounds of the new feature
                                     bounds.extend(layerBounds);
                                 });
-
-                                // once we've looped through all the features, zoom the map to the extent of the collection
                                 this.minibounds = bounds;
                                 smallmap.fitBounds(bounds);
-
-                                //  console.log("first small map fitbounds");
-
-                                // unwire the event listener so that it only fires once when the page is loaded
                                 minicLayer.off('load');
                             });
                         }
@@ -1819,14 +1752,11 @@ angular.module('myApp.services', [])
                         var test1 = false;
                         if ((this.inPrintWindow) && (test1)) {
                             leafletImage(smallmap, function (err, canvas) {
-                                // now you have canvas
-                                // example thing to do with that canvas:
                                 var img = document.createElement('img');
                                 var dimensions = smallmap.getSize();
                                 img.width = dimensions.x;
                                 img.height = dimensions.y;
                                 img.src = canvas.toDataURL();
-                                // window.open(img.src);
                                 document.getElementById('map3').innerHTML = '';
                                 document.getElementById('map3').appendChild(img);
                             });
@@ -1834,9 +1764,7 @@ angular.module('myApp.services', [])
 
                     },
                     loadStateChart: function () {
-                        if (AOI.highchartsNGState) AOI.highchartsNGState = null
-                        //.log("loadstatechart fed=" + AOI.CEFederalTotal);
-                        //console.log("loadstatechart state=" + AOI.CEStateTotal);
+                        if (AOI.highchartsNGState) AOI.highchartsNGState = null;
 
                         AOI.highchartsNGState = {
                             options: {
@@ -1884,11 +1812,8 @@ angular.module('myApp.services', [])
 
                     },
                     loadOceanJobContributionsChart: function () {
-                        //windChart = Highcharts.chart('container', {
-                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
 
-                        //console.log(AOI.OceanJobContributionsSeries);
-
+                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
                         AOI.OceanJobContributionsChart = {
                             options: {
 
@@ -1898,25 +1823,21 @@ angular.module('myApp.services', [])
                                     layout: 'vertical',
                                     verticalAlign: 'center',
                                     itemStyle: {
-                                        //color: '#000000',
-                                        fontSize: '10px',
-                                        //lineHeight: '10px',
+                                        fontSize: '10px'
                                     }
                                 },
                                 tooltip: {
                                     pointFormat: '<b>{point.percentage:.1f}%</b>'
                                 },
                                 chart: {
-                                    //spacing: 0,
-                                    // margin: 5,
+
                                     height: AOI.OceanJobContributionsChartHeight,
                                     type: 'pie'
                                 },
                                 title: {
                                     enabled: false,
                                     text: null,
-                                    align: 'center',
-                                    //x: 10
+                                    align: 'center'
                                 },
                                 exporting: {enabled: false},
                                 colors: ['#4572a7', '#aa4643', '#89a54e', '#71588f', '#4198af', '#db843d', '#93a9cf'],
@@ -1924,11 +1845,7 @@ angular.module('myApp.services', [])
 
                                     title: {
                                         enabled: true
-                                    },
-                                    //    labels: {
-                                    //        enabled: false
-                                    //    },
-                                    //    tickLength: 0
+                                    }
                                 },
                                 xAxis: {
                                     type: 'category',
@@ -1937,8 +1854,7 @@ angular.module('myApp.services', [])
                                     },
                                     labels: {
                                         enabled: true
-                                    },
-                                    //TickLength: 0
+                                    }
                                 },
                                 plotOptions: {
 
@@ -1946,9 +1862,9 @@ angular.module('myApp.services', [])
                                         allowPointSelect: false,
                                         cursor: 'pointer',
                                         size: 100,
-                                        //showInLegend: true,
+
                                         dataLabels: {
-                                            enabled: false,
+                                            enabled: false
                                         },
                                         point: {
                                             events: {
@@ -1959,35 +1875,16 @@ angular.module('myApp.services', [])
                                         }
                                     }
                                 }
-
-                                //plotOptions: {
-                                //    //series: {
-                                //    //    pointWidth: 190
-                                //    //},
-                                //   // column: {
-                                //        //stacking: 'percent'
-                                //   // }
-                                //}
-
                             },
                             loading: false,
-                            series: AOI.OceanJobContributionsSeries,
-
-
+                            series: AOI.OceanJobContributionsSeries
                         }
 
                         ;
-                        //AOI.chartObj.renderer.text('This text is <span style="color: red">styled</span> and <a href="http://example.com">linked</a>', 150, 80);
-                        //AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
+
                     },
                     loadOceanJobDollarsChart: function () {
-                        //windChart = Highcharts.chart('container', {
+
                         if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null
                         AOI.OceanJobDollarsChart = {
                             options: {
@@ -1998,42 +1895,29 @@ angular.module('myApp.services', [])
                                     align: 'right',
                                     verticalAlign: 'top',
                                     floating: true,
-
-
-                                    //align:'right',
-                                    //layout:'vertical',
-                                    //verticalAlign: 'center',
                                     itemStyle: {
-                                        //color: '#000000',
+
                                         fontSize: '10px',
-                                        lineHeight: '10px',
+                                        lineHeight: '10px'
                                     }
                                 },
                                 tooltip: {
                                     pointFormat: '<b>${point.y:,.2f}</b>'
                                 },
                                 chart: {
-                                    //spacing: 0,
-                                    //margin: 0,
                                     type: 'column'
                                 },
                                 title: {
                                     enabled: false,
                                     text: null,
-                                    align: 'left',
-                                    //x: 10
+                                    align: 'left'
                                 },
                                 exporting: {enabled: false},
                                 colors: ['#ffc000', '#92d050', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
                                 yAxis: {
-
                                     title: {
                                         enabled: false
-                                    },
-                                    //    labels: {
-                                    //        enabled: false
-                                    //    },
-                                    //    tickLength: 0
+                                    }
                                 },
                                 xAxis: {
                                     type: 'category',
@@ -2042,18 +1926,9 @@ angular.module('myApp.services', [])
                                     },
                                     labels: {
                                         enabled: true
-                                    },
-                                    //TickLength: 0
-                                },
-                                //plotOptions: {
-                                //    //series: {
-                                //    //    pointWidth: 190
-                                //    //},
-                                //   // column: {
-                                //        //stacking: 'percent'
-                                //   // }
-                                //}
+                                    }
 
+                                }
                             },
                             loading: false,
                             series: [{
@@ -2066,16 +1941,9 @@ angular.module('myApp.services', [])
                             ]
 
                         };
-
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
                     },
                     loadOceanJobEmployeesChart: function () {
-                        //windChart = Highcharts.chart('container', {
+
                         if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null
                         AOI.OceanJobEmployeesChart = {
                             options: {
@@ -2086,14 +1954,11 @@ angular.module('myApp.services', [])
                                     pointFormat: '<b>{point.y:,.0f}</b>'
                                 },
                                 chart: {
-                                    //spacing: 0,
-                                    //margin: 0,
                                     type: 'column'
                                 },
                                 title: {
                                     text: "Employees",
-                                    align: 'left',
-                                    //x: 10
+                                    align: 'left'
                                 },
                                 exporting: {enabled: false},
                                 colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
@@ -2101,11 +1966,7 @@ angular.module('myApp.services', [])
 
                                     title: {
                                         enabled: false
-                                    },
-                                    //    labels: {
-                                    //        enabled: false
-                                    //    },
-                                    //    tickLength: 0
+                                    }
                                 },
                                 xAxis: {
                                     type: 'category',
@@ -2114,17 +1975,8 @@ angular.module('myApp.services', [])
                                     },
                                     labels: {
                                         enabled: true
-                                    },
-                                    //TickLength: 0
-                                },
-                                //plotOptions: {
-                                //    //series: {
-                                //    //    pointWidth: 190
-                                //    //},
-                                //   // column: {
-                                //        //stacking: 'percent'
-                                //   // }
-                                //}
+                                    }
+                                }
 
                             },
                             loading: false,
@@ -2135,15 +1987,10 @@ angular.module('myApp.services', [])
 
                         };
 
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
+
                     },
                     loadWindChart: function () {
-                        //windChart = Highcharts.chart('container', {
+
                         if (AOI.highchartsNG) AOI.highchartsNG = null
                         AOI.highchartsNG = {
                             options: {
@@ -2219,12 +2066,7 @@ angular.module('myApp.services', [])
 
                         };
 
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
+
                     },
                     ShowURL: function () {
                         window.prompt("Share this report with: Ctrl+C, Enter", '' +
@@ -2235,7 +2077,7 @@ angular.module('myApp.services', [])
                             '&NRC=' + AOI.drawAreaJobId['NRC'] +
                             '&EM=' + AOI.drawAreaJobId['EM'])
                         ;
-                    },
+                    }
                 };
 
                 return AOI;

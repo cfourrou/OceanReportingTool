@@ -23101,8 +23101,25 @@ a.exportDivElements[b]=e.onmouseout=e.onmouseover=e.ontouchstart=e.onclick=null,
 
 /* Services */
 
+angular.module('myApp.services', [])
+    .factory('webService', function ($http) {
 
-angular.module('myApp.services', []).factory('_', function () {
+        var getData = function () {
+
+            // Angular $http() and then() both return promises themselves
+            return $http({method: "GET", url: "CE_config.json"}).then(function (result) {
+
+                // What we return here is the data that will be accessible
+                // to us after the promise resolves
+                return result.data;
+            });
+        };
+
+
+        return {getData: getData};
+    })
+
+    .factory('_', function () {
         return window._; // assumes underscore has already been loaded on the page
     })
     .provider('AOI', function () {
@@ -23114,7 +23131,7 @@ angular.module('myApp.services', []).factory('_', function () {
                 ortCommonGPService: '',
                 ortTranspoGPService: '',
                 ortNaturalGPService: '',
-                ortEconGPService: '',
+                ortEconGPService: ''
             },
             AOI;
 
@@ -23127,6 +23144,8 @@ angular.module('myApp.services', []).factory('_', function () {
 
                 AOI = {
                     OceanJobContributionsSeries: [],
+                    drawAreaJobId: [],
+                    Shared: false,
                     url: $window.location.href.split('#'),
                     config: config,
                     layer: null,
@@ -23179,7 +23198,7 @@ angular.module('myApp.services', []).factory('_', function () {
                     ECCountyGDP: [],
 
                     display: function (AOI_ID) {
-                        this.ID = AOI_ID;
+                        this.ID = parseInt(AOI_ID);
                         if (this.ID === -9999) {
                             this.layer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
@@ -23188,7 +23207,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 pane: 'AOIfeature'
                             }).addTo(map);
                             map.fitBounds(this.layer.getBounds(), {
-                                padding: [50, 50]
+                                padding: [1, 1]
                             });
                         } else {
                             this.layer = L.esri.featureLayer({ //AOI poly (7)
@@ -23201,17 +23220,40 @@ angular.module('myApp.services', []).factory('_', function () {
                                 //precision: 2
                             }).addTo(map);
                         }
-                        //console.log(" this.layer loaded " + typeof(this.layer.getBounds));
+
+                        this.layer.on("load", function (evt) {
+                            // create a new empty Leaflet bounds object
+
+                            var mbounds = L.latLngBounds([]);
+                            // loop through the features returned by the server
+
+                            AOI.layer.eachFeature(function (layer) {
+                                // get the bounds of an individual feature
+                                var layerBounds = layer.getBounds();
+                                // extend the bounds of the collection to fit the bounds of the new feature
+                                mbounds.extend(layerBounds);
+                            });
+
+                            try {
+                                map.fitBounds(mbounds);
+
+                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                            }
+                            catch (err) {
+                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                //so for now we will zoom out on error and allow this event to fire again.
+                                // console.log("AOI bounds out of bounds, zooming out");
+                                map.setView([33.51, -78.3], 6); //it should try again.
+                            }
+                        });
+
                         this.isVisible = true;
-                        //console.log("display: this.ID = " +AOI_ID);
+
                     },
                     hide: function () {
                         if (this.isVisible) {
-
-                            //console.log("hide this.layer  =" + this.ID)
                             map.removeLayer(this.layer);
                         }
-                        // probably move this somewhere better.
                         map.setView([33.51, -78.3], 6);
                         this.isVisible = false;
                     },
@@ -23231,11 +23273,11 @@ angular.module('myApp.services', []).factory('_', function () {
                     },
                     isVisible: false,
                     loadData: function (AOI_ID, name) {
-                        // map.removeLayer(cLayer);
+
                         this.display(AOI_ID);
-                        //this.isVisible = true;
+
                         var myThis = this;
-                        //myThis.zoomTo();
+
                         myThis.name = name;
                         myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
                             url: config.ortMapServer + ortLayerOptional[0].num,
@@ -23303,7 +23345,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         iconSize: [32, 37],
                                         iconAnchor: [16, 37],
                                         popupAnchor: [0, -28]
-                                    }),
+                                    })
                                 });
                             }
                         });
@@ -23342,13 +23384,13 @@ angular.module('myApp.services', []).factory('_', function () {
                             url: config.ortMapServer,
                             pane: 'optionalfeature9',
                             layers: [ortLayerOptional[9].num],
-                            opacity: .8,
+                            opacity: .8
                         });
                         myThis.currentPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
                             pane: 'optionalfeature10',
                             layers: [ortLayerOptional[10].num],
-                            opacity: .8,
+                            opacity: .8
                         });
 
                         myThis.beachNourish = L.esri.featureLayer({
@@ -23369,7 +23411,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         iconSize: [32, 37],
                                         iconAnchor: [16, 37],
                                         popupAnchor: [0, -28]
-                                    }),
+                                    })
                                 });
                             }
                         });
@@ -23419,7 +23461,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         if (myThis.ID === -9999) {
                             var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
-                            //console.log(featureCollection);
+
                             var newarray = [];
                             angular.forEach(featureCollection.features, function (feature) {
                                 var newobject = {};
@@ -23428,13 +23470,12 @@ angular.module('myApp.services', []).factory('_', function () {
                                 });
                                 newarray.push(newobject);
                             });
-                            //console.log(newarray);
+
                             myThis.massageData(newarray);
 
                         } else {
                             query.returnGeometry(false).where("AOI_ID =" + myThis.ID + "").run(function (error, featureCollection, response) {
-                                // var mFeatureCollection = JSON.parse(JSON.stringify(featureCollection));
-                                // console.log(featureCollection);
+
                                 var newarray = [];
                                 angular.forEach(featureCollection.features, function (feature) {
                                     var newobject = {};
@@ -23445,9 +23486,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                 });
                                 //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                                //console.log(newarray);
-                                //console.log(newarray.length);
-                                //console.log(newarray[0].AOI_ID);
                                 myThis.massageData(newarray);
                             });
                         }
@@ -23494,7 +23532,6 @@ angular.module('myApp.services', []).factory('_', function () {
                         var ch = 0;
                         var ci = 0;
                         var ack = [];
-                        // var za = 0;
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
@@ -23505,8 +23542,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
                                         TotalHouses: (featureCollection[i].TotalHouses || 0),
                                         Population: (featureCollection[i].Population || 0),
-                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
-                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
                                     };
 
@@ -23521,7 +23557,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ci++;
                                     break;
@@ -23533,8 +23569,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
                                         TotalHouses: (featureCollection[i].TotalHouses || 0),
                                         Population: (featureCollection[i].Population || 0),
-                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0),
-                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
                                     };
 
@@ -23549,7 +23584,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ch++;
                                     break;
@@ -23578,14 +23613,14 @@ angular.module('myApp.services', []).factory('_', function () {
                                         Wages_OffshoreMineralExt: (featureCollection[i].Wages_OffshoreMineralExt || 0),
                                         Wages_ShipAndBoatBuilding: (featureCollection[i].Wages_ShipAndBoatBuilding || 0),
                                         Wages_TourismAndRec: (featureCollection[i].Wages_TourismAndRec || 0),
-                                        //((featureCollection[i].Dist_Mi === ' ') ? '0' : featureCollection[i].Dist_Mi )
+
                                         GDP_LivingResources: ((featureCollection[i].GDP_LivingResources === -9999) ? 0 : (featureCollection[i].GDP_LivingResources || 0)),
                                         GDP_MarineConstruction: ((featureCollection[i].GDP_MarineConstruction === -9999) ? 0 : (featureCollection[i].GDP_MarineConstruction || 0)),
                                         GDP_MarineTransp: ((featureCollection[i].GDP_MarineTransp === -9999) ? 0 : (featureCollection[i].GDP_MarineTransp || 0)),
                                         GDP_OffshoreMineralExt: ((featureCollection[i].GDP_OffshoreMineralExt === -9999) ? 0 : (featureCollection[i].GDP_OffshoreMineralExt || 0)),
                                         GDP_ShipAndBoatBuilding: ((featureCollection[i].GDP_ShipAndBoatBuilding === -9999) ? 0 : (featureCollection[i].GDP_ShipAndBoatBuilding || 0)),
                                         GDP_TourismAndRec: ((featureCollection[i].GDP_TourismAndRec === -9999) ? 0 : (featureCollection[i].GDP_TourismAndRec || 0))
-                                        // entity:(featureCollection[i].cntyname || featureCollection[i].st_name)
+
 
                                     };
                                     switch (featureCollection[i].OceanSector) {
@@ -23607,7 +23642,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cg++;
                                     break;
@@ -23630,7 +23665,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ce++;
                                     break;
@@ -23654,7 +23689,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cf++;
                                     break;
@@ -23676,7 +23711,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cd++;
                                     break;
@@ -23698,7 +23733,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cc++;
                                     break;
@@ -23722,7 +23757,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     cb++;
                                     break;
@@ -23743,7 +23778,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     ca++;
                                     break;
@@ -23767,7 +23802,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bz++;
                                     break;
@@ -23790,7 +23825,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
                                     if (featureCollection[i].TOTAL_CNT > 0) {
 
                                         if ((featureCollection[i].jurisdiction.substring(0, 3)) === "Fed") {
@@ -23801,8 +23836,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         } else  myThis.CEStateTotal = parseInt(myThis.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
 
                                     }
-                                    // console.log("in load loop fed= " + myThis.CEFederalTotal);
-                                    // console.log("in load loop state= " + myThis.CEStateTotal);
+
                                     by++;
                                     break;
                                 case "CoastalCounties":
@@ -23812,8 +23846,6 @@ angular.module('myApp.services', []).factory('_', function () {
                                         st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
                                         ctystate: (featureCollection[i].st_abbr || 'Unknown'),
                                         st_name: (featureCollection[i].st_name || 'Unknown')
-
-
                                     };
 
                                     if ((bx === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -23826,7 +23858,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bx++;
                                     break;
@@ -23849,7 +23881,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bv++;
                                     break;
@@ -23872,7 +23904,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bw++;
                                     break;
@@ -23895,7 +23927,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bu++;
                                     break;
@@ -23919,7 +23951,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bt++;
                                     break;
@@ -23954,7 +23986,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     br++;
                                     break;
@@ -23978,7 +24010,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bq++;
                                     break;
@@ -24002,7 +24034,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bp++;
                                     break;
@@ -24024,7 +24056,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bo++;
                                     break;
@@ -24046,7 +24078,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bn++;
                                     break;
@@ -24067,7 +24099,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bm++;
                                     break;
@@ -24090,7 +24122,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bl++;
                                     break;
@@ -24111,7 +24143,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bk++;
                                     break;
@@ -24134,7 +24166,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bj++;
                                     break;
@@ -24144,7 +24176,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
                                         SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
                                     };
-                                    //console.log(myThis.wavepwr[bi].COLOR);
+
                                     if ((featureCollection[i].METADATA_URL != null)) {
                                         myThis.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
@@ -24155,7 +24187,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bi++;
                                     break;
@@ -24176,7 +24208,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     be++;
                                     break;
@@ -24197,8 +24229,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
-                                    //console.log("hydrok "+myThis.hydrok);
+
                                     bg++;
 
                                     break;
@@ -24219,7 +24250,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bh++;
 
@@ -24228,7 +24259,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
                                     myThis.mml[bf] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-                                        //PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
+
                                     };
 
                                     if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -24241,7 +24272,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bf++;
                                     break;
@@ -24262,7 +24293,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bd++;
                                     break;
@@ -24291,7 +24322,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         k++;
 
                                     }
-                                    ;
+
                                     ba++;
                                     break;
                                 case "ActiveRenewableEnergyLeases":
@@ -24317,7 +24348,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     bc++;
                                     break;
@@ -24342,7 +24373,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                         };
                                         k++;
                                     }
-                                    ;
+
 
                                     if (featureCollection[i].TOTAL_CNT > 0) {
                                         switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
@@ -24372,21 +24403,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             }
                         }
 
-                        // console.log("end of loop fed=" + myThis.CEFederalTotal);
-                        // console.log("end of loop state=" + myThis.CEStateTotal);
-                        //console.log('coastfac='+AOI.coastfac[0].TOTAL_CNT);
-                        //console.log(myThis);
-                        //console.log(myThis.TIDangerZones);
-                        //console.log(myThis.CEElevation);
-                        //myThis.wavepwr.length = 0;
-                        //myThis.wavepwr[0].AVG_WAVE_POWER=50;
-                        // myThis.tidalpwr[0].AVG_TIDAL_CURRENT=1.01;
-                        // myThis.tidalpwr[0].SUITABILITY_TIDAL_DEPTH="YES";
-                        //  myThis.tidalpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                        // myThis.currentpwr[0].AVG_OCEAN_CURRENT=2;
-                        // myThis.currentpwr[0].SUITABILITY_TIDAL_AREA="YES";
-                        //console.log( myThis.tidalpwr[0].TOTAL_CNT);
-                        //console.log( myThis.tidalpwr[0].AVG_TIDAL_CURRENT);
+
                         var y = 35;
                         var x = 35; //good
                         var chartrow = 1;
@@ -24412,19 +24429,18 @@ angular.module('myApp.services', []).factory('_', function () {
                                     ["Tourism and Recreation", myThis.ECEcon[i].GDP_TourismAndRec]
                                 ],
                                 title: {
-                                    // align: 'left',
-                                    // x: 0
+
                                     style: {color: '#4a4a4a'},
                                     align: 'center',
                                     format: '{name}',
                                     verticalAlign: 'top',
                                     y: -20
-                                },
+                                }
                             }
 
                         }
                         myThis.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
-                        //console.log(myThis.OceanJobContributionsChartHeight);
+
 
                         if (myThis.wavepwr.length > 0) {
                             if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
@@ -24443,7 +24459,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                 myThis.wavepwr[0].COLOR = '#D5DDC0';
                             } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
                                 myThis.wavepwr[0].COLOR = '#DEE7C9';
-                                //console.log("color");
+
                             } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
                                 myThis.wavepwr[0].COLOR = '#E4EFD2';
                             } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
@@ -24582,10 +24598,11 @@ angular.module('myApp.services', []).factory('_', function () {
                             this.ECStateGDP.length = 0;
                             this.ECCountyGDP.length = 0;
                             this.OceanJobContributionsSeries.length = 0;
-
+                            this.drawAreaJobId.length = 0;
+                            this.Shared = false;
 
                             this.hide();
-                            //map.setView([33.51, -68.3], 6);
+
                         }
                         this.isLoaded = false;
                     },
@@ -24753,20 +24770,15 @@ angular.module('myApp.services', []).factory('_', function () {
                             for (var i = 0; i < elems.length; i++) {
                                 elems[i].style.display = 'inline-block';
                             }
-                            ;
-                            //var elems = document.getElementsByClassName('sliderbutton');
-                            //for (var i = 0; i < elems.length; i++) {
-                            //    elems[i].style.visibility = "hidden";
-                            //}
-                            //;
+
+
                             if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
 
-                                //smallmap.invalidateSize();
-                                //smallmap.fitBounds(this.minibounds);
+
                                 this.loadSmallMap(false);
-                                //console.log("BOOM!");
+
                             }
-                            //document.getElementById('slbuttxt0').style.visibility = "hidden";
+
                         } else {
 
                             document.getElementById("togglefull").style.marginLeft = "-25px";
@@ -24776,14 +24788,7 @@ angular.module('myApp.services', []).factory('_', function () {
                             for (var i = 0; i < elems.length; i++) {
                                 elems[i].style.display = 'none';
                             }
-                            ;
-                            //var elems = document.getElementsByClassName('sliderbutton');
-                            //for (var i = 0; i < elems.length; i++) {
-                            //    elems[i].style.visibility = "visible";
-                            //}
-                            //;
-                            //document.getElementById('slbuttxt0').style.visibility = "visible";
-                            // Code for Chrome, Safari, Opera
+
                             document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                             // Code for IE9
                             document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
@@ -24807,59 +24812,38 @@ angular.module('myApp.services', []).factory('_', function () {
                             maxZoom: 12,
                             useCors: true
                         });
-                        //var baselayerSmall = esriOceans.addTo(smallmap);
 
-                        //console.log("AOI_ID =" + $scope.AOI.ID + "");
                         var minicLayer;
                         if (this.ID === -9999) {
                             minicLayer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
                                 weight: 3,
-                                fillOpacity: .3,
+                                fillOpacity: .3
 
                             }).addTo(smallmap);
                             this.minibounds = minicLayer.getBounds();
                             smallmap.fitBounds(this.minibounds);
-                            //   console.log(this.minibounds);
+
                         } else {
                             minicLayer = L.esri.featureLayer({
                                 url: config.ortMapServer + config.ortLayerAOI,
                                 where: "AOI_ID =" + this.ID + "",
                                 color: '#EB660C',
                                 weight: 3,
-                                fillOpacity: .3,
+                                fillOpacity: .3
 
-                                //simplifyFactor: 5.0,
-                                //precision: 3
-                                //,            pane: 'miniAOIfeature'
                             }).addTo(smallmap);
 
 
-                            //console.log(" minicLayer loaded " + typeof (minicLayer.getBounds));
-
-
                             minicLayer.on("load", function (evt) {
-                                // create a new empty Leaflet bounds object
-                                //             var geoJsonBounds = minicLayer.getBounds();
-                                //             map.fitBounds(geoJsonBounds);
 
                                 var bounds = L.latLngBounds([]);
-                                // loop through the features returned by the server
                                 minicLayer.eachFeature(function (layer) {
-                                    // get the bounds of an individual feature
-
                                     var layerBounds = layer.getBounds();
-                                    // extend the bounds of the collection to fit the bounds of the new feature
                                     bounds.extend(layerBounds);
                                 });
-
-                                // once we've looped through all the features, zoom the map to the extent of the collection
                                 this.minibounds = bounds;
                                 smallmap.fitBounds(bounds);
-
-                                //  console.log("first small map fitbounds");
-
-                                // unwire the event listener so that it only fires once when the page is loaded
                                 minicLayer.off('load');
                             });
                         }
@@ -24867,14 +24851,11 @@ angular.module('myApp.services', []).factory('_', function () {
                         var test1 = false;
                         if ((this.inPrintWindow) && (test1)) {
                             leafletImage(smallmap, function (err, canvas) {
-                                // now you have canvas
-                                // example thing to do with that canvas:
                                 var img = document.createElement('img');
                                 var dimensions = smallmap.getSize();
                                 img.width = dimensions.x;
                                 img.height = dimensions.y;
                                 img.src = canvas.toDataURL();
-                                // window.open(img.src);
                                 document.getElementById('map3').innerHTML = '';
                                 document.getElementById('map3').appendChild(img);
                             });
@@ -24882,9 +24863,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
                     },
                     loadStateChart: function () {
-                        if (AOI.highchartsNGState) AOI.highchartsNGState = null
-                        //.log("loadstatechart fed=" + AOI.CEFederalTotal);
-                        //console.log("loadstatechart state=" + AOI.CEStateTotal);
+                        if (AOI.highchartsNGState) AOI.highchartsNGState = null;
 
                         AOI.highchartsNGState = {
                             options: {
@@ -24932,11 +24911,8 @@ angular.module('myApp.services', []).factory('_', function () {
 
                     },
                     loadOceanJobContributionsChart: function () {
-                        //windChart = Highcharts.chart('container', {
-                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null
 
-                        //console.log(AOI.OceanJobContributionsSeries);
-
+                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
                         AOI.OceanJobContributionsChart = {
                             options: {
 
@@ -24946,25 +24922,21 @@ angular.module('myApp.services', []).factory('_', function () {
                                     layout: 'vertical',
                                     verticalAlign: 'center',
                                     itemStyle: {
-                                        //color: '#000000',
-                                        fontSize: '10px',
-                                        //lineHeight: '10px',
+                                        fontSize: '10px'
                                     }
                                 },
                                 tooltip: {
                                     pointFormat: '<b>{point.percentage:.1f}%</b>'
                                 },
                                 chart: {
-                                    //spacing: 0,
-                                    // margin: 5,
+
                                     height: AOI.OceanJobContributionsChartHeight,
                                     type: 'pie'
                                 },
                                 title: {
                                     enabled: false,
                                     text: null,
-                                    align: 'center',
-                                    //x: 10
+                                    align: 'center'
                                 },
                                 exporting: {enabled: false},
                                 colors: ['#4572a7', '#aa4643', '#89a54e', '#71588f', '#4198af', '#db843d', '#93a9cf'],
@@ -24972,11 +24944,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
                                     title: {
                                         enabled: true
-                                    },
-                                    //    labels: {
-                                    //        enabled: false
-                                    //    },
-                                    //    tickLength: 0
+                                    }
                                 },
                                 xAxis: {
                                     type: 'category',
@@ -24985,8 +24953,7 @@ angular.module('myApp.services', []).factory('_', function () {
                                     },
                                     labels: {
                                         enabled: true
-                                    },
-                                    //TickLength: 0
+                                    }
                                 },
                                 plotOptions: {
 
@@ -24994,9 +24961,9 @@ angular.module('myApp.services', []).factory('_', function () {
                                         allowPointSelect: false,
                                         cursor: 'pointer',
                                         size: 100,
-                                        //showInLegend: true,
+
                                         dataLabels: {
-                                            enabled: false,
+                                            enabled: false
                                         },
                                         point: {
                                             events: {
@@ -25007,35 +24974,16 @@ angular.module('myApp.services', []).factory('_', function () {
                                         }
                                     }
                                 }
-
-                                //plotOptions: {
-                                //    //series: {
-                                //    //    pointWidth: 190
-                                //    //},
-                                //   // column: {
-                                //        //stacking: 'percent'
-                                //   // }
-                                //}
-
                             },
                             loading: false,
-                            series: AOI.OceanJobContributionsSeries,
-
-
+                            series: AOI.OceanJobContributionsSeries
                         }
 
                         ;
-                        //AOI.chartObj.renderer.text('This text is <span style="color: red">styled</span> and <a href="http://example.com">linked</a>', 150, 80);
-                        //AOI.OceanJobContributionsChart.Series = AOI.OceanJobContributionsSeries[0];
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
+
                     },
                     loadOceanJobDollarsChart: function () {
-                        //windChart = Highcharts.chart('container', {
+
                         if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null
                         AOI.OceanJobDollarsChart = {
                             options: {
@@ -25046,42 +24994,29 @@ angular.module('myApp.services', []).factory('_', function () {
                                     align: 'right',
                                     verticalAlign: 'top',
                                     floating: true,
-
-
-                                    //align:'right',
-                                    //layout:'vertical',
-                                    //verticalAlign: 'center',
                                     itemStyle: {
-                                        //color: '#000000',
+
                                         fontSize: '10px',
-                                        lineHeight: '10px',
+                                        lineHeight: '10px'
                                     }
                                 },
                                 tooltip: {
                                     pointFormat: '<b>${point.y:,.2f}</b>'
                                 },
                                 chart: {
-                                    //spacing: 0,
-                                    //margin: 0,
                                     type: 'column'
                                 },
                                 title: {
                                     enabled: false,
                                     text: null,
-                                    align: 'left',
-                                    //x: 10
+                                    align: 'left'
                                 },
                                 exporting: {enabled: false},
                                 colors: ['#ffc000', '#92d050', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
                                 yAxis: {
-
                                     title: {
                                         enabled: false
-                                    },
-                                    //    labels: {
-                                    //        enabled: false
-                                    //    },
-                                    //    tickLength: 0
+                                    }
                                 },
                                 xAxis: {
                                     type: 'category',
@@ -25090,18 +25025,9 @@ angular.module('myApp.services', []).factory('_', function () {
                                     },
                                     labels: {
                                         enabled: true
-                                    },
-                                    //TickLength: 0
-                                },
-                                //plotOptions: {
-                                //    //series: {
-                                //    //    pointWidth: 190
-                                //    //},
-                                //   // column: {
-                                //        //stacking: 'percent'
-                                //   // }
-                                //}
+                                    }
 
+                                }
                             },
                             loading: false,
                             series: [{
@@ -25114,16 +25040,9 @@ angular.module('myApp.services', []).factory('_', function () {
                             ]
 
                         };
-
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
                     },
                     loadOceanJobEmployeesChart: function () {
-                        //windChart = Highcharts.chart('container', {
+
                         if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null
                         AOI.OceanJobEmployeesChart = {
                             options: {
@@ -25134,14 +25053,11 @@ angular.module('myApp.services', []).factory('_', function () {
                                     pointFormat: '<b>{point.y:,.0f}</b>'
                                 },
                                 chart: {
-                                    //spacing: 0,
-                                    //margin: 0,
                                     type: 'column'
                                 },
                                 title: {
                                     text: "Employees",
-                                    align: 'left',
-                                    //x: 10
+                                    align: 'left'
                                 },
                                 exporting: {enabled: false},
                                 colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
@@ -25149,11 +25065,7 @@ angular.module('myApp.services', []).factory('_', function () {
 
                                     title: {
                                         enabled: false
-                                    },
-                                    //    labels: {
-                                    //        enabled: false
-                                    //    },
-                                    //    tickLength: 0
+                                    }
                                 },
                                 xAxis: {
                                     type: 'category',
@@ -25162,17 +25074,8 @@ angular.module('myApp.services', []).factory('_', function () {
                                     },
                                     labels: {
                                         enabled: true
-                                    },
-                                    //TickLength: 0
-                                },
-                                //plotOptions: {
-                                //    //series: {
-                                //    //    pointWidth: 190
-                                //    //},
-                                //   // column: {
-                                //        //stacking: 'percent'
-                                //   // }
-                                //}
+                                    }
+                                }
 
                             },
                             loading: false,
@@ -25183,15 +25086,10 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         };
 
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
+
                     },
                     loadWindChart: function () {
-                        //windChart = Highcharts.chart('container', {
+
                         if (AOI.highchartsNG) AOI.highchartsNG = null
                         AOI.highchartsNG = {
                             options: {
@@ -25267,23 +25165,27 @@ angular.module('myApp.services', []).factory('_', function () {
 
                         };
 
-                        /*  //over ride windclass for testing chart
-                         // console.log(windclass[0]);
-                         windclass[0]=10;
-                         windclass[1]=25;
-                         windclass[2]=65;
-                         */
+
                     },
                     ShowURL: function () {
-                        $window.alert("Share this URL: " + this.ID);
-                    },
+                        window.prompt("Share this report with: Ctrl+C, Enter", '' +
+                            AOI.url[0] + '#/AOI?AOI=' + AOI.ID +
+                            '&TI=' + AOI.drawAreaJobId['TI'] +
+                            '&EC=' + AOI.drawAreaJobId['EC'] +
+                            '&CE=' + AOI.drawAreaJobId['CE'] +
+                            '&NRC=' + AOI.drawAreaJobId['NRC'] +
+                            '&EM=' + AOI.drawAreaJobId['EM'])
+                        ;
+                    }
                 };
 
                 return AOI;
             }]
         }
     })
-;;
+;
+
+;
 'use strict';
 
 
@@ -25359,17 +25261,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
 
-            //img = img.replace('data:image/png;base64,', '');
-            // window.open(img);
+
             $('#binaryImage').attr('src', img);
-            //'data:image/png;base64,'+img);
 
 
         }
 
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope', '$http', function (AOI, $scope, $http) {
+    .controller('AOICtrl', ['AOI', '$scope', '$http', 'webService', function (AOI, $scope, $http, webService) {
+
+
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.congressIsActive = true;
@@ -25378,6 +25280,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.congressMenu = "-";
         $scope.senateMenu = "+";
         $scope.houseMenu = "+";
+
+        var myDataPromise = webService.getData();
+        myDataPromise.then(function (result) {
+
+            // this is only run after getData() resolves
+            $scope.ddata = result;
+            // console.log("data.name" + $scope.ddata);
+            //move the http gets in here
+        });
+
         $http.get('CE_config.json')
             .then(function (res) {
                 $scope.CEConfig = res.data;
@@ -25395,7 +25307,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.congressMenu = "-";
             $scope.senateMenu = "+";
             $scope.houseMenu = "+";
-        }
+        };
         $scope.houseActivate = function () {
             $scope.congressIsActive = false;
             $scope.senateIsActive = false;
@@ -25403,7 +25315,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.congressMenu = "+";
             $scope.senateMenu = "+";
             $scope.houseMenu = "-";
-        }
+        };
         $scope.senateActivate = function () {
             $scope.congressIsActive = false;
             $scope.senateIsActive = true;
@@ -25411,52 +25323,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.congressMenu = "+";
             $scope.senateMenu = "-";
             $scope.houseMenu = "+";
-        }
+        };
 
-        AOI.layer.on("load", function (evt) {
-            // create a new empty Leaflet bounds object
+        $scope.mout($scope.AOI.ID);
 
-            var mbounds = L.latLngBounds([]);
-            // loop through the features returned by the server
-
-            AOI.layer.eachFeature(function (layer) {
-                // get the bounds of an individual feature
-                var layerBounds = layer.getBounds();
-                // extend the bounds of the collection to fit the bounds of the new feature
-                mbounds.extend(layerBounds);
-            });
-
-            try {
-                map.fitBounds(mbounds);
-                //console.log("here?");
-                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
-            }
-            catch (err) {
-                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                //so for now we will zoom out on error and allow this event to fire again.
-                // console.log("AOI bounds out of bounds, zooming out");
-                map.setView([33.51, -78.3], 6); //it should try again.
-            }
-
-
-            $scope.mout($scope.AOI.ID);
-
-
-        });
-
-        // console.log("in CE ctrl=" + AOI.CEFederalTotal);
-
-        //$scope.$on('$viewContentLoaded', function () {
-        //    // for some reason the data on the first partial in Common elements isn't visable until an action is performed like clicking on another button.
-        //    //I can't just apply scope here because it is already running. if i give the current one a little time to complete before running this, every thing works.
-        //    $timeout(function () {
-        //
-        //        $scope.$apply();
-        //
-        //
-        //    }, 1250);
-        //});
-        //AOI.doFullSlider('CE');
         $scope.paneon();
 
     }])
@@ -25466,7 +25336,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.off();
         map.invalidateSize();
         AOI.inPrintWindow = false;
-        // console.log("draw mode "+ $scope.drawtoolOn);
+
 
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
 
@@ -25510,7 +25380,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         AOI.loadWindChart();
 
-        //AOI.doFullSlider('EM');
         $scope.paneon();
     }])
 
@@ -25523,9 +25392,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.TIConfig = res.data;
             });
 
-
-        //AOI.loadWindChart();
-        //AOI.doFullSlider('TI');
         $scope.paneon();
 
     }])
@@ -25561,530 +25427,572 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
     }])
 
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams) { //this one loads once on start up
+    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', '$q',
+        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q) { //this one loads once on start up
 
-        $scope.AOI = AOI;
-        $scope.baseMapControlOn = false;
-        AOI.inPrintWindow = false;
-        var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
-            position: 'topleft',
-            collapsed: false
-        });
-        $scope.box = [];
-        var len = 2000;
-        for (var i = 0; i < len; i++) {
-            $scope.box.push({
-                myid: i,
-                isActive: false,
-                level: 0,
-                future: true
+            $scope.AOI = AOI;
+            $scope.baseMapControlOn = false;
+            AOI.inPrintWindow = false;
+            var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
+                position: 'topleft',
+                collapsed: false
             });
-        }
-        $scope.drawenabled = false;
-        $scope.drawlocked = false;
-        $scope.zoomlevel = map.getZoom();
-        $scope.drawOrSubmitCommand = "DRAW";
-
-        Highcharts.setOptions({
-            global: {
-                useUTC: false,
-
-            },
-            lang: {
-                decimalPoint: '.',
-                thousandsSep: ',',
-                numericSymbols:[ "k" , "M" , "B" , "T" , "P" , "E"]
-            }
-        });
-
-        map.on('zoomend', function () {
-            $scope.zoomlevel = map.getZoom();
-            // console.log("zoomlevel "+ $scope.zoomlevel);
-
-            if ($scope.drawtoolOn) {
-                $scope.drawenabled = $scope.zoomLevelGood();
-                $scope.$apply();
-            }
-            //console.log("zoom draw mode " + $scope.drawtoolOn);
-        });
-
-        $scope.zoomLevelGood = function () {
-            $scope.zoomlevel = map.getZoom();
-            if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
-                return true;
-            } else {
-                return false;
-            }
-        };
-
-
-        $scope.checked = true; // This will be binded using the ps-open attribute
-
-        $scope.drawOff = function () {
-            map.setMinZoom(1);
-            map.setMaxZoom(12);
-            map.dragging.enable(); // panning
-            map.touchZoom.enable(); // 2 finger zooms from touchscreens
-            map.doubleClickZoom.enable();
-            map.boxZoom.enable(); // shift mouse drag zooming.
-            //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
-            map.dragging.enable();
-            searchControl.enable();
-            $scope.drawlocked = false;
-            $scope.drawOrSubmitCommand = "DRAW";
-            map.pm.disableDraw('Poly');
-
-        }
-        $scope.drawOn = function () {
-            map.setMinZoom(map.getZoom()); //lock map view at current zoom level
-            map.setMaxZoom(map.getZoom());
-            map.dragging.disable(); //no panning
-            map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-            map.doubleClickZoom.disable();
-            map.boxZoom.disable(); //no shift mouse drag zooming.
-            //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-            searchControl.disable()
-            $scope.drawlocked = true;
-            $scope.drawOrSubmitCommand = "Drawing";
-            if ($scope.polylayer)  map.removeLayer($scope.polylayer);
-            map.pm.enableDraw('Poly');
-        }
-
-        $scope.showSubmitModal = function () {
-
-            ModalService.showModal({
-                templateUrl: "modalDraw.html",
-                controller: "submitModalController",
-            }).then(function (modal) {
-                modal.close.then(function (result) {
-                    $scope.customResult = "All good!";
+            $scope.box = [];
+            var len = 2000;
+            for (var i = 0; i < len; i++) {
+                $scope.box.push({
+                    myid: i,
+                    isActive: false,
+                    level: 0,
+                    future: true
                 });
+            }
+            $scope.drawenabled = false;
+            $scope.drawlocked = false;
+            $scope.zoomlevel = map.getZoom();
+            $scope.drawOrSubmitCommand = "DRAW";
+
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+
+                },
+                lang: {
+                    decimalPoint: '.',
+                    thousandsSep: ',',
+                    numericSymbols: ["k", "M", "B", "T", "P", "E"]
+                }
             });
 
-        };
-
-        $scope.startSpin = function () {
-            usSpinnerService.spin('spinner-1');
-        }
-        $scope.stopSpin = function () {
-            usSpinnerService.stop('spinner-1');
-        }
-        var EMGPService = L.esri.GP.service({
-            url: AOI.config.ortEnergyGPService,
-            useCors: false,
-            async: true,
-            path: 'submitJob',
-            asyncInterval: 1
-        });
-        var CEGPService = L.esri.GP.service({
-            url: AOI.config.ortCommonGPService,
-            useCors: false,
-            async: true,
-            path: 'submitJob',
-            asyncInterval: 1
-        });
-        var TIGPService = L.esri.GP.service({
-            url: AOI.config.ortTranspoGPService,
-            useCors: false,
-            async: true,
-            path: 'submitJob',
-            asyncInterval: 1
-        });
-        var NRCGPService = L.esri.GP.service({
-            url: AOI.config.ortNaturalGPService,
-            useCors: false,
-            async: true,
-            path: 'submitJob',
-            asyncInterval: 1
-        });
-        var ECGPService = L.esri.GP.service({
-            url: AOI.config.ortEconGPService,
-            useCors: false,
-            async: true,
-            path: 'submitJob',
-            asyncInterval: 1
-        });
-
-        $scope.baseMapSwitch = function () {
-            //console.log("basemap " + $scope.baseMapControlOn);
-            if ($scope.baseMapControlOn) {
-                map.removeControl(baseMapControl);
-                $scope.baseMapControlOn = false;
-
-            } else {
-                baseMapControl.addTo(map);
-                $scope.baseMapControlOn = true;
-            }
-        }
+            map.on('zoomend', function () {
+                $scope.zoomlevel = map.getZoom();
 
 
-        $scope.drawIt = function () {
-            // console.log("drawIt clicked " + $scope.zoomlevel + " enl?" + $scope.drawenabled);
-            switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
+                if ($scope.drawtoolOn) {
+                    $scope.drawenabled = $scope.zoomLevelGood();
+                    $scope.$apply();
+                }
 
-                case "DRAW":
-                    if ($scope.drawenabled) {
-                        if ($scope.drawlocked) {
-                            $scope.drawOff();
-                        } else {
-                            $scope.drawOn();
+            });
+
+            $scope.zoomLevelGood = function () {
+                $scope.zoomlevel = map.getZoom();
+                if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
+
+            $scope.checked = true; // This will be binded using the ps-open attribute
+
+            $scope.drawOff = function () {
+                map.setMinZoom(1);
+                map.setMaxZoom(12);
+                map.dragging.enable(); // panning
+                map.touchZoom.enable(); // 2 finger zooms from touchscreens
+                map.doubleClickZoom.enable();
+                map.boxZoom.enable(); // shift mouse drag zooming.
+                //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                map.dragging.enable();
+                searchControl.enable();
+                $scope.drawlocked = false;
+                $scope.drawOrSubmitCommand = "DRAW";
+                map.pm.disableDraw('Poly');
+
+            };
+            $scope.drawOn = function () {
+                map.setMinZoom(map.getZoom()); //lock map view at current zoom level
+                map.setMaxZoom(map.getZoom());
+                map.dragging.disable(); //no panning
+                map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                map.doubleClickZoom.disable();
+                map.boxZoom.disable(); //no shift mouse drag zooming.
+                //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                searchControl.disable()
+                $scope.drawlocked = true;
+                $scope.drawOrSubmitCommand = "Drawing";
+                if ($scope.polylayer)  map.removeLayer($scope.polylayer);
+                map.pm.enableDraw('Poly');
+            };
+
+            $scope.showSubmitModal = function () {
+
+                ModalService.showModal({
+                    templateUrl: "modalDraw.html",
+                    controller: "submitModalController"
+                }).then(function (modal) {
+                    modal.close.then(function (result) {
+                        $scope.customResult = "All good!";
+                    });
+                });
+
+            };
+
+            $scope.startSpin = function () {
+                usSpinnerService.spin('spinner-1');
+            };
+            $scope.stopSpin = function () {
+                usSpinnerService.stop('spinner-1');
+            };
+            var EMGPService = L.esri.GP.service({
+                url: AOI.config.ortEnergyGPService,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+            var CEGPService = L.esri.GP.service({
+                url: AOI.config.ortCommonGPService,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+            var TIGPService = L.esri.GP.service({
+                url: AOI.config.ortTranspoGPService,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+            var NRCGPService = L.esri.GP.service({
+                url: AOI.config.ortNaturalGPService,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+            var ECGPService = L.esri.GP.service({
+                url: AOI.config.ortEconGPService,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+
+            $scope.baseMapSwitch = function () {
+
+                if ($scope.baseMapControlOn) {
+                    map.removeControl(baseMapControl);
+                    $scope.baseMapControlOn = false;
+
+                } else {
+                    baseMapControl.addTo(map);
+                    $scope.baseMapControlOn = true;
+                }
+            };
+
+
+            $scope.drawIt = function () {
+
+                switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
+
+                    case "DRAW":
+                        if ($scope.drawenabled) {
+                            if ($scope.drawlocked) {
+                                $scope.drawOff();
+                            } else {
+                                $scope.drawOn();
+                            }
                         }
+                        break;
+                    case "Subm":
+
+
+                        AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
+
+                        $scope.drawOrSubmitCommand = "Working";
+                        var EMGPTask = EMGPService.createTask();
+                        var CEGPTask = CEGPService.createTask();
+                        var TIGPTask = TIGPService.createTask();
+                        var NRCGPTask = NRCGPService.createTask();
+                        var ECGPTask = ECGPService.createTask();
+
+                        EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                        EMGPTask.setOutputParam("Output_Report");
+                        CEGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                        CEGPTask.setOutputParam("Output_Report");
+                        TIGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                        TIGPTask.setOutputParam("Output_Report");
+                        NRCGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                        NRCGPTask.setOutputParam("Output_Report");
+                        ECGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
+                        ECGPTask.setOutputParam("Output_Report");
+
+                        $scope.startSpin();
+                        var EMReport, CEReport, TIReport, NRCReport, ECReport;
+
+                        var stopSpinnerRequest = _.after(5, function () {
+                            //AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                            //AOI.featureCollection =angular.merge([],EMReport, CEReport);
+                            if (EMReport) AOI.featureCollection = {
+                                fields: EMReport.fields,
+                                features: EMReport.features
+                            };
+                            if (CEReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
+                            if (TIReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
+                            if (NRCReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
+                            if (ECReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
+
+                            $scope.stopSpin();
+                            $scope.$apply();
+
+                        });
+                        EMGPTask.run(function (error, EMgeojson, EMresponse) {
+
+                            if (error) {
+                                $scope.drawOrSubmitCommand = "Error " + error;
+                                console.log("EM " + error);
+                                $scope.$apply();
+                            }
+                            else if (EMgeojson) {
+                                $scope.drawOrSubmitCommand = "Complete";
+                                EMReport = EMgeojson.Output_Report;
+                                AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
+                            }
+                            stopSpinnerRequest();
+                        });
+                        CEGPTask.run(function (error, CEgeojson, CEresponse) {
+                            if (error) {
+                                $scope.drawOrSubmitCommand = "Error " + error;
+                                console.log("CE " + error);
+                                $scope.$apply();
+                            }
+                            else if (CEgeojson) {
+                                $scope.drawOrSubmitCommand = "Complete";
+                                CEReport = CEgeojson.Output_Report;
+                                AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
+                            }
+                            stopSpinnerRequest();
+
+                        });
+                        TIGPTask.run(function (error, TIgeojson, TIresponse) {
+                            if (error) {
+                                $scope.drawOrSubmitCommand = "Error " + error;
+                                console.log("TI " + error);
+                                $scope.$apply();
+                            }
+                            else if (TIgeojson) {
+                                $scope.drawOrSubmitCommand = "Complete";
+                                TIReport = TIgeojson.Output_Report;
+                                AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
+                            }
+                            stopSpinnerRequest();
+                        });
+                        NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
+
+                            if (error) {
+                                $scope.drawOrSubmitCommand = "Error " + error;
+                                console.log("NRC " + error);
+                                $scope.$apply();
+                            }
+                            else if (NRCgeojson) {
+                                $scope.drawOrSubmitCommand = "Complete";
+                                NRCReport = NRCgeojson.Output_Report;
+                                AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
+                            }
+                            stopSpinnerRequest();
+                        });
+                        ECGPTask.run(function (error, ECgeojson, ECresponse) {
+                            if (error) {
+                                $scope.drawOrSubmitCommand = "Error " + error;
+                                console.log("EC " + error);
+                                $scope.$apply();
+                            }
+                            else if (ECgeojson) {
+                                $scope.drawOrSubmitCommand = "Complete";
+                                ECReport = ECgeojson.Output_Report;
+                                AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
+                            }
+                            stopSpinnerRequest();
+                        });
+                        break;
+                    case "Work":
+                        $scope.showSubmitModal();
+                        break;
+                    case "Erro":
+                        $scope.drawOrSubmitCommand = "Submit";
+                        break;
+                    case "Comp":
+                        $scope.drawOff();
+                        map.removeLayer($scope.polylayer);
+                        map.removeControl(searchControl);
+                        $scope.drawtoolOn = false;
+                        $scope.drawOrSubmitCommand = "DRAW";
+                        if ($scope.baseMapControlOn) {
+                            map.removeControl(baseMapControl);
+                            $scope.baseMapControlOn = false;
+                        }
+                        $state.go('CEview');
+                        $scope.paneon();
+                        document.getElementById("bigmap").style.width = '50%';
+                        map.invalidateSize();
+                        AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID, AOI.featureCollection.features[0].attributes.AOI_NAME);
+                        break;
+                }
+            };
+
+            map.on('pm:create', function (e) {
+                $scope.polylayer = e.layer;
+                $scope.drawOrSubmitCommand = "Submit";
+                $scope.$apply();
+            });
+
+            $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
+                $scope.checked = !$scope.checked;
+            };
+
+            $scope.t_menu_box = function (id, levl) {
+                $scope.box[id].level = levl;
+
+                $scope.box[id].isActive = !$scope.box[id].isActive;
+                for (i = 0; i < len; i++) {
+                    if ((i != id) && (levl <= $scope.box[i].level)) {
+                        $scope.box[i].isActive = false;
                     }
-                    break;
-                case "Subm":
+                }
 
-                    //console.log("submit");
-                    console.log($scope.polylayer);
-                    AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
+            };
 
-                    $scope.drawOrSubmitCommand = "Working";
-                    var EMGPTask = EMGPService.createTask();
-                    var CEGPTask = CEGPService.createTask();
-                    var TIGPTask = TIGPService.createTask();
-                    var NRCGPTask = NRCGPService.createTask();
-                    var ECGPTask = ECGPService.createTask();
 
-                    EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                    EMGPTask.setOutputParam("Output_Report");
-                    CEGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                    CEGPTask.setOutputParam("Output_Report");
-                    TIGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                    TIGPTask.setOutputParam("Output_Report");
-                    NRCGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                    NRCGPTask.setOutputParam("Output_Report");
-                    ECGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                    ECGPTask.setOutputParam("Output_Report");
+            $scope.reset = function () { //unloads AOI but leaves slider pane on
 
-                    $scope.startSpin();
-                    var EMReport, CEReport, TIReport, NRCReport, ECReport;
 
-                    var stopSpinnerRequest = _.after(5, function () {
-                        //AOI.featureCollection = _.extend({}, EMReport,CEReport);
-                        //AOI.featureCollection =angular.merge([],EMReport, CEReport);
-                        if (EMReport) AOI.featureCollection = {fields: EMReport.fields, features: EMReport.features};
-                        if (CEReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
-                        if (TIReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
-                        if (NRCReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
-                        if (ECReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
-                        // console.log("Stop Spinner");
-                        //console.log(AOI.featureCollection);
-                        $scope.stopSpin();
-                        $scope.$apply();
-                    });
-                    EMGPTask.run(function (error, EMgeojson, EMresponse) {
-                        console.log("errorcode is "+error);
-                        console.log(EMresponse);
-                        if (error) {
-                            $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("EM " + error);
+                $scope.AOIoff();
+                $scope.paneon();
+                AOI.unloadData();
+                $scope.stopSpin();
+                if ($scope.baseMapControlOn) {
+                    map.removeControl(baseMapControl);
+                    $scope.baseMapControlOn = false;
+                }
 
-                            $scope.$apply();
-                        }
-                        else if (EMgeojson) {
-                            $scope.drawOrSubmitCommand = "Complete";
-                            //AOI.featureCollection = EMgeojson.Output_Report;
-                            EMReport = EMgeojson.Output_Report;
-                            console.log(EMReport);
-                            console.log("EM Complete");
-                        }
-                        stopSpinnerRequest();
+                for (i = 0; i < len; i++) {
+                    $scope.box[i].isActive = false;
+                }
+                if ($scope.polylayer)  map.removeLayer($scope.polylayer);
 
-                    });
-                    CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                        // console.log(CEresponse);
-                        if (error) {
-                            $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("CE " + error);
-
-                            $scope.$apply();
-                        }
-                        else if (CEgeojson) {
-                            $scope.drawOrSubmitCommand = "Complete";
-                            CEReport = CEgeojson.Output_Report;
-                            console.log(CEReport);
-                            console.log("CE Complete");
-
-                        }
-                        stopSpinnerRequest();
-
-                    });
-                    TIGPTask.run(function (error, TIgeojson, TIresponse) {
-                        // console.log(CEresponse);
-                        if (error) {
-                            $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("TI " + error);
-
-                            $scope.$apply();
-                        }
-                        else if (TIgeojson) {
-                            $scope.drawOrSubmitCommand = "Complete";
-                            TIReport = TIgeojson.Output_Report;
-                            console.log(TIReport);
-                            console.log("TI Complete");
-
-                        }
-                        stopSpinnerRequest();
-
-                    });
-                    NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-                        // console.log(CEresponse);
-                        if (error) {
-                            $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("NRC " + error);
-
-                            $scope.$apply();
-                        }
-                        else if (NRCgeojson) {
-                            $scope.drawOrSubmitCommand = "Complete";
-                            NRCReport = NRCgeojson.Output_Report;
-                            console.log(NRCReport);
-                            console.log("NRC Complete");
-
-                        }
-                        stopSpinnerRequest();
-
-                    });
-                    ECGPTask.run(function (error, ECgeojson, ECresponse) {
-                        // console.log(CEresponse);
-                        if (error) {
-                            $scope.drawOrSubmitCommand = "Error " + error;
-                            console.log("EC " + error);
-
-                            $scope.$apply();
-                        }
-                        else if (ECgeojson) {
-                            $scope.drawOrSubmitCommand = "Complete";
-                            ECReport = ECgeojson.Output_Report;
-                            console.log(ECReport);
-                            console.log("EC Complete");
-
-                        }
-                        stopSpinnerRequest();
-
-                    });
-
-                    break;
-                case "Work":
-                    $scope.showSubmitModal();
-                    break;
-                case "Erro":
-                    // console.log("Error pressed");
-                    $scope.drawOrSubmitCommand = "Submit";
-                    break;
-                case "Comp":
+                if ($scope.drawtoolOn) {
                     $scope.drawOff();
-                    map.removeLayer($scope.polylayer);
+                    document.getElementById("bigmap").style.width = '50%';
                     map.removeControl(searchControl);
                     $scope.drawtoolOn = false;
                     $scope.drawOrSubmitCommand = "DRAW";
-                    if ($scope.baseMapControlOn) {
-                        map.removeControl(baseMapControl);
-                        $scope.baseMapControlOn = false;
-                    }
-                    $state.go('CEview');
-                    $scope.paneon();
-                    document.getElementById("bigmap").style.width = '50%';
+
                     map.invalidateSize();
-                    //AOI.zoomTo();
-                    AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID, AOI.featureCollection.features[0].attributes.AOI_NAME);
-                    break;
-
-            }
-        };
-
-
-        map.on('pm:create', function (e) {
-            //console.log(e);
-            $scope.polylayer = e.layer;
-            $scope.drawOrSubmitCommand = "Submit";
-            $scope.$apply();
-        });
-
-        $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
-            $scope.checked = !$scope.checked;
-        };
-
-        $scope.t_menu_box = function (id, levl) {
-            $scope.box[id].level = levl;
-
-            $scope.box[id].isActive = !$scope.box[id].isActive;
-            for (i = 0; i < len; i++) {
-                if ((i != id) && (levl <= $scope.box[i].level)) {
-                    $scope.box[i].isActive = false;
                 }
-            }
-            //console.log($scope.box[id].myid + " "+id+" is " +$scope.box[id].isActive);
-        };
+                map.setView([33.51, -78.3], 6);
+            };
+
+            $scope.off = function () { //unloads AOI and turns off slider pane
+                $scope.AOIoff();
+                $scope.paneoff();
+                AOI.unloadData();
 
 
-        $scope.reset = function () { //unloads AOI but leaves slider pane on
+                $scope.drawenabled = $scope.zoomLevelGood();
+
+                $scope.drawtoolOn = true;
+
+            };
+
+            $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
+                $scope.AOIon();
+                $scope.paneon();
+            };
+
+            $scope.mover = function (AOI_id) {//turns on poly on mouse over in menu
+
+                if (!mouseLayer) {
+                    mouseLayer = L.esri.featureLayer({ //AOI poly (7)
+                        url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
+                        where: "AOI_ID =" + AOI_id + "",
+                        color: '#EB660C', weight: 3, fillOpacity: .3,
+                        simplifyFactor: 2.0,
+                    }).addTo(map);
+
+                }
 
 
-            $scope.AOIoff();
-            $scope.paneon();
-            AOI.unloadData();
-            $scope.stopSpin();
-            if ($scope.baseMapControlOn) {
-                map.removeControl(baseMapControl);
-                $scope.baseMapControlOn = false;
-            }
+            };
+            $scope.mout = function (AOI_id) {//turns on poly on mouse over in menu
 
-            for (i = 0; i < len; i++) {
-                $scope.box[i].isActive = false;
-            }
-            if ($scope.polylayer)  map.removeLayer($scope.polylayer);
+                if (mouseLayer) {
+                    map.removeLayer(mouseLayer);
+                    mouseLayer = null;
 
-            if ($scope.drawtoolOn) {
-                $scope.drawOff();
-                document.getElementById("bigmap").style.width = '50%';
-                map.removeControl(searchControl);
-                $scope.drawtoolOn = false;
-                $scope.drawOrSubmitCommand = "DRAW";
+                }
+            };
 
-                map.invalidateSize();
-            }
-            map.setView([33.51, -78.3], 6);
-        };
+            $scope.AOIoff = function () {
+                // there is probably a better place for this
+                toggle = false;
+            };
 
-        $scope.off = function () { //unloads AOI and turns off slider pane
-            $scope.AOIoff();
-            $scope.paneoff();
-            AOI.unloadData();
-            //map.fire('zoomend');
+            $scope.AOIon = function () {
+                $scope.checkifAOI = true;
+            };
 
-            $scope.drawenabled = $scope.zoomLevelGood();
+            $scope.paneoff = function () {
+                $scope.checked = false;
+                AOI.toggleFull = false;
+            };
 
-            $scope.drawtoolOn = true;
+            $scope.paneon = function () {
+                $scope.checked = true;
+                document.getElementById("slide1").style.width = '50%';
+                AOI.toggleFull = false;
+            };
 
-        };
-
-        $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
-            $scope.AOIon();
-            $scope.paneon();
-            //console.log(AOI);
-            //$scope.Cur_AOI = AOI;
-            //$scope.AOI_ID = AOI_id;
+            $scope.aoismenu = [];
+            $scope.aoistates = [];
 
 
-            //console.log($scope.AOI_ID);
-        };
+            var query = L.esri.query({
+                url: AOI.config.ortMapServer + AOI.config.ortLayerAOI
 
-        $scope.mover = function (AOI_id) {//turns on poly on mouse over in menu
-
-            if (!mouseLayer) {
-                mouseLayer = L.esri.featureLayer({ //AOI poly (7)
-                    url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
-                    //where: "AOI_NAME='" + $scope.Cur_AOI + "'",
-                    where: "AOI_ID =" + AOI_id + "",
-                    color: '#EB660C', weight: 3, fillOpacity: .3,
-                    //pane: 'AOIfeature',
-                    simplifyFactor: 2.0,
-                    // precision: 2
-                }).addTo(map);
-                //console.log(" mouseLayer loaded " + AOI_id);
-            }
-            ;
-
-            // console.log(AOI_id);
-
-        };
-        $scope.mout = function (AOI_id) {//turns on poly on mouse over in menu
-
-            if (mouseLayer) {
-                map.removeLayer(mouseLayer);
-                mouseLayer = null;
-                //console.log(" mouseLayer UNloaded " + AOI_id);
-            }
-            //console.log("mouselayer = " + mouseLayer )
-            // console.log(AOI_id);
-
-        };
-
-        $scope.AOIoff = function () {
-            // there is probably a better place for this
-            toggle = false;
-        };
-
-        $scope.AOIon = function () {
-            $scope.checkifAOI = true;
-        };
-
-        $scope.paneoff = function () {
-            $scope.checked = false;
-            AOI.toggleFull = false;
-        };
-
-        $scope.paneon = function () {
-            $scope.checked = true;
-            document.getElementById("slide1").style.width = '50%';
-            AOI.toggleFull = false;
-        };
-
-        $scope.aoismenu = [];
-        $scope.aoistates = [];
-
-
-        var query = L.esri.query({
-            url: AOI.config.ortMapServer + AOI.config.ortLayerAOI
-
-        });
-
-        query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
-
-            var ba = 0;
-
-            for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-
-                $scope.aoismenu[ba] = {
-                    AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
-                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                    REPORT_TYPE: featureCollection.features[i].properties.REPORT_TYPE,
-                    AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                    DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                    DESC_: featureCollection.features[i].properties.DESC_
-                };
-                ba++;
-
-            }
-            //console.log($scope.aoismenu);
-            $scope.aoismenu.sort(function (a, b) {
-                //return parseFloat(a.AOI_NAME) - parseFloat(b.AOI_NAME);
-                return a.AOI_NAME.localeCompare(b.AOI_NAME);
             });
-        });
 
+            query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
 
-        query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
                 var ba = 0;
+
                 for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-                    $scope.aoistates[ba] = {
+
+                    $scope.aoismenu[ba] = {
                         AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
                         COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                        REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                        REPORT_TYPE: featureCollection.features[i].properties.REPORT_TYPE,
                         AOI_ID: featureCollection.features[i].properties.AOI_ID,
                         DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
                         DESC_: featureCollection.features[i].properties.DESC_
                     };
                     ba++;
+
                 }
-                //console.log($scope.aoistates);
-                $scope.aoistates.sort(function (a, b) {
+
+                $scope.aoismenu.sort(function (a, b) {
+
                     return a.AOI_NAME.localeCompare(b.AOI_NAME);
                 });
-                //console.log($scope.aoistates);
-            }
-        );
+            });
 
-        // console.log("AOIdetail is " + $stateParams.AOIdetail);
-        if ($location.search().AOI) {
-            query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
-                    AOI.name = featureCollection.features[0].properties.AOI_NAME;
+
+            query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
+                    var ba = 0;
+                    for (var i = 0, j = featureCollection.features.length; i < j; i++) {
+                        $scope.aoistates[ba] = {
+                            AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
+                            COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                            REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                            AOI_ID: featureCollection.features[i].properties.AOI_ID,
+                            DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
+                            DESC_: featureCollection.features[i].properties.DESC_
+                        };
+                        ba++;
+                    }
+
+                    $scope.aoistates.sort(function (a, b) {
+                        return a.AOI_NAME.localeCompare(b.AOI_NAME);
+                    });
+
                 }
             );
-            AOI.loadData($location.search().AOI, AOI.name);
-            // $state.go('CEview');
+
+
+            if ($location.search().AOI) {
+                AOI.Shared = true;
+                if ($location.search().AOI !== '-9999') {
+                    query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
+                            AOI.name = featureCollection.features[0].properties.AOI_NAME;
+                        }
+                    );
+                    AOI.loadData($location.search().AOI, AOI.name);
+
+                } else {
+                    AOI.drawAreaJobId['CE'] = $location.search().CE;
+                    AOI.drawAreaJobId['EM'] = $location.search().EM;
+                    AOI.drawAreaJobId['EC'] = $location.search().EC;
+                    AOI.drawAreaJobId['NRC'] = $location.search().NRC;
+                    AOI.drawAreaJobId['TI'] = $location.search().TI;
+                    AOI.name = "Shared Draw Area";
+                    AOI.ID = -9999;
+
+                    var promise1 = $q.defer(), promise2 = $q.defer(), promise3 = $q.defer(), promise4 = $q.defer(), promise5 = $q.defer(), promise6 = $q.defer();
+                    var promises = [promise1.promise, promise2.promise, promise3.promise, promise4.promise, promise5.promise, promise6.promise];
+
+                    L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+
+                            AOI.drawLayerShape = {
+                                type: "Feature",
+                                geometry: {
+                                    type: "Polygon",
+                                    coordinates: response.value.features[0].geometry.rings,
+
+                                }
+
+                            };
+
+                            promise1.resolve();
+                        }
+                    });
+
+                    L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/results/Output_Report', {}, function (error, response) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            //get teh first report
+                            AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
+                            promise2.resolve();
+                        }
+                        //get teh rest of the reports
+                        L.esri.get(AOI.config.ortEnergyGPService + '/jobs/' + AOI.drawAreaJobId['EM'] + '/results/Output_Report', {}, function (error, response) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
+                                promise3.resolve();
+                            }
+                        });
+                        L.esri.get(AOI.config.ortNaturalGPService + '/jobs/' + AOI.drawAreaJobId['NRC'] + '/results/Output_Report', {}, function (error, response) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
+                                promise4.resolve();
+                            }
+                        });
+                        L.esri.get(AOI.config.ortTranspoGPService + '/jobs/' + AOI.drawAreaJobId['TI'] + '/results/Output_Report', {}, function (error, response) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
+                                promise5.resolve();
+                            }
+                        });
+                        L.esri.get(AOI.config.ortEconGPService + '/jobs/' + AOI.drawAreaJobId['EC'] + '/results/Output_Report', {}, function (error, response) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
+                                promise6.resolve();
+                            }
+                        });
+
+                    });
+                    $q.all(promises).then(function () {
+                        AOI.loadData(AOI.ID, AOI.name);
+                    });
+
+
+                }
+            }
         }
-    }
     ])
 ;
 
