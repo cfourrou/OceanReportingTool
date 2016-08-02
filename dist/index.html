@@ -6,11 +6,11 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" ng-app="myApp" lang="en"> <!--<![endif]-->
+<html class="no-js" lang="en"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>NOAA: Ocean Reporting Tool</title>
+    <title>Marine Cadastre: Ocean Reporting Tool</title>
     <meta name="description" content="SEO description of this app">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- iOS - mobile web app -->
@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?81b1ddc4d3f14fdc">
+    <link rel="stylesheet" href="css/ort.min.css?22691b6b1865dab7">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -114,12 +114,15 @@
 <body>
 <div id="header" class="header">
     <strong>Marine Cadastre</strong> Ocean Reporting Tool
-    <a class="helpbutton" href="" role="button">About / Help</a>
+
+        <info-directive modal-template="contactUs.html" message="message" vardata="About"
+                        modal-img="img/info.svg"></info-directive>
+   
 </div>
 <div id="wrapper">
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl">
-        <script type="text/ng-template" id="Share1.html">
+        <script type="text/ng-template" id="contactUs.html">
             <div id="custom-modal">
                 <div id="overlay">
                     <a href="" class="modal-close" ng-click="close('Cancel')">
@@ -128,8 +131,24 @@
                             <path d="M0 0h24v24h-24z" fill="none"/>
                         </svg>
                     </a>
-                    Please share this link:
-                    <br>{{metadataurl}}
+                    The Ocean Reporting Tool is a component of MarineCadastre.gov, a partnership between the U.S.
+                    Department of Commerce’s National Oceanic and Atmospheric Administration (NOAA) Office for Coastal
+                    Management and the U.S. Department of the Interior’s Bureau of Ocean Energy Management (BOEM). To
+                    learn more about MarineCadastre.gov go <a href="http://marinecadastre.gov/about/" target="_blank">here </a>
+                    or <a href="mailto:info@marinecadastre.gov" target="_blank">Contact Us</a>.<br><br>
+                    <div class="floatitleft w50 text-center">
+                    <img height="200" width="200" src="img/BOEM_logo.png"><br>
+                    45600 Woodland Road<br>
+                    Sterling, VA 20166<br>
+                    Phone: (703) 787-1315<br>
+                    </div>
+                    <div class="floatitleft w50 text-center">
+                    <img height="200" width="200" src="img/NOAA_logo.svg"><br>
+                    Office for Coastal Management<br>
+                    2234 South Hobson Avenue<br>
+                    Charleston, South Carolina 29405-2413<br>
+                    Phone: (843) 740-1200
+                        </div>
                 </div>
                 <div id="fade"></div>
             </div>
@@ -202,10 +221,9 @@
                      ps-custom-top="55px"
                 >
                     <div ui-view class="h900"></div>
-                    <div id="foot" class="footer2">United States Department of Commerce | National Oceanic and
-                        Atmospheric
-                        Administration |
-                        National Ocean Service
+                    <div id="foot" class="footer2"><a target="_blank" href="https://www.commerce.gov/">United States Department of Commerce</a>
+                        | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric Administration</a>
+                        | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
                     </div>
                 </div>
 
@@ -219,7 +237,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?ea4198b319bd8964"></script>
+<script src="js/ort.js?8c6c957840668e85"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

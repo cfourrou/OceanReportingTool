@@ -23104,19 +23104,25 @@ a.exportDivElements[b]=e.onmouseout=e.onmouseover=e.ontouchstart=e.onclick=null,
 angular.module('myApp.services', [])
     .factory('webService', function ($http) {
 
-        var getData = function () {
+        var getData = function (urlInput) {
+
 
             // Angular $http() and then() both return promises themselves
-            return $http({method: "GET", url: "CE_config.json"}).then(function (result) {
+            return $http({method: "GET", url: urlInput}).then(function (result) {
 
                 // What we return here is the data that will be accessible
                 // to us after the promise resolves
+
+
                 return result.data;
+
             });
         };
 
 
         return {getData: getData};
+
+
     })
 
     .factory('_', function () {
@@ -23276,10 +23282,10 @@ angular.module('myApp.services', [])
 
                         this.display(AOI_ID);
 
-                        var myThis = this;
+                        var vm = this;
 
-                        myThis.name = name;
-                        myThis.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        vm.name = name;
+                        vm.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
                             url: config.ortMapServer + ortLayerOptional[0].num,
                             pane: 'optionalfeature0',
                             //simplifyFactor: 5.0,
@@ -23303,7 +23309,7 @@ angular.module('myApp.services', [])
                             }
                         });
 
-                        myThis.windLeaseLayer = L.esri.featureLayer({
+                        vm.windLeaseLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[1].num,
                             pane: 'optionalfeature1',
                             style: function (feature) {
@@ -23311,7 +23317,7 @@ angular.module('myApp.services', [])
                                 return {color: 'white', weight: 1, fillOpacity: .5};
                             }
                         });
-                        myThis.windPlanningLayer = L.esri.featureLayer({
+                        vm.windPlanningLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[2].num,
                             pane: 'optionalfeature2',
                             style: function (feature) {
@@ -23319,14 +23325,14 @@ angular.module('myApp.services', [])
                                 return {color: 'Black', weight: 1, fillOpacity: .5};
                             }
                         });
-                        myThis.oceanDisposalSites = L.esri.featureLayer({
+                        vm.oceanDisposalSites = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[3].num,
                             pane: 'optionalfeature3',
                             style: function (feature) {
                                 return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
                             }
                         });
-                        myThis.marineMineralsLeases = L.esri.featureLayer({
+                        vm.marineMineralsLeases = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[4].num,
                             pane: 'optionalfeature4',
                             style: function (feature) {
@@ -23335,7 +23341,7 @@ angular.module('myApp.services', [])
                         });
                         //there is no 5 yet
 
-                        myThis.HydrokineticLeases = L.esri.featureLayer({
+                        vm.HydrokineticLeases = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[6].num,
                             pane: 'optionalfeature6',
                             pointToLayer: function (feature, latlng) {
@@ -23350,7 +23356,7 @@ angular.module('myApp.services', [])
                             }
                         });
                         //there is no 7 yet
-                        myThis.wavePower = L.esri.featureLayer({
+                        vm.wavePower = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[8].num,
                             pane: 'optionalfeature8',
                             style: function (feature) {
@@ -23380,20 +23386,20 @@ angular.module('myApp.services', [])
                             }
                         });
 
-                        myThis.tidalPower = L.esri.dynamicMapLayer({
+                        vm.tidalPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
                             pane: 'optionalfeature9',
                             layers: [ortLayerOptional[9].num],
                             opacity: .8
                         });
-                        myThis.currentPower = L.esri.dynamicMapLayer({
+                        vm.currentPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
                             pane: 'optionalfeature10',
                             layers: [ortLayerOptional[10].num],
                             opacity: .8
                         });
 
-                        myThis.beachNourish = L.esri.featureLayer({
+                        vm.beachNourish = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[11].num,
                             pane: 'optionalfeature11',
                             style: function (feature) {
@@ -23401,7 +23407,7 @@ angular.module('myApp.services', [])
                             }
                         });
 
-                        myThis.coastalEnergyFacilities = L.esri.featureLayer({
+                        vm.coastalEnergyFacilities = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[16].num,
                             pane: 'optionalfeature16',
                             pointToLayer: function (feature, latlng) {
@@ -23416,21 +23422,21 @@ angular.module('myApp.services', [])
                             }
                         });
 
-                        myThis.CEElevation = L.esri.featureLayer({
+                        vm.CEElevation = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[26].num,
                             pane: 'optionalfeature26',
                             style: function (feature) {
                                 return {color: '#3283BB', weight: 2, fillOpacity: 0};
                             }
                         });
-                        myThis.TISubmarineLayer = L.esri.featureLayer({
+                        vm.TISubmarineLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[34].num,
                             pane: 'optionalfeature34',
                             style: function (feature) {
                                 return {color: '#880cf4', weight: 2, fillOpacity: 0};
                             }
                         });
-                        myThis.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        vm.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
                             url: config.ortMapServer + ortLayerOptional[35].num,
                             pane: 'optionalfeature35',
                             //simplifyFactor: 5.0,
@@ -23459,8 +23465,8 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + config.ortLayerData
                         });
 
-                        if (myThis.ID === -9999) {
-                            var featureCollection = JSON.parse(JSON.stringify(myThis.featureCollection));
+                        if (vm.ID === -9999) {
+                            var featureCollection = JSON.parse(JSON.stringify(vm.featureCollection));
 
                             var newarray = [];
                             angular.forEach(featureCollection.features, function (feature) {
@@ -23471,10 +23477,10 @@ angular.module('myApp.services', [])
                                 newarray.push(newobject);
                             });
 
-                            myThis.massageData(newarray);
+                            vm.massageData(newarray);
 
                         } else {
-                            query.returnGeometry(false).where("AOI_ID =" + myThis.ID + "").run(function (error, featureCollection, response) {
+                            query.returnGeometry(false).where("AOI_ID =" + vm.ID + "").run(function (error, featureCollection, response) {
 
                                 var newarray = [];
                                 angular.forEach(featureCollection.features, function (feature) {
@@ -23486,15 +23492,15 @@ angular.module('myApp.services', [])
                                 });
                                 //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                                myThis.massageData(newarray);
+                                vm.massageData(newarray);
                             });
                         }
-                        myThis.isLoaded = true;
+                        vm.isLoaded = true;
                     }
                     ,
 
                     massageData: function (featureCollection) {
-                        var myThis = this;
+                        var vm = this;
                         var k = 0;
                         var ba = 0;
                         var bb = 0;
@@ -23536,7 +23542,7 @@ angular.module('myApp.services', [])
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
                                 case "Coastal_Shoreline_Counties_2010":
-                                    myThis.ECCountyGDP[ci] = {
+                                    vm.ECCountyGDP[ci] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         cntyname: (featureCollection[i].cntyname || 'Unknown'),
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
@@ -23548,7 +23554,7 @@ angular.module('myApp.services', [])
 
 
                                     if ((ci === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23563,7 +23569,7 @@ angular.module('myApp.services', [])
                                     break;
 
                                 case "CoastalStates":
-                                    myThis.ECStateGDP[ch] = {
+                                    vm.ECStateGDP[ch] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         st_name: (featureCollection[i].st_name || 'Unknown'),
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
@@ -23575,7 +23581,7 @@ angular.module('myApp.services', [])
 
 
                                     if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23591,7 +23597,7 @@ angular.module('myApp.services', [])
                                 case "ENOW_2013":
 
 
-                                    myThis.ECEcon[cg] = {
+                                    vm.ECEcon[cg] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Name: (featureCollection[i].Name || 'Unknown'),
                                         cntyname: (featureCollection[i].cntyname || 'Unknown'),
@@ -23625,15 +23631,15 @@ angular.module('myApp.services', [])
                                     };
                                     switch (featureCollection[i].OceanSector) {
                                         case "All Ocean Sectors":
-                                            myThis.ECEconEmploy[myThis.ECEconEmploy.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Employment || 0)];
-                                            myThis.ECEconGDP[myThis.ECEconGDP.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].GDP || 0)];
-                                            myThis.ECEconWages[myThis.ECEconWages.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Wages || 0)];
+                                            vm.ECEconEmploy[vm.ECEconEmploy.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Employment || 0)];
+                                            vm.ECEconGDP[vm.ECEconGDP.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].GDP || 0)];
+                                            vm.ECEconWages[vm.ECEconWages.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Wages || 0)];
                                             break;
 
                                     }
 
                                     if ((cg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23647,7 +23653,7 @@ angular.module('myApp.services', [])
                                     cg++;
                                     break;
                                 case "NMFS_HMS_Fish":
-                                    myThis.NRCMigratoryFish[ce] = {
+                                    vm.NRCMigratoryFish[ce] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
                                         SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
@@ -23656,7 +23662,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((ce === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23671,7 +23677,7 @@ angular.module('myApp.services', [])
                                     break;
 
                                 case "NMFS_HMS_Sharks":
-                                    myThis.NRCMigratorySharks[cf] = {
+                                    vm.NRCMigratorySharks[cf] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
                                         SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
@@ -23680,7 +23686,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((cf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23694,7 +23700,7 @@ angular.module('myApp.services', [])
                                     cf++;
                                     break;
                                 case "NMFS_CHD_SouthAtl":
-                                    myThis.NRCCriticalHab[cd] = {
+                                    vm.NRCCriticalHab[cd] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         AREANAME: (featureCollection[i].AREANAME || 'Unknown'),
                                         PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
@@ -23702,7 +23708,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((cd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23716,7 +23722,7 @@ angular.module('myApp.services', [])
                                     cd++;
                                     break;
                                 case "SERO_HAPC_PartK":
-                                    myThis.NRCHabConcern[cc] = {
+                                    vm.NRCHabConcern[cc] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         AREA_NAME: (featureCollection[i].AREA_NAME || 'Unknown'),
                                         PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
@@ -23724,7 +23730,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((cc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23738,7 +23744,7 @@ angular.module('myApp.services', [])
                                     cc++;
                                     break;
                                 case "Danger_Zones_and_Restricted_Areas":
-                                    myThis.TIDangerZones[cb] = {
+                                    vm.TIDangerZones[cb] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         boundaryType: (featureCollection[i].boundaryType || 'Unknown'),
                                         agencyOfUse: (featureCollection[i].agencyOfUse || 'Unknown'),
@@ -23748,7 +23754,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((cb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23762,14 +23768,14 @@ angular.module('myApp.services', [])
                                     cb++;
                                     break;
                                 case "Coastal_Maintained_Channels":
-                                    myThis.TICoastal[ca] = {
+                                    vm.TICoastal[ca] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
 
 
                                     };
 
                                     if ((ca === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23783,7 +23789,7 @@ angular.module('myApp.services', [])
                                     ca++;
                                     break;
                                 case "SubmarineCables":
-                                    myThis.TISubmarine[bz] = {
+                                    vm.TISubmarine[bz] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Owner: (featureCollection[i].Owner || 'Unknown'),
                                         STATUS: (featureCollection[i].STATUS || 'Unknown'),
@@ -23793,7 +23799,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bz === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23807,7 +23813,7 @@ angular.module('myApp.services', [])
                                     bz++;
                                     break;
                                 case "FederalAndStateWaters":
-                                    myThis.CEFederalAndState[by] = {
+                                    vm.CEFederalAndState[by] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         jurisdiction: (featureCollection[i].jurisdiction || 'Unknown'),
                                         perc_jurisdiction: (featureCollection[i].perc_jurisdiction || 'Unknown'),
@@ -23816,7 +23822,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((by === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23830,17 +23836,17 @@ angular.module('myApp.services', [])
 
                                         if ((featureCollection[i].jurisdiction.substring(0, 3)) === "Fed") {
 
-                                            myThis.CEFederalTotal = parseInt(myThis.CEFederalTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
+                                            vm.CEFederalTotal = parseInt(vm.CEFederalTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
 
 
-                                        } else  myThis.CEStateTotal = parseInt(myThis.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
+                                        } else  vm.CEStateTotal = parseInt(vm.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
 
                                     }
 
                                     by++;
                                     break;
                                 case "CoastalCounties":
-                                    myThis.CECoastalCounties[bx] = {
+                                    vm.CECoastalCounties[bx] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         cntyname: (featureCollection[i].cntyname || 'Unknown'),
                                         st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
@@ -23849,7 +23855,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bx === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23863,7 +23869,7 @@ angular.module('myApp.services', [])
                                     bx++;
                                     break;
                                 case "Coastal_State_Legislative_Districts_House":
-                                    myThis.CEHouse[bv] = {
+                                    vm.CEHouse[bv] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
                                         stateName: (featureCollection[i].stateName || 'Unknown')
@@ -23872,7 +23878,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bv === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23886,7 +23892,7 @@ angular.module('myApp.services', [])
                                     bv++;
                                     break;
                                 case "Coastal_State_Legislative_Districts_Senate":
-                                    myThis.CESenate[bw] = {
+                                    vm.CESenate[bw] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
                                         stateName: (featureCollection[i].stateName || 'Unknown')
@@ -23895,7 +23901,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bw === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23909,7 +23915,7 @@ angular.module('myApp.services', [])
                                     bw++;
                                     break;
                                 case "Coastal_Congressional_Districts_114th":
-                                    myThis.CECongress[bu] = {
+                                    vm.CECongress[bu] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
                                         stateName: (featureCollection[i].stateName || 'Unknown')
@@ -23918,7 +23924,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bu === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23932,7 +23938,7 @@ angular.module('myApp.services', [])
                                     bu++;
                                     break;
                                 case "FederalGeoRegulations":
-                                    myThis.CEFedGeoRegs[bt] = {
+                                    vm.CEFedGeoRegs[bt] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         FederalGeoRegulationsName: (featureCollection[i].FederalGeoRegulationsName || 'Unknown'),
                                         FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown'),
@@ -23942,7 +23948,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bt === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23956,7 +23962,7 @@ angular.module('myApp.services', [])
                                     bt++;
                                     break;
                                 case "AOI_input":
-                                    myThis.CEAreaOfPoly[bs] = {
+                                    vm.CEAreaOfPoly[bs] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown'),
                                         Area_km2: (featureCollection[i].Area_km2 || 'Unknown'),
@@ -23968,7 +23974,7 @@ angular.module('myApp.services', [])
                                     bs++;
                                     break;
                                 case "crm_v1":
-                                    myThis.CEElevation[br] = {
+                                    vm.CEElevation[br] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         depth_min_m: (featureCollection[i].depth_min_m || 'Unknown'),
                                         depth_max_m: (featureCollection[i].depth_max_m || 'Unknown'),
@@ -23977,7 +23983,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((br === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -23991,7 +23997,7 @@ angular.module('myApp.services', [])
                                     br++;
                                     break;
                                 case "CoastalEnergyFacilities":
-                                    myThis.coastfac[bq] = {
+                                    vm.coastfac[bq] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Name: (featureCollection[i].Name || 'None'),
                                         Type: (featureCollection[i].Type || 'None'),
@@ -24001,7 +24007,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bq === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24015,7 +24021,7 @@ angular.module('myApp.services', [])
                                     bq++;
                                     break;
                                 case "OG_ResourcePotential":
-                                    myThis.OGresource[bp] = {
+                                    vm.OGresource[bp] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         OCS_Play: (featureCollection[i].OCS_Play || 'None'),
                                         UTRR_Oil: (featureCollection[i].UTRR_Oil || 'None'),
@@ -24025,7 +24031,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bp === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24039,7 +24045,7 @@ angular.module('myApp.services', [])
                                     bp++;
                                     break;
                                 case "OG_Wells":
-                                    myThis.OGWells[bo] = {
+                                    vm.OGWells[bo] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         COMPANY_NA: (featureCollection[i].COMPANY_NA || 'None'),
                                         STATUS: (featureCollection[i].STATUS || 'None')
@@ -24047,7 +24053,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bo === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24061,7 +24067,7 @@ angular.module('myApp.services', [])
                                     bo++;
                                     break;
                                 case "al_20160301":
-                                    myThis.OGLease[bn] = {
+                                    vm.OGLease[bn] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Lease_Numb: (featureCollection[i].Lease_Numb || 'None'),
                                         Lease_expt: (featureCollection[i].Lease_expt || 'None')
@@ -24069,7 +24075,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bn === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24083,14 +24089,14 @@ angular.module('myApp.services', [])
                                     bn++;
                                     break;
                                 case "OilandGasPlanningAreas":
-                                    myThis.OGPlanA[bm] = {
+                                    vm.OGPlanA[bm] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         Region: (featureCollection[i].Region || 'unknown')
 
                                     };
 
                                     if ((bm === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24104,7 +24110,7 @@ angular.module('myApp.services', [])
                                     bm++;
                                     break;
                                 case "SC_BeachProjects":
-                                    myThis.beachNur[bl] = {
+                                    vm.beachNur[bl] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         BEACH_AREA: (featureCollection[i].BEACH_AREA || 'unknown'),
                                         YEAR: (featureCollection[i].YEAR || '0'),
@@ -24113,7 +24119,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((bl === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24127,14 +24133,14 @@ angular.module('myApp.services', [])
                                     bl++;
                                     break;
                                 case "us_oc_ms":
-                                    myThis.currentpwr[bk] = {
+                                    vm.currentpwr[bk] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         AVG_OCEAN_CURRENT: (featureCollection[i].AVG_OCEAN_CURRENT || 0),
                                         SUITABILITY_OCEAN_SPEED: (featureCollection[i].SUITABILITY_OCEAN_SPEED || 'NO')
                                     };
 
                                     if ((featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24148,7 +24154,7 @@ angular.module('myApp.services', [])
                                     bk++;
                                     break;
                                 case "usa_mc_wm":
-                                    myThis.tidalpwr[bj] = {
+                                    vm.tidalpwr[bj] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         AVG_TIDAL_CURRENT: (featureCollection[i].AVG_TIDAL_CURRENT || 0),
                                         SUITABILITY_TIDAL_DEPTH: (featureCollection[i].SUITABILITY_TIDAL_DEPTH || 'NO'),
@@ -24157,7 +24163,7 @@ angular.module('myApp.services', [])
                                     };
 
                                     if ((featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24171,14 +24177,14 @@ angular.module('myApp.services', [])
                                     bj++;
                                     break;
                                 case "OceanWaveResourcePotential":
-                                    myThis.wavepwr[bi] = {
+                                    vm.wavepwr[bi] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
                                         SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
                                     };
 
                                     if ((featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24193,13 +24199,13 @@ angular.module('myApp.services', [])
                                     break;
 
                                 case "OceanDisposalSites":
-                                    myThis.disp[be] = {
+                                    vm.disp[be] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
                                     };
 
                                     if ((be === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24214,13 +24220,13 @@ angular.module('myApp.services', [])
                                     break;
                                 case "MarineHydrokineticProjects":
                                     if (featureCollection[i].TOTAL_CNT > 0) {
-                                        myThis.hydrok[bg] = {
+                                        vm.hydrok[bg] = {
                                             TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                             PRIMARY_USE: (featureCollection[i].energyType ) + ' projects'
                                         };
                                     }
                                     if ((bg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24235,13 +24241,13 @@ angular.module('myApp.services', [])
                                     break;
                                 case "ecstdb2014":
                                     if (featureCollection[i].TOTAL_CNT > 0) {
-                                        myThis.surfsed[bh] = {
+                                        vm.surfsed[bh] = {
                                             TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                             PRIMARY_USE: ((featureCollection[i].CLASSIFICA === ' ') ? 'Unknown' : featureCollection[i].CLASSIFICA )
                                         };
                                     }
                                     if ((bh === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24257,13 +24263,13 @@ angular.module('myApp.services', [])
                                     break;
 
                                 case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
-                                    myThis.mml[bf] = {
+                                    vm.mml[bf] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
 
                                     };
 
                                     if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24278,13 +24284,13 @@ angular.module('myApp.services', [])
                                     break;
 
                                 case "TribalLands":
-                                    myThis.CETribalLands[bd] = {
+                                    vm.CETribalLands[bd] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
                                         stateName: (featureCollection[i].stateName || 'Unknown')
                                     };
                                     if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24300,7 +24306,7 @@ angular.module('myApp.services', [])
 
 
                                 case  "BOEM_Wind_Planning_Areas":
-                                    myThis.boem[ba] = {
+                                    vm.boem[ba] = {
                                         INFO: featureCollection[i].INFO,
                                         PROT_NUMBE: featureCollection[i].PROT_NUMBE,
                                         LINK1: featureCollection[i].LINK1,
@@ -24311,14 +24317,14 @@ angular.module('myApp.services', [])
                                         METADATA_URL: featureCollection[i].METADATA_URL
                                     };
                                     if ((ba === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
                                             METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
                                         };
-                                        // console.log(myThis.metadata[k]);
+                                        // console.log(vm.metadata[k]);
                                         k++;
 
                                     }
@@ -24326,7 +24332,7 @@ angular.module('myApp.services', [])
                                     ba++;
                                     break;
                                 case "ActiveRenewableEnergyLeases":
-                                    myThis.arel[bc] = {
+                                    vm.arel[bc] = {
                                         Lease_Numb: featureCollection[i].Lease_Numb,
                                         Company: featureCollection[i].Company,
                                         INFO: featureCollection[i].INFO,
@@ -24339,7 +24345,7 @@ angular.module('myApp.services', [])
                                         METADATA_URL: featureCollection[i].METADATA_URL
                                     };
                                     if ((bc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24353,7 +24359,7 @@ angular.module('myApp.services', [])
                                     bc++;
                                     break;
                                 case  "WindResourcePotential":
-                                    myThis.wind[bb] = {
+                                    vm.wind[bb] = {
                                         WIND_CLASS: (featureCollection[i].WIND_CLASS),
                                         AVG_WGHT: (featureCollection[i].AVG_WGHT || 0).toFixed(2),
                                         PERC_COVER: (featureCollection[i].PERC_COVER || 0),
@@ -24364,7 +24370,7 @@ angular.module('myApp.services', [])
                                         METADATA_URL: featureCollection[i].METADATA_URL
                                     };
                                     if ((bb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        myThis.metadata[k] = {
+                                        vm.metadata[k] = {
                                             REPORT_CAT: featureCollection[i].REPORT_CAT,
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
@@ -24378,22 +24384,22 @@ angular.module('myApp.services', [])
                                     if (featureCollection[i].TOTAL_CNT > 0) {
                                         switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
                                             case "Sup":
-                                                myThis.windclass[0] = featureCollection[i].PERC_COVER;
+                                                vm.windclass[0] = featureCollection[i].PERC_COVER;
                                                 break;
                                             case "Out":
-                                                myThis.windclass[1] = featureCollection[i].PERC_COVER;
+                                                vm.windclass[1] = featureCollection[i].PERC_COVER;
                                                 break;
                                             case "Exc":
-                                                myThis.windclass[2] = featureCollection[i].PERC_COVER;
+                                                vm.windclass[2] = featureCollection[i].PERC_COVER;
                                                 break;
                                             case "Goo":
-                                                myThis.windclass[3] = featureCollection[i].PERC_COVER;
+                                                vm.windclass[3] = featureCollection[i].PERC_COVER;
                                                 break;
                                             case "Fai":
-                                                myThis.windclass[4] = featureCollection[i].PERC_COVER;
+                                                vm.windclass[4] = featureCollection[i].PERC_COVER;
                                                 break;
                                             case "Uns":
-                                                myThis.windclass[5] = featureCollection[i].PERC_COVER;
+                                                vm.windclass[5] = featureCollection[i].PERC_COVER;
                                                 break;
                                         }
 
@@ -24408,7 +24414,7 @@ angular.module('myApp.services', [])
                         var x = 35; //good
                         var chartrow = 1;
 
-                        for (i = 0; i < myThis.ECEcon.length; i++) {
+                        for (i = 0; i < vm.ECEcon.length; i++) {
 
                             if (i && (i % 3 === 0)) {
                                 y += 120;
@@ -24416,17 +24422,17 @@ angular.module('myApp.services', [])
                                 chartrow++;
                             } else if (i) x += 135;
 
-                            myThis.OceanJobContributionsSeries[i] = {
+                            vm.OceanJobContributionsSeries[i] = {
                                 center: [x, y],
-                                "name": myThis.ECEcon[i].Name,
+                                "name": vm.ECEcon[i].Name,
                                 "showInLegend": (i === 0 ? true : false),
                                 "data": [
-                                    ["Marine Construction", myThis.ECEcon[i].GDP_MarineConstruction],
-                                    ["Living Resources", myThis.ECEcon[i].GDP_LivingResources],
-                                    ["Marine Transportation", myThis.ECEcon[i].GDP_MarineTransp],
-                                    ["Offshore Mineral Extraction", myThis.ECEcon[i].GDP_OffshoreMineralExt],
-                                    ["Ship and Boat Building", myThis.ECEcon[i].GDP_ShipAndBoatBuilding],
-                                    ["Tourism and Recreation", myThis.ECEcon[i].GDP_TourismAndRec]
+                                    ["Marine Construction", vm.ECEcon[i].GDP_MarineConstruction],
+                                    ["Living Resources", vm.ECEcon[i].GDP_LivingResources],
+                                    ["Marine Transportation", vm.ECEcon[i].GDP_MarineTransp],
+                                    ["Offshore Mineral Extraction", vm.ECEcon[i].GDP_OffshoreMineralExt],
+                                    ["Ship and Boat Building", vm.ECEcon[i].GDP_ShipAndBoatBuilding],
+                                    ["Tourism and Recreation", vm.ECEcon[i].GDP_TourismAndRec]
                                 ],
                                 title: {
 
@@ -24439,40 +24445,40 @@ angular.module('myApp.services', [])
                             }
 
                         }
-                        myThis.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
+                        vm.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
-                        if (myThis.wavepwr.length > 0) {
-                            if (myThis.wavepwr[0].AVG_WAVE_POWER > 40) {
-                                myThis.wavepwr[0].COLOR = '#B0B497';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 30.0) {
-                                myThis.wavepwr[0].COLOR = '#B6BC9E';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 20.0) {
-                                myThis.wavepwr[0].COLOR = '#BBC1A4';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 15.0) {
-                                myThis.wavepwr[0].COLOR = '#C0C6A8';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 10.0) {
-                                myThis.wavepwr[0].COLOR = '#C9D0B1';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 8.0) {
-                                myThis.wavepwr[0].COLOR = '#D0D8B9';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 6) {
-                                myThis.wavepwr[0].COLOR = '#D5DDC0';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 4.0) {
-                                myThis.wavepwr[0].COLOR = '#DEE7C9';
+                        if (vm.wavepwr.length > 0) {
+                            if (vm.wavepwr[0].AVG_WAVE_POWER > 40) {
+                                vm.wavepwr[0].COLOR = '#B0B497';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 30.0) {
+                                vm.wavepwr[0].COLOR = '#B6BC9E';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 20.0) {
+                                vm.wavepwr[0].COLOR = '#BBC1A4';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 15.0) {
+                                vm.wavepwr[0].COLOR = '#C0C6A8';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 10.0) {
+                                vm.wavepwr[0].COLOR = '#C9D0B1';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 8.0) {
+                                vm.wavepwr[0].COLOR = '#D0D8B9';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 6) {
+                                vm.wavepwr[0].COLOR = '#D5DDC0';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 4.0) {
+                                vm.wavepwr[0].COLOR = '#DEE7C9';
 
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER > 2.0) {
-                                myThis.wavepwr[0].COLOR = '#E4EFD2';
-                            } else if (myThis.wavepwr[0].AVG_WAVE_POWER < 2.01) {
-                                myThis.wavepwr[0].COLOR = '#EBF6D8';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 2.0) {
+                                vm.wavepwr[0].COLOR = '#E4EFD2';
+                            } else if (vm.wavepwr[0].AVG_WAVE_POWER < 2.01) {
+                                vm.wavepwr[0].COLOR = '#EBF6D8';
                             } else {
-                                myThis.wavepwr[0].COLOR = 'white';
+                                vm.wavepwr[0].COLOR = 'white';
                             }
                         }
-                        myThis.windclass[6] = (myThis.windclass.reduce(function (prev, cur) {
+                        vm.windclass[6] = (vm.windclass.reduce(function (prev, cur) {
                             return prev.toFixed(2) - cur.toFixed(2);
                         }, 100));
-                        if (myThis.boem[0] == null) {
-                            myThis.boem[0] = {
+                        if (vm.boem[0] == null) {
+                            vm.boem[0] = {
                                 INFO: "NA",
                                 PROT_NUMBE: 0,
                                 LINK1: "NA",
@@ -24482,8 +24488,8 @@ angular.module('myApp.services', [])
                                 TOTAL_CNT: 0
                             };
                         }
-                        if (myThis.arel[0] == null) {
-                            myThis.arel[0] = {
+                        if (vm.arel[0] == null) {
+                            vm.arel[0] = {
                                 Lease_Numb: 0,
                                 Company: "NA",
                                 INFO: "NA",
@@ -24495,21 +24501,21 @@ angular.module('myApp.services', [])
                                 TOTAL_CNT: 0
                             };
                         }
-                        myThis.boem.sort(function (a, b) {
+                        vm.boem.sort(function (a, b) {
                             return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                         });
-                        myThis.arel.sort(function (a, b) {
+                        vm.arel.sort(function (a, b) {
                             return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                         });
 
-                        if (myThis.boem[0].TOTAL_CNT === 0) {
-                            myThis.boem[0].PERC_COVER = 0;
-                            myThis.boem[0].TOTAL_BLOC = 0;
+                        if (vm.boem[0].TOTAL_CNT === 0) {
+                            vm.boem[0].PERC_COVER = 0;
+                            vm.boem[0].TOTAL_BLOC = 0;
                         }
-                        if (myThis.arel[0] == null)myThis.arel[0].TOTAL_CNT = 0;
-                        if (myThis.arel[0].TOTAL_CNT === 0) {
-                            myThis.arel[0].PERC_COVER = 0;
-                            myThis.arel[0].TOTAL_BLOC = 0;
+                        if (vm.arel[0] == null)vm.arel[0].TOTAL_CNT = 0;
+                        if (vm.arel[0].TOTAL_CNT === 0) {
+                            vm.arel[0].PERC_COVER = 0;
+                            vm.arel[0].TOTAL_BLOC = 0;
                         }
 
                         this.loadStateChart();
@@ -24517,7 +24523,7 @@ angular.module('myApp.services', [])
                         this.loadOceanJobDollarsChart();
                         this.loadOceanJobContributionsChart();
                         //because? and until all direct DOM manipulation is removed from code, this $apply is useful to clear some digest issue that appear as timing issues.
-                        if (myThis.ID !== -9999)  $rootScope.$apply();
+                        if (vm.ID !== -9999)  $rootScope.$apply();
 
 
                     },
@@ -25168,14 +25174,16 @@ angular.module('myApp.services', [])
 
                     },
                     ShowURL: function () {
-                        window.prompt("Share this report with: Ctrl+C, Enter", '' +
-                            AOI.url[0] + '#/AOI?AOI=' + AOI.ID +
-                            '&TI=' + AOI.drawAreaJobId['TI'] +
-                            '&EC=' + AOI.drawAreaJobId['EC'] +
-                            '&CE=' + AOI.drawAreaJobId['CE'] +
-                            '&NRC=' + AOI.drawAreaJobId['NRC'] +
-                            '&EM=' + AOI.drawAreaJobId['EM'])
-                        ;
+                        var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
+                        if (AOI.ID === -9999) {
+                            shareURL = shareURL +
+                                '&TI=' + AOI.drawAreaJobId['TI'] +
+                                '&EC=' + AOI.drawAreaJobId['EC'] +
+                                '&CE=' + AOI.drawAreaJobId['CE'] +
+                                '&NRC=' + AOI.drawAreaJobId['NRC'] +
+                                '&EM=' + AOI.drawAreaJobId['EM']
+                        }
+                        window.prompt("Share this report with: Ctrl+C, Enter", '' + shareURL);
                     }
                 };
 
@@ -25208,7 +25216,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
+    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService', function (AOI, $scope, $timeout, $document, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
         $scope.congressIsActive = true;
@@ -25217,26 +25225,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.congressMenu = "-";
         $scope.senateMenu = "-";
         $scope.houseMenu = "-";
-        $http.get('CE_config.json')
-            .then(function (res) {
-                $scope.CEConfig = res.data;
-            });
-        $http.get('EM_config.json')
-            .then(function (res) {
-                $scope.emconfig = res.data;
-            });
-        $http.get('TI_config.json')
-            .then(function (res) {
-                $scope.TIConfig = res.data;
-            });
-        $http.get('NRC_config.json')
-            .then(function (res) {
-                $scope.NRCConfig = res.data;
-            });
-        $http.get('EC_config.json')
-            .then(function (res) {
-                $scope.ECConfig = res.data;
-            });
+        webService.getData('CE_config.json').then(function (result) {
+            $scope.CEConfig = result;
+        });
+        webService.getData('EM_config.json').then(function (result) {
+            $scope.EMConfig = result;
+        });
+        webService.getData('TI_config.json').then(function (result) {
+            $scope.TIConfig = result;
+        });
+        webService.getData('NRC_config.json').then(function (result) {
+            $scope.NRCConfig = result;
+        });
+        webService.getData('EC_config.json').then(function (result) {
+            $scope.ECConfig = result;
+        });
+
 
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
@@ -25269,7 +25273,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope', '$http', 'webService', function (AOI, $scope, $http, webService) {
+    .controller('AOICtrl', ['AOI', '$scope', 'webService', function (AOI, $scope, webService) {
 
 
         $scope.AOI = AOI;
@@ -25281,24 +25285,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.senateMenu = "+";
         $scope.houseMenu = "+";
 
-        var myDataPromise = webService.getData();
-        myDataPromise.then(function (result) {
-
-            // this is only run after getData() resolves
-            $scope.ddata = result;
-            // console.log("data.name" + $scope.ddata);
-            //move the http gets in here
+        webService.getData('CE_config.json').then(function (result) {
+            $scope.CEConfig = result;
         });
-
-        $http.get('CE_config.json')
-            .then(function (res) {
-                $scope.CEConfig = res.data;
-            });
-
-        $http.get('narratives.json')
-            .then(function (res) {
-                AOI.narratives = res.data;
-            });
+        webService.getData('narratives.json').then(function (result) {
+            AOI.narratives = result;
+        });
 
         $scope.congressActivate = function () {
             $scope.congressIsActive = true;
@@ -25368,14 +25360,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "EnergyAndMineralsCtrl";
-        $http.get('EM_config.json')
-            .then(function (res) {
-                $scope.emconfig = res.data;
-            });
+        webService.getData('EM_config.json').then(function (result) {
+            $scope.EMConfig = result;
+        });
 
 
         AOI.loadWindChart();
@@ -25383,42 +25374,36 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
     }])
 
-    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "TransportationAndInfrastructureCtrl";
-        $http.get('TI_config.json')
-            .then(function (res) {
-                $scope.TIConfig = res.data;
-            });
+        webService.getData('TI_config.json').then(function (result) {
+            $scope.TIConfig = result;
+        });
+
 
         $scope.paneon();
 
     }])
-    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "NaturalResourcesCtrl";
-        $http.get('NRC_config.json')
-            .then(function (res) {
-                $scope.NRCConfig = res.data;
-            });
+        webService.getData('NRC_config.json').then(function (result) {
+            $scope.NRCConfig = result;
+        });
 
-
-        //AOI.loadWindChart();
-
-        //AOI.doFullSlider('ERC');
         $scope.paneon();
     }])
 
-    .controller('EconCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('EconCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "EconCtrl";
-        $http.get('EC_config.json')
-            .then(function (res) {
-                $scope.ECConfig = res.data;
-            });
+        webService.getData('EC_config.json').then(function (result) {
+            $scope.ECConfig = result;
+        });
 
 
         //AOI.loadWindChart();
@@ -25437,6 +25422,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 position: 'topleft',
                 collapsed: false
             });
+
+
             $scope.box = [];
             var len = 2000;
             for (var i = 0; i < len; i++) {
@@ -26075,7 +26062,7 @@ angular.module('myApp.directives', [])
                 metadataUrl: '@',
                 vardata: '@'
             },
-            template: '<a href ng-click="show(modalTemplate)" ><div ng-include="" src="modalImg"></div></a>',
+            template: '<a href ng-click="show(modalTemplate)" class="helpbutton" alt="{{vardata}}">{{vardata}}<div ng-if="!vardata" ng-include="" src="modalImg"></div></a>',
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {
@@ -26341,7 +26328,7 @@ addLoadEvent(preloader);
         this.setTitle(this.options.title);
     });
 
-} (Highcharts));
+}(Highcharts));
 
 
 var marker;
@@ -26407,113 +26394,124 @@ for (var i = 0; i < ortLayerOptional.length; i++) {
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
 
+var initInjector = angular.injector(["ng"]);
+var $http = initInjector.get("$http");
+
+$http.get("gis_config.json").then(function (result) {
+
+
 // Declare app level module which depends on filters, and services
-angular.module('myApp', [
-        'ui.router',
-        'angular.filter',
-        'myApp.filters',
-        'myApp.services',
-        'myApp.directives',
-        'myApp.controllers',
-        'angulartics',
-        'angulartics.google.analytics',
-        'pageslide-directive',
-        'angularModalService',
-        'ngAnimate',
-        'angularSpinner',
-        'highcharts-ng',
-        'ngAria'
+    angular.module('myApp', [
+            'ui.router',
+            'angular.filter',
+            'myApp.filters',
+            'myApp.services',
+            'myApp.directives',
+            'myApp.controllers',
+            'angulartics',
+            'angulartics.google.analytics',
+            'pageslide-directive',
+            'angularModalService',
+            'ngAnimate',
+            'angularSpinner',
+            'highcharts-ng',
+            'ngAria'
 
-    ])
-    .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
-        $urlRouterProvider.otherwise('/main');
-        AOIProvider.config({
-            //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
-            ortMapServer: '//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
-            ortLayerAOI: '7',
-            ortLayerData: '57',
-            ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
-            ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
-            ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/T%26I%20Draw%20Area',
-            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area',
-            ortEconGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/EC%20Draw%20Area'
+        ])
+        .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
+            $urlRouterProvider.otherwise('/main');
+
+            AOIProvider.config({
+                ortMapServer: result.data['ortMapServer'].data,
+                ortLayerData: result.data['ortLayerData'].data,
+                ortLayerAOI: result.data['ortLayerAOI'].data,
+                ortEnergyGPService: result.data['ortEnergyGPService'].data,
+                ortCommonGPService: result.data['ortCommonGPService'].data,
+                ortTranspoGPService: result.data['ortTranspoGPService'].data,
+                ortNaturalGPService: result.data['ortNaturalGPService'].data,
+                ortEconGPService: result.data['ortEconGPService'].data
+            });
+
+
+
+
+            $stateProvider
+
+                .state('otherwise', {
+                    url: '/main',
+                    templateUrl: 'partials/splash.html',
+                })
+                .state('CEview', {
+                    //url: '/AOI?detail',
+                    templateUrl: 'partials/CommonElements.html',
+                    controller: 'AOICtrl'
+                })
+                .state('LoadAOI', {
+                    url: '/AOI?AOIdetail',
+                    templateUrl: 'partials/CommonElements.html',
+                    controller: 'AOICtrl'
+                })
+                .state('NRCview', {
+                    // url: '/view3',
+                    templateUrl: 'partials/NaturalResourcesAndConservation.html',
+                    controller: 'NaturalResourcesCtrl'
+                })
+                .state('TIview', {
+                    //  url:'/view4',
+                    templateUrl: 'partials/TransportationAndInfrastructure.html',
+                    controller: 'TransportationAndInfrastructureCtrl'
+                })
+                .state('EMview', {
+                    //  url: '/EM',
+                    templateUrl: 'partials/EnergyAndMinerals.html',
+                    controller: 'EnergyAndMineralsCtrl'
+                })
+                .state('ECview', {
+                    //   url:'/view5',
+                    templateUrl: 'partials/EconomicsAndCommerce.html',
+                    controller: 'EconCtrl'
+                })
+                .state('meta', {
+                    //url:'/metadata',
+                    templateUrl: 'partials/metadata.html',
+                    // controller: 'MyCtrl5'
+                })
+                .state('splash', {
+                    url: '/splash',
+                    templateUrl: 'partials/splash.html',
+                    // controller: 'splashCtrl'
+                })
+                .state('menu', {
+                    url: '/menu',
+                    templateUrl: 'partials/KnownAreasMenu.html',
+                    // controller: 'splashCtrl'
+                })
+                .state('draw', {
+                    url: '/draw',
+                    templateUrl: 'partials/draw.html',
+                    controller: 'SearchCtrl'
+                })
+                .state('print', {
+                    // url:'/print',
+                    templateUrl: 'partials/printPreview.html',
+                    controller: 'printCtrl'
+                })
+            ;
+        }])
+        .config(function ($animateProvider) {
+            $animateProvider.classNameFilter(/angular-animate/);
+        })
+
+        .config(function ($analyticsProvider) {
+            $analyticsProvider.firstPageview(true);
+            /* Records pages that don't use $state or $route */
+            $analyticsProvider.withAutoBase(true);
+            /* Records full path */
         });
-
-        $stateProvider
-
-            .state('otherwise', {
-                url: '/main',
-                templateUrl: 'partials/splash.html',
-            })
-            .state('CEview', {
-                //url: '/AOI?detail',
-                templateUrl: 'partials/CommonElements.html',
-                controller: 'AOICtrl'
-            })
-            .state('LoadAOI', {
-                url: '/AOI?AOIdetail',
-                templateUrl: 'partials/CommonElements.html',
-                controller: 'AOICtrl'
-            })
-            .state('NRCview', {
-                // url: '/view3',
-                templateUrl: 'partials/NaturalResourcesAndConservation.html',
-                controller: 'NaturalResourcesCtrl'
-            })
-            .state('TIview', {
-                //  url:'/view4',
-                templateUrl: 'partials/TransportationAndInfrastructure.html',
-                controller: 'TransportationAndInfrastructureCtrl'
-            })
-            .state('EMview', {
-                //  url: '/EM',
-                templateUrl: 'partials/EnergyAndMinerals.html',
-                controller: 'EnergyAndMineralsCtrl'
-            })
-            .state('ECview', {
-                //   url:'/view5',
-                templateUrl: 'partials/EconomicsAndCommerce.html',
-                controller: 'EconCtrl'
-            })
-            .state('meta', {
-                //url:'/metadata',
-                templateUrl: 'partials/metadata.html',
-                // controller: 'MyCtrl5'
-            })
-            .state('splash', {
-                url: '/splash',
-                templateUrl: 'partials/splash.html',
-                // controller: 'splashCtrl'
-            })
-            .state('menu', {
-                url: '/menu',
-                templateUrl: 'partials/KnownAreasMenu.html',
-                // controller: 'splashCtrl'
-            })
-            .state('draw', {
-                url: '/draw',
-                templateUrl: 'partials/draw.html',
-                controller: 'SearchCtrl'
-            })
-            .state('print', {
-                // url:'/print',
-                templateUrl: 'partials/printPreview.html',
-                controller: 'printCtrl'
-            })
-        ;
-    }])
-    .config(function ($animateProvider) {
-        $animateProvider.classNameFilter(/angular-animate/);
-    })
-
-    .config(function ($analyticsProvider) {
-        $analyticsProvider.firstPageview(true);
-        /* Records pages that don't use $state or $route */
-        $analyticsProvider.withAutoBase(true);
-        /* Records full path */
-    })
-
-;
+    angular.element(document).ready(function () {
+        angular.bootstrap(document, ['myApp']);
+    });
+});
 
 
 

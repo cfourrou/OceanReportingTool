@@ -226,7 +226,7 @@ addLoadEvent(preloader);
         this.setTitle(this.options.title);
     });
 
-} (Highcharts));
+}(Highcharts));
 
 
 var marker;
@@ -292,113 +292,124 @@ for (var i = 0; i < ortLayerOptional.length; i++) {
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
 
+var initInjector = angular.injector(["ng"]);
+var $http = initInjector.get("$http");
+
+$http.get("gis_config.json").then(function (result) {
+
+
 // Declare app level module which depends on filters, and services
-angular.module('myApp', [
-        'ui.router',
-        'angular.filter',
-        'myApp.filters',
-        'myApp.services',
-        'myApp.directives',
-        'myApp.controllers',
-        'angulartics',
-        'angulartics.google.analytics',
-        'pageslide-directive',
-        'angularModalService',
-        'ngAnimate',
-        'angularSpinner',
-        'highcharts-ng',
-        'ngAria'
+    angular.module('myApp', [
+            'ui.router',
+            'angular.filter',
+            'myApp.filters',
+            'myApp.services',
+            'myApp.directives',
+            'myApp.controllers',
+            'angulartics',
+            'angulartics.google.analytics',
+            'pageslide-directive',
+            'angularModalService',
+            'ngAnimate',
+            'angularSpinner',
+            'highcharts-ng',
+            'ngAria'
 
-    ])
-    .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
-        $urlRouterProvider.otherwise('/main');
-        AOIProvider.config({
-            //ortMapServer: '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/',
-            ortMapServer: '//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/',
-            ortLayerAOI: '7',
-            ortLayerData: '57',
-            ortEnergyGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area',
-            ortCommonGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area',
-            ortTranspoGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/T%26I%20Draw%20Area',
-            ortNaturalGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area',
-            ortEconGPService: '//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/EC%20Draw%20Area'
+        ])
+        .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
+            $urlRouterProvider.otherwise('/main');
+
+            AOIProvider.config({
+                ortMapServer: result.data['ortMapServer'].data,
+                ortLayerData: result.data['ortLayerData'].data,
+                ortLayerAOI: result.data['ortLayerAOI'].data,
+                ortEnergyGPService: result.data['ortEnergyGPService'].data,
+                ortCommonGPService: result.data['ortCommonGPService'].data,
+                ortTranspoGPService: result.data['ortTranspoGPService'].data,
+                ortNaturalGPService: result.data['ortNaturalGPService'].data,
+                ortEconGPService: result.data['ortEconGPService'].data
+            });
+
+
+
+
+            $stateProvider
+
+                .state('otherwise', {
+                    url: '/main',
+                    templateUrl: 'partials/splash.html',
+                })
+                .state('CEview', {
+                    //url: '/AOI?detail',
+                    templateUrl: 'partials/CommonElements.html',
+                    controller: 'AOICtrl'
+                })
+                .state('LoadAOI', {
+                    url: '/AOI?AOIdetail',
+                    templateUrl: 'partials/CommonElements.html',
+                    controller: 'AOICtrl'
+                })
+                .state('NRCview', {
+                    // url: '/view3',
+                    templateUrl: 'partials/NaturalResourcesAndConservation.html',
+                    controller: 'NaturalResourcesCtrl'
+                })
+                .state('TIview', {
+                    //  url:'/view4',
+                    templateUrl: 'partials/TransportationAndInfrastructure.html',
+                    controller: 'TransportationAndInfrastructureCtrl'
+                })
+                .state('EMview', {
+                    //  url: '/EM',
+                    templateUrl: 'partials/EnergyAndMinerals.html',
+                    controller: 'EnergyAndMineralsCtrl'
+                })
+                .state('ECview', {
+                    //   url:'/view5',
+                    templateUrl: 'partials/EconomicsAndCommerce.html',
+                    controller: 'EconCtrl'
+                })
+                .state('meta', {
+                    //url:'/metadata',
+                    templateUrl: 'partials/metadata.html',
+                    // controller: 'MyCtrl5'
+                })
+                .state('splash', {
+                    url: '/splash',
+                    templateUrl: 'partials/splash.html',
+                    // controller: 'splashCtrl'
+                })
+                .state('menu', {
+                    url: '/menu',
+                    templateUrl: 'partials/KnownAreasMenu.html',
+                    // controller: 'splashCtrl'
+                })
+                .state('draw', {
+                    url: '/draw',
+                    templateUrl: 'partials/draw.html',
+                    controller: 'SearchCtrl'
+                })
+                .state('print', {
+                    // url:'/print',
+                    templateUrl: 'partials/printPreview.html',
+                    controller: 'printCtrl'
+                })
+            ;
+        }])
+        .config(function ($animateProvider) {
+            $animateProvider.classNameFilter(/angular-animate/);
+        })
+
+        .config(function ($analyticsProvider) {
+            $analyticsProvider.firstPageview(true);
+            /* Records pages that don't use $state or $route */
+            $analyticsProvider.withAutoBase(true);
+            /* Records full path */
         });
-
-        $stateProvider
-
-            .state('otherwise', {
-                url: '/main',
-                templateUrl: 'partials/splash.html',
-            })
-            .state('CEview', {
-                //url: '/AOI?detail',
-                templateUrl: 'partials/CommonElements.html',
-                controller: 'AOICtrl'
-            })
-            .state('LoadAOI', {
-                url: '/AOI?AOIdetail',
-                templateUrl: 'partials/CommonElements.html',
-                controller: 'AOICtrl'
-            })
-            .state('NRCview', {
-                // url: '/view3',
-                templateUrl: 'partials/NaturalResourcesAndConservation.html',
-                controller: 'NaturalResourcesCtrl'
-            })
-            .state('TIview', {
-                //  url:'/view4',
-                templateUrl: 'partials/TransportationAndInfrastructure.html',
-                controller: 'TransportationAndInfrastructureCtrl'
-            })
-            .state('EMview', {
-                //  url: '/EM',
-                templateUrl: 'partials/EnergyAndMinerals.html',
-                controller: 'EnergyAndMineralsCtrl'
-            })
-            .state('ECview', {
-                //   url:'/view5',
-                templateUrl: 'partials/EconomicsAndCommerce.html',
-                controller: 'EconCtrl'
-            })
-            .state('meta', {
-                //url:'/metadata',
-                templateUrl: 'partials/metadata.html',
-                // controller: 'MyCtrl5'
-            })
-            .state('splash', {
-                url: '/splash',
-                templateUrl: 'partials/splash.html',
-                // controller: 'splashCtrl'
-            })
-            .state('menu', {
-                url: '/menu',
-                templateUrl: 'partials/KnownAreasMenu.html',
-                // controller: 'splashCtrl'
-            })
-            .state('draw', {
-                url: '/draw',
-                templateUrl: 'partials/draw.html',
-                controller: 'SearchCtrl'
-            })
-            .state('print', {
-                // url:'/print',
-                templateUrl: 'partials/printPreview.html',
-                controller: 'printCtrl'
-            })
-        ;
-    }])
-    .config(function ($animateProvider) {
-        $animateProvider.classNameFilter(/angular-animate/);
-    })
-
-    .config(function ($analyticsProvider) {
-        $analyticsProvider.firstPageview(true);
-        /* Records pages that don't use $state or $route */
-        $analyticsProvider.withAutoBase(true);
-        /* Records full path */
-    })
-
-;
+    angular.element(document).ready(function () {
+        angular.bootstrap(document, ['myApp']);
+    });
+});
 
 
 

@@ -57,7 +57,7 @@ angular.module('myApp.directives', [])
                 metadataUrl: '@',
                 vardata: '@'
             },
-            template: '<a href ng-click="show(modalTemplate)" ><div ng-include="" src="modalImg"></div></a>',
+            template: '<a href ng-click="show(modalTemplate)" class="helpbutton" alt="{{vardata}}">{{vardata}}<div ng-if="!vardata" ng-include="" src="modalImg"></div></a>',
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {

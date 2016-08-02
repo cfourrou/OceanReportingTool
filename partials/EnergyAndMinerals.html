@@ -11,8 +11,8 @@ indivdual infographics ID's 1-25 for EM
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Energy and Minerals
             <div class="narrative" ng-bind-html="AOI.narratives[1].narrative | unsafe"></div>
-            <div ng-repeat="emconf in emconfig | orderBy: 'priority'">
-                <div class="zeroheightkludge" ng-include="emconf.filename"></div>
+            <div ng-repeat="EMConf in EMConfig | orderBy: 'priority'">
+                <div class="zeroheightkludge" ng-include="EMConf.filename"></div>
             </div>
 
         </div>

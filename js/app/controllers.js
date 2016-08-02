@@ -20,7 +20,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$http', '$timeout', '$document', function (AOI, $scope, $http, $timeout, $document) {
+    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService', function (AOI, $scope, $timeout, $document, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
         $scope.congressIsActive = true;
@@ -29,26 +29,22 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.congressMenu = "-";
         $scope.senateMenu = "-";
         $scope.houseMenu = "-";
-        $http.get('CE_config.json')
-            .then(function (res) {
-                $scope.CEConfig = res.data;
-            });
-        $http.get('EM_config.json')
-            .then(function (res) {
-                $scope.emconfig = res.data;
-            });
-        $http.get('TI_config.json')
-            .then(function (res) {
-                $scope.TIConfig = res.data;
-            });
-        $http.get('NRC_config.json')
-            .then(function (res) {
-                $scope.NRCConfig = res.data;
-            });
-        $http.get('EC_config.json')
-            .then(function (res) {
-                $scope.ECConfig = res.data;
-            });
+        webService.getData('CE_config.json').then(function (result) {
+            $scope.CEConfig = result;
+        });
+        webService.getData('EM_config.json').then(function (result) {
+            $scope.EMConfig = result;
+        });
+        webService.getData('TI_config.json').then(function (result) {
+            $scope.TIConfig = result;
+        });
+        webService.getData('NRC_config.json').then(function (result) {
+            $scope.NRCConfig = result;
+        });
+        webService.getData('EC_config.json').then(function (result) {
+            $scope.ECConfig = result;
+        });
+
 
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
@@ -81,7 +77,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
 
-    .controller('AOICtrl', ['AOI', '$scope', '$http', 'webService', function (AOI, $scope, $http, webService) {
+    .controller('AOICtrl', ['AOI', '$scope', 'webService', function (AOI, $scope, webService) {
 
 
         $scope.AOI = AOI;
@@ -93,24 +89,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.senateMenu = "+";
         $scope.houseMenu = "+";
 
-        var myDataPromise = webService.getData();
-        myDataPromise.then(function (result) {
-
-            // this is only run after getData() resolves
-            $scope.ddata = result;
-            // console.log("data.name" + $scope.ddata);
-            //move the http gets in here
+        webService.getData('CE_config.json').then(function (result) {
+            $scope.CEConfig = result;
         });
-
-        $http.get('CE_config.json')
-            .then(function (res) {
-                $scope.CEConfig = res.data;
-            });
-
-        $http.get('narratives.json')
-            .then(function (res) {
-                AOI.narratives = res.data;
-            });
+        webService.getData('narratives.json').then(function (result) {
+            AOI.narratives = result;
+        });
 
         $scope.congressActivate = function () {
             $scope.congressIsActive = true;
@@ -180,14 +164,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "EnergyAndMineralsCtrl";
-        $http.get('EM_config.json')
-            .then(function (res) {
-                $scope.emconfig = res.data;
-            });
+        webService.getData('EM_config.json').then(function (result) {
+            $scope.EMConfig = result;
+        });
 
 
         AOI.loadWindChart();
@@ -195,42 +178,36 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
     }])
 
-    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "TransportationAndInfrastructureCtrl";
-        $http.get('TI_config.json')
-            .then(function (res) {
-                $scope.TIConfig = res.data;
-            });
+        webService.getData('TI_config.json').then(function (result) {
+            $scope.TIConfig = result;
+        });
+
 
         $scope.paneon();
 
     }])
-    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "NaturalResourcesCtrl";
-        $http.get('NRC_config.json')
-            .then(function (res) {
-                $scope.NRCConfig = res.data;
-            });
+        webService.getData('NRC_config.json').then(function (result) {
+            $scope.NRCConfig = result;
+        });
 
-
-        //AOI.loadWindChart();
-
-        //AOI.doFullSlider('ERC');
         $scope.paneon();
     }])
 
-    .controller('EconCtrl', ['$scope', 'AOI', '$http', function ($scope, AOI, $http) {
+    .controller('EconCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "EconCtrl";
-        $http.get('EC_config.json')
-            .then(function (res) {
-                $scope.ECConfig = res.data;
-            });
+        webService.getData('EC_config.json').then(function (result) {
+            $scope.ECConfig = result;
+        });
 
 
         //AOI.loadWindChart();
@@ -249,6 +226,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 position: 'topleft',
                 collapsed: false
             });
+
+
             $scope.box = [];
             var len = 2000;
             for (var i = 0; i < len; i++) {
