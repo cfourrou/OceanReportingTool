@@ -103,6 +103,8 @@ angular.module('myApp.services', [])
                     ECEconWages: [],
                     ECStateGDP: [],
                     ECCountyGDP: [],
+                    CEPlaces: [],
+
 
                     display: function (AOI_ID) {
                         this.ID = parseInt(AOI_ID);
@@ -361,7 +363,27 @@ angular.module('myApp.services', [])
                             }
                         });
 
-
+                        vm.CEPlaceLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + [ortLayerOptional[36].num],
+                            pane: 'optionalfeature36',
+                            pointToLayer: function (feature, latlng) {
+                                return L.marker(latlng, {
+                                    icon: L.icon({
+                                        iconUrl: 'img/Map_marker.svg',
+                                        iconSize: [32, 37],
+                                        iconAnchor: [16, 37],
+                                        popupAnchor: [0, -28]
+                                    })
+                                }).bindPopup(feature.properties.NAME);
+                            }
+                        });
+                        vm.CETribalLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[37].num,
+                            pane: 'optionalfeature37',
+                            style: function (feature) {
+                                return {color: '#D3D3D3', weight: 3, fillOpacity: .7};
+                            }
+                        });
                         var query = L.esri.query({
                             url: config.ortMapServer + config.ortLayerData
                         });
@@ -438,10 +460,38 @@ angular.module('myApp.services', [])
                         var cg = 0;
                         var ch = 0;
                         var ci = 0;
+                        var cj = 0;
+
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+
+                                case "Places":
+                                    vm.CEPlaces[cj] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        Name: (featureCollection[i].Name || 'Unknown'),
+                                        ST: (featureCollection[i].ST || 'Unknown'),
+                                        Dist_Mi: (featureCollection[i].Dist_Mi || 0),
+                                        Census2010: ((featureCollection[i].Census2010 === -1) ?  ' ' : (featureCollection[i].Census2010 || ' '))
+
+                                    };
+
+
+                                    if ((cj === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cj++;
+                                    break;
                                 case "Coastal_Shoreline_Counties_2010":
                                     vm.ECCountyGDP[ci] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
@@ -1188,7 +1238,7 @@ angular.module('myApp.services', [])
                                     vm.CETribalLands[bd] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                        stateName: (featureCollection[i].stateName || 'Unknown')
+                                        Dist_Mi: (featureCollection[i].Dist_Mi || 0)
                                     };
                                     if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
                                         vm.metadata[k] = {
@@ -1445,6 +1495,8 @@ angular.module('myApp.services', [])
                             map.removeLayer(this.CEElevation);
                             map.removeLayer(this.TISubmarineLayer);
                             map.removeLayer(this.TIDangerZonesLayer);
+                            map.removeLayer(this.CEPlaceLayer);
+                            map.removeLayer(this.CETribalLayer);
 
                             this.windLeaseLayerIsVisible = false;
                             this.windrpLayerIsVisible = false;
@@ -1460,6 +1512,7 @@ angular.module('myApp.services', [])
                             this.CEElevationIsVisable = false;
                             this.TISubmarineIsVisable = false;
                             this.TIDangerZonesIsVisable = false;
+                            this.CEPlaceLayerIsVisible = false;
 
 
                             this.wind.length = 0;
@@ -1507,6 +1560,7 @@ angular.module('myApp.services', [])
                             this.OceanJobContributionsSeries.length = 0;
                             this.drawAreaJobId.length = 0;
                             this.Shared = false;
+                            this.CEPlaces.length = 0;
 
                             this.hide();
 
@@ -1514,6 +1568,18 @@ angular.module('myApp.services', [])
                         this.isLoaded = false;
                     },
                     isLoaded: false,
+                    CEPlaceLayerIsVisible: false,
+                    toggleCEPlaceLayer: function () {
+                        if (!this.CEPlaceLayerIsVisible) {
+                            this.CEPlaceLayer.addTo(map);
+                            this.CETribalLayer.addTo(map);
+                            this.CEPlaceLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.CEPlaceLayer);
+                            map.removeLayer(this.CETribalLayer);
+                            this.CEPlaceLayerIsVisible = false;
+                        }
+                    },
                     windLeaseLayerIsVisible: false,
                     toggleWindLeaseLayer: function () {
                         if (!this.windLeaseLayerIsVisible) {

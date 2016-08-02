@@ -149,6 +149,16 @@ ortLayerOptional[35] =
     num: 37,
     displayName: 'DangerZones'
 }
+ortLayerOptional[36] =
+{
+    num: 0,
+    displayName: 'Places'
+}
+ortLayerOptional[37] =
+{
+    num: 9,
+    displayName: 'tribal Lands'
+}
 
 var toggle = false;
 //var windclass = [];
@@ -329,8 +339,6 @@ $http.get("gis_config.json").then(function (result) {
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,
                 ortEconGPService: result.data['ortEconGPService'].data
             });
-
-
 
 
             $stateProvider

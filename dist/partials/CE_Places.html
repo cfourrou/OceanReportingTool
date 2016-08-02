@@ -1,0 +1,122 @@
+<div class="infographic-box-medium">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft">Places</div>
+            <!-- iButton start-->
+            <div class="floatitleft">
+                <info-directive class="infobutton mainbutton" modal-template="modal33.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal33.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            These places represent other local entities who may have interest in the ocean activities
+                            occuring in the defined area.
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+
+            <div id="slider_but36" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
+                <div ng-class="AOI.CEPlaceLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleCEPlaceLayer()" ng-include="'img/switch_off.svg'"></div>
+            </div>
+            <div id="slbuttxt0" class="sliderbuttont2" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF
+            </div>
+        </div>
+        <div>
+            <div class="GreyText14 floatitleft padLeft15 w100">
+
+                <div class="CommonlineSwatchLine ">
+                    <div class=" floatitleft ">
+                        <img src="img/Map_marker.svg">
+                    </div>
+
+
+                    <div class="GreyText12">Cities</div>
+
+
+                </div>
+
+            </div>
+
+            <div class="padding15">
+                <table class="GreyText14 placesTable">
+
+                    <tr class="GreyText14">
+                        <th>Cities</th>
+                        <th>Population (2010)</th>
+                        <th>Distance in Miles</th>
+                    </tr>
+                    <tr class="GreyText14" ng-repeat="x in AOI.CEPlaces | orderBy : 'Dist_Mi'">
+                        <td class="GreyText14">
+                            <div>{{x.Name}}</div>
+                        </td>
+                        <td class="GreyText14">
+                            <div>{{x.Census2010}}</div>
+                        </td>
+                        <td class="GreyText14">
+                            <div>{{x.Dist_Mi.toFixed(2)}}</div>
+                        </td>
+
+
+                    </tr>
+                </table>
+            </div>
+
+            <div class="GreyText14 floatitleft padLeft15 w100">
+
+                <div class="CommonlineSwatchLine ">
+                    <div class=" floatitleft ">
+                        <img src="img/tribal-lands.svg">
+                    </div>
+
+
+                    <div class="GreyText12">&nbsp;Coastal Tribal Lands</div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="padding15">
+                <table class="GreyText14 tribeTable">
+
+                    <tr class="GreyText14">
+                        <th>Tribal Lands</th>
+                        <th>Distance in Miles</th>
+                    </tr>
+                    <tr class="GreyText14" ng-repeat="x in AOI.CETribalLands | orderBy : 'Dist_Mi'">
+                        <td class="GreyText14">
+                            <div>{{x.NAMELSAD}}</div>
+                        </td>
+
+                        <td class="GreyText14">
+                            <div>{{x.Dist_Mi.toFixed(2)}}</div>
+                        </td>
+
+
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>

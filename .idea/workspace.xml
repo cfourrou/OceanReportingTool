@@ -2,23 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e8090f5-02cf-46c3-b523-f4e54481fa8d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gis_config.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/partials/CE_Places.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CE_config.json" afterPath="$PROJECT_DIR$/CE_config.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/less/ort.less" afterPath="$PROJECT_DIR$/css/less/ort.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/ort.min.css" afterPath="$PROJECT_DIR$/css/ort.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/CE_config.json" afterPath="$PROJECT_DIR$/dist/CE_config.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/ort.min.css" afterPath="$PROJECT_DIR$/dist/css/ort.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/img/tribal-lands.svg" afterPath="$PROJECT_DIR$/dist/img/tribal-lands.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/ort.js" afterPath="$PROJECT_DIR$/dist/js/ort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EnergyAndMinerals.html" afterPath="$PROJECT_DIR$/dist/partials/EnergyAndMinerals.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/printPreview.html" afterPath="$PROJECT_DIR$/dist/partials/printPreview.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/metadata.html" afterPath="$PROJECT_DIR$/dist/partials/metadata.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/splash.html" afterPath="$PROJECT_DIR$/dist/partials/splash.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/tribal-lands.svg" afterPath="$PROJECT_DIR$/img/tribal-lands.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/app.js" afterPath="$PROJECT_DIR$/js/app/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/controllers.js" afterPath="$PROJECT_DIR$/js/app/controllers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/directives.js" afterPath="$PROJECT_DIR$/js/app/directives.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/services.js" afterPath="$PROJECT_DIR$/js/app/services.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/ort.js" afterPath="$PROJECT_DIR$/js/ort.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EnergyAndMinerals.html" afterPath="$PROJECT_DIR$/partials/EnergyAndMinerals.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/printPreview.html" afterPath="$PROJECT_DIR$/partials/printPreview.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/metadata.html" afterPath="$PROJECT_DIR$/partials/metadata.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/splash.html" afterPath="$PROJECT_DIR$/partials/splash.html" />
     </list>
     <ignored path="Ocean Reporting Tool.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,51 +42,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
+      <file leaf-file-name="CE_Places.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/partials/CE_Places.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.461538">
-              <caret line="228" column="0" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
+            <state vertical-scroll-proportion="-1.5192307">
+              <caret line="62" column="44" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="directives.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app/directives.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="59" column="95" selection-start-line="59" selection-start-column="95" selection-end-line="59" selection-end-column="95" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AOI_head.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/AOI_head.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.9615384">
-              <caret line="3" column="109" selection-start-line="3" selection-start-column="98" selection-end-line="3" selection-end-column="109" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EC_Contributions.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/EC_Contributions.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.8846154">
-              <caret line="9" column="74" selection-start-line="8" selection-start-column="16" selection-end-line="9" selection-end-column="74" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="services.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/app/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.384615">
-              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.3">
+              <caret line="474" column="85" selection-start-line="474" selection-start-column="85" selection-end-line="474" selection-end-column="85" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Map_marker.svg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/img/Map_marker.svg">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.153846">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EM_OG_CoastalEnergyFacilities.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/partials/EM_OG_CoastalEnergyFacilities.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-19.615385">
+              <caret line="81" column="20" selection-start-line="57" selection-start-column="12" selection-end-line="81" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -92,21 +85,21 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/app/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.884615">
-              <caret line="410" column="7" selection-start-line="410" selection-start-column="7" selection-end-line="410" selection-end-column="7" />
+            <state vertical-scroll-proportion="-11.346154">
+              <caret line="156" column="19" selection-start-line="156" selection-start-column="19" selection-end-line="156" selection-end-column="19" />
               <folding>
-                <element signature="e#7053#7490#0" expanded="false" />
-                <element signature="e#10820#10896#0" expanded="false" />
+                <element signature="e#7189#7626#0" expanded="false" />
+                <element signature="e#10954#11030#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gis_config.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gis_config.json">
+      <file leaf-file-name="EM_WindResourcePotential.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/partials/EM_WindResourcePotential.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.230769">
-              <caret line="8" column="19" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="19" />
+            <state vertical-scroll-proportion="-9.807693">
+              <caret line="117" column="22" selection-start-line="115" selection-start-column="16" selection-end-line="117" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -115,18 +108,8 @@
       <file leaf-file-name="ort.less" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/less/ort.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.134615">
-              <caret line="294" column="16" selection-start-line="294" selection-start-column="16" selection-end-line="294" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43889844">
-              <caret line="225" column="45" selection-start-line="225" selection-start-column="45" selection-end-line="225" selection-end-column="45" />
+            <state vertical-scroll-proportion="-8.057693">
+              <caret line="2569" column="11" selection-start-line="2569" selection-start-column="11" selection-end-line="2569" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -148,11 +131,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/partials/EM_SurficialSediment.html" />
-        <option value="$PROJECT_DIR$/partials/EM_SedimentResources.html" />
-        <option value="$PROJECT_DIR$/partials/EM_BeachNourishment.html" />
-        <option value="$PROJECT_DIR$/partials/EM_TidalPower.html" />
-        <option value="$PROJECT_DIR$/partials/EM_CurrentPower.html" />
         <option value="$PROJECT_DIR$/partials/EM_OceanDisposalSites.html" />
         <option value="$PROJECT_DIR$/partials/EM_OG_resourcePotential.html" />
         <option value="$PROJECT_DIR$/partials/TI_DangerZones.html" />
@@ -176,7 +154,6 @@
         <option value="$PROJECT_DIR$/partials/KnownAreasMenu.html" />
         <option value="$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html" />
         <option value="$PROJECT_DIR$/partials/EconomicsAndCommerce.html" />
-        <option value="$PROJECT_DIR$/partials/metadata.html" />
         <option value="$PROJECT_DIR$/partials/temp.html" />
         <option value="$PROJECT_DIR$/partials/temp.js" />
         <option value="$PROJECT_DIR$/partials/EC_OceanJobIndustry.html" />
@@ -194,11 +171,17 @@
         <option value="$PROJECT_DIR$/gis_config.json" />
         <option value="$PROJECT_DIR$/js/app/controllers.js" />
         <option value="$PROJECT_DIR$/js/ort.json" />
-        <option value="$PROJECT_DIR$/js/app/app.js" />
-        <option value="$PROJECT_DIR$/js/app/services.js" />
         <option value="$PROJECT_DIR$/js/app/directives.js" />
-        <option value="$PROJECT_DIR$/css/less/ort.less" />
+        <option value="$PROJECT_DIR$/partials/splash.html" />
+        <option value="$PROJECT_DIR$/partials/metadata.html" />
+        <option value="$PROJECT_DIR$/CE_config.json" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/img/tribal-lands.svg" />
+        <option value="$PROJECT_DIR$/css/less/ort.less" />
+        <option value="$PROJECT_DIR$/img/Map_marker.svg" />
+        <option value="$PROJECT_DIR$/js/app/app.js" />
+        <option value="$PROJECT_DIR$/partials/CE_Places.html" />
+        <option value="$PROJECT_DIR$/js/app/services.js" />
       </list>
     </option>
   </component>
@@ -413,6 +396,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="img" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OceanReportingTool" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OceanReportingTool" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -454,8 +451,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Chris\WebstormProjects\OceanReportingTool" />
       <recent name="C:\Users\Chris\WebstormProjects\OceanReportingTool\partials" />
+      <recent name="C:\Users\Chris\WebstormProjects\OceanReportingTool" />
       <recent name="C:\Users\Chris\WebstormProjects\OceanReportingTool\js\lib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -562,13 +559,14 @@
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.43917853" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.76632303" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt " active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.5608215" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Grunt " active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.23367697" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32589287" sideWeight="0.51898736" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33482143" sideWeight="0.48101267" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38131043" sideWeight="0.5027027" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850778" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2935268" sideWeight="0.46895722" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35044643" sideWeight="0.46895722" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24954791" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25558037" sideWeight="0.4978903" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24954791" sideWeight="0.50446427" order="3" side_tool="true" content_ui="tabs" />
@@ -578,7 +576,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32589287" sideWeight="0.48101267" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -598,7 +595,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/app/app.js</url>
-          <line>402</line>
+          <line>410</line>
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="1" />
@@ -606,62 +603,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/partials/EM_RenewableEnergyLeases.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9022346">
-          <caret line="39" column="27" selection-start-line="9" selection-start-column="12" selection-end-line="39" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_MarineMineralsLeases.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.846153">
-          <caret line="38" column="27" selection-start-line="9" selection-start-column="12" selection-end-line="38" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_OG_activeLeases.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.576923">
-          <caret line="33" column="27" selection-start-line="4" selection-start-column="11" selection-end-line="33" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_OG_planningAreas.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.923077">
-          <caret line="32" column="27" selection-start-line="4" selection-start-column="12" selection-end-line="32" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_OG_wells.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.769231">
-          <caret line="21" column="82" selection-start-line="21" selection-start-column="82" selection-end-line="21" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/TransportationAndInfrastructure.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.807693">
-          <caret line="15" column="18" selection-start-line="13" selection-start-column="12" selection-end-line="15" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NRC_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3333334">
-          <caret line="4" column="67" selection-start-line="4" selection-start-column="67" selection-end-line="4" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_OG_CoastalEnergyFacilities.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.653847">
-          <caret line="65" column="97" selection-start-line="65" selection-start-column="76" selection-end-line="65" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/partials/NRC_CriticalHabitat.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-18.384615">
@@ -687,6 +628,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.701299">
           <caret line="53" column="27" selection-start-line="53" selection-start-column="27" selection-end-line="53" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -760,17 +702,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/metadata.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="39" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/partials/TI_SubmarineCables.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-24.692308">
           <caret line="62" column="6" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -868,14 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CE_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05831904">
-          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/narratives.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.087478556">
@@ -892,26 +820,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gis_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.230769">
-          <caret line="8" column="19" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/partials/EnergyAndMinerals.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.55593807">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC_Contributions.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.8846154">
-          <caret line="9" column="74" selection-start-line="8" selection-start-column="16" selection-end-line="9" selection-end-column="74" />
           <folding />
         </state>
       </provider>
@@ -924,36 +836,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+    <entry file="file://$PROJECT_DIR$/partials/splash.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.884615">
-          <caret line="410" column="7" selection-start-line="410" selection-start-column="7" selection-end-line="410" selection-end-column="7" />
-          <folding>
-            <element signature="e#7053#7490#0" expanded="false" />
-            <element signature="e#10820#10896#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.461538">
-          <caret line="228" column="0" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.1078199">
+          <caret line="55" column="35" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/services.js">
+    <entry file="file://$PROJECT_DIR$/gis_config.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.384615">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.16113745">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EC_Contributions.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18127961">
+          <caret line="9" column="74" selection-start-line="8" selection-start-column="16" selection-end-line="9" selection-end-column="74" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/AOI_head.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.9615384">
+        <state vertical-scroll-proportion="0.06042654">
           <caret line="3" column="109" selection-start-line="3" selection-start-column="98" selection-end-line="3" selection-end-column="109" />
           <folding />
         </state>
@@ -961,24 +870,127 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/app/directives.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="59" column="95" selection-start-line="59" selection-start-column="95" selection-end-line="59" selection-end-column="95" />
+        <state vertical-scroll-proportion="0.2091954">
+          <caret line="59" column="82" selection-start-line="59" selection-start-column="82" selection-end-line="59" selection-end-column="82" />
+          <folding>
+            <marker date="1470153326644" expanded="true" signature="1530:1544" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14099526">
+          <caret line="219" column="37" selection-start-line="219" selection-start-column="37" selection-end-line="219" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/less/ort.less">
+    <entry file="file://$PROJECT_DIR$/partials/CE_FederalGeoRegulations.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.134615">
-          <caret line="294" column="16" selection-start-line="294" selection-start-column="16" selection-end-line="294" selection-end-column="16" />
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="12" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CE_config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6666667">
+          <caret line="8" column="59" selection-start-line="8" selection-start-column="59" selection-end-line="8" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43889844">
-          <caret line="225" column="45" selection-start-line="225" selection-start-column="45" selection-end-line="225" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.5188679">
+          <caret line="147" column="88" selection-start-line="147" selection-start-column="88" selection-end-line="147" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/metadata.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6735849">
+          <caret line="21" column="48" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_OG_CoastalEnergyFacilities.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-19.615385">
+          <caret line="81" column="20" selection-start-line="57" selection-start-column="12" selection-end-line="81" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/lib/leaflet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33267328">
+          <caret line="5" column="23163" selection-start-line="5" selection-start-column="23156" selection-end-line="5" selection-end-column="23163" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/Map_marker.svg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.346154">
+          <caret line="156" column="19" selection-start-line="156" selection-start-column="19" selection-end-line="156" selection-end-column="19" />
+          <folding>
+            <element signature="e#7189#7626#0" expanded="false" />
+            <element signature="e#10954#11030#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/less/ort.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.057693">
+          <caret line="2569" column="11" selection-start-line="2569" selection-start-column="11" selection-end-line="2569" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_WindResourcePotential.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.807693">
+          <caret line="117" column="22" selection-start-line="115" selection-start-column="16" selection-end-line="117" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/tribal-lands.svg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1528777">
+          <caret line="5" column="54" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/CE_Places.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5192307">
+          <caret line="62" column="44" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/services.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3">
+          <caret line="474" column="85" selection-start-line="474" selection-start-column="85" selection-end-line="474" selection-end-column="85" />
           <folding />
         </state>
       </provider>
