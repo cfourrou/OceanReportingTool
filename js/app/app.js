@@ -160,6 +160,16 @@ ortLayerOptional[37] =
     displayName: 'tribal Lands'
 }
 
+ortLayerOptional[38] =
+{
+    num: 42,
+    displayName: 'vessel count'
+}
+ortLayerOptional[39] =
+{
+    num: 33,
+    displayName: 'Principle Ports'
+}
 var toggle = false;
 //var windclass = [];
 //var toggleFull = false;

@@ -104,6 +104,11 @@ angular.module('myApp.services', [])
                     ECStateGDP: [],
                     ECCountyGDP: [],
                     CEPlaces: [],
+                    TIShipping: [],
+                    TIShippingTotal: 0,
+                    TIRightWhale: [],
+                    TIVessel: [],
+                    TIPrincipalPorts: [],
 
 
                     display: function (AOI_ID) {
@@ -377,6 +382,20 @@ angular.module('myApp.services', [])
                                 }).bindPopup(feature.properties.NAME);
                             }
                         });
+                        vm.TIPrincipalPortsLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + [ortLayerOptional[39].num],
+                            pane: 'optionalfeature39',
+                            pointToLayer: function (feature, latlng) {
+                                return L.marker(latlng, {
+                                    icon: L.icon({
+                                        iconUrl: 'img/transportation-anchor.svg',
+                                        iconSize: [32, 37],
+                                        iconAnchor: [16, 37],
+                                        popupAnchor: [0, -28]
+                                    })
+                                });
+                            }
+                        });
                         vm.CETribalLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[37].num,
                             pane: 'optionalfeature37',
@@ -384,6 +403,30 @@ angular.module('myApp.services', [])
                                 return {color: '#D3D3D3', weight: 3, fillOpacity: .7};
                             }
                         });
+
+                        vm.TIVessels = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[38].num,
+                            pane: 'optionalfeature38',
+                            style: function (feature) {
+                                if (feature.properties.all_2011 > 1500) {
+                                    return {color: '#d4321e', weight: 1, fillOpacity: .8};
+                                } else if (feature.properties.all_2011 > 750) {
+                                    return {color: '#ee815e', weight: 1, fillOpacity: .8};
+                                } else if (feature.properties.all_2011 > 250) {
+                                    return {color: '#fbd39e', weight: 1, fillOpacity: .8};
+                                } else if (feature.properties.all_2011 > 75) {
+                                    return {color: '#d9dec1', weight: 1, fillOpacity: .8};
+                                } else if (feature.properties.all_2011 > 0) {
+                                    return {color: '#a7b9c8', weight: 1, fillOpacity: .8};
+                                } else if (feature.properties.all_2011 = 0) {
+                                    return {color: '#4776b3', weight: 1, fillOpacity: .8};
+                                } else {
+                                    return {color: '#4776b3', weight: 1, fillOpacity: .8}; //=0
+                                }
+                            }
+                        });
+
+
                         var query = L.esri.query({
                             url: config.ortMapServer + config.ortLayerData
                         });
@@ -461,11 +504,108 @@ angular.module('myApp.services', [])
                         var ch = 0;
                         var ci = 0;
                         var cj = 0;
+                        var ck = 0;
+                        var cl = 0;
+                        var cm = 0;
+                        var cn = 0;
 
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "PrincipalPorts":
+                                    vm.TIPrincipalPorts[cn] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        PortName: (featureCollection[i].PortName || 'Unknown'),
+                                        Total: (featureCollection[i].Total || 0)
+
+
+                                    };
+
+
+                                    if ((cn === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cn++;
+                                    break;
+                                case "vessel_traffic_atl_2011":
+                                    vm.TIVessel[cm] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        all_2011_avg: (featureCollection[i].all_2011_avg || 0)
+
+
+                                    };
+
+
+                                    if ((cm === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cm++;
+                                    break;
+                                case "RightWhales":
+                                    vm.TIRightWhale[cl] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0)
+
+
+                                    };
+
+
+                                    if ((cl === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cl++;
+                                    break;
+                                case "ShippingLanes":
+                                    vm.TIShipping[ck] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        THEMELAYER: (featureCollection[i].THEMELAYER || 'Unknown'),
+                                        THEMELAYER_CNT: (featureCollection[i].THEMELAYER_CNT || 'Unknown')
+
+                                    };
+                                    vm.TIShippingTotal += featureCollection[i].THEMELAYER_CNT;
+
+                                    if ((ck === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    ck++;
+                                    break;
 
                                 case "Places":
                                     vm.CEPlaces[cj] = {
@@ -473,7 +613,7 @@ angular.module('myApp.services', [])
                                         Name: (featureCollection[i].Name || 'Unknown'),
                                         ST: (featureCollection[i].ST || 'Unknown'),
                                         Dist_Mi: (featureCollection[i].Dist_Mi || 0),
-                                        Census2010: ((featureCollection[i].Census2010 === -1) ?  ' ' : (featureCollection[i].Census2010 || ' '))
+                                        Census2010: ((featureCollection[i].Census2010 === -1) ? ' ' : (featureCollection[i].Census2010 || ' '))
 
                                     };
 
@@ -1497,6 +1637,8 @@ angular.module('myApp.services', [])
                             map.removeLayer(this.TIDangerZonesLayer);
                             map.removeLayer(this.CEPlaceLayer);
                             map.removeLayer(this.CETribalLayer);
+                            map.removeLayer(this.TIVessels);
+                            map.removeLayer(this.TIPrincipalPortsLayer);
 
                             this.windLeaseLayerIsVisible = false;
                             this.windrpLayerIsVisible = false;
@@ -1513,6 +1655,8 @@ angular.module('myApp.services', [])
                             this.TISubmarineIsVisable = false;
                             this.TIDangerZonesIsVisable = false;
                             this.CEPlaceLayerIsVisible = false;
+                            this.TIVesselsIsVisible = false;
+                            this.TIPrincipalPortsIsVisible = false;
 
 
                             this.wind.length = 0;
@@ -1561,6 +1705,11 @@ angular.module('myApp.services', [])
                             this.drawAreaJobId.length = 0;
                             this.Shared = false;
                             this.CEPlaces.length = 0;
+                            this.TIShipping.length = 0;
+                            this.TIShippingTotal = 0;
+                            this.TIRightWhale.length = 0;
+                            this.TIVessel.length = 0;
+                            this.TIPrincipalPorts.length = 0;
 
                             this.hide();
 
@@ -1568,6 +1717,26 @@ angular.module('myApp.services', [])
                         this.isLoaded = false;
                     },
                     isLoaded: false,
+                    TIPrincipalPortsIsVisible: false,
+                    toggleTIPrincipalPorts: function () {
+                        if (!this.TIPrincipalPortsIsVisible) {
+                            this.TIPrincipalPortsLayer.addTo(map);
+                            this.TIPrincipalPortsIsVisible = true;
+                        } else {
+                            map.removeLayer(this.TIPrincipalPortsLayer);
+                            this.TIPrincipalPortsIsVisible = false;
+                        }
+                    },
+                    TIVesselsIsVisible: false,
+                    toggleTIVessels: function () {
+                        if (!this.TIVesselsIsVisible) {
+                            this.TIVessels.addTo(map);
+                            this.TIVesselsIsVisible = true;
+                        } else {
+                            map.removeLayer(this.TIVessels);
+                            this.TIVesselsIsVisible = false;
+                        }
+                    },
                     CEPlaceLayerIsVisible: false,
                     toggleCEPlaceLayer: function () {
                         if (!this.CEPlaceLayerIsVisible) {
@@ -1840,6 +2009,9 @@ angular.module('myApp.services', [])
 
                         AOI.highchartsNGState = {
                             options: {
+                                credits: {
+                                    enabled: false
+                                },
                                 chart: {
                                     plotBackgroundColor: '#f4f8fc',
                                     plotBorderWidth: null,
@@ -1888,7 +2060,9 @@ angular.module('myApp.services', [])
                         if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
                         AOI.OceanJobContributionsChart = {
                             options: {
-
+                                credits: {
+                                    enabled: false
+                                },
                                 legend: {
                                     enabled: true,
                                     align: 'right',
@@ -1960,6 +2134,9 @@ angular.module('myApp.services', [])
                         if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null
                         AOI.OceanJobDollarsChart = {
                             options: {
+                                credits: {
+                                    enabled: false
+                                },
                                 legend: {
                                     enabled: true,
 
@@ -2019,6 +2196,9 @@ angular.module('myApp.services', [])
                         if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null
                         AOI.OceanJobEmployeesChart = {
                             options: {
+                                credits: {
+                                    enabled: false
+                                },
                                 legend: {
                                     enabled: false
                                 },
@@ -2066,6 +2246,9 @@ angular.module('myApp.services', [])
                         if (AOI.highchartsNG) AOI.highchartsNG = null
                         AOI.highchartsNG = {
                             options: {
+                                credits: {
+                                    enabled: false
+                                },
                                 chart: {
                                     spacing: 0,
                                     margin: 0,

@@ -1,0 +1,74 @@
+<div class="infographic-box-small">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft">Vessel Count</div>
+            <!-- iButton start-->
+            <div class="floatitleft">
+                <info-directive class="infobutton mainbutton" modal-template="modal51.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal51.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            This data represents the average annual number of vessels traversing the area based on 2011 Vessel
+                            Traffic (AIS) layer created by BOEM. Heavy vessel traffic may interfere with planned
+                            activities.
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
+                <div ng-class="AOI.TIVesselsIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleTIVessels()" ng-include="'img/switch_off.svg'"></div>
+            </div>
+
+        </div>
+        <div>
+            <div class="GreyText14 floatitleft padLeft15 w100">
+
+                <div class="VesselLine">
+                    <div class="Vessel1"><img ng-show="AOI.TIVessel[0].all_2011_avg==0" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="VesselNum">0</div>
+                </div>
+                <div class="VesselLine">
+                    <div class="Vessel2"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=1) &&(AOI.TIVessel[0].all_2011_avg<=75))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="VesselNum">1-75</div>
+                </div>
+                <div class="VesselLine">
+                    <div class="Vessel3"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=76) &&(AOI.TIVessel[0].all_2011_avg<=250))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="VesselNum">76-250</div>
+                </div>
+                <div class="VesselLine">
+                    <div class="Vessel4"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=251) &&(AOI.TIVessel[0].all_2011_avg<=750))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="VesselNum">251-750</div>
+                </div>
+                <div class="VesselLine">
+                    <div class="Vessel5"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=751) &&(AOI.TIVessel[0].all_2011_avg<=1500))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="VesselNum">751-1500</div>
+                </div>
+                <div class="VesselLine">
+                    <div class="Vessel6"><img ng-show="AOI.TIVessel[0].all_2011_avg>=1501" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="VesselNum">More than 1500</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
