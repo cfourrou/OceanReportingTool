@@ -55,7 +55,7 @@
 
             </div>
 
-            <div class="padding15">
+            <div class="padding15 padbottom25">
                 <table class="GreyText14 placesTable">
 
                     <tr class="GreyText14">
@@ -64,11 +64,11 @@
                         <th>Distance in Miles</th>
                     </tr>
                     <tr class="GreyText14" ng-repeat="x in AOI.CEPlaces | orderBy : 'Dist_Mi'">
-                        <td class="GreyText14">
-                            <div>{{x.Name}}</div>
+                        <td class="GreyText14 CamelCase">
+                            <div>{{x.Name| lowercase}}</div>
                         </td>
                         <td class="GreyText14">
-                            <div>{{x.Census2010}}</div>
+                            <div ng-if="x.Census2010>0">{{x.Census2010| number}}</div>
                         </td>
                         <td class="GreyText14">
                             <div>{{x.Dist_Mi.toFixed(2)}}</div>

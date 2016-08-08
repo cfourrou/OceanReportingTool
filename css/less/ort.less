@@ -545,7 +545,7 @@ p {
 .footer2 {
   font-size: 11px;
   color: #C6C6C6;
-  height: 40px;
+  height: 20px;
   width: 200%;
   background: @ortGrey-Dark;
   clear: both;
@@ -559,7 +559,7 @@ p {
 .footer2 a:link {
   font-size: 11px;
   color: #C6C6C6;
-  height: 40px;
+  height: 20px;
 
   background: @ortGrey-Dark;
   clear: both;
@@ -573,7 +573,7 @@ p {
 .footer2 a:visited {
   font-size: 11px;
   color: #C6C6C6;
-  height: 40px;
+  height: 20px;
 
   background: @ortGrey-Dark;
   clear: both;
@@ -587,7 +587,7 @@ p {
 .footer {
   font-size: 11px;
   color: #C6C6C6;
-  height: 40px;
+  height: 20px;
   width: 100%;
   background: @ortGrey-Dark;
   clear: both;
@@ -1753,7 +1753,9 @@ body.ng-pageslide-body-closed::before {
 .w40 {
   width: 40%;
 }
-
+.w45 {
+  width: 45%;
+}
 .w65 {
   width: 65%;
 }
@@ -1796,6 +1798,12 @@ body.ng-pageslide-body-closed::before {
 
 .padtop5 {
   padding-top: 5px;
+}
+.padtop40 {
+  padding-top: 40px;
+}
+.padtop20 {
+  padding-top: 20px;
 }
 
 .beachswatchimg {
@@ -2127,6 +2135,9 @@ body.ng-pageslide-body-closed::before {
 
 .h50 {
   height: 50px;
+}
+.h60 {
+  height: 60px;
 }
 
 .h150 {
@@ -2560,25 +2571,36 @@ body.ng-pageslide-body-closed::before {
   //margin-bottom: 30px;
   //font-size: 14px;
   width: 100%;
-  text-align: center;
+  text-align: left;
   //table-layout: fixed;
 }
 
 .placesTable td {
-  text-align: center;
+  text-align: left;
 
+}
+
+.placesTable th {
+  font-style: italic;
+  text-align: left;
 }
 
 .tribeTable {
   //margin-bottom: 30px;
   //font-size: 14px;
   width: 69%;
-  text-align: center;
+  text-align: left;
   //table-layout: fixed;
 }
 
 .tribeTable td {
-  text-align: center;
+  text-align: left;
+
+}
+
+.tribeTable th {
+  font-style: italic;
+  text-align: left;
 
 }
 
@@ -2598,62 +2620,192 @@ body.ng-pageslide-body-closed::before {
   background-color: #4776b3;
   height: 20px;
   width: 50px;
-float:left;
+  float: left;
 }
 
 .Vessel2 {
   background-color: #a7b9c8;
   height: 20px;
   width: 50px;
-  float:left;
+  float: left;
 }
 
 .Vessel3 {
   background-color: #d9dec1;
   height: 20px;
   width: 50px;
-  float:left;
+  float: left;
 }
 
 .Vessel4 {
   background-color: #fbd39e;
   height: 20px;
   width: 50px;
-  float:left;
+  float: left;
 }
 
 .Vessel5 {
   background-color: #ee815e;
   height: 20px;
   width: 50px;
-  float:left;
+  float: left;
 }
 
 .Vessel6 {
   background-color: #d4321e;
   height: 20px;
   width: 50px;
-  float:left;
+  float: left;
 }
-.VesselNum{
-  float:left;
-  width:50%;
-  padding-left:10px;
+
+.VesselNum {
+  float: left;
+  width: 50%;
+  padding-left: 10px;
 }
-.VesselLine{
-  width:100%;
-  float:left;
+
+.VesselLine {
+  width: 100%;
+  float: left;
   padding-bottom: 15px;
 }
-.ship{
-  width:50px;
-  height:50px;
+
+.ship {
+  width: 50px;
+  height: 50px;
   top: -15px;
   position: relative;
 }
-.anchor{
-  width:40px;
-  height:40px;
+
+.anchor {
+  width: 40px;
+  height: 40px;
   position: relative;
   top: 13px;
+}
+
+.starline {
+  width: 595px;
+  height: 19px;
+  position: relative;
+  top: 13px;
+  background-color: #cddff0;
+  margin-left: 22px;
+  margin-bottom: 38px;
+  margin-top: 15px;
+}
+
+.star {
+  position: relative;
+  top: -20px;
+  left: -27px;
+
+}
+
+.anchordistance {
+  position: relative;
+  top: -15px;
+  height: 95px;
+}
+
+.anchorbox {
+  position: relative;
+  top: -81px;
+  height: 95px;
+  width: 100px;
+  float: left;
+  margin-left: 77px;
+}
+
+.distancetext {
+  position: relative;
+  top: -40px;
+  text-align: center;
+}
+
+.h108 {
+  height: 108px;
+}
+
+.padbottom25 {
+  padding-bottom: 25px;
+}
+
+.CamelCase {
+  text-transform: capitalize;
+}
+
+.infolisthead2 {
+
+  color: #4a4a4a;
+  /* margin-top: 25px; */
+  margin-bottom: 5px;
+  padding-left: 15px;
+
+}
+.CoralNum {
+  float: left;
+  //width: 50%;
+  padding-left: 10px;
+}
+
+.CoralLine {
+  width: 100%;
+  float: left;
+  //padding-bottom: 15px;
+}
+.Coral1 {
+  background-color: #b6edf0;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+.Coral2 {
+  background-color: #74b4e8;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+.Coral3 {
+  background-color: #1f83e0;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+.Coral4 {
+  background-color: #1d44b8;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+.Coral5 {
+  background-color: #090991;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+.censusTable {
+  background-color: white;
+  //margin-bottom: 30px;
+  //font-size: 14px;
+  width: 100%;
+  text-align: left;
+  //table-layout: fixed;
+  border: 2px solid #D6D6D6;
+}
+
+.censusTable td {
+  text-align: center;
+
+}
+.censusTable tr{
+  border: 1px solid #D6D6D6;
+}
+
+.censusTable th {
+  //font-style: italic;
+  text-align: center;
+}
+.paddingtop60{
+  padding-top:60px;
 }

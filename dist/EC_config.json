@@ -2,6 +2,7 @@
     { "filename":"partials/EC_OceanJobDollars.html", "priority":66 },
     { "filename":"partials/smallmap.html", "priority":67},
     { "filename":"partials/EC_PercentGDP.html", "priority":68 },
-    {"filename":"partials/EC_Contributions.html","priority":70}
+    {"filename":"partials/EC_Contributions.html","priority":70},
+    {"filename":"partials/EC_Census.html","priority":71}
 
 ]

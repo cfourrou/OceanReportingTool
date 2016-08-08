@@ -109,6 +109,12 @@ angular.module('myApp.services', [])
                     TIRightWhale: [],
                     TIVessel: [],
                     TIPrincipalPorts: [],
+                    NRCNearby: [],
+                    NRCSoftCoral: [],
+                    NRCStonyCoral: [],
+                    NRCReefs: [],
+                    NRCBarrier: [],
+                    ECCoastalCounties:[],
 
 
                     display: function (AOI_ID) {
@@ -300,6 +306,7 @@ angular.module('myApp.services', [])
                             layers: [ortLayerOptional[9].num],
                             opacity: .8
                         });
+
                         vm.currentPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
                             pane: 'optionalfeature10',
@@ -396,11 +403,39 @@ angular.module('myApp.services', [])
                                 });
                             }
                         });
+                        vm.NRCReefsLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + [ortLayerOptional[41].num],
+                            pane: 'optionalfeature41',
+                            pointToLayer: function (feature, latlng) {
+                                return L.marker(latlng, {
+                                    icon: L.icon({
+                                        iconUrl: 'img/svg-elements_reefs.svg',
+                                        iconSize: [32, 37],
+                                        iconAnchor: [16, 37],
+                                        popupAnchor: [0, -28]
+                                    })
+                                });
+                            }
+                        });
                         vm.CETribalLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[37].num,
                             pane: 'optionalfeature37',
                             style: function (feature) {
                                 return {color: '#D3D3D3', weight: 3, fillOpacity: .7};
+                            }
+                        });
+                        vm.NRCNearbyLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[40].num,
+                            pane: 'optionalfeature40',
+                            style: function (feature) {
+                                return {color: '#75bc73', weight: 3, fillOpacity: .7};
+                            }
+                        });
+                        vm.NRCBarrierLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[44].num,
+                            pane: 'optionalfeature44',
+                            style: function (feature) {
+                                return {color: '#d6ce70', weight: 3, fillOpacity: .7};
                             }
                         });
 
@@ -426,6 +461,25 @@ angular.module('myApp.services', [])
                             }
                         });
 
+                        vm.NRCSoftCoralLayer = L.esri.dynamicMapLayer({
+                            url: config.ortMapServer,
+                            pane: 'optionalfeature42',
+                            layers: [ortLayerOptional[42].num],
+                            opacity: .8
+                        });
+                        vm.NRCStonyCoralLayer = L.esri.dynamicMapLayer({
+                            url: config.ortMapServer,
+                            pane: 'optionalfeature43',
+                            layers: [ortLayerOptional[43].num],
+                            opacity: .8
+                        });
+                        vm.ECCoastalCountiesLayer = L.esri.featureLayer({
+                            url: config.ortMapServer + ortLayerOptional[32].num,
+                            pane: 'optionalfeature32',
+                            style: function (feature) {
+                                return {color: '#b613ba', weight: 3, fillOpacity: 0};
+                            }
+                        });
 
                         var query = L.esri.query({
                             url: config.ortMapServer + config.ortLayerData
@@ -508,16 +562,138 @@ angular.module('myApp.services', [])
                         var cl = 0;
                         var cm = 0;
                         var cn = 0;
+                        var co = 0;
+                        var cp = 0;
+                        var cq = 0;
+                        var cr = 0;
+                        var cs = 0;
 
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "CBRAs":
+                                    vm.NRCBarrier[cs] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
+
+
+                                    };
+
+
+                                    if ((cs === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cs++;
+                                    break;
+                                case "ArtificialReefs":
+                                    vm.NRCReefs[cr] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
+
+
+                                    };
+
+
+                                    if ((cr === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cr++;
+                                    break;
+                                case "StonyCoralALL":
+                                    vm.NRCStonyCoral[cq] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+
+                                        Coral_Suitability: (featureCollection[i].Coral_Suitability || '')
+
+
+                                    };
+
+
+                                    if ((cq === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cq++;
+                                    break;
+                                case "SoftCoralALL":
+                                    vm.NRCSoftCoral[cp] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+
+                                        Coral_Suitability: (featureCollection[i].Coral_Suitability || '')
+
+
+                                    };
+
+
+                                    if ((cp === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cp++;
+                                    break;
+                                case "MPA_selected":
+                                    vm.NRCNearby[co] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        Site_Name: (featureCollection[i].Site_Name || 'Unknown'),
+                                        URL: (featureCollection[i].URL || '')
+
+
+                                    };
+
+
+                                    if ((co === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    co++;
+                                    break;
                                 case "PrincipalPorts":
                                     vm.TIPrincipalPorts[cn] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         PortName: (featureCollection[i].PortName || 'Unknown'),
-                                        Total: (featureCollection[i].Total || 0)
+                                        Total: (featureCollection[i].Total || 0),
+                                        Dist_Mi: (featureCollection[i].Dist_Mi || 0)
 
 
                                     };
@@ -632,10 +808,11 @@ angular.module('myApp.services', [])
 
                                     cj++;
                                     break;
+                                case "CoastalStates":
                                 case "Coastal_Shoreline_Counties_2010":
                                     vm.ECCountyGDP[ci] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
+                                        cntyname: (featureCollection[i].cntyname || featureCollection[i].st_name),
                                         MedHHInc: (featureCollection[i].MedHHInc || 0),
                                         TotalHouses: (featureCollection[i].TotalHouses || 0),
                                         Population: (featureCollection[i].Population || 0),
@@ -659,7 +836,7 @@ angular.module('myApp.services', [])
                                     ci++;
                                     break;
 
-                                case "CoastalStates":
+                                /*case "CoastalStates":
                                     vm.ECStateGDP[ch] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                         st_name: (featureCollection[i].st_name || 'Unknown'),
@@ -684,7 +861,7 @@ angular.module('myApp.services', [])
 
 
                                     ch++;
-                                    break;
+                                    break;*/
                                 case "ENOW_2013":
 
 
@@ -1592,6 +1769,9 @@ angular.module('myApp.services', [])
                                 TOTAL_CNT: 0
                             };
                         }
+                        vm.TIPrincipalPorts.sort(function (a, b) {
+                            return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
+                        });
                         vm.boem.sort(function (a, b) {
                             return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                         });
@@ -1639,6 +1819,12 @@ angular.module('myApp.services', [])
                             map.removeLayer(this.CETribalLayer);
                             map.removeLayer(this.TIVessels);
                             map.removeLayer(this.TIPrincipalPortsLayer);
+                            map.removeLayer(this.NRCNearbyLayer);
+                            map.removeLayer(this.NRCReefsLayer);
+                            map.removeLayer(this.NRCSoftCoralLayer);
+                            map.removeLayer(this.NRCStonyCoralLayer);
+                            map.removeLayer(this.NRCBarrierLayer);
+                            map.removeLayer(this.ECCoastalCountiesLayer);
 
                             this.windLeaseLayerIsVisible = false;
                             this.windrpLayerIsVisible = false;
@@ -1657,6 +1843,12 @@ angular.module('myApp.services', [])
                             this.CEPlaceLayerIsVisible = false;
                             this.TIVesselsIsVisible = false;
                             this.TIPrincipalPortsIsVisible = false;
+                            this.NRCNearbyLayerIsVisible = false;
+                            this.NRCReefsLayerIsVisible = false;
+                            this.NRCSoftCoralLayerIsVisible = false;
+                            this.NRCStonyCoralLayerIsVisable = false;
+                            this.NRCBarrierLayerIsVisible = false;
+                            this.ECCoastalCountiesLayerIsVisible = false;
 
 
                             this.wind.length = 0;
@@ -1710,6 +1902,12 @@ angular.module('myApp.services', [])
                             this.TIRightWhale.length = 0;
                             this.TIVessel.length = 0;
                             this.TIPrincipalPorts.length = 0;
+                            this.NRCNearby.length = 0;
+                            this.NRCReefs.length = 0;
+                            this.NRCSoftCoral.length = 0;
+                            this.NRCStonyCoral.length = 0;
+                            this.NRCBarrier.length = 0;
+                            this.ECCoastalCounties.length=0;
 
                             this.hide();
 
@@ -1717,6 +1915,51 @@ angular.module('myApp.services', [])
                         this.isLoaded = false;
                     },
                     isLoaded: false,
+                    ECCoastalCountiesLayerIsVisible: false,
+                    toggleECCoastalCountiesLayer: function () {
+                        if (!this.ECCoastalCountiesLayerIsVisible) {
+                            this.ECCoastalCountiesLayer.addTo(map);
+                            this.ECCoastalCountiesLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.ECCoastalCountiesLayer);
+                            this.ECCoastalCountiesLayerIsVisible = false;
+                        }
+                    },
+                    NRCBarrierLayerIsVisible: false,
+                    toggleNRCBarrierLayer: function () {
+                        if (!this.NRCBarrierLayerIsVisible) {
+                            this.NRCBarrierLayer.addTo(map);
+                            this.NRCBarrierLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.NRCBarrierLayer);
+                            this.NRCBarrierLayerIsVisible = false;
+                        }
+                    },
+                    NRCReefsLayerIsVisible: false,
+                    toggleNRCReefsLayer: function () {
+                        if (!this.NRCReefsLayerIsVisible) {
+                            this.NRCReefsLayer.addTo(map);
+                            this.NRCSoftCoralLayer.addTo(map);
+                            this.NRCStonyCoralLayer.addTo(map);
+                            this.NRCReefsLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.NRCReefsLayer);
+                            map.removeLayer(this.NRCSoftCoralLayer);
+                            map.removeLayer(this.NRCStonyCoralLayer);
+                            this.NRCReefsLayerIsVisible = false;
+                        }
+                    },
+                    NRCNearbyLayerIsVisible: false,
+                    toggleNRCNearby: function () {
+                        if (!this.NRCNearbyLayerIsVisible) {
+                            this.NRCNearbyLayer.addTo(map);
+                            this.NRCNearbyLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.NRCNearbyLayer);
+                            this.NRCNearbyLayerIsVisible = false;
+                        }
+                    },
+
                     TIPrincipalPortsIsVisible: false,
                     toggleTIPrincipalPorts: function () {
                         if (!this.TIPrincipalPortsIsVisible) {

@@ -1,0 +1,90 @@
+<div class="infographic-box-small">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft w45">Deep Sea Coral Habitat Suitability</div>
+            <!-- iButton start-->
+            <div class="floatitleft">
+                <info-directive class="infobutton mainbutton" modal-template="modal61.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal61.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Deep sea coral habitat suitability is a combination of available data for individual hard
+                            and soft coral species into a more generalized grouping. The categories correspond to the
+                            predicted likelihood of suitable deep sea coral habitat occurring.
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
+                <div ng-class="AOI.NRCReefsLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleNRCReefsLayer()" ng-include="'img/switch_off.svg'"></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="h12"></div>
+            <div class="CommonSwatchLine floatitleft w100">
+                <div class="swatch floatitleft"><img src="img/svg-elements_reefs.svg"></div>
+                <div class="CEAreaData padtop40 h60">
+                    Artificial Reefs
+                </div>
+                <div>
+                <div class="floatitleft padbottom10 padLeft15 w45">
+                    <div class="">
+                        Stony Coral - {{AOI.NRCStonyCoral[0].Coral_Suitability}}
+                    </div>
+                    <div class="">
+                        Soft Coral - {{AOI.NRCSoftCoral[0].Coral_Suitability}}
+                    </div>
+                    <div class=""><br>
+                        <div class="floatitleft" ng-hide="AOI.NRCReefs[0].TOTAL_CNT>=1">0 &nbsp;</div>{{AOI.NRCReefs[0].TOTAL_CNT}} Artificial Reefs
+                    </div>
+                </div>
+                <div class="w45 floatitleft">
+                    <div class="CoralLine">
+                        <div class="Coral1"></div>
+                        <div class="CoralNum">Low</div>
+                    </div>
+                    <div class="CoralLine">
+                        <div class="Coral2"></div>
+                        <div class="CoralNum">Medium-Low</div>
+                    </div>
+                    <div class="CoralLine">
+                        <div class="Coral3"></div>
+                        <div class="CoralNum">Medium</div>
+                    </div>
+                    <div class="CoralLine">
+                        <div class="Coral4"></div>
+                        <div class="CoralNum">High</div>
+                    </div>
+                    <div class="CoralLine">
+                        <div class="Coral5"></div>
+                        <div class="CoralNum">Very High</div>
+                    </div>
+                    
+
+                </div>
+                    </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -2,6 +2,9 @@
     { "filename":"partials/NRC_HabitatConcern.html", "priority":56 },
     { "filename":"partials/smallmap.html", "priority":57},
     {"filename":"partials/NRC_CriticalHabitat.html","priority":58},
-    {"filename":"partials/NRC_MigratorySpecies.html","priority":59}
+    {"filename":"partials/NRC_MigratorySpecies.html","priority":59},
+    {"filename":"partials/NRC_NearbyAreas.html","priority":60},
+    {"filename":"partials/NRC_Coral.html","priority":61},
+    {"filename":"partials/NRC_Barrier.html","priority":62}
 
 ]

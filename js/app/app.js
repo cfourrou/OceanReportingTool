@@ -131,7 +131,7 @@ ortLayerOptional[31] =
 };
 ortLayerOptional[32] =
 {
-    num: null,
+    num: 53,
     displayName: 'CoastalCounties'
 }
 ortLayerOptional[33] =
@@ -169,6 +169,37 @@ ortLayerOptional[39] =
 {
     num: 33,
     displayName: 'Principle Ports'
+}
+ortLayerOptional[40] =
+{
+    num: 49,
+    displayName: 'Nearby Protected Areas',
+    layerName: 'MPA_selected'
+
+}
+ortLayerOptional[41] =
+{
+    num: 43,
+    displayName: 'Artificial Reefs',
+    layerName: 'ArtificialReefs'
+
+}
+ortLayerOptional[42] =
+{
+    num:50,
+    displayName: 'Soft Coral'
+}
+ortLayerOptional[43] =
+{
+    num: 51,
+    displayName: 'Stoney Coral'
+
+}
+ortLayerOptional[44] =
+{
+    num: 44,
+    displayName: 'Coastal Barrier'
+
 }
 var toggle = false;
 //var windclass = [];

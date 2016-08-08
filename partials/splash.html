@@ -20,19 +20,19 @@
                 <div>
                     <div ng-include="'img/KnownAreas_2.svg'" class="blackimg floatitleft"></div>
                     &nbsp;
-                    <span> Click <b>KNOWN AREAS</b> to select a report from the list of pre-defined areas</span>
+                    <span> Click <b><a ui-sref="menu"  ng-click="reset()" role="button">KNOWN AREAS</a></b> to select a report from the list of pre-defined areas</span>
                 </div>
                 <br>
                 <div>
                     <div ng-include="'img/MapInput_2.svg'" class="blackimg floatitleft"></div>
                     &nbsp;
-                    <span>Click <b>DRAW AREA</b> to use the map to generate a report for a custom area</span>
+                    <span>Click <b><a ui-sref="draw"  ng-click="off()" role="button">DRAW AREA</a></b> to use the map to generate a report for a custom area</span>
                 </div>
                 <br>
                 <div>
                     <div ng-include="'img/Reset_2.svg'" class="blackimg floatitleft"></div>
                     &nbsp;
-                    <span>Click <b>RESET</b> to clear your current selection and report</span>
+                    <span>Click <b><a ui-sref="splash"  ng-click="reset()" role="button">RESET</a></b> to clear your current selection and report</span>
                 </div>
 
 

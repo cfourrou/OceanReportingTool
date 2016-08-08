@@ -1,0 +1,68 @@
+<div class="infographic-box-medium">
+    <div>
+
+
+        <div class="infographicTitle">
+            <div class="floatitleft">Nearby Protected Areas</div>
+            <!-- iButton start-->
+            <div class="floatitleft">
+                <info-directive class="infobutton mainbutton" modal-template="modal60.html" message="message"
+                                modal-img="img/info.svg"></info-directive>
+
+                <script type="text/ng-template" id="modal60.html">
+                    <div id="custom-modal" class="modal">
+                        <div id="overlay">
+                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                                <svg class="" viewBox="0 0 24 24">
+                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                    <path d="M0 0h24v24h-24z" fill="none"/>
+                                </svg>
+                            </a>
+                            Nearby protected areas are national parks, national wildlife refuges, national marine
+                            sanctuaries, or national estuarine research reserves within 15nm of the delineated areas.
+                            When work is being considered in this area, it would be prudent to consider the effects on
+                            these protected areas. Links to each are provided.
+
+                            <br>
+
+
+                        </div>
+                        <div id="fade"></div>
+                    </div>
+                </script>
+
+            </div>
+            <!-- iButton end-->
+            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
+                <div ng-class="AOI.NRCNearbyLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleNRCNearby()" ng-include="'img/switch_off.svg'"></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="h12"></div>
+            <div class="CommonSwatchLine floatitleft w100">
+                <div class="swatch floatitleft"><img src="img/NRCNearbyAreas.svg"></div>
+                <div class="CEAreaData padtop20">
+
+                    <div>Protected Areas</div>
+
+                </div>
+
+                <div class="floatitleft">
+                    <img src="img/svg-elements_nps-logo.svg">
+                    <img src="img/svg-elements_nwrs-logo.svg">
+                    <img src="img/svg-elements_nms-logo.svg">
+                    <img src="img/svg-elements_nerrs-logo.svg">
+
+                    <div class="floatitleft padLeft15 padbottom10">
+                        <div ng-repeat="x in AOI.NRCNearby  | orderBy : 'Site_Name'">
+                            <a href="{{x.URL}}" target="_blank">{{x.Site_Name}}</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

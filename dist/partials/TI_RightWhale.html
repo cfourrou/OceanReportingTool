@@ -45,7 +45,7 @@
 
             </div>
             <div class="whale">
-                {{AOI.TIRightWhale[0].PERC_COVER.toFixed(2)}}%
+                <div ng-if="AOI.TIRightWhale[0].PERC_COVER>0">{{AOI.TIRightWhale[0].PERC_COVER.toFixed(2)}}%</div>
             </div>
             <!--<div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in AOI.TISubmarine">
                 {{x.Owner}} - {{x.STATUS}}

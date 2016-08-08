@@ -38,14 +38,28 @@
 
         </div>
         <div>
-            <div class="GreyText14 floatitleft padLeft15 w100">
+            <div class="GreyText14 floatitleft padLeft15 w100 h108">
                 <span class="boemline2b">2</span><span
                     class="boemline2a"> Closest</span>
+                <div class="starline">
+                    <div class="star">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" height="50px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                            <polygon fill="#F07B08" points="50,7.24 63.893,35.392 94.958,39.906 72.479,61.816 77.787,92.76 50,78.151 22.213,92.76 27.521,61.816 5.042,39.906 36.108,35.392 "/>
+                        </svg>
 
+                    </div>
+                    <div class="anchorbox"><img class="anchordistance" src="img/transportation-anchor.svg">
+                        <div class="distancetext">{{AOI.TIPrincipalPorts[0].Dist_Mi.toFixed(2)}} miles</div>
+                    </div>
+                    <div class="anchorbox"><img class="anchordistance" src="img/transportation-anchor.svg">
+                        <div class="distancetext">{{AOI.TIPrincipalPorts[1].Dist_Mi.toFixed(2)}} miles</div>
+                    </div>
+                </div>
 
             </div>
+
             <div class="GreyText14 floatitleft padLeft15 w100"
-                 ng-repeat="x in AOI.TIPrincipalPorts| orderBy : 'Total'">
+                 ng-repeat="x in AOI.TIPrincipalPorts| orderBy : 'Dist_Mi'">
                 <img class="anchor" src="img/transportation-anchor.svg">{{x.PortName}} - {{x.Total| number}} tonnage
             </div>
         </div>
