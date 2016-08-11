@@ -26101,92 +26101,138 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         ECGPTask.setOutputParam("Output_Report");
 
                         $scope.startSpin();
+
+
                         var EMReport, CEReport, TIReport, NRCReport, ECReport;
+                        var EMGdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
+                        var promises = [EMGdeferred.promise,CEGPdeferred.promise,TIGPdeferred.promise,NRCGPdeferred.promise, ECGPdeferred.promise];
 
-                        var stopSpinnerRequest = _.after(5, function () {
-                            //AOI.featureCollection = _.extend({}, EMReport,CEReport);
-                            //AOI.featureCollection =angular.merge([],EMReport, CEReport);
-                            if (EMReport) AOI.featureCollection = {
-                                fields: EMReport.fields,
-                                features: EMReport.features
-                            };
-                            if (CEReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
-                            if (TIReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
-                            if (NRCReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
-                            if (ECReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
-
-                            $scope.stopSpin();
-                            $scope.$apply();
-
-                        });
                         EMGPTask.run(function (error, EMgeojson, EMresponse) {
+
+                            console.log("EM jobId is " + EMgeojson.jobId);
+
 
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("EM " + error);
+
                                 $scope.$apply();
+                                EMGdeferred.resolve();
                             }
                             else if (EMgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                EMReport = EMgeojson.Output_Report;
+                                //AOI.featureCollection = EMgeojson.Output_Report;
+                                EMGdeferred.resolve(EMgeojson.Output_Report);
+                                //console.log(EMReport);
+                                console.log("EM Complete");
                                 AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
                             }
-                            stopSpinnerRequest();
                         });
+
                         CEGPTask.run(function (error, CEgeojson, CEresponse) {
+                            console.log("CE jobId is " + CEgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("CE " + error);
+
                                 $scope.$apply();
+                                CEGPdeferred.resolve();
                             }
                             else if (CEgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                CEReport = CEgeojson.Output_Report;
+                                CEGPdeferred.resolve(CEgeojson.Output_Report);
+                                console.log("CE Complete");
                                 AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
+
                             }
-                            stopSpinnerRequest();
 
                         });
                         TIGPTask.run(function (error, TIgeojson, TIresponse) {
+                            console.log("TI jobId is " + TIgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("TI " + error);
+                                TIGPdeferred.resolve();
                                 $scope.$apply();
                             }
                             else if (TIgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                TIReport = TIgeojson.Output_Report;
+                                TIGPdeferred.resolve(TIgeojson.Output_Report);
+                                //console.log(TIReport);
+                                console.log("TI Complete");
                                 AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
+
                             }
-                            stopSpinnerRequest();
+
                         });
                         NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-
+                            console.log("NRC jobId is " + NRCgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("NRC " + error);
+                                NRCGPdeferred.resolve();
+
                                 $scope.$apply();
                             }
                             else if (NRCgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                NRCReport = NRCgeojson.Output_Report;
+                                NRCGPdeferred.resolve(NRCgeojson.Output_Report);
+                                //console.log(NRCReport);
+                                console.log("NRC Complete");
                                 AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
                             }
-                            stopSpinnerRequest();
+
                         });
                         ECGPTask.run(function (error, ECgeojson, ECresponse) {
+                            console.log("EC jobId is " + ECgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("EC " + error);
+                                ECGPdeferred.resolve();
+
                                 $scope.$apply();
                             }
                             else if (ECgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                ECReport = ECgeojson.Output_Report;
+                                ECGPdeferred.resolve(ECgeojson.Output_Report);
+                                //console.log(ECReport);
+                                console.log("EC Complete");
                                 AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
+
                             }
-                            stopSpinnerRequest();
+
                         });
+                        var allPromises = $q.all(promises);
+
+                        allPromises.then(function (results) {
+                            if (results[0] || results[1] || results[2] || results[3] || results[4]) {
+                                //AOI.featureCollection = _.extend({}, EMReport,CEReport);
+                                //AOI.featureCollection =angular.merge([],EMReport, CEReport);
+                                if (results[0]) AOI.featureCollection = {
+                                    fields: results[0].fields,
+                                    features: results[0].features
+                                };
+                                if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
+                                if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
+                                if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
+                                if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
+                                // console.log("Stop Spinner");
+                                //console.log(AOI.featureCollection);
+                                $scope.stopSpin();
+                                $scope.$apply();
+                                //console.log(AOI.drawAreaJobId['TI']);
+                            }
+                        });
+
+                        // not sure where this belong
+
+                        $scope.cancelEVERYTHING = function () {
+                            EMGdeferred.resolve(false);
+                            CEGPdeferred.resolve(false);
+                            TIGPdeferred.resolve(false);
+                            NRCGPdeferred.resolve(false);
+                            ECGPdeferred.resolve(false);
+                        };
                         break;
                     case "Work":
                         $scope.showSubmitModal();
