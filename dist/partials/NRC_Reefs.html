@@ -3,13 +3,13 @@
 
 
         <div class="infographicTitle">
-            <div class="floatitleft w45">Coastal Barrier Resource Areas</div>
+            <div class="floatitleft w45">Artificial Reefs</div>
             <!-- iButton start-->
             <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal63.html" message="message"
+                <info-directive class="infobutton mainbutton" modal-template="modal62.html" message="message"
                                 modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal63.html">
+                <script type="text/ng-template" id="modal62.html">
                     <div id="custom-modal" class="modal">
                         <div id="overlay">
                             <a href="" class="modal-close" ng-click="close('Cancel')">
@@ -18,11 +18,10 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            CBRA encourages the conservation of hurricane prone, biologically rich coastal barriers by
-                            restricting federal expenditures that encourage development, such as federal flood
-                            insurance. Areas within the CBRS can be developed provided that private developers or other
-                            non-federal parties bear the full cost.
-
+                            The presence of artifical reefs may affect the kinds of work that are able to be completed
+                            in an area. Generally, they provide a substrate for a benthic community that may or may not
+                            support assemblages of fish. As a result they will likely need to be avoided during the
+                            course of a project. This is not considered an exhaustive list of artifical reefs.
                             <br>
 
 
@@ -34,21 +33,27 @@
             </div>
             <!-- iButton end-->
             <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.NRCBarrierLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleNRCBarrierLayer()" ng-include="'img/switch_off.svg'"></div>
+                <div ng-class="AOI.NRCReefsLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOI.toggleNRCReefsLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
         </div>
 
         <div>
             <div class="h12"></div>
             <div class="CommonSwatchLine floatitleft w100">
-                <div class="swatch floatitleft"><img src="img/NRCBarrierAreas.svg"></div>
-                <div class="CEAreaData padtop20 h60">
-                    CBRA's
+                <div class="swatch floatitleft"><img src="img/svg-elements_reefs.svg"></div>
+                <div class="CEAreaData padtop40 h60">
+
                 </div>
                 <div>
-                    <div class="floatitleft padbottom10 padLeft15 ">
-                        <div class="floatitleft" ng-hide="AOI.NRCBarrier[0].TOTAL_CNT>=1">0 &nbsp;</div>{{AOI.NRCBarrier[0].TOTAL_CNT}} Barrier Units within 8nm
+                    <div class="floatitleft padbottom10 padLeft15 w45">
+
+
+
+                            <span class="boemline2b"><ng-hide ng-hide="AOI.NRCReefs[0].TOTAL_CNT>=1">0</ng-hide>{{AOI.NRCReefs[0].TOTAL_CNT}}</span><span
+                                    class="boemline2a"> Reefs Intersect</span>
+
+
 
                     </div>
 

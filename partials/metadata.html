@@ -13,27 +13,29 @@
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Metadata</div>
-            <hr width="50%" align="left" color="#F4F8FC">
-            <div class="metaline1" ng-repeat="m1 in AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
-               <div class=" font-bold "> {{m1.REPORT_CAT}}</div>
-                <table class="metaTable">
-                    <tbody>
-                    <tr>
-                        <th class="metaTableCol1">Name</th>
-                        <th >Owner</th>
+        <div class="GreyText12">This page provides information on the data used in the Ocean Reporting Tool. The links below are to
+            metadata and within the metadata records are links to download the source data.
+        </div>
+        <hr width="50%" align="left" color="#F4F8FC">
+        <div class="metaline1" ng-repeat="m1 in AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
+            <div class=" font-bold "> {{m1.REPORT_CAT}}</div>
+            <table class="metaTable">
+                <tbody>
+                <tr>
+                    <th class="metaTableCol1">Name</th>
+                    <th>Owner</th>
 
 
-
-                    </tr>
+                </tr>
                 <tr class="metaline2"
-                     ng-repeat="m2 in AOI.metadata | filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
+                    ng-repeat="m2 in AOI.metadata | filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
                     <td>{{m2.COMMON_NM}}</td>
                     <td><a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a></td>
 
                 </tr>
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </div>

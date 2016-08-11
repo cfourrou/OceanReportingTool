@@ -114,7 +114,10 @@ angular.module('myApp.services', [])
                     NRCStonyCoral: [],
                     NRCReefs: [],
                     NRCBarrier: [],
-                    ECCoastalCounties:[],
+                    ECCoastalCounties: [],
+                    ECFishRevenue: [],
+                    TIPilot: [],
+                    TIAnchorage: [],
 
 
                     display: function (AOI_ID) {
@@ -467,7 +470,7 @@ angular.module('myApp.services', [])
                             layers: [ortLayerOptional[42].num],
                             opacity: .8
                         });
-                        vm.NRCStonyCoralLayer = L.esri.dynamicMapLayer({
+                        vm.NRCStoneyCoralLayer = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
                             pane: 'optionalfeature43',
                             layers: [ortLayerOptional[43].num],
@@ -567,11 +570,85 @@ angular.module('myApp.services', [])
                         var cq = 0;
                         var cr = 0;
                         var cs = 0;
+                        var ct = 0;
+                        var cu = 0;
+                        var cv = 0;
 
                         var ack = [];
 
                         for (var i = 0, j = featureCollection.length; i < j; i++) {
                             switch (featureCollection[i].DATASET_NM) {
+                                case "Anchorage_Areas":
+                                    vm.TIAnchorage[cv] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        Name: (featureCollection[i].Name || 'Unknown'),
+                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0)
+
+
+                                    };
+
+
+                                    if ((cv === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cv++;
+                                    break;
+                                case "Pilot_Boarding_Areas":
+                                    vm.TIPilot[cu] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
+
+
+                                    };
+
+
+                                    if ((cu === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    cu++;
+                                    break;
+                                case "SATL_FishRevenue_AllYrs":
+                                    vm.ECFishRevenue[ct] = {
+                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                        FishingRev_value_min: (featureCollection[i].FishingRev_value_min || 0),
+                                        FishingRev_value_max: (featureCollection[i].FishingRev_value_max || 0),
+                                        FishingRev_total: (featureCollection[i].FishingRev_total || 0)
+
+
+                                    };
+
+
+                                    if ((ct === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                        vm.metadata[k] = {
+                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                            COMMON_NM: featureCollection[i].COMMON_NM,
+                                            METADATA_URL: featureCollection[i].METADATA_URL,
+                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                        };
+                                        k++;
+                                    }
+
+
+                                    ct++;
+                                    break;
                                 case "CBRAs":
                                     vm.NRCBarrier[cs] = {
                                         TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
@@ -837,31 +914,31 @@ angular.module('myApp.services', [])
                                     break;
 
                                 /*case "CoastalStates":
-                                    vm.ECStateGDP[ch] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        st_name: (featureCollection[i].st_name || 'Unknown'),
-                                        MedHHInc: (featureCollection[i].MedHHInc || 0),
-                                        TotalHouses: (featureCollection[i].TotalHouses || 0),
-                                        Population: (featureCollection[i].Population || 0),
-                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
+                                 vm.ECStateGDP[ch] = {
+                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
+                                 st_name: (featureCollection[i].st_name || 'Unknown'),
+                                 MedHHInc: (featureCollection[i].MedHHInc || 0),
+                                 TotalHouses: (featureCollection[i].TotalHouses || 0),
+                                 Population: (featureCollection[i].Population || 0),
+                                 PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
-                                    };
-
-
-                                    if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
-                                        };
-                                        k++;
-                                    }
+                                 };
 
 
-                                    ch++;
-                                    break;*/
+                                 if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
+                                 vm.metadata[k] = {
+                                 REPORT_CAT: featureCollection[i].REPORT_CAT,
+                                 COMMON_NM: featureCollection[i].COMMON_NM,
+                                 METADATA_URL: featureCollection[i].METADATA_URL,
+                                 METADATA_OWNER: featureCollection[i].METADATA_OWNER,
+                                 METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                 };
+                                 k++;
+                                 }
+
+
+                                 ch++;
+                                 break;*/
                                 case "ENOW_2013":
 
 
@@ -1772,6 +1849,9 @@ angular.module('myApp.services', [])
                         vm.TIPrincipalPorts.sort(function (a, b) {
                             return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
                         });
+                        vm.CEPlaces.sort(function (a, b) {
+                            return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
+                        });
                         vm.boem.sort(function (a, b) {
                             return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                         });
@@ -1788,7 +1868,7 @@ angular.module('myApp.services', [])
                             vm.arel[0].PERC_COVER = 0;
                             vm.arel[0].TOTAL_BLOC = 0;
                         }
-
+                        this.loadWindChart();
                         this.loadStateChart();
                         this.loadOceanJobEmployeesChart();
                         this.loadOceanJobDollarsChart();
@@ -1822,7 +1902,7 @@ angular.module('myApp.services', [])
                             map.removeLayer(this.NRCNearbyLayer);
                             map.removeLayer(this.NRCReefsLayer);
                             map.removeLayer(this.NRCSoftCoralLayer);
-                            map.removeLayer(this.NRCStonyCoralLayer);
+                            map.removeLayer(this.NRCStoneyCoralLayer);
                             map.removeLayer(this.NRCBarrierLayer);
                             map.removeLayer(this.ECCoastalCountiesLayer);
 
@@ -1846,7 +1926,7 @@ angular.module('myApp.services', [])
                             this.NRCNearbyLayerIsVisible = false;
                             this.NRCReefsLayerIsVisible = false;
                             this.NRCSoftCoralLayerIsVisible = false;
-                            this.NRCStonyCoralLayerIsVisable = false;
+                            this.NRCStoneyCoralLayerIsVisible = false;
                             this.NRCBarrierLayerIsVisible = false;
                             this.ECCoastalCountiesLayerIsVisible = false;
 
@@ -1907,7 +1987,10 @@ angular.module('myApp.services', [])
                             this.NRCSoftCoral.length = 0;
                             this.NRCStonyCoral.length = 0;
                             this.NRCBarrier.length = 0;
-                            this.ECCoastalCounties.length=0;
+                            this.ECCoastalCounties.length = 0;
+                            this.ECFishRevenue.length = 0;
+                            this.TIAnchorage.length = 0;
+                            this.TIPilot.length = 0;
 
                             this.hide();
 
@@ -1935,17 +2018,33 @@ angular.module('myApp.services', [])
                             this.NRCBarrierLayerIsVisible = false;
                         }
                     },
+                    NRCStoneyCoralLayerIsVisible: false,
+                    toggleNRCStoneyCoralLayer: function () {
+                        if (!this.NRCStoneyCoralLayerIsVisible) {
+                            this.NRCStoneyCoralLayer.addTo(map);
+                            this.NRCStoneyCoralLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.NRCStoneyCoralLayer);
+                            this.NRCStoneyCoralLayerIsVisible = false;
+                        }
+                    },
+                    NRCSoftCoralLayerIsVisible: false,
+                    toggleNRCSoftCoralLayer: function () {
+                        if (!this.NRCSoftCoralLayerIsVisible) {
+                            this.NRCSoftCoralLayer.addTo(map);
+                            this.NRCSoftCoralLayerIsVisible = true;
+                        } else {
+                            map.removeLayer(this.NRCSoftCoralLayer);
+                            this.NRCSoftCoralLayerIsVisible = false;
+                        }
+                    },
                     NRCReefsLayerIsVisible: false,
                     toggleNRCReefsLayer: function () {
                         if (!this.NRCReefsLayerIsVisible) {
                             this.NRCReefsLayer.addTo(map);
-                            this.NRCSoftCoralLayer.addTo(map);
-                            this.NRCStonyCoralLayer.addTo(map);
                             this.NRCReefsLayerIsVisible = true;
                         } else {
                             map.removeLayer(this.NRCReefsLayer);
-                            map.removeLayer(this.NRCSoftCoralLayer);
-                            map.removeLayer(this.NRCStonyCoralLayer);
                             this.NRCReefsLayerIsVisible = false;
                         }
                     },

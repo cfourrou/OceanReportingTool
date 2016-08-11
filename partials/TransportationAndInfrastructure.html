@@ -12,7 +12,7 @@ indivdual infographics ID's 46-55 for CE
         <div id="AOItab" class="AOItabClass"> Transportation and Infrastructure
             <div class="narrative" ng-bind-html="AOI.narratives[3].narrative | unsafe"></div>
             <div ng-repeat="TIConf in TIConfig | orderBy: 'priority'">
-                <div class="zeroheightkludge" ng-include="TIConf.filename"></div>
+                <div ng-if="TIConf.priority" class="zeroheightkludge" ng-include="TIConf.filename"></div>
             </div>
         </div>
     </div>

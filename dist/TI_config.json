@@ -6,5 +6,7 @@
     {"filename":"partials/TI_ShippingLanes.html","priority":49},
     {"filename":"partials/TI_VesselCount.html","priority":50},
     {"filename":"partials/TI_RightWhale.html","priority":52},
-    {"filename":"partials/TI_PrincipalPorts.html","priority":53}
+    {"filename":"partials/TI_PrincipalPorts.html","priority":53},
+    {"filename":"partials/TI_PilotBoardingAreas.html","priority":54},
+    {"filename":"partials/TI_Anchorages.html","priority":55}
 ]

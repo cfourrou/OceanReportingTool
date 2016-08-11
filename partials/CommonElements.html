@@ -11,7 +11,7 @@ indivdual infographics ID's 26-45 for CE
         <div id="AOItab" class="AOItabClass"> Common Elements
             <div class="narrative" ng-bind-html="AOI.narratives[0].narrative | unsafe"></div>
             <div ng-repeat="CEConf in CEConfig | orderBy: 'priority'">
-                <div class="zeroheightkludge" ng-include="CEConf.filename"></div>
+                <div ng-if="CEConf.priority" class="zeroheightkludge" ng-include="CEConf.filename"></div>
             </div>
         </div>
     </div>

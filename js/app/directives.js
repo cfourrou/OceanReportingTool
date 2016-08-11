@@ -3,7 +3,7 @@
 /* Directives */
 
 
-function printDirective() {
+function printDirective($state) {
     var printSection = document.getElementById("printSection");
 
     function printElement(elem) {
@@ -25,6 +25,7 @@ function printDirective() {
             if (elemToPrint) {
                 printElement(elemToPrint);
                 window.print();
+                $state.go('CEview');
             }
         });
     }
@@ -44,7 +45,7 @@ angular.module('myApp.directives', [])
     }
     ])
 
-    .directive("ngPrint", [printDirective])
+    .directive("ngPrint", ['$state',printDirective])
 
 
     .directive('infoDirective', function () {

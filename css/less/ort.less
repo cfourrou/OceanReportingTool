@@ -250,33 +250,44 @@ h6 {
 .rightbutton {
   color: #FFFFFF;
   font-size: 11px;
-  //background: inherit;
   text-decoration: none;
   width: 20%;
   float: left;
   vertical-align: middle;
   display: inline-block;
   position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  height: 100%;
+  background-color: @ortBlue-light;
+  border-width: 0px;
+  line-height: 13px;
+  //top: 50%;
+  //-webkit-transform: translateY(-50%);
+  //-ms-transform: translateY(-50%);
+  //transform: translateY(-50%);
+  &:hover {
+    background-color: @ortBlue-Dark;
+    border: none;
+  }
 }
 
 .rightbuttonItalics {
   font-style: italic;
   .rightbutton;
   &:hover {
-    color: #14396A !important;
+    //color: #14396A !important;
   }
 }
 
 .rightbutton:hover {
-  color: #14396A !important;
+  //color: #14396A !important;
   //background: #4690C3;
   text-decoration: none;
 }
-
+.rightbutton p{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
 .helpbutton {
   float: right;
   //font-family: arial;
@@ -1733,7 +1744,12 @@ body.ng-pageslide-body-closed::before {
 .w100 {
   width: 100%;
 }
-
+.w200 {
+  width: 200px;
+}
+.w265 {
+  width: 265px;
+}
 .w35 {
   width: 35%;
 }
@@ -2128,6 +2144,9 @@ body.ng-pageslide-body-closed::before {
 .h100 {
   height: 100%;
 }
+.h100px {
+  height: 100px;
+}
 
 .h200 {
   height: 200px;
@@ -2432,6 +2451,7 @@ body.ng-pageslide-body-closed::before {
 .metaTable td {
   border: 1px solid #000;
   padding: 5px;
+  word-wrap:break-word
 
 }
 
@@ -2808,4 +2828,37 @@ body.ng-pageslide-body-closed::before {
 }
 .paddingtop60{
   padding-top:60px;
+}
+
+.partnership{
+ // position: relative;
+  text-align: right;
+  top: 20px;
+  padding-top: 25px;
+ // left: 331px;
+ // width: 440px;
+}
+.partnership p {
+  font-size: 20px;
+  position: relative;
+  top: 5px;
+ // right: 260px;
+  float:left;
+  color: #666;
+}
+.partnership .boempart {
+ // position: absolute;
+ // top: -100px;
+ // right: 79px;
+}
+.partnership .noaapart {
+ // position: absolute;
+ // top: -100px;
+ // right: 10px;
+}
+.footerleft{
+  float:left;
+}
+.footerright{
+  float:right;
 }

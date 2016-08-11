@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?bb31ab69c7b65c34">
+    <link rel="stylesheet" href="css/ort.min.css?bf8b0e88a8fb184c">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -132,7 +132,8 @@
                                 <path d="M0 0h24v24h-24z" fill="none"/>
                             </svg>
                         </a>
-                        The Ocean Reporting Tool is a component of MarineCadastre.gov, a partnership between the U.S.
+                        The Ocean Reporting Tool (Version 0.2 Release Date: August 2, 2016) is a component of MarineCadastre.gov,
+                         a partnership between the U.S.
                         Department of Commerce’s National Oceanic and Atmospheric Administration (NOAA) Office for
                         Coastal
                         Management and the U.S. Department of the Interior’s Bureau of Ocean Energy Management (BOEM).
@@ -180,11 +181,16 @@
                 </div>
                 <div ng-cloak ng-show="AOI.isLoaded" class="nav_menu_right">
 
-                    <a class="rightbuttonItalics" ui-sref="CEview" href="">{{AOI.name.toUpperCase()}}</a>
-                    <a class="rightbutton" ui-sref="EMview" href="">ENERGY & MINERALS</a>
-                    <a class="rightbutton" ui-sref="NRCview" href="">NATURAL RESOURCES & CONSERVATION</a>
-                    <a class="rightbutton" ui-sref="TIview" href="">TRANSPORTATION & INFRASTRUCTURE</a>
-                    <a class="rightbutton" ui-sref="ECview" href="">ECONOMICS & COMMERCE</a>
+                    <button class="rightbuttonItalics" role="button" ui-sref="CEview" href="">
+                        {{AOI.name.toUpperCase()}}
+                    </button>
+                    <button class="rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
+                    <button class="rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
+                        CONSERVATION
+                    </button>
+                    <button class="rightbutton" role="button" ui-sref="TIview" href="">TRANSPORTATION & INFRASTRUCTURE
+                    </button>
+                    <button class="rightbutton" role="button" ui-sref="ECview" href="">ECONOMICS & COMMERCE</button>
 
                 </div>
             </div>
@@ -236,11 +242,22 @@
                      ps-custom-top="55px"
                 >
                     <div ui-view class="h900"></div>
-                    <div id="foot" class="footer2"><a target="_blank" href="https://www.commerce.gov/">United States
-                        Department of Commerce</a>
-                        | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
-                            Administration</a>
-                        | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
+                    <div id="foot" class="footer2">
+                        <div class="footerleft"><a target="_blank" href="https://www.commerce.gov/">United States
+                            Department of Commerce</a>
+                            | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
+                                Administration</a>
+                            | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
+                        </div>
+                        <div class="footerright">
+                            <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
+                                href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
+                            Policy</a>
+                            | <a href="" target="_blank" >Link Disclaimer</a> | <a
+                                href="http://usa.gov"
+                                target="_blank">USA.gov</a>
+
+                        </div>
                     </div>
                 </div>
 
@@ -254,7 +271,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?0589d1cf06967aa3"></script>
+<script src="js/ort.js?9901101b7760102f"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

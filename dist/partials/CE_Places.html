@@ -36,7 +36,7 @@
                 <div ng-class="AOI.CEPlaceLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
                      ng-click="AOI.toggleCEPlaceLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div id="slbuttxt0" class="sliderbuttont2" ng-hide="AOI.toggleFull===true">CLICK TO TURN LAYER ON AND OFF
+            <div id="slbuttxt0" class="sliderbuttont2" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
         <div>
@@ -63,7 +63,7 @@
                         <th>Population (2010)</th>
                         <th>Distance in Miles</th>
                     </tr>
-                    <tr class="GreyText14" ng-repeat="x in AOI.CEPlaces | orderBy : 'Dist_Mi'">
+                    <tr class="GreyText14" ng-repeat="x in AOI.CEPlaces ">
                         <td class="GreyText14 CamelCase">
                             <div>{{x.Name| lowercase}}</div>
                         </td>

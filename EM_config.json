@@ -13,8 +13,8 @@
   { "filename":"partials/EM_TidalPower.html", "priority":8 },
   { "filename":"partials/EM_OceanDisposalSites.html", "priority":10 },
   { "filename":"partials/EM_OG_planningAreas.html", "priority":16 },
-  { "filename":"partials/EM_OG_activeLeases.html", "priority":15 },
-  { "filename":"partials/EM_OG_wells.html", "priority":18 },
+  { "filename":"partials/EM_OG_activeLeases.html", "priority":0 },
+  { "filename":"partials/EM_OG_wells.html", "priority":0 },
   { "filename":"partials/EM_OG_resourcePotential.html", "priority":13 },
   { "filename":"partials/EM_OG_CoastalEnergyFacilities.html", "priority":17 }
 ]

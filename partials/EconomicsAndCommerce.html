@@ -12,7 +12,7 @@ indivdual infographics ID's 66-75 for EC
         <div id="AOItab" class="AOItabClass"> Economics and Commerce
             <div class="narrative" ng-bind-html="AOI.narratives[4].narrative | unsafe"></div>
             <div ng-repeat="ECConf in ECConfig | orderBy: 'priority'">
-                <div class="zeroheightkludge" ng-include="ECConf.filename"></div>
+                <div ng-if="ECConf.priority" class="zeroheightkludge" ng-include="ECConf.filename"></div>
             </div>
         </div>
     </div>

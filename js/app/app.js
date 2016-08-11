@@ -186,7 +186,7 @@ ortLayerOptional[41] =
 }
 ortLayerOptional[42] =
 {
-    num:50,
+    num: 50,
     displayName: 'Soft Coral'
 }
 ortLayerOptional[43] =
@@ -292,9 +292,14 @@ var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/service
         maxZoom: 12
     }),
     esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
         maxZoom: 12
-    });
+    }),
+    esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
+        maxZoom: 12
+    })
+    ;
 
 
 var nauticalchart = L.esri.imageMapLayer({
@@ -311,6 +316,7 @@ var map = L.map('bigmap', {
 });
 var smallmap;
 var baseMaps = {
+    "Grey": esriGrey,
     "Oceans": esriOceans,
     "Streets": esriStreets,
     "NatGeo World": esriNatGeo
