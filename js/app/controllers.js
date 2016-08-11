@@ -414,8 +414,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         $scope.startSpin();
 
-
-                        var EMReport, CEReport, TIReport, NRCReport, ECReport;
                         var EMGdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
                         var promises = [EMGdeferred.promise,CEGPdeferred.promise,TIGPdeferred.promise,NRCGPdeferred.promise, ECGPdeferred.promise];
 
