@@ -24967,7 +24967,7 @@ angular.module('myApp.services', [])
                             vm.arel[0].PERC_COVER = 0;
                             vm.arel[0].TOTAL_BLOC = 0;
                         }
-
+                        this.loadWindChart();
                         this.loadStateChart();
                         this.loadOceanJobEmployeesChart();
                         this.loadOceanJobDollarsChart();
@@ -25845,7 +25845,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             }, 1500);
         });
-        AOI.loadWindChart();
+        //AOI.loadWindChart();
 
         $scope.saveAsBinary = function () {
 
@@ -25920,7 +25920,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         map.invalidateSize();
         AOI.inPrintWindow = false;
 
-
+        if ($scope.drawOrSubmitCommand === "Working") $scope.startSpin();
         var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
 
         searchControl = L.esri.Geocoding.geosearch({
@@ -25962,7 +25962,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-        AOI.loadWindChart();
+        //AOI.loadWindChart();
 
         $scope.paneon();
     }])
@@ -26010,6 +26010,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             $scope.AOI = AOI;
             $scope.baseMapControlOn = false;
+
+
             AOI.inPrintWindow = false;
             var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
                 position: 'topleft',
@@ -26078,7 +26080,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 map.dragging.enable();
                 searchControl.enable();
                 $scope.drawlocked = false;
-                $scope.drawOrSubmitCommand = "DRAW";
+                //$scope.drawOrSubmitCommand = "DRAW";
                 map.pm.disableDraw('Poly');
 
             };
@@ -26164,9 +26166,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 }
             };
 
+            var EMGPdeferred , CEGPdeferred , TIGPdeferred , NRCGPdeferred , ECGPdeferred ;
+
+            var drawPromises = [];
 
             $scope.drawIt = function () {
+                EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
 
+                drawPromises = [EMGPdeferred.promise,CEGPdeferred.promise,TIGPdeferred.promise,NRCGPdeferred.promise, ECGPdeferred.promise];
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
                     case "DRAW":
@@ -26202,93 +26209,129 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         ECGPTask.setOutputParam("Output_Report");
 
                         $scope.startSpin();
-                        var EMReport, CEReport, TIReport, NRCReport, ECReport;
 
-                        var stopSpinnerRequest = _.after(5, function () {
-                            //AOI.featureCollection = _.extend({}, EMReport,CEReport);
-                            //AOI.featureCollection =angular.merge([],EMReport, CEReport);
-                            if (EMReport) AOI.featureCollection = {
-                                fields: EMReport.fields,
-                                features: EMReport.features
-                            };
-                            if (CEReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, CEReport.features);
-                            if (TIReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, TIReport.features);
-                            if (NRCReport) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, NRCReport.features);
-                            if (ECReport)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, ECReport.features);
 
-                            $scope.stopSpin();
-                            $scope.$apply();
-                            $scope.completeDraw();
-
-                        });
                         EMGPTask.run(function (error, EMgeojson, EMresponse) {
+
+                            console.log("EM jobId is " + EMgeojson.jobId);
+
 
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("EM " + error);
+
                                 $scope.$apply();
+                                EMGPdeferred.resolve();
                             }
                             else if (EMgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                EMReport = EMgeojson.Output_Report;
+                                //AOI.featureCollection = EMgeojson.Output_Report;
+                                EMGPdeferred.resolve(EMgeojson.Output_Report);
+                                //console.log(EMReport);
+                                console.log("EM Complete");
                                 AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
                             }
-                            stopSpinnerRequest();
                         });
+
                         CEGPTask.run(function (error, CEgeojson, CEresponse) {
+                            console.log("CE jobId is " + CEgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("CE " + error);
+
                                 $scope.$apply();
+                                CEGPdeferred.resolve();
                             }
                             else if (CEgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                CEReport = CEgeojson.Output_Report;
+                                CEGPdeferred.resolve(CEgeojson.Output_Report);
+                                console.log("CE Complete");
                                 AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
+
                             }
-                            stopSpinnerRequest();
 
                         });
                         TIGPTask.run(function (error, TIgeojson, TIresponse) {
+                            console.log("TI jobId is " + TIgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("TI " + error);
+                                TIGPdeferred.resolve();
                                 $scope.$apply();
                             }
                             else if (TIgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                TIReport = TIgeojson.Output_Report;
+                                TIGPdeferred.resolve(TIgeojson.Output_Report);
+                                //console.log(TIReport);
+                                console.log("TI Complete");
                                 AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
+
                             }
-                            stopSpinnerRequest();
+
                         });
                         NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-
+                            console.log("NRC jobId is " + NRCgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("NRC " + error);
+                                NRCGPdeferred.resolve();
+
                                 $scope.$apply();
                             }
                             else if (NRCgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                NRCReport = NRCgeojson.Output_Report;
+                                NRCGPdeferred.resolve(NRCgeojson.Output_Report);
+                                //console.log(NRCReport);
+                                console.log("NRC Complete");
                                 AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
                             }
-                            stopSpinnerRequest();
+
                         });
                         ECGPTask.run(function (error, ECgeojson, ECresponse) {
+                            console.log("EC jobId is " + ECgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.log("EC " + error);
+                                ECGPdeferred.resolve();
+
                                 $scope.$apply();
                             }
                             else if (ECgeojson) {
                                 $scope.drawOrSubmitCommand = "Complete";
-                                ECReport = ECgeojson.Output_Report;
+                                ECGPdeferred.resolve(ECgeojson.Output_Report);
+                                //console.log(ECReport);
+                                console.log("EC Complete");
                                 AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
+
                             }
-                            stopSpinnerRequest();
+
                         });
+                        var allPromises = $q.all(drawPromises);
+
+                        allPromises.then(function (results) {
+                            console.log("you make me");
+                            if (results[0] || results[1] || results[2] || results[3] || results[4]) {
+                                console.log("promises promises");
+                                if (results[0]) AOI.featureCollection = {
+                                    fields: results[0].fields,
+                                    features: results[0].features
+                                };
+                                if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
+                                if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
+                                if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
+                                if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
+
+                                $scope.stopSpin();
+                                //$scope.$apply();
+                                $scope.completeDraw();
+
+                            }
+                            console.log("Why don't I believe?");
+                        });
+
+                        // not sure where this belong
+
+
                         break;
                     case "Work":
                         $scope.showSubmitModal();
@@ -26301,6 +26344,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         break;
                 }
             };
+
+            $scope.cancelEVERYTHING = function () {
+                EMGPdeferred.resolve(false);
+                CEGPdeferred.resolve(false);
+                TIGPdeferred.resolve(false);
+                NRCGPdeferred.resolve(false);
+                ECGPdeferred.resolve(false);
+            };
+
             $scope.completeDraw = function () {
                 $scope.drawOff();
                 map.removeLayer($scope.polylayer);
@@ -26315,8 +26367,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.paneon();
                 document.getElementById("bigmap").style.width = '50%';
                 map.invalidateSize();
+                AOI.unloadData();
                 AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID, "My Report");
-                AOI.name=(AOI.CEPlaces[0].Name?("Near " + AOI.CEPlaces[0].Name):"My Report");
+                AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
             };
 
             map.on('pm:create', function (e) {
@@ -26341,7 +26394,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             };
 
+            $scope.startOver = function () {
+                $scope.cancelEVERYTHING();
+                $scope.drawOrSubmitCommand = "DRAW";
+                $scope.reset();
+            };
+            $scope.startMenu = function () {
 
+                $scope.reset();
+            };
             $scope.reset = function () { //unloads AOI but leaves slider pane on
 
 
@@ -26364,7 +26425,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     document.getElementById("bigmap").style.width = '50%';
                     map.removeControl(searchControl);
                     $scope.drawtoolOn = false;
-                    $scope.drawOrSubmitCommand = "DRAW";
+                    //$scope.drawOrSubmitCommand = "DRAW";
 
                     map.invalidateSize();
                 }
@@ -26573,7 +26634,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     });
                     $q.all(promises).then(function () {
                         AOI.loadData(AOI.ID, AOI.name);
-                        AOI.name=(AOI.CEPlaces[0].Name?("Near " + AOI.CEPlaces[0].Name):"My Report");
+                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
 
 
@@ -26608,7 +26669,7 @@ angular.module('myApp.filters', [])
 /* Directives */
 
 
-function printDirective() {
+function printDirective($state) {
     var printSection = document.getElementById("printSection");
 
     function printElement(elem) {
@@ -26630,6 +26691,7 @@ function printDirective() {
             if (elemToPrint) {
                 printElement(elemToPrint);
                 window.print();
+                $state.go('CEview');
             }
         });
     }
@@ -26649,7 +26711,7 @@ angular.module('myApp.directives', [])
     }
     ])
 
-    .directive("ngPrint", [printDirective])
+    .directive("ngPrint", ['$state',printDirective])
 
 
     .directive('infoDirective', function () {
