@@ -13,11 +13,12 @@
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> Metadata</div>
-        <div class="GreyText12">This page provides information on the data used in the Ocean Reporting Tool. The links below are to
+        <div class="GreyText14">This page provides information on the data used in the Ocean Reporting Tool. The links
+            below are to
             metadata and within the metadata records are links to download the source data.
         </div>
-        <hr width="50%" align="left" color="#F4F8FC">
-        <div class="metaline1" ng-repeat="m1 in AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'REPORT_CAT'">
+        <hr width="50%" align="left">
+        <div class="metaline1" ng-repeat="m1 in AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'METADATA_SORT'">
             <div class=" font-bold "> {{m1.REPORT_CAT}}</div>
             <table class="metaTable">
                 <tbody>

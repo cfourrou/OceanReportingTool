@@ -40,16 +40,17 @@
         </div>
         <div>
             <div class="GreyText14 floatitleft padLeft15 w100">
-            <span class="boemline2b"><ng-hide ng-hide="AOI.TIDangerZones[0].TOTAL_CNT>=0">0</ng-hide>{{AOI.TIDangerZones[0].TOTAL_CNT}}</span><span class="boemline2a"> within 1nm</span>
+                <span class="boemline2b"><ng-hide ng-hide="AOI.TIDangerZones[0].TOTAL_CNT>=0">0</ng-hide>{{AOI.TIDangerZones[0].TOTAL_CNT}}</span><span
+                    class="boemline2a"> within 1nm</span>
 
-        </div>
-        <div class="GreyText12 floatitleft padLeft15 w70" ng-repeat="x in AOI.TIDangerZones">
-            <div>{{x.boundaryType}} - {{x.agencyOfUse}}
-                <svg width="15" height="15" class="danger_svg">
-                    <rect width="15" height="15" ng-class="x.Style"/>
-                </svg>
             </div>
-            <div class="padLeft15">Covers {{x.PERC_COVER.toFixed(2)}}% of area</div>
+            <div class="GreyText12 floatitleft padLeft15 w70" ng-repeat="x in AOI.TIDangerZones">
+                <div>{{x.boundaryType}} - {{x.agencyOfUse}}
+                    <svg width="15" height="15" class="danger_svg">
+                        <rect width="15" height="15" ng-class="x.Style"/>
+                    </svg>
+                </div>
+                <div class="padLeft15">Covers {{x.PERC_COVER.toFixed(2)}}% of area</div>
+            </div>
         </div>
     </div>
-</div>

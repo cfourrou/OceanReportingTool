@@ -46,42 +46,43 @@
                     Artificial Reefs
                 </div>
                 <div>
-                <div class="floatitleft padbottom10 padLeft15 w45">
-                    <div class="">
-                        Stony Coral - {{AOI.NRCStonyCoral[0].Coral_Suitability}}
+                    <div class="floatitleft padbottom10 padLeft15 w45">
+                        <div class="">
+                            Stony Coral - {{AOI.NRCStonyCoral[0].Coral_Suitability}}
+                        </div>
+                        <div class="">
+                            Soft Coral - {{AOI.NRCSoftCoral[0].Coral_Suitability}}
+                        </div>
+                        <div class=""><br>
+                            <div class="floatitleft" ng-hide="AOI.NRCReefs[0].TOTAL_CNT>=1">0 &nbsp;</div>
+                            {{AOI.NRCReefs[0].TOTAL_CNT}} Artificial Reefs
+                        </div>
                     </div>
-                    <div class="">
-                        Soft Coral - {{AOI.NRCSoftCoral[0].Coral_Suitability}}
-                    </div>
-                    <div class=""><br>
-                        <div class="floatitleft" ng-hide="AOI.NRCReefs[0].TOTAL_CNT>=1">0 &nbsp;</div>{{AOI.NRCReefs[0].TOTAL_CNT}} Artificial Reefs
-                    </div>
-                </div>
-                <div class="w45 floatitleft">
-                    <div class="CoralLine">
-                        <div class="Coral1"></div>
-                        <div class="CoralNum">Low</div>
-                    </div>
-                    <div class="CoralLine">
-                        <div class="Coral2"></div>
-                        <div class="CoralNum">Medium-Low</div>
-                    </div>
-                    <div class="CoralLine">
-                        <div class="Coral3"></div>
-                        <div class="CoralNum">Medium</div>
-                    </div>
-                    <div class="CoralLine">
-                        <div class="Coral4"></div>
-                        <div class="CoralNum">High</div>
-                    </div>
-                    <div class="CoralLine">
-                        <div class="Coral5"></div>
-                        <div class="CoralNum">Very High</div>
-                    </div>
-                    
+                    <div class="w45 floatitleft">
+                        <div class="CoralLine">
+                            <div class="Coral1"></div>
+                            <div class="CoralNum">Low</div>
+                        </div>
+                        <div class="CoralLine">
+                            <div class="Coral2"></div>
+                            <div class="CoralNum">Medium-Low</div>
+                        </div>
+                        <div class="CoralLine">
+                            <div class="Coral3"></div>
+                            <div class="CoralNum">Medium</div>
+                        </div>
+                        <div class="CoralLine">
+                            <div class="Coral4"></div>
+                            <div class="CoralNum">High</div>
+                        </div>
+                        <div class="CoralLine">
+                            <div class="Coral5"></div>
+                            <div class="CoralNum">Very High</div>
+                        </div>
 
-                </div>
+
                     </div>
+                </div>
             </div>
 
         </div>

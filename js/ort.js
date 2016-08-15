@@ -23224,7 +23224,7 @@ angular.module('myApp.services', [])
                         if (this.ID === -9999) {
                             this.layer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
-                                weight: 3,
+                                weight: 1.5,
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
                             }).addTo(map);
@@ -23232,14 +23232,11 @@ angular.module('myApp.services', [])
                                 padding: [1, 1]
                             });
                         } else {
-                            this.layer = L.esri.featureLayer({ //AOI poly (7)
+                            this.layer = L.esri.featureLayer({
                                 url: config.ortMapServer + config.ortLayerAOI,
-                                color: '#EB660C', weight: 3, fillOpacity: .3,
+                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
                                 where: "AOI_ID =" + this.ID + "",
                                 pane: 'AOIfeature'
-
-                                //simplifyFactor: 5.0,
-                                //precision: 2
                             }).addTo(map);
                         }
 
@@ -23264,7 +23261,7 @@ angular.module('myApp.services', [])
                             catch (err) {
                                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                                 //so for now we will zoom out on error and allow this event to fire again.
-                                // console.log("AOI bounds out of bounds, zooming out");
+
                                 map.setView([33.51, -78.3], 6); //it should try again.
                             }
                         });
@@ -23301,11 +23298,9 @@ angular.module('myApp.services', [])
                         var vm = this;
 
                         vm.name = name;
-                        vm.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        vm.windrpLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[0].num,
                             pane: 'optionalfeature0',
-                            //simplifyFactor: 5.0,
-                            //precision: 3,
                             style: function (feature) {
                                 if (feature.properties.Speed_90 >= 8.8) {
                                     return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -23352,10 +23347,10 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + ortLayerOptional[4].num,
                             pane: 'optionalfeature4',
                             style: function (feature) {
-                                return {color: '#7300D9', weight: 4, fillOpacity: 0};
+                                return {color: '#7300D9', weight: 2, fillOpacity: 0};
                             }
                         });
-                        //there is no 5 yet
+
 
                         vm.HydrokineticLeases = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[6].num,
@@ -23371,7 +23366,7 @@ angular.module('myApp.services', [])
                                 });
                             }
                         });
-                        //there is no 7 yet
+
                         vm.wavePower = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[8].num,
                             pane: 'optionalfeature8',
@@ -23453,11 +23448,10 @@ angular.module('myApp.services', [])
                                 return {color: '#880cf4', weight: 2, fillOpacity: 0};
                             }
                         });
-                        vm.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        vm.TIDangerZonesLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[35].num,
                             pane: 'optionalfeature35',
-                            //simplifyFactor: 5.0,
-                            //precision: 3,
+
                             style: function (feature) {
                                 if (feature.properties.agencyOfUse === 'NASA') {
                                     return {color: '#1a5dad', weight: 1, fillOpacity: .7};
@@ -23523,21 +23517,21 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + ortLayerOptional[37].num,
                             pane: 'optionalfeature37',
                             style: function (feature) {
-                                return {color: '#D3D3D3', weight: 3, fillOpacity: .7};
+                                return {fillColor: '#ffffbe', color: '#e69901', weight: 1.5, fillOpacity: .5};
                             }
                         });
                         vm.NRCNearbyLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[40].num,
                             pane: 'optionalfeature40',
                             style: function (feature) {
-                                return {color: '#75bc73', weight: 3, fillOpacity: .7};
+                                return {color: '#75bc73', weight: 1.5, fillOpacity: .7};
                             }
                         });
                         vm.NRCBarrierLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[44].num,
                             pane: 'optionalfeature44',
                             style: function (feature) {
-                                return {color: '#d6ce70', weight: 3, fillOpacity: .7};
+                                return {color: '#d6ce70', weight: 1.5, fillOpacity: .7};
                             }
                         });
 
@@ -23558,7 +23552,7 @@ angular.module('myApp.services', [])
                                 } else if (feature.properties.all_2011 = 0) {
                                     return {color: '#4776b3', weight: 1, fillOpacity: .8};
                                 } else {
-                                    return {color: '#4776b3', weight: 1, fillOpacity: .8}; //=0
+                                    return {color: '#4776b3', weight: 1, fillOpacity: .8};
                                 }
                             }
                         });
@@ -23579,7 +23573,7 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + ortLayerOptional[32].num,
                             pane: 'optionalfeature32',
                             style: function (feature) {
-                                return {color: '#b613ba', weight: 3, fillOpacity: 0};
+                                return {color: '#b613ba', weight: 1.5, fillOpacity: 0};
                             }
                         });
 
@@ -23693,7 +23687,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23715,7 +23710,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23740,7 +23736,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23762,7 +23759,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23784,7 +23782,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23808,7 +23807,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23832,7 +23832,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23856,7 +23857,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23881,7 +23883,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23904,7 +23907,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23927,7 +23931,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23950,7 +23955,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -23976,7 +23982,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24003,7 +24010,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24012,32 +24020,7 @@ angular.module('myApp.services', [])
                                     ci++;
                                     break;
 
-                                /*case "CoastalStates":
-                                 vm.ECStateGDP[ch] = {
-                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                 st_name: (featureCollection[i].st_name || 'Unknown'),
-                                 MedHHInc: (featureCollection[i].MedHHInc || 0),
-                                 TotalHouses: (featureCollection[i].TotalHouses || 0),
-                                 Population: (featureCollection[i].Population || 0),
-                                 PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
-                                 };
-
-
-                                 if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                 vm.metadata[k] = {
-                                 REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                 COMMON_NM: featureCollection[i].COMMON_NM,
-                                 METADATA_URL: featureCollection[i].METADATA_URL,
-                                 METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                 METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
-                                 };
-                                 k++;
-                                 }
-
-
-                                 ch++;
-                                 break;*/
                                 case "ENOW_2013":
 
 
@@ -24088,7 +24071,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24111,7 +24095,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24135,7 +24120,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24157,7 +24143,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24179,7 +24166,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24203,7 +24191,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24224,7 +24213,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24248,7 +24238,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24271,7 +24262,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24304,7 +24296,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24327,7 +24320,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24350,7 +24344,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24373,7 +24368,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24397,7 +24393,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24432,7 +24429,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24456,7 +24454,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24480,7 +24479,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24502,7 +24502,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24524,7 +24525,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24545,7 +24547,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24568,7 +24571,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24589,7 +24593,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24612,7 +24617,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24633,7 +24639,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24654,7 +24661,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24675,7 +24683,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24696,7 +24705,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24718,7 +24728,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24739,7 +24750,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24766,9 +24778,10 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
-                                        // console.log(vm.metadata[k]);
+
                                         k++;
 
                                     }
@@ -24794,7 +24807,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24819,7 +24833,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -24855,7 +24870,7 @@ angular.module('myApp.services', [])
 
 
                         var y = 35;
-                        var x = 35; //good
+                        var x = 35;
                         var chartrow = 1;
 
                         for (i = 0; i < vm.ECEcon.length; i++) {
@@ -25400,7 +25415,7 @@ angular.module('myApp.services', [])
                         if (this.ID === -9999) {
                             minicLayer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
-                                weight: 3,
+                                weight: 1.5,
                                 fillOpacity: .3
 
                             }).addTo(smallmap);
@@ -25412,7 +25427,7 @@ angular.module('myApp.services', [])
                                 url: config.ortMapServer + config.ortLayerAOI,
                                 where: "AOI_ID =" + this.ID + "",
                                 color: '#EB660C',
-                                weight: 3,
+                                weight: 1.5,
                                 fillOpacity: .3
 
                             }).addTo(smallmap);
@@ -25774,7 +25789,7 @@ angular.module('myApp.services', [])
                                 '&NRC=' + AOI.drawAreaJobId['NRC'] +
                                 '&EM=' + AOI.drawAreaJobId['EM']
                         }
-                        window.prompt("Share this report with: Ctrl+C, Enter", '' + shareURL);
+                        return (shareURL);
                     }
                 };
 
@@ -25798,12 +25813,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             close(result, 500); // close, but give 500ms for to animate
         };
 
+
     })
     .controller('submitModalController', function ($scope, close) {
 
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
+        close(false, 10000);//close after 10 seconds anyway.
 
     })
 
@@ -25836,16 +25853,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.$on('$viewContentLoaded', function () {
             // document is ready, place  code here
             $timeout(function () {
-
                 AOI.loadSmallMap(false);
-
-
                 $scope.saveAsBinary();
-
-
+                $timeout(function () {
+                    $scope.updatePrint();
+                }, 3000);
             }, 1500);
+
+
         });
-        //AOI.loadWindChart();
+
 
         $scope.saveAsBinary = function () {
 
@@ -25914,7 +25931,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     }])
     .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
-        //$scope.AOI = AOI;
+
         document.getElementById("bigmap").style.width = '100%';
         $scope.off();
         map.invalidateSize();
@@ -25945,7 +25962,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
         searchControl.on('results', function (response) {
             if (response.results[0].properties.AOI_NAME !== undefined) {
-                console.log(response.results[0])
+                console.warn(response.results[0])
             }
         });
 
@@ -25961,8 +25978,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.EMConfig = result;
         });
 
-
-        //AOI.loadWindChart();
 
         $scope.paneon();
     }])
@@ -25999,9 +26014,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         });
 
 
-        //AOI.loadWindChart();
-
-        //AOI.doFullSlider('ERC');
         $scope.paneon();
     }])
 
@@ -26080,7 +26092,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 map.dragging.enable();
                 searchControl.enable();
                 $scope.drawlocked = false;
-                //$scope.drawOrSubmitCommand = "DRAW";
+
                 map.pm.disableDraw('Poly');
 
             };
@@ -26166,17 +26178,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 }
             };
 
-            var EMGPdeferred , CEGPdeferred , TIGPdeferred , NRCGPdeferred , ECGPdeferred ;
+            var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
 
             var drawPromises = [];
+            // var allPromises
 
             $scope.drawIt = function () {
-                EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
 
-                drawPromises = [EMGPdeferred.promise,CEGPdeferred.promise,TIGPdeferred.promise,NRCGPdeferred.promise, ECGPdeferred.promise];
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
                     case "DRAW":
+
                         if ($scope.drawenabled) {
                             if ($scope.drawlocked) {
                                 $scope.drawOff();
@@ -26186,8 +26198,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         }
                         break;
                     case "Subm":
+                        $scope.showSubmitModal();
+                        EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
 
-
+                        drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
                         AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
 
                         $scope.drawOrSubmitCommand = "Working";
@@ -26218,16 +26232,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.log("EM " + error);
+                                console.error("EM " + error);
 
                                 $scope.$apply();
                                 EMGPdeferred.resolve();
                             }
                             else if (EMgeojson) {
-                                $scope.drawOrSubmitCommand = "Complete";
-                                //AOI.featureCollection = EMgeojson.Output_Report;
+
                                 EMGPdeferred.resolve(EMgeojson.Output_Report);
-                                //console.log(EMReport);
                                 console.log("EM Complete");
                                 AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
                             }
@@ -26237,13 +26249,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             console.log("CE jobId is " + CEgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.log("CE " + error);
+                                console.error("CE " + error);
 
                                 $scope.$apply();
                                 CEGPdeferred.resolve();
                             }
                             else if (CEgeojson) {
-                                $scope.drawOrSubmitCommand = "Complete";
                                 CEGPdeferred.resolve(CEgeojson.Output_Report);
                                 console.log("CE Complete");
                                 AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
@@ -26255,17 +26266,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             console.log("TI jobId is " + TIgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.log("TI " + error);
+                                console.error("TI " + error);
                                 TIGPdeferred.resolve();
                                 $scope.$apply();
                             }
                             else if (TIgeojson) {
-                                $scope.drawOrSubmitCommand = "Complete";
                                 TIGPdeferred.resolve(TIgeojson.Output_Report);
-                                //console.log(TIReport);
                                 console.log("TI Complete");
                                 AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
-
                             }
 
                         });
@@ -26273,15 +26281,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             console.log("NRC jobId is " + NRCgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.log("NRC " + error);
+                                console.error("NRC " + error);
                                 NRCGPdeferred.resolve();
-
                                 $scope.$apply();
                             }
                             else if (NRCgeojson) {
-                                $scope.drawOrSubmitCommand = "Complete";
                                 NRCGPdeferred.resolve(NRCgeojson.Output_Report);
-                                //console.log(NRCReport);
                                 console.log("NRC Complete");
                                 AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
                             }
@@ -26291,15 +26296,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             console.log("EC jobId is " + ECgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.log("EC " + error);
+                                console.error("EC " + error);
                                 ECGPdeferred.resolve();
 
                                 $scope.$apply();
                             }
                             else if (ECgeojson) {
-                                $scope.drawOrSubmitCommand = "Complete";
                                 ECGPdeferred.resolve(ECgeojson.Output_Report);
-                                //console.log(ECReport);
                                 console.log("EC Complete");
                                 AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
 
@@ -26307,9 +26310,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         });
                         var allPromises = $q.all(drawPromises);
-
+                        console.log("you make me");
                         allPromises.then(function (results) {
-                            console.log("you make me");
+                            AOI.featureCollection = {
+                                fields: null,
+                                features: null
+                            };
+
                             if (results[0] || results[1] || results[2] || results[3] || results[4]) {
                                 console.log("promises promises");
                                 if (results[0]) AOI.featureCollection = {
@@ -26322,15 +26329,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
 
                                 $scope.stopSpin();
-                                //$scope.$apply();
                                 $scope.completeDraw();
+
 
                             }
                             console.log("Why don't I believe?");
                         });
-
-                        // not sure where this belong
-
 
                         break;
                     case "Work":
@@ -26351,6 +26355,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 TIGPdeferred.resolve(false);
                 NRCGPdeferred.resolve(false);
                 ECGPdeferred.resolve(false);
+                // EMGPdeferred = null;
+                // CEGPdeferred = null;
+                // TIGPdeferred = null;
+                // NRCGPdeferred = null;
+                // ECGPdeferred = null;
+                // allPromises = null;
+                // drawPromises.length = 0;
             };
 
             $scope.completeDraw = function () {
@@ -26425,7 +26436,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     document.getElementById("bigmap").style.width = '50%';
                     map.removeControl(searchControl);
                     $scope.drawtoolOn = false;
-                    //$scope.drawOrSubmitCommand = "DRAW";
+
 
                     map.invalidateSize();
                 }
@@ -26452,10 +26463,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.mover = function (AOI_id) {//turns on poly on mouse over in menu
 
                 if (!mouseLayer) {
-                    mouseLayer = L.esri.featureLayer({ //AOI poly (7)
+                    mouseLayer = L.esri.featureLayer({
                         url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
                         where: "AOI_ID =" + AOI_id + "",
-                        color: '#EB660C', weight: 3, fillOpacity: .3,
+                        color: '#EB660C', weight: 1.5, fillOpacity: .3,
                         simplifyFactor: 2.0,
                     }).addTo(map);
 
@@ -26473,7 +26484,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             };
 
             $scope.AOIoff = function () {
-                // there is probably a better place for this
+
                 toggle = false;
             };
 
@@ -26572,7 +26583,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                     L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
                         if (error) {
-                            console.log(error);
+                            console.error(error);
                         } else {
 
                             AOI.drawLayerShape = {
@@ -26591,16 +26602,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                     L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/results/Output_Report', {}, function (error, response) {
                         if (error) {
-                            console.log(error);
+                            console.error(error);
                         } else {
-                            //get teh first report
                             AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
                             promise2.resolve();
                         }
-                        //get teh rest of the reports
                         L.esri.get(AOI.config.ortEnergyGPService + '/jobs/' + AOI.drawAreaJobId['EM'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.log(error);
+                                console.error(error);
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise3.resolve();
@@ -26608,7 +26617,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
                         L.esri.get(AOI.config.ortNaturalGPService + '/jobs/' + AOI.drawAreaJobId['NRC'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.log(error);
+                                console.error(error);
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise4.resolve();
@@ -26616,7 +26625,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
                         L.esri.get(AOI.config.ortTranspoGPService + '/jobs/' + AOI.drawAreaJobId['TI'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.log(error);
+                                console.error(error);
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise5.resolve();
@@ -26624,7 +26633,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
                         L.esri.get(AOI.config.ortEconGPService + '/jobs/' + AOI.drawAreaJobId['EC'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.log(error);
+                                console.error(error);
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise6.resolve();
@@ -26650,7 +26659,7 @@ angular.element(document).ready(function () {
     c = angular.element(document.querySelector('#controller-demo')).scope();
 });
 
-// Test
+
 angular.element(document).ready(function () {
     // if (console.assert)
     //     console.assert(document.querySelectorAll('body > .ng-pageslide').length == 12, 'Made all of them')
@@ -26661,7 +26670,9 @@ angular.element(document).ready(function () {
 /* Filters */
 
 angular.module('myApp.filters', [])
-    .filter('unsafe', function($sce) { return $sce.trustAsHtml; })
+    .filter('unsafe', function ($sce) {
+        return $sce.trustAsHtml;
+    })
 
 ;
 'use strict';
@@ -26673,7 +26684,6 @@ function printDirective($state) {
     var printSection = document.getElementById("printSection");
 
     function printElement(elem) {
-        // clones the element you want to print
         var domClone = elem.cloneNode(true);
         if (!printSection) {
             printSection = document.createElement("div");
@@ -26685,7 +26695,7 @@ function printDirective($state) {
         printSection.appendChild(domClone);
     }
 
-    function link(scope, element, attrs) {
+    function link($scope, element, attrs) {
         element.on("click", function () {
             var elemToPrint = document.getElementById(attrs.printElementId);
             if (elemToPrint) {
@@ -26694,6 +26704,14 @@ function printDirective($state) {
                 $state.go('CEview');
             }
         });
+        $scope.updatePrint = function () {
+            var elemToPrint = document.getElementById(attrs.printElementId);
+            if (elemToPrint) {
+                printElement(elemToPrint);
+                window.print();
+                $state.go('CEview');
+            }
+        }
     }
 
     return {
@@ -26711,7 +26729,7 @@ angular.module('myApp.directives', [])
     }
     ])
 
-    .directive("ngPrint", ['$state',printDirective])
+    .directive("ngPrint", ['$state', printDirective])
 
 
     .directive('infoDirective', function () {
@@ -26728,7 +26746,6 @@ angular.module('myApp.directives', [])
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {
-                    //console.log("show " +$scope.metadataUrl);
                     ModalService.showModal({
                         templateUrl: modalTemplate,
                         controller: "ModalController",
@@ -26737,6 +26754,7 @@ angular.module('myApp.directives', [])
                             myvarData: $scope.vardata
 
                         }
+
                     }).then(function (modal) {
                         modal.close.then(function (result) {
                             $scope.message = "You said " + result;
@@ -26764,9 +26782,7 @@ angular.module('myApp.directives', [])
 ;
 'use strict';
 
-//var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/';
-//var ortLayerAOI = '7';
-//var ortLayerData = '35';
+
 var ortLayerOptional = [];
 
 
@@ -26966,11 +26982,9 @@ ortLayerOptional[44] =
 
 }
 var toggle = false;
-//var windclass = [];
-//var toggleFull = false;
-//var cLayer,
+
 var mouseLayer, searchControl;
-//var menuitems = [];
+
 
 function preloader() {
     if (document.images) {
@@ -27068,15 +27082,14 @@ var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/service
 
 var nauticalchart = L.esri.imageMapLayer({
     url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-    //mosaicRule: mosaicRule,
     useCors: false
-});//.addTo(map);
+});
 
 
 var map = L.map('bigmap', {
     zoomControl: false,
-    maxZoom: 12,
-    //layers: [esriOceans]
+    maxZoom: 12
+
 });
 var smallmap;
 var baseMaps = {
@@ -27092,24 +27105,12 @@ var mapOverlay = {
 var baselayer = esriOceans.addTo(map);
 
 
-//L.esri.basemapLayer('Oceans').addTo(map);
-//L.esri.basemapLayer('OceansLabels').addTo(map);
-//World_Street_Map
-//NatGeo_World_Map
-//World_Ocean_Base
-//
-
-//Use one of "Streets", "Topographic", "Oceans", "OceansLabels", "NationalGeographic", "Gray", "GrayLabels", "DarkGray", "DarkGrayLabels", "Imagery",
-// "ImageryLabels", "ImageryTransportation", "ShadedRelief", "ShadedReliefLabels", "Terrain" or "TerrainLabels"
-/*
- L.control.zoom({
- position: 'bottomleft'
- }).addTo(map);
- */
 for (var i = 0; i < ortLayerOptional.length; i++) {
     map.createPane('optionalfeature' + i);
 }
 ;
+
+
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
 
@@ -27159,7 +27160,7 @@ $http.get("gis_config.json").then(function (result) {
                     templateUrl: 'partials/splash.html',
                 })
                 .state('CEview', {
-                    //url: '/AOI?detail',
+
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl'
                 })
@@ -27169,39 +27170,37 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'AOICtrl'
                 })
                 .state('NRCview', {
-                    // url: '/view3',
+
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
                     controller: 'NaturalResourcesCtrl'
                 })
                 .state('TIview', {
-                    //  url:'/view4',
+
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
                     controller: 'TransportationAndInfrastructureCtrl'
                 })
                 .state('EMview', {
-                    //  url: '/EM',
+
                     templateUrl: 'partials/EnergyAndMinerals.html',
                     controller: 'EnergyAndMineralsCtrl'
                 })
                 .state('ECview', {
-                    //   url:'/view5',
+
                     templateUrl: 'partials/EconomicsAndCommerce.html',
                     controller: 'EconCtrl'
                 })
                 .state('meta', {
-                    //url:'/metadata',
-                    templateUrl: 'partials/metadata.html',
-                    // controller: 'MyCtrl5'
+
+                    templateUrl: 'partials/metadata.html'
+
                 })
                 .state('splash', {
                     url: '/splash',
-                    templateUrl: 'partials/splash.html',
-                    // controller: 'splashCtrl'
+                    templateUrl: 'partials/splash.html'
                 })
                 .state('menu', {
                     url: '/menu',
-                    templateUrl: 'partials/KnownAreasMenu.html',
-                    // controller: 'splashCtrl'
+                    templateUrl: 'partials/KnownAreasMenu.html'
                 })
                 .state('draw', {
                     url: '/draw',
@@ -27209,7 +27208,7 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'SearchCtrl'
                 })
                 .state('print', {
-                    // url:'/print',
+
                     templateUrl: 'partials/printPreview.html',
                     controller: 'printCtrl'
                 })

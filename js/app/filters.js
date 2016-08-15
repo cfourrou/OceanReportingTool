@@ -3,5 +3,7 @@
 /* Filters */
 
 angular.module('myApp.filters', [])
-    .filter('unsafe', function($sce) { return $sce.trustAsHtml; })
+    .filter('unsafe', function ($sce) {
+        return $sce.trustAsHtml;
+    })
 

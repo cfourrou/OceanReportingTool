@@ -18,7 +18,8 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            Jurisdiction represents the portion of the defined area that falls in either State or Federal waters.
+                            Jurisdiction represents the portion of the defined area that falls in either State or
+                            Federal waters.
 
                             <br>
 
@@ -32,29 +33,29 @@
             <!-- iButton end-->
         </div>
         <div class="h20"></div>
-            <div class="floatitleft padbottom10">
-                <div ng-repeat="istate in AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
+        <div class="floatitleft padbottom10">
+            <div ng-repeat="istate in AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
 
 
-                    <div class="infolisthead2">{{istate.st_name}}
-
-                    </div>
-                    <div class="infolist">
-
-
-                        <div ng-repeat="icounty in AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
-
-
-                            <div class="infolistitem">{{icounty.cntyname}}</div>
-
-                        </div>
-
-                    </div>
-
+                <div class="infolisthead2">{{istate.st_name}}
 
                 </div>
+                <div class="infolist">
+
+
+                    <div ng-repeat="icounty in AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
+
+
+                        <div class="infolistitem">{{icounty.cntyname}}</div>
+
+                    </div>
+
+                </div>
+
+
             </div>
-            <highchart id="stateAndFedContainer" config="AOI.highchartsNGState" class="stateandFedchart"></highchart>
+        </div>
+        <highchart id="stateAndFedContainer" config="AOI.highchartsNGState" class="stateandFedchart"></highchart>
 
         <div>
 

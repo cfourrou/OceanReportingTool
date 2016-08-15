@@ -1,8 +1,6 @@
 'use strict';
 
-//var ortMapServer = '//it.innovateteam.com/arcgis/rest/services/OceanReporting/OceanReports/MapServer/';
-//var ortLayerAOI = '7';
-//var ortLayerData = '35';
+
 var ortLayerOptional = [];
 
 
@@ -202,11 +200,9 @@ ortLayerOptional[44] =
 
 }
 var toggle = false;
-//var windclass = [];
-//var toggleFull = false;
-//var cLayer,
+
 var mouseLayer, searchControl;
-//var menuitems = [];
+
 
 function preloader() {
     if (document.images) {
@@ -304,15 +300,14 @@ var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/service
 
 var nauticalchart = L.esri.imageMapLayer({
     url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-    //mosaicRule: mosaicRule,
     useCors: false
-});//.addTo(map);
+});
 
 
 var map = L.map('bigmap', {
     zoomControl: false,
-    maxZoom: 12,
-    //layers: [esriOceans]
+    maxZoom: 12
+
 });
 var smallmap;
 var baseMaps = {
@@ -328,24 +323,12 @@ var mapOverlay = {
 var baselayer = esriOceans.addTo(map);
 
 
-//L.esri.basemapLayer('Oceans').addTo(map);
-//L.esri.basemapLayer('OceansLabels').addTo(map);
-//World_Street_Map
-//NatGeo_World_Map
-//World_Ocean_Base
-//
-
-//Use one of "Streets", "Topographic", "Oceans", "OceansLabels", "NationalGeographic", "Gray", "GrayLabels", "DarkGray", "DarkGrayLabels", "Imagery",
-// "ImageryLabels", "ImageryTransportation", "ShadedRelief", "ShadedReliefLabels", "Terrain" or "TerrainLabels"
-/*
- L.control.zoom({
- position: 'bottomleft'
- }).addTo(map);
- */
 for (var i = 0; i < ortLayerOptional.length; i++) {
     map.createPane('optionalfeature' + i);
 }
 ;
+
+
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
 
@@ -395,7 +378,7 @@ $http.get("gis_config.json").then(function (result) {
                     templateUrl: 'partials/splash.html',
                 })
                 .state('CEview', {
-                    //url: '/AOI?detail',
+
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl'
                 })
@@ -405,39 +388,37 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'AOICtrl'
                 })
                 .state('NRCview', {
-                    // url: '/view3',
+
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
                     controller: 'NaturalResourcesCtrl'
                 })
                 .state('TIview', {
-                    //  url:'/view4',
+
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
                     controller: 'TransportationAndInfrastructureCtrl'
                 })
                 .state('EMview', {
-                    //  url: '/EM',
+
                     templateUrl: 'partials/EnergyAndMinerals.html',
                     controller: 'EnergyAndMineralsCtrl'
                 })
                 .state('ECview', {
-                    //   url:'/view5',
+
                     templateUrl: 'partials/EconomicsAndCommerce.html',
                     controller: 'EconCtrl'
                 })
                 .state('meta', {
-                    //url:'/metadata',
-                    templateUrl: 'partials/metadata.html',
-                    // controller: 'MyCtrl5'
+
+                    templateUrl: 'partials/metadata.html'
+
                 })
                 .state('splash', {
                     url: '/splash',
-                    templateUrl: 'partials/splash.html',
-                    // controller: 'splashCtrl'
+                    templateUrl: 'partials/splash.html'
                 })
                 .state('menu', {
                     url: '/menu',
-                    templateUrl: 'partials/KnownAreasMenu.html',
-                    // controller: 'splashCtrl'
+                    templateUrl: 'partials/KnownAreasMenu.html'
                 })
                 .state('draw', {
                     url: '/draw',
@@ -445,7 +426,7 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'SearchCtrl'
                 })
                 .state('print', {
-                    // url:'/print',
+
                     templateUrl: 'partials/printPreview.html',
                     controller: 'printCtrl'
                 })

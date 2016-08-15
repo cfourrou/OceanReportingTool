@@ -18,7 +18,8 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            Federal Geo Regulations listed fall within and apply to the defined area. Links will take you to additional information regarding each specific regulation.
+                            Federal Geo Regulations listed fall within and apply to the defined area. Links will take
+                            you to additional information regarding each specific regulation.
 
                             <br>
 
@@ -31,12 +32,12 @@
             </div>
             <!-- iButton end-->
         </div>
-            <div class="h20"></div>
+        <div class="h20"></div>
 
-            <div class="CEAreaData GreyText12"
-                 ng-repeat="x in AOI.CEFedGeoRegs | unique: 'FederalGeoRegulationsName' | orderBy : 'FederalGeoRegulationsName'">
-                <a target="_blank" href="{{x.DescriptionURL}}"> {{x.FederalGeoRegulationsName}} </a>
-            </div>
-
+        <div class="CEAreaData GreyText12"
+             ng-repeat="x in AOI.CEFedGeoRegs | unique: 'FederalGeoRegulationsName' | orderBy : 'FederalGeoRegulationsName'">
+            <a target="_blank" href="{{x.DescriptionURL}}"> {{x.FederalGeoRegulationsName}} </a>
         </div>
+
     </div>
+</div>

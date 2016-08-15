@@ -3,11 +3,75 @@
   <component name="ChangeListManager">
     <list default="true" id="8e8090f5-02cf-46c3-b523-f4e54481fa8d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/less/ort.less" afterPath="$PROJECT_DIR$/css/less/ort.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/less/print.less" afterPath="$PROJECT_DIR$/css/less/print.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/ort.min.css" afterPath="$PROJECT_DIR$/css/ort.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/css/ort.min.css" afterPath="$PROJECT_DIR$/dist/css/ort.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/img/tribal-lands.svg" afterPath="$PROJECT_DIR$/dist/img/tribal-lands.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/ort.js" afterPath="$PROJECT_DIR$/dist/js/ort.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/AOI_head.html" afterPath="$PROJECT_DIR$/dist/partials/AOI_head.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/CE_Area.html" afterPath="$PROJECT_DIR$/dist/partials/CE_Area.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/CE_FederalGeoRegulations.html" afterPath="$PROJECT_DIR$/dist/partials/CE_FederalGeoRegulations.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/CE_StateAndCounty.html" afterPath="$PROJECT_DIR$/dist/partials/CE_StateAndCounty.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/CommonElements.html" afterPath="$PROJECT_DIR$/dist/partials/CommonElements.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EC_Census.html" afterPath="$PROJECT_DIR$/dist/partials/EC_Census.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EM_RenewableEnergyLeases.html" afterPath="$PROJECT_DIR$/dist/partials/EM_RenewableEnergyLeases.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/EM_WavePower.html" afterPath="$PROJECT_DIR$/dist/partials/EM_WavePower.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_Barrier.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_Barrier.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_Coral.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_Coral.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_Corals.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_Corals.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_CriticalHabitat.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_CriticalHabitat.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_HabitatConcern.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_HabitatConcern.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_MigratorySpecies.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_MigratorySpecies.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_NearbyAreas.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_NearbyAreas.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NRC_Reefs.html" afterPath="$PROJECT_DIR$/dist/partials/NRC_Reefs.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/NaturalResourcesAndConservation.html" afterPath="$PROJECT_DIR$/dist/partials/NaturalResourcesAndConservation.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TI_CoastalMaintainedChannels.html" afterPath="$PROJECT_DIR$/dist/partials/TI_CoastalMaintainedChannels.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TI_DangerZones.html" afterPath="$PROJECT_DIR$/dist/partials/TI_DangerZones.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TI_PrincipalPorts.html" afterPath="$PROJECT_DIR$/dist/partials/TI_PrincipalPorts.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TI_ShippingLanes.html" afterPath="$PROJECT_DIR$/dist/partials/TI_ShippingLanes.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/TI_VesselCount.html" afterPath="$PROJECT_DIR$/dist/partials/TI_VesselCount.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/draw.html" afterPath="$PROJECT_DIR$/dist/partials/draw.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/metadata.html" afterPath="$PROJECT_DIR$/dist/partials/metadata.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/metadataPrint.html" afterPath="$PROJECT_DIR$/dist/partials/metadataPrint.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/printPreview.html" afterPath="$PROJECT_DIR$/dist/partials/printPreview.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/partials/splash.html" afterPath="$PROJECT_DIR$/dist/partials/splash.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/tribal-lands.svg" afterPath="$PROJECT_DIR$/img/tribal-lands.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/app.js" afterPath="$PROJECT_DIR$/js/app/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/controllers.js" afterPath="$PROJECT_DIR$/js/app/controllers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/directives.js" afterPath="$PROJECT_DIR$/js/app/directives.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/filters.js" afterPath="$PROJECT_DIR$/js/app/filters.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app/services.js" afterPath="$PROJECT_DIR$/js/app/services.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/ort.js" afterPath="$PROJECT_DIR$/js/ort.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/AOI_head.html" afterPath="$PROJECT_DIR$/partials/AOI_head.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/CE_Area.html" afterPath="$PROJECT_DIR$/partials/CE_Area.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/CE_FederalGeoRegulations.html" afterPath="$PROJECT_DIR$/partials/CE_FederalGeoRegulations.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/CE_StateAndCounty.html" afterPath="$PROJECT_DIR$/partials/CE_StateAndCounty.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/CommonElements.html" afterPath="$PROJECT_DIR$/partials/CommonElements.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EC_Census.html" afterPath="$PROJECT_DIR$/partials/EC_Census.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EM_RenewableEnergyLeases.html" afterPath="$PROJECT_DIR$/partials/EM_RenewableEnergyLeases.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/EM_WavePower.html" afterPath="$PROJECT_DIR$/partials/EM_WavePower.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_Barrier.html" afterPath="$PROJECT_DIR$/partials/NRC_Barrier.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_Coral.html" afterPath="$PROJECT_DIR$/partials/NRC_Coral.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_Corals.html" afterPath="$PROJECT_DIR$/partials/NRC_Corals.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_CriticalHabitat.html" afterPath="$PROJECT_DIR$/partials/NRC_CriticalHabitat.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_HabitatConcern.html" afterPath="$PROJECT_DIR$/partials/NRC_HabitatConcern.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_MigratorySpecies.html" afterPath="$PROJECT_DIR$/partials/NRC_MigratorySpecies.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_NearbyAreas.html" afterPath="$PROJECT_DIR$/partials/NRC_NearbyAreas.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NRC_Reefs.html" afterPath="$PROJECT_DIR$/partials/NRC_Reefs.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html" afterPath="$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TI_CoastalMaintainedChannels.html" afterPath="$PROJECT_DIR$/partials/TI_CoastalMaintainedChannels.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TI_DangerZones.html" afterPath="$PROJECT_DIR$/partials/TI_DangerZones.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TI_PrincipalPorts.html" afterPath="$PROJECT_DIR$/partials/TI_PrincipalPorts.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TI_ShippingLanes.html" afterPath="$PROJECT_DIR$/partials/TI_ShippingLanes.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/TI_VesselCount.html" afterPath="$PROJECT_DIR$/partials/TI_VesselCount.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/draw.html" afterPath="$PROJECT_DIR$/partials/draw.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/metadata.html" afterPath="$PROJECT_DIR$/partials/metadata.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/metadataPrint.html" afterPath="$PROJECT_DIR$/partials/metadataPrint.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/printPreview.html" afterPath="$PROJECT_DIR$/partials/printPreview.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partials/splash.html" afterPath="$PROJECT_DIR$/partials/splash.html" />
     </list>
     <ignored path="Ocean Reporting Tool.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,48 +95,8 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5152905">
-              <caret line="391" column="32" selection-start-line="391" selection-start-column="32" selection-end-line="391" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.384615">
-              <caret line="175" column="79" selection-start-line="175" selection-start-column="79" selection-end-line="175" selection-end-column="79" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommonElements.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/CommonElements.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.5">
-              <caret line="13" column="44" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EconomicsAndCommerce.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/EconomicsAndCommerce.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.153846">
-              <caret line="14" column="44" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="printPreview.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/printPreview.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.6153846">
-              <caret line="4" column="43" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.099388376">
+              <caret line="506" column="19" selection-start-line="506" selection-start-column="19" selection-end-line="506" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -82,53 +106,20 @@
         <entry file="file://$PROJECT_DIR$/js/app/directives.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="30" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+              <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
               <folding>
-                <marker date="1470852166377" expanded="true" signature="1582:1596" placeholder="..." />
+                <marker date="1471301869113" expanded="true" signature="1823:1837" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NRC_Corals.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/partials/NRC_Corals.html">
+      <file leaf-file-name="draw.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/partials/draw.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.038462">
-              <caret line="69" column="56" selection-start-line="69" selection-start-column="56" selection-end-line="69" selection-end-column="56" />
+            <state vertical-scroll-proportion="-7.1923075">
+              <caret line="11" column="103" selection-start-line="11" selection-start-column="103" selection-end-line="11" selection-end-column="103" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ort.less" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/css/less/ort.less">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.6153846">
-              <caret line="1750" column="12" selection-start-line="1750" selection-start-column="12" selection-end-line="1750" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app/services.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.423077">
-              <caret line="1008" column="97" selection-start-line="1008" selection-start-column="54" selection-end-line="1008" selection-end-column="97" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/app/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="452" column="11" selection-start-line="452" selection-start-column="11" selection-end-line="452" selection-end-column="11" />
-              <folding>
-                <element signature="e#8119#8556#0" expanded="false" />
-                <element signature="e#11884#11960#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -149,56 +140,56 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/partials/CE_Area.html" />
-        <option value="$PROJECT_DIR$/partials/AOI_head.html" />
-        <option value="$PROJECT_DIR$/partials/TI_RightWhale.html" />
-        <option value="$PROJECT_DIR$/partials/CE_Elevation.html" />
-        <option value="$PROJECT_DIR$/img/NRCNearbyAreas.svg" />
-        <option value="$PROJECT_DIR$/partials/NRC_NearbyAreas.html" />
-        <option value="$PROJECT_DIR$/img/NRCBarrierAreas.svg" />
-        <option value="$PROJECT_DIR$/partials/EC_PercentGDP.html" />
-        <option value="$PROJECT_DIR$/img/CensusLine.svg" />
-        <option value="$PROJECT_DIR$/dist/partials/CE_Places.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EC_Census.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EM_BeachNourishment.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EM_CurrentPower.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EM_OG_CoastalEnergyFacilities.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EM_TidalPower.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EM_WavePower.html" />
-        <option value="$PROJECT_DIR$/dist/partials/EM_WindResourcePotential.html" />
-        <option value="$PROJECT_DIR$/partials/EC_Census.html" />
-        <option value="$PROJECT_DIR$/partials/EM_BeachNourishment.html" />
         <option value="$PROJECT_DIR$/partials/EM_CurrentPower.html" />
         <option value="$PROJECT_DIR$/partials/EM_OG_CoastalEnergyFacilities.html" />
         <option value="$PROJECT_DIR$/partials/EM_TidalPower.html" />
-        <option value="$PROJECT_DIR$/partials/EM_WavePower.html" />
         <option value="$PROJECT_DIR$/partials/EM_WindResourcePotential.html" />
-        <option value="$PROJECT_DIR$/partials/splash.html" />
-        <option value="$PROJECT_DIR$/partials/metadataPrint.html" />
         <option value="$PROJECT_DIR$/EC_config.json" />
         <option value="$PROJECT_DIR$/partials/EC_FishRevenue.html" />
-        <option value="$PROJECT_DIR$/partials/metadata.html" />
         <option value="$PROJECT_DIR$/partials/CE_Places.html" />
-        <option value="$PROJECT_DIR$/js/app/app.js" />
-        <option value="$PROJECT_DIR$/partials/NRC_Coral.html" />
-        <option value="$PROJECT_DIR$/partials/NRC_Barrier.html" />
-        <option value="$PROJECT_DIR$/partials/NRC_Reefs.html" />
         <option value="$PROJECT_DIR$/NRC_config.json" />
         <option value="$PROJECT_DIR$/partials/TI_PilotBoardingAreas.html" />
         <option value="$PROJECT_DIR$/TI_config.json" />
         <option value="$PROJECT_DIR$/partials/TI_Anchorages.html" />
-        <option value="$PROJECT_DIR$/partials/NRC_Corals.html" />
-        <option value="$PROJECT_DIR$/css/less/ort.less" />
-        <option value="$PROJECT_DIR$/partials/CommonElements.html" />
         <option value="$PROJECT_DIR$/partials/EconomicsAndCommerce.html" />
         <option value="$PROJECT_DIR$/partials/EnergyAndMinerals.html" />
-        <option value="$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html" />
         <option value="$PROJECT_DIR$/partials/TransportationAndInfrastructure.html" />
-        <option value="$PROJECT_DIR$/partials/printPreview.html" />
         <option value="$PROJECT_DIR$/EM_config.json" />
-        <option value="$PROJECT_DIR$/js/app/directives.js" />
-        <option value="$PROJECT_DIR$/js/app/services.js" />
+        <option value="$PROJECT_DIR$/css/less/print.less" />
+        <option value="$PROJECT_DIR$/partials/NRC_NearbyAreas.html" />
+        <option value="$PROJECT_DIR$/partials/TI_PrincipalPorts.html" />
+        <option value="$PROJECT_DIR$/partials/CommonElements.html" />
+        <option value="$PROJECT_DIR$/js/app/filters.js" />
+        <option value="$PROJECT_DIR$/partials/CE_Area.html" />
+        <option value="$PROJECT_DIR$/partials/CE_FederalGeoRegulations.html" />
+        <option value="$PROJECT_DIR$/partials/CE_StateAndCounty.html" />
+        <option value="$PROJECT_DIR$/partials/EC_Census.html" />
+        <option value="$PROJECT_DIR$/partials/EM_RenewableEnergyLeases.html" />
+        <option value="$PROJECT_DIR$/partials/EM_WavePower.html" />
+        <option value="$PROJECT_DIR$/partials/metadata.html" />
+        <option value="$PROJECT_DIR$/partials/metadataPrint.html" />
+        <option value="$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_Barrier.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_Coral.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_Corals.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_CriticalHabitat.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_HabitatConcern.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_MigratorySpecies.html" />
+        <option value="$PROJECT_DIR$/partials/NRC_Reefs.html" />
+        <option value="$PROJECT_DIR$/partials/printPreview.html" />
+        <option value="$PROJECT_DIR$/partials/splash.html" />
+        <option value="$PROJECT_DIR$/partials/TI_CoastalMaintainedChannels.html" />
+        <option value="$PROJECT_DIR$/partials/TI_DangerZones.html" />
+        <option value="$PROJECT_DIR$/partials/TI_ShippingLanes.html" />
+        <option value="$PROJECT_DIR$/partials/TI_VesselCount.html" />
+        <option value="$PROJECT_DIR$/css/less/ort.less" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/partials/AOI_head.html" />
+        <option value="$PROJECT_DIR$/js/app/app.js" />
+        <option value="$PROJECT_DIR$/img/tribal-lands.svg" />
+        <option value="$PROJECT_DIR$/js/app/services.js" />
+        <option value="$PROJECT_DIR$/js/app/directives.js" />
+        <option value="$PROJECT_DIR$/partials/draw.html" />
         <option value="$PROJECT_DIR$/js/app/controllers.js" />
       </list>
     </option>
@@ -320,6 +311,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -418,8 +411,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -546,11 +537,11 @@
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.74787533" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.7393768" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt " active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.25212464" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Grunt " active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18022905" sideWeight="0.26062322" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32589287" sideWeight="0.51898736" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33482143" sideWeight="0.48101267" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.76004463" sideWeight="0.48101267" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38131043" sideWeight="0.5027027" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850778" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21205357" sideWeight="0.46895722" order="2" side_tool="false" content_ui="tabs" />
@@ -584,242 +575,298 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/img/OceanDisposalGraphic.svg">
+    <entry file="file://$PROJECT_DIR$/partials/EM_OG_activeLeases.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_OceanDisposalSites.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6415094">
-          <caret line="50" column="96" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="96" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_HydrokineticLeases.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/TI_VesselCount.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70183486">
-          <caret line="67" column="0" selection-start-line="43" selection-start-column="16" selection-end-line="67" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/CE_Area.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3379205">
-          <caret line="13" column="50" selection-start-line="13" selection-start-column="50" selection-end-line="13" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/NRC_NearbyAreas.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.559633">
-          <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/NRCBarrierAreas.svg">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.475">
-          <caret line="19" column="82" selection-start-line="19" selection-start-column="76" selection-end-line="19" selection-end-column="82" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/CensusLine.svg">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="33" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC_Census.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.9615383">
-          <caret line="39" column="87" selection-start-line="39" selection-start-column="87" selection-end-line="39" selection-end-column="87" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_BeachNourishment.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769">
-          <caret line="6" column="85" selection-start-line="6" selection-start-column="85" selection-end-line="6" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EM_CurrentPower.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769">
-          <caret line="6" column="85" selection-start-line="6" selection-start-column="85" selection-end-line="6" selection-end-column="85" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/EM_OG_CoastalEnergyFacilities.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769">
-          <caret line="6" column="85" selection-start-line="6" selection-start-column="85" selection-end-line="6" selection-end-column="85" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_OG_planningAreas.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_OG_resourcePotential.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_OG_wells.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_RenewableEnergyLeases.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_SedimentResources.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_SurficialSediment.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/EM_TidalPower.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769">
-          <caret line="6" column="85" selection-start-line="6" selection-start-column="85" selection-end-line="6" selection-end-column="85" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/EM_WavePower.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769">
-          <caret line="6" column="85" selection-start-line="6" selection-start-column="85" selection-end-line="6" selection-end-column="85" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_WindPlanningAreas.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/EM_WindResourcePotential.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.230769">
-          <caret line="8" column="85" selection-start-line="8" selection-start-column="85" selection-end-line="8" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/splash.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.0">
-          <caret line="59" column="30" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/AOI_head.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617">
-          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/metadataPrint.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20795107">
-          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC_OceanJobDollars.html">
-      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC_Contributions.html">
+    <entry file="file://$PROJECT_DIR$/partials/EnergyAndMinerals.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.8846154">
-          <caret line="9" column="74" selection-start-line="8" selection-start-column="16" selection-end-line="9" selection-end-column="74" />
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC_PercentGDP.html">
+    <entry file="file://$PROJECT_DIR$/partials/KnownAreasMenu.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.1923075">
-          <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/EC_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.0">
-          <caret line="6" column="56" selection-start-line="6" selection-start-column="56" selection-end-line="6" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/filters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EC_FishRevenue.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.307692">
-          <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+        <state vertical-scroll-proportion="-1.3076923">
+          <caret line="57" column="106" selection-start-line="57" selection-start-column="96" selection-end-line="57" selection-end-column="106" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/metadata.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617">
-          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+        <state vertical-scroll-proportion="-11.769231">
+          <caret line="19" column="36" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/CE_Places.html">
+    <entry file="file://$PROJECT_DIR$/partials/metadataPrint.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18195719">
-          <caret line="65" column="71" selection-start-line="65" selection-start-column="59" selection-end-line="65" selection-end-column="71" />
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="28" selection-start-line="0" selection-start-column="28" selection-end-line="0" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/NRC_Barrier.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.1923075">
-          <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/NRC_Coral.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.1923075">
-          <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/TI_RightWhale.html">
+    <entry file="file://$PROJECT_DIR$/partials/NRC_Corals.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.038462">
-          <caret line="43" column="57" selection-start-line="42" selection-start-column="16" selection-end-line="43" selection-end-column="57" />
+        <state vertical-scroll-proportion="-7.1923075">
+          <caret line="69" column="56" selection-start-line="69" selection-start-column="56" selection-end-line="69" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/NRC_CriticalHabitat.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/NRC_HabitatConcern.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/NRC_MigratorySpecies.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/printPreview.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/smallmap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/smallmap_print.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/NRC_NearbyAreas.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21712539">
+          <caret line="11" column="47" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/partials/NRC_Reefs.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-36.615383">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/splash.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.384615">
+          <caret line="22" column="73" selection-start-line="22" selection-start-column="73" selection-end-line="22" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_SubmarineCables.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TransportationAndInfrastructure.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4678899">
+          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_VesselCount.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_ShippingLanes.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_RightWhale.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_PrincipalPorts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_PilotBoardingAreas.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/TI_DangerZones.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -832,114 +879,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/TI_PilotBoardingAreas.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-27.461538">
-          <caret line="42" column="112" selection-start-line="42" selection-start-column="112" selection-end-line="42" selection-end-column="112" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NRC_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21621622">
-          <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TI_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617">
-          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/NRC_CriticalHabitat.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.615385">
-          <caret line="48" column="88" selection-start-line="45" selection-start-column="16" selection-end-line="48" selection-end-column="88" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/partials/TI_Anchorages.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.961538">
-          <caret line="48" column="96" selection-start-line="48" selection-start-column="96" selection-end-line="48" selection-end-column="96" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EM_config.json">
+    <entry file="file://$PROJECT_DIR$/js/ort.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="19" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/TransportationAndInfrastructure.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36391437">
-          <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/NaturalResourcesAndConservation.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36391437">
-          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EnergyAndMinerals.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36391437">
-          <caret line="14" column="44" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/KnownAreasMenu.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.5769231">
-          <caret line="57" column="106" selection-start-line="57" selection-start-column="96" selection-end-line="57" selection-end-column="106" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/EconomicsAndCommerce.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.153846">
-          <caret line="14" column="44" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/partials/CommonElements.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.5">
-          <caret line="13" column="44" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="44" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/less/ort.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846">
-          <caret line="1750" column="12" selection-start-line="1750" selection-start-column="12" selection-end-line="1750" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.89602447">
+          <caret line="2865" column="14" selection-start-line="2865" selection-start-column="14" selection-end-line="2865" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/NRC_Corals.html">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.038462">
-          <caret line="69" column="56" selection-start-line="69" selection-start-column="56" selection-end-line="69" selection-end-column="56" />
+        <state vertical-scroll-proportion="0.45859873">
+          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/AOI_head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1559633">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/filters.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/tribal-lands.svg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.125">
+          <caret line="5" column="71" selection-start-line="5" selection-start-column="71" selection-end-line="5" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.59705883">
+          <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/partials/EM_CurrentPower.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.7553517">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/app/services.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12996942">
+          <caret line="5" column="45" selection-start-line="5" selection-start-column="45" selection-end-line="5" selection-end-column="45" />
           <folding />
         </state>
       </provider>
@@ -947,52 +962,25 @@
     <entry file="file://$PROJECT_DIR$/js/app/directives.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="30" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+          <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
           <folding>
-            <marker date="1470852166377" expanded="true" signature="1582:1596" placeholder="..." />
+            <marker date="1471301869113" expanded="true" signature="1823:1837" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/partials/printPreview.html">
+    <entry file="file://$PROJECT_DIR$/partials/draw.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846">
-          <caret line="4" column="43" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/services.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.423077">
-          <caret line="1008" column="97" selection-start-line="1008" selection-start-column="54" selection-end-line="1008" selection-end-column="97" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/app/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="452" column="11" selection-start-line="452" selection-start-column="11" selection-end-line="452" selection-end-column="11" />
-          <folding>
-            <element signature="e#8119#8556#0" expanded="false" />
-            <element signature="e#11884#11960#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.384615">
-          <caret line="175" column="79" selection-start-line="175" selection-start-column="79" selection-end-line="175" selection-end-column="79" />
+        <state vertical-scroll-proportion="-7.1923075">
+          <caret line="11" column="103" selection-start-line="11" selection-start-column="103" selection-end-line="11" selection-end-column="103" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/app/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5152905">
-          <caret line="391" column="32" selection-start-line="391" selection-start-column="32" selection-end-line="391" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.099388376">
+          <caret line="506" column="19" selection-start-line="506" selection-start-column="19" selection-end-line="506" selection-end-column="19" />
           <folding />
         </state>
       </provider>

@@ -44,7 +44,8 @@
                 <div class="infoDropDownMenu">Sharks
 
                 </div>
-                <div class="infoDropDownList"  ng-repeat="x in AOI.NRCMigratorySharks| orderBy : 'SPECIES'| unique: 'SPECIES'">
+                <div class="infoDropDownList"
+                     ng-repeat="x in AOI.NRCMigratorySharks| orderBy : 'SPECIES'| unique: 'SPECIES'">
                     <div class="floatitleft w79">{{x.SPECIES}}</div>
                     <div class="floatitright">{{x.LIFE_STAGE}}</div>
                 </div>
@@ -55,8 +56,9 @@
                 <div class="infoDropDownMenu">Fish
 
                 </div>
-                <div class="infoDropDownList"  ng-repeat="x in AOI.NRCMigratoryFish | orderBy : 'SPECIES'| unique: 'SPECIES'">
-                    <div class="floatitleft w79" >{{x.SPECIES}}</div>
+                <div class="infoDropDownList"
+                     ng-repeat="x in AOI.NRCMigratoryFish | orderBy : 'SPECIES'| unique: 'SPECIES'">
+                    <div class="floatitleft w79">{{x.SPECIES}}</div>
                     <div class="floatitright">{{x.LIFE_STAGE}}</div>
                 </div>
 

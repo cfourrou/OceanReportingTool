@@ -7,7 +7,6 @@ function printDirective($state) {
     var printSection = document.getElementById("printSection");
 
     function printElement(elem) {
-        // clones the element you want to print
         var domClone = elem.cloneNode(true);
         if (!printSection) {
             printSection = document.createElement("div");
@@ -19,7 +18,7 @@ function printDirective($state) {
         printSection.appendChild(domClone);
     }
 
-    function link(scope, element, attrs) {
+    function link($scope, element, attrs) {
         element.on("click", function () {
             var elemToPrint = document.getElementById(attrs.printElementId);
             if (elemToPrint) {
@@ -28,6 +27,14 @@ function printDirective($state) {
                 $state.go('CEview');
             }
         });
+        $scope.updatePrint = function () {
+            var elemToPrint = document.getElementById(attrs.printElementId);
+            if (elemToPrint) {
+                printElement(elemToPrint);
+                window.print();
+                $state.go('CEview');
+            }
+        }
     }
 
     return {
@@ -45,7 +52,7 @@ angular.module('myApp.directives', [])
     }
     ])
 
-    .directive("ngPrint", ['$state',printDirective])
+    .directive("ngPrint", ['$state', printDirective])
 
 
     .directive('infoDirective', function () {
@@ -62,7 +69,6 @@ angular.module('myApp.directives', [])
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {
-                    //console.log("show " +$scope.metadataUrl);
                     ModalService.showModal({
                         templateUrl: modalTemplate,
                         controller: "ModalController",
@@ -71,6 +77,7 @@ angular.module('myApp.directives', [])
                             myvarData: $scope.vardata
 
                         }
+
                     }).then(function (modal) {
                         modal.close.then(function (result) {
                             $scope.message = "You said " + result;

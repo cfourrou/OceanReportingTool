@@ -18,7 +18,8 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            This data represents the average annual number of vessels traversing the area based on 2011 Vessel
+                            This data represents the average annual number of vessels traversing the area based on 2011
+                            Vessel
                             Traffic (AIS) layer created by BOEM. Heavy vessel traffic may interfere with planned
                             activities.
 
@@ -42,27 +43,37 @@
             <div class="GreyText14 floatitleft padLeft15 w100">
 
                 <div class="VesselLine">
-                    <div class="Vessel1"><img ng-show="AOI.TIVessel[0].all_2011_avg==0" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="Vessel1"><img ng-show="AOI.TIVessel[0].all_2011_avg==0" class="ship"
+                                              src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">0</div>
                 </div>
                 <div class="VesselLine">
-                    <div class="Vessel2"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=1) &&(AOI.TIVessel[0].all_2011_avg<=75))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="Vessel2"><img
+                            ng-show="((AOI.TIVessel[0].all_2011_avg>=1) &&(AOI.TIVessel[0].all_2011_avg<=75))"
+                            class="ship" src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">1-75</div>
                 </div>
                 <div class="VesselLine">
-                    <div class="Vessel3"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=76) &&(AOI.TIVessel[0].all_2011_avg<=250))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="Vessel3"><img
+                            ng-show="((AOI.TIVessel[0].all_2011_avg>=76) &&(AOI.TIVessel[0].all_2011_avg<=250))"
+                            class="ship" src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">76-250</div>
                 </div>
                 <div class="VesselLine">
-                    <div class="Vessel4"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=251) &&(AOI.TIVessel[0].all_2011_avg<=750))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="Vessel4"><img
+                            ng-show="((AOI.TIVessel[0].all_2011_avg>=251) &&(AOI.TIVessel[0].all_2011_avg<=750))"
+                            class="ship" src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">251-750</div>
                 </div>
                 <div class="VesselLine">
-                    <div class="Vessel5"><img ng-show="((AOI.TIVessel[0].all_2011_avg>=751) &&(AOI.TIVessel[0].all_2011_avg<=1500))" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="Vessel5"><img
+                            ng-show="((AOI.TIVessel[0].all_2011_avg>=751) &&(AOI.TIVessel[0].all_2011_avg<=1500))"
+                            class="ship" src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">751-1500</div>
                 </div>
                 <div class="VesselLine">
-                    <div class="Vessel6"><img ng-show="AOI.TIVessel[0].all_2011_avg>=1501" class="ship" src="img/transportation-ship.svg"></div>
+                    <div class="Vessel6"><img ng-show="AOI.TIVessel[0].all_2011_avg>=1501" class="ship"
+                                              src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">More than 1500</div>
                 </div>
 

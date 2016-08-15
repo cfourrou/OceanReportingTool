@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?bf8b0e88a8fb184c">
+    <link rel="stylesheet" href="css/ort.min.css?888164b07fe73de3">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -122,6 +122,23 @@
 <div id="wrapper">
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl">
+        <script type="text/ng-template" id="Share1.html">
+            <div id="custom-modal">
+                <div id="overlay">
+                    <a href="" class="modal-close" ng-click="close('Cancel')">
+                        <svg class="" viewBox="0 0 24 24">
+                            <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                            <path d="M0 0h24v24h-24z" fill="none"/>
+                        </svg>
+                    </a>
+                    Copy the link below to share.
+                    <input type="text" ng-model="metadataurl" class="share-link">
+
+                </div>
+                <div id="fade"></div>
+            </div>
+        </script>
+
         <script type="text/ng-template" id="contactUs.html">
             <div id="custom-modal">
                 <div id="overlay">
@@ -132,8 +149,9 @@
                                 <path d="M0 0h24v24h-24z" fill="none"/>
                             </svg>
                         </a>
-                        The Ocean Reporting Tool (Version 0.2 Release Date: August 2, 2016) is a component of MarineCadastre.gov,
-                         a partnership between the U.S.
+                        The Ocean Reporting Tool (Version 0.2 Release Date: August 2, 2016) is a component of
+                        MarineCadastre.gov,
+                        a partnership between the U.S.
                         Department of Commerce’s National Oceanic and Atmospheric Administration (NOAA) Office for
                         Coastal
                         Management and the U.S. Department of the Interior’s Bureau of Ocean Energy Management (BOEM).
@@ -235,7 +253,7 @@
 
                 <div id="slide_div">
 
-                    <!--ng-include src="partials/CommonElements.html"></ng-include-->
+
                 </div>
 
                 <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
@@ -253,7 +271,7 @@
                             <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
                                 href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
                             Policy</a>
-                            | <a href="" target="_blank" >Link Disclaimer</a> | <a
+                            | <a href="" target="_blank">Link Disclaimer</a> | <a
                                 href="http://usa.gov"
                                 target="_blank">USA.gov</a>
 
@@ -271,7 +289,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?2d35ed5c3e1af2c8"></script>
+<script src="js/ort.js?2f53b96e1a5586da"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

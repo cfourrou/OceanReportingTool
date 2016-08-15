@@ -125,7 +125,7 @@ angular.module('myApp.services', [])
                         if (this.ID === -9999) {
                             this.layer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
-                                weight: 3,
+                                weight: 1.5,
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
                             }).addTo(map);
@@ -133,14 +133,11 @@ angular.module('myApp.services', [])
                                 padding: [1, 1]
                             });
                         } else {
-                            this.layer = L.esri.featureLayer({ //AOI poly (7)
+                            this.layer = L.esri.featureLayer({
                                 url: config.ortMapServer + config.ortLayerAOI,
-                                color: '#EB660C', weight: 3, fillOpacity: .3,
+                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
                                 where: "AOI_ID =" + this.ID + "",
                                 pane: 'AOIfeature'
-
-                                //simplifyFactor: 5.0,
-                                //precision: 2
                             }).addTo(map);
                         }
 
@@ -165,7 +162,7 @@ angular.module('myApp.services', [])
                             catch (err) {
                                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                                 //so for now we will zoom out on error and allow this event to fire again.
-                                // console.log("AOI bounds out of bounds, zooming out");
+
                                 map.setView([33.51, -78.3], 6); //it should try again.
                             }
                         });
@@ -202,11 +199,9 @@ angular.module('myApp.services', [])
                         var vm = this;
 
                         vm.name = name;
-                        vm.windrpLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        vm.windrpLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[0].num,
                             pane: 'optionalfeature0',
-                            //simplifyFactor: 5.0,
-                            //precision: 3,
                             style: function (feature) {
                                 if (feature.properties.Speed_90 >= 8.8) {
                                     return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -253,10 +248,10 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + ortLayerOptional[4].num,
                             pane: 'optionalfeature4',
                             style: function (feature) {
-                                return {color: '#7300D9', weight: 4, fillOpacity: 0};
+                                return {color: '#7300D9', weight: 2, fillOpacity: 0};
                             }
                         });
-                        //there is no 5 yet
+
 
                         vm.HydrokineticLeases = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[6].num,
@@ -272,7 +267,7 @@ angular.module('myApp.services', [])
                                 });
                             }
                         });
-                        //there is no 7 yet
+
                         vm.wavePower = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[8].num,
                             pane: 'optionalfeature8',
@@ -354,11 +349,10 @@ angular.module('myApp.services', [])
                                 return {color: '#880cf4', weight: 2, fillOpacity: 0};
                             }
                         });
-                        vm.TIDangerZonesLayer = L.esri.featureLayer({ //wind resource potential (18)
+                        vm.TIDangerZonesLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[35].num,
                             pane: 'optionalfeature35',
-                            //simplifyFactor: 5.0,
-                            //precision: 3,
+
                             style: function (feature) {
                                 if (feature.properties.agencyOfUse === 'NASA') {
                                     return {color: '#1a5dad', weight: 1, fillOpacity: .7};
@@ -424,21 +418,21 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + ortLayerOptional[37].num,
                             pane: 'optionalfeature37',
                             style: function (feature) {
-                                return {color: '#D3D3D3', weight: 3, fillOpacity: .7};
+                                return {fillColor: '#ffffbe', color: '#e69901', weight: 1.5, fillOpacity: .5};
                             }
                         });
                         vm.NRCNearbyLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[40].num,
                             pane: 'optionalfeature40',
                             style: function (feature) {
-                                return {color: '#75bc73', weight: 3, fillOpacity: .7};
+                                return {color: '#75bc73', weight: 1.5, fillOpacity: .7};
                             }
                         });
                         vm.NRCBarrierLayer = L.esri.featureLayer({
                             url: config.ortMapServer + ortLayerOptional[44].num,
                             pane: 'optionalfeature44',
                             style: function (feature) {
-                                return {color: '#d6ce70', weight: 3, fillOpacity: .7};
+                                return {color: '#d6ce70', weight: 1.5, fillOpacity: .7};
                             }
                         });
 
@@ -459,7 +453,7 @@ angular.module('myApp.services', [])
                                 } else if (feature.properties.all_2011 = 0) {
                                     return {color: '#4776b3', weight: 1, fillOpacity: .8};
                                 } else {
-                                    return {color: '#4776b3', weight: 1, fillOpacity: .8}; //=0
+                                    return {color: '#4776b3', weight: 1, fillOpacity: .8};
                                 }
                             }
                         });
@@ -480,7 +474,7 @@ angular.module('myApp.services', [])
                             url: config.ortMapServer + ortLayerOptional[32].num,
                             pane: 'optionalfeature32',
                             style: function (feature) {
-                                return {color: '#b613ba', weight: 3, fillOpacity: 0};
+                                return {color: '#b613ba', weight: 1.5, fillOpacity: 0};
                             }
                         });
 
@@ -594,7 +588,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -616,7 +611,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -641,7 +637,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -663,7 +660,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -685,7 +683,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -709,7 +708,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -733,7 +733,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -757,7 +758,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -782,7 +784,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -805,7 +808,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -828,7 +832,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -851,7 +856,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -877,7 +883,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -904,7 +911,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -913,32 +921,7 @@ angular.module('myApp.services', [])
                                     ci++;
                                     break;
 
-                                /*case "CoastalStates":
-                                 vm.ECStateGDP[ch] = {
-                                 TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                 st_name: (featureCollection[i].st_name || 'Unknown'),
-                                 MedHHInc: (featureCollection[i].MedHHInc || 0),
-                                 TotalHouses: (featureCollection[i].TotalHouses || 0),
-                                 Population: (featureCollection[i].Population || 0),
-                                 PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
 
-                                 };
-
-
-                                 if ((ch === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                 vm.metadata[k] = {
-                                 REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                 COMMON_NM: featureCollection[i].COMMON_NM,
-                                 METADATA_URL: featureCollection[i].METADATA_URL,
-                                 METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                 METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
-                                 };
-                                 k++;
-                                 }
-
-
-                                 ch++;
-                                 break;*/
                                 case "ENOW_2013":
 
 
@@ -989,7 +972,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1012,7 +996,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1036,7 +1021,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1058,7 +1044,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1080,7 +1067,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1104,7 +1092,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1125,7 +1114,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1149,7 +1139,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1172,7 +1163,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1205,7 +1197,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1228,7 +1221,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1251,7 +1245,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1274,7 +1269,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1298,7 +1294,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1333,7 +1330,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1357,7 +1355,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1381,7 +1380,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1403,7 +1403,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1425,7 +1426,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1446,7 +1448,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1469,7 +1472,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1490,7 +1494,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1513,7 +1518,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1534,7 +1540,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1555,7 +1562,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1576,7 +1584,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1597,7 +1606,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1619,7 +1629,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1640,7 +1651,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1667,9 +1679,10 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
-                                        // console.log(vm.metadata[k]);
+
                                         k++;
 
                                     }
@@ -1695,7 +1708,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1720,7 +1734,8 @@ angular.module('myApp.services', [])
                                             COMMON_NM: featureCollection[i].COMMON_NM,
                                             METADATA_URL: featureCollection[i].METADATA_URL,
                                             METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV
+                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
+                                            METADATA_SORT: featureCollection[i].METADATA_SORT
                                         };
                                         k++;
                                     }
@@ -1756,7 +1771,7 @@ angular.module('myApp.services', [])
 
 
                         var y = 35;
-                        var x = 35; //good
+                        var x = 35;
                         var chartrow = 1;
 
                         for (i = 0; i < vm.ECEcon.length; i++) {
@@ -2301,7 +2316,7 @@ angular.module('myApp.services', [])
                         if (this.ID === -9999) {
                             minicLayer = L.geoJson(this.drawLayerShape, {
                                 color: '#EB660C',
-                                weight: 3,
+                                weight: 1.5,
                                 fillOpacity: .3
 
                             }).addTo(smallmap);
@@ -2313,7 +2328,7 @@ angular.module('myApp.services', [])
                                 url: config.ortMapServer + config.ortLayerAOI,
                                 where: "AOI_ID =" + this.ID + "",
                                 color: '#EB660C',
-                                weight: 3,
+                                weight: 1.5,
                                 fillOpacity: .3
 
                             }).addTo(smallmap);
@@ -2675,7 +2690,7 @@ angular.module('myApp.services', [])
                                 '&NRC=' + AOI.drawAreaJobId['NRC'] +
                                 '&EM=' + AOI.drawAreaJobId['EM']
                         }
-                        window.prompt("Share this report with: Ctrl+C, Enter", '' + shareURL);
+                        return (shareURL);
                     }
                 };
 
