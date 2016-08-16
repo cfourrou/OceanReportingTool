@@ -323,11 +323,14 @@ var mapOverlay = {
 var baselayer = esriOceans.addTo(map);
 
 
-for (var i = 0; i < ortLayerOptional.length; i++) {
-    map.createPane('optionalfeature' + i);
-}
-;
+//for (var i = 0; i < ortLayerOptional.length; i++) {
+//    map.createPane('optionalfeature' + i);
+//}
+//;
 
+ortLayerOptional.forEach(function(obj,index){
+    map.createPane('optionalfeature' + index);
+});
 
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');

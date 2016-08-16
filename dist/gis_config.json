@@ -2,10 +2,10 @@
   "ortMapServer":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/"} ,
   "ortLayerData":{"data": "57"},
   "ortLayerAOI":{"data": "7"},
-  "ortEnergyGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/E%26M%20Draw%20Area"},
-  "ortCommonGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/CE%20Draw%20Area"},
-  "ortTranspoGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/T%26I%20Draw%20Area"},
-  "ortNaturalGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/NRC%20Draw%20Area"},
-  "ortEconGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/EC%20Draw%20Area"}
+  "ortEnergyGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/Draw%20Area%20-%20EM"},
+  "ortCommonGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/Draw%20Area%20-%20CE"},
+  "ortTranspoGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/Draw%20Area%20-%20TI"},
+  "ortNaturalGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/Draw%20Area%20-%20NRC"},
+  "ortEconGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"}
 }
 

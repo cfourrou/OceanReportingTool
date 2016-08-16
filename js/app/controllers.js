@@ -15,9 +15,11 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     })
     .controller('submitModalController', function ($scope, close) {
 
-        $scope.close = function (result) {
-            close(result, 500); // close, but give 500ms for to animate
-        };
+        //$scope.close = function (result) {
+        //    close(result, 500); // close, but give 500ms for to animate
+        //
+        //};
+
         close(false, 10000);//close after 10 seconds anyway.
 
     })
@@ -376,12 +378,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 }
             };
 
+
             var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
 
-            var drawPromises = [];
-            // var allPromises
-
             $scope.drawIt = function () {
+                //var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
+                EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
+                var drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
 
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
@@ -397,9 +400,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         break;
                     case "Subm":
                         $scope.showSubmitModal();
-                        EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
 
-                        drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
                         AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
 
                         $scope.drawOrSubmitCommand = "Working";
@@ -508,13 +509,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         });
                         var allPromises = $q.all(drawPromises);
-                        console.log("you make me");
+                        console.log("you made me");
                         allPromises.then(function (results) {
                             AOI.featureCollection = {
                                 fields: null,
                                 features: null
                             };
-
+                            console.log(results);
                             if (results[0] || results[1] || results[2] || results[3] || results[4]) {
                                 console.log("promises promises");
                                 if (results[0]) AOI.featureCollection = {
@@ -548,18 +549,16 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             };
 
             $scope.cancelEVERYTHING = function () {
-                EMGPdeferred.resolve(false);
-                CEGPdeferred.resolve(false);
-                TIGPdeferred.resolve(false);
-                NRCGPdeferred.resolve(false);
-                ECGPdeferred.resolve(false);
-                // EMGPdeferred = null;
-                // CEGPdeferred = null;
-                // TIGPdeferred = null;
-                // NRCGPdeferred = null;
-                // ECGPdeferred = null;
-                // allPromises = null;
-                // drawPromises.length = 0;
+                if (EMGPdeferred) {
+                    EMGPdeferred.resolve(false);
+                    console.log("dump");
+                }
+                if (CEGPdeferred)CEGPdeferred.resolve(false);
+                if (TIGPdeferred)TIGPdeferred.resolve(false);
+                if (NRCGPdeferred) NRCGPdeferred.resolve(false);
+                if (ECGPdeferred) ECGPdeferred.resolve(false);
+
+
             };
 
             $scope.completeDraw = function () {
