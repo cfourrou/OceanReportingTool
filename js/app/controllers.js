@@ -15,11 +15,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     })
     .controller('submitModalController', function ($scope, close) {
 
-        //$scope.close = function (result) {
-        //    close(result, 500); // close, but give 500ms for to animate
-        //
-        //};
-
         close(false, 6000);//close after 10 seconds anyway.
 
     })
@@ -161,9 +156,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         }).addTo(map);
 
         searchControl.on('results', function (response) {
-            if (response.results[0].properties.AOI_NAME !== undefined) {
-                console.warn(response.results[0])
-            }
+
         });
 
 
@@ -429,95 +422,93 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         EMGPTask.run(function (error, EMgeojson, EMresponse) {
 
-                            //console.log("EM jobId is " + EMgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.error("EM " + error);
 
                                 $scope.$apply();
                                 EMGPdeferred.resolve();
                             }
                             else if (EMgeojson) {
-                                                                EMGPdeferred.resolve(EMgeojson.Output_Report);
-                                console.log("EM Complete");
+                                EMGPdeferred.resolve(EMgeojson.Output_Report);
+
                                 AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
                             }
                         });
 
                         CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                            // console.log("CE jobId is " + CEgeojson.jobId);
+
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.error("CE " + error);
+
 
                                 $scope.$apply();
                                 CEGPdeferred.resolve();
                             }
                             else if (CEgeojson) {
                                 CEGPdeferred.resolve(CEgeojson.Output_Report);
-                                console.log("CE Complete");
+
                                 AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
 
                             }
 
                         });
                         TIGPTask.run(function (error, TIgeojson, TIresponse) {
-                            //console.log("TI jobId is " + TIgeojson.jobId);
+
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.error("TI " + error);
+
                                 TIGPdeferred.resolve();
                                 $scope.$apply();
                             }
                             else if (TIgeojson) {
                                 TIGPdeferred.resolve(TIgeojson.Output_Report);
-                                console.log("TI Complete");
+
                                 AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
                             }
 
                         });
                         NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-                            // console.log("NRC jobId is " + NRCgeojson.jobId);
+
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.error("NRC " + error);
+
                                 NRCGPdeferred.resolve();
                                 $scope.$apply();
                             }
                             else if (NRCgeojson) {
                                 NRCGPdeferred.resolve(NRCgeojson.Output_Report);
-                                console.log("NRC Complete");
+
                                 AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
                             }
 
                         });
                         ECGPTask.run(function (error, ECgeojson, ECresponse) {
-                            // console.log("EC jobId is " + ECgeojson.jobId);
+
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
-                                console.error("EC " + error);
+
                                 ECGPdeferred.resolve();
 
                                 $scope.$apply();
                             }
                             else if (ECgeojson) {
                                 ECGPdeferred.resolve(ECgeojson.Output_Report);
-                                console.log("EC Complete");
+
                                 AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
 
                             }
 
                         });
                         allPromises = $q.all(drawPromises);
-                        console.log("you made me");
+
                         allPromises.then(function (results) {
                             AOI.featureCollection = {
                                 fields: null,
                                 features: null
                             };
-                            console.log(results);
+
                             if (results[0] || results[1] || results[2] || results[3] || results[4]) {
-                                console.log("promises promises");
+
                                 if (results[0]) AOI.featureCollection = {
                                     fields: results[0].fields,
                                     features: results[0].features
@@ -532,12 +523,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
                             }
-                            console.log("Why don't I believe?");
+
                         }).catch(function (result) {
-                            console.log(result);
+
                             $scope.stopSpin();
                         }).finally(function () {
-                            console.log('finally');
+
 
                         });
 
@@ -557,7 +548,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.cancelEVERYTHING = function () {
                 if (EMGPdeferred) {
                     EMGPdeferred.reject("canceled");
-                    console.log("dump");
+
                     allPromises = null;
                 }
                 if (CEGPdeferred)CEGPdeferred.reject("canceled");
@@ -613,7 +604,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
                 AOI.reloadAbort();
-                console.log("byebye");
+
                 $scope.cancelEVERYTHING();
                 $scope.drawOrSubmitCommand = "DRAW";
                 $scope.reset();
@@ -791,7 +782,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                     L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
                         if (error) {
-                            console.error(error);
+
                         } else {
 
                             AOI.drawLayerShape = {
@@ -810,14 +801,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                     L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/results/Output_Report', {}, function (error, response) {
                         if (error) {
-                            console.error(error);
+
                         } else {
                             AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
                             promise2.resolve();
                         }
                         L.esri.get(AOI.config.ortEnergyGPService + '/jobs/' + AOI.drawAreaJobId['EM'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.error(error);
+                                ;
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise3.resolve();
@@ -825,7 +816,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
                         L.esri.get(AOI.config.ortNaturalGPService + '/jobs/' + AOI.drawAreaJobId['NRC'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.error(error);
+
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise4.resolve();
@@ -833,7 +824,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
                         L.esri.get(AOI.config.ortTranspoGPService + '/jobs/' + AOI.drawAreaJobId['TI'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.error(error);
+
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise5.resolve();
@@ -841,7 +832,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         });
                         L.esri.get(AOI.config.ortEconGPService + '/jobs/' + AOI.drawAreaJobId['EC'] + '/results/Output_Report', {}, function (error, response) {
                             if (error) {
-                                console.error(error);
+
                             } else {
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
                                 promise6.resolve();

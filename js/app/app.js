@@ -300,7 +300,8 @@ var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/service
 
 var nauticalchart = L.esri.imageMapLayer({
     url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-    useCors: false
+    useCors: false,
+    opacity:.5
 });
 
 
