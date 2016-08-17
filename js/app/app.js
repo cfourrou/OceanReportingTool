@@ -328,7 +328,7 @@ var baselayer = esriOceans.addTo(map);
 //}
 //;
 
-ortLayerOptional.forEach(function(obj,index){
+ortLayerOptional.forEach(function (obj, index) {
     map.createPane('optionalfeature' + index);
 });
 

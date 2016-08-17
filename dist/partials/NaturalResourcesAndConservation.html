@@ -9,8 +9,8 @@ indivdual infographics ID's 56-65 for NRC
     <ng-include src="'partials/AOI_head.html'"></ng-include>
 
     <div id="sliderData">
-        <div id="AOItab" class="AOItabClass"> Natural Resources and Conservation
-            <div class="narrative" ng-bind-html="AOI.narratives[2].narrative | unsafe"></div>
+        <div id="AOItab" class="AOItabClass"> <div  tabindex="0">Natural Resources and Conservation</div>
+            <div class="narrative" ng-bind-html="AOI.narratives[2].narrative | unsafe" tabindex="0"></div>
             <div ng-repeat="NRCConf in NRCConfig | orderBy: 'priority'">
                 <div ng-if="NRCConf.priority" class="zeroheightkludge" ng-include="NRCConf.filename"></div>
             </div>

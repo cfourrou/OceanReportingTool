@@ -20,7 +20,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         //
         //};
 
-        close(false, 10000);//close after 10 seconds anyway.
+        close(false, 6000);//close after 10 seconds anyway.
 
     })
 
@@ -380,11 +380,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
             var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-
+            var allPromises;
             $scope.drawIt = function () {
                 //var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-                EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
-                var drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
+
 
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
@@ -399,6 +398,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         }
                         break;
                     case "Subm":
+                        var drawPromises = [];
+                        EMGPdeferred = null, CEGPdeferred = null, TIGPdeferred = null, NRCGPdeferred = null, ECGPdeferred = null;
+                        EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
+                        drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
                         $scope.showSubmitModal();
 
                         AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
@@ -426,9 +429,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         EMGPTask.run(function (error, EMgeojson, EMresponse) {
 
-                            console.log("EM jobId is " + EMgeojson.jobId);
-
-
+                            //console.log("EM jobId is " + EMgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.error("EM " + error);
@@ -437,15 +438,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                                 EMGPdeferred.resolve();
                             }
                             else if (EMgeojson) {
-
-                                EMGPdeferred.resolve(EMgeojson.Output_Report);
+                                                                EMGPdeferred.resolve(EMgeojson.Output_Report);
                                 console.log("EM Complete");
                                 AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
                             }
                         });
 
                         CEGPTask.run(function (error, CEgeojson, CEresponse) {
-                            console.log("CE jobId is " + CEgeojson.jobId);
+                            // console.log("CE jobId is " + CEgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.error("CE " + error);
@@ -462,7 +462,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         });
                         TIGPTask.run(function (error, TIgeojson, TIresponse) {
-                            console.log("TI jobId is " + TIgeojson.jobId);
+                            //console.log("TI jobId is " + TIgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.error("TI " + error);
@@ -477,7 +477,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         });
                         NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-                            console.log("NRC jobId is " + NRCgeojson.jobId);
+                            // console.log("NRC jobId is " + NRCgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.error("NRC " + error);
@@ -492,7 +492,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                         });
                         ECGPTask.run(function (error, ECgeojson, ECresponse) {
-                            console.log("EC jobId is " + ECgeojson.jobId);
+                            // console.log("EC jobId is " + ECgeojson.jobId);
                             if (error) {
                                 $scope.drawOrSubmitCommand = "Error " + error;
                                 console.error("EC " + error);
@@ -508,7 +508,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                             }
 
                         });
-                        var allPromises = $q.all(drawPromises);
+                        allPromises = $q.all(drawPromises);
                         console.log("you made me");
                         allPromises.then(function (results) {
                             AOI.featureCollection = {
@@ -533,6 +533,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
                             }
                             console.log("Why don't I believe?");
+                        }).catch(function (result) {
+                            console.log(result);
+                            $scope.stopSpin();
+                        }).finally(function () {
+                            console.log('finally');
+
                         });
 
                         break;
@@ -550,13 +556,14 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             $scope.cancelEVERYTHING = function () {
                 if (EMGPdeferred) {
-                    EMGPdeferred.resolve(false);
+                    EMGPdeferred.reject("canceled");
                     console.log("dump");
+                    allPromises = null;
                 }
-                if (CEGPdeferred)CEGPdeferred.resolve(false);
-                if (TIGPdeferred)TIGPdeferred.resolve(false);
-                if (NRCGPdeferred) NRCGPdeferred.resolve(false);
-                if (ECGPdeferred) ECGPdeferred.resolve(false);
+                if (CEGPdeferred)CEGPdeferred.reject("canceled");
+                if (TIGPdeferred)TIGPdeferred.reject("canceled");
+                if (NRCGPdeferred) NRCGPdeferred.reject("canceled");
+                if (ECGPdeferred) ECGPdeferred.reject("canceled");
 
 
             };
@@ -603,6 +610,10 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             };
 
             $scope.startOver = function () {
+
+
+                AOI.reloadAbort();
+                console.log("byebye");
                 $scope.cancelEVERYTHING();
                 $scope.drawOrSubmitCommand = "DRAW";
                 $scope.reset();

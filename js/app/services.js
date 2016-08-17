@@ -2680,6 +2680,16 @@ angular.module('myApp.services', [])
 
 
                     },
+                    reloadAbort:function(){
+
+                        setTimeout(function(){
+
+                            $window.location.reload();
+
+                        },100);
+
+
+                    },
                     ShowURL: function () {
                         var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
                         if (AOI.ID === -9999) {
