@@ -1,11 +1,133 @@
 {
-  "ortMapServer":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/"} ,
-  "ortLayerData":{"data": "57"},
-  "ortLayerAOI":{"data": "7"},
-  "ortEnergyGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/Draw%20Area%20-%20EM"},
-  "ortCommonGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/Draw%20Area%20-%20CE"},
-  "ortTranspoGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/Draw%20Area%20-%20TI"},
-  "ortNaturalGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/Draw%20Area%20-%20NRC"},
-  "ortEconGPService":{"data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"}
+  "ortMapServer": {
+    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/"
+  },
+  "ortLayerData": {
+    "data": "57"
+  },
+  "ortLayerAOI": {
+    "data": "7"
+  },
+  "ortEnergyGPService": {
+    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/Draw%20Area%20-%20EM"
+  },
+  "ortCommonGPService": {
+    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/Draw%20Area%20-%20CE"
+  },
+  "ortTranspoGPService": {
+    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/Draw%20Area%20-%20TI"
+  },
+  "ortNaturalGPService": {
+    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/Draw%20Area%20-%20NRC"
+  },
+  "ortEconGPService": {
+    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"
+  },
+  "optionalLayerPanes": {
+    "windrpLayer": {
+      "num": "19",
+      "displayName": "Wind Resource Potential"
+    },
+    "windLeaseLayer": {
+      "num": "18",
+      "displayName": "Active Renewable Energy Leases"
+    },
+    "windPlanningLayer": {
+      "num": "22",
+      "displayName": "BOEM_Wind_Planning_Areas"
+    },
+    "oceanDisposalSites": {
+      "num": "23",
+      "displayName": "OceanDisposalSites"
+    },
+    "marineMineralsLeases": {
+      "num": "21",
+      "displayName": "Marine Minerals Leases",
+      "layerName": "Sand_n_GravelLeaseAreas"
+    },
+    "HydrokineticLeases": {
+      "num": "3",
+      "displayName": "Hydrokinetic Leases",
+      "layerName": "MarineHydrokineticProjects"
+    },
+    "wavePower": {
+      "num": 20,
+      "displayName": "Wave Power",
+      "layerName": "Ocean Wave Resource Potential"
+    },
+    "tidalPower": {
+      "num": 32,
+      "displayName": "Tidal Power",
+      "layerName": "usa_mc_wm"
+    },
+    "currentPower": {
+      "num": 31,
+      "displayName": "Current Power",
+      "layerName": "us_oc_ms"
+    },
+    "beachNourish": {
+      "num": 6,
+      "displayName": "Beach Nourishment",
+      "layerName": "SC_BeachProjects"
+    },
+    "coastalEnergyFacilities": {
+      "num": 1,
+      "displayName": "Coastal Energy Facilities"
+    },
+    "CEElevation": {
+      "num": 5,
+      "displayName": "bathymetric_Contours"
+    },
+    "ECCoastalCountiesLayer": {
+      "num": 53,
+      "displayName": "CoastalCounties"
+    },
+    "TISubmarineLayer": {
+      "num": 34,
+      "displayName": "SubmarineCables"
+    },
+    "TIDangerZonesLayer": {
+      "num": 37,
+      "displayName": "DangerZones"
+    },
+    "CEPlaceLayer": {
+      "num": 0,
+      "displayName": "Places"
+    },
+    "CETribalLayer": {
+      "num": 9,
+      "displayName": "tribal Lands"
+    },
+    "TIVessels": {
+      "num": 42,
+      "displayName": "vessel count"
+    },
+    "TIPrincipalPortsLayer": {
+      "num": 33,
+      "displayName": "Principle Ports"
+    },
+    "NRCNearbyLayer": {
+      "num": 49,
+      "displayName": "Nearby Protected Areas",
+      "layerName": "MPA_selected"
+    },
+    "NRCReefsLayer": {
+      "num": 43,
+      "displayName": "Artificial Reefs",
+      "layerName": "ArtificialReefs"
+    },
+    "NRCSoftCoralLayer": {
+      "num": 50,
+      "displayName": "Soft Coral"
+    },
+    "NRCStoneyCoralLayer": {
+      "num": 51,
+      "displayName": "Stoney Coral"
+    },
+    "NRCBarrierLayer": {
+      "num": 44,
+      "displayName": "Coastal Barrier"
+    }
+  }
 }
 
