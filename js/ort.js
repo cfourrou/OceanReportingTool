@@ -23130,6 +23130,40 @@ angular.module('myApp.services', [])
     .factory('L', function () {
         return window.L;
     })
+    .factory('myGPService', ['L', 'AOI', '$q', function (L, AOI, $q) {
+        var myGPService = function (url) {
+            var gpService = L.esri.GP.service({
+                url: url,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+
+            var task = gpService.createTask();
+
+            return {
+                run: function () {
+                    var deferred = $q.defer();
+
+                    task.setParam("Report_Boundary", AOI.drawLayerShape);
+                    task.setOutputParam("Output_Report");
+
+                    task.run(function (error, geojson) {
+                        if (error) {
+                            deferred.resolve(error)
+                        } else {
+                            deferred.resolve({output: geojson.Output_Report})
+                        }
+                    });
+
+                    return deferred.promise;
+                }
+            };
+        };
+
+        return myGPService;
+    }])
     .provider('AOI', function () {
         var config = {
                 ortMapServer: '',
@@ -23219,6 +23253,7 @@ angular.module('myApp.services', [])
                     ECFishRevenue: [],
                     TIPilot: [],
                     TIAnchorage: [],
+                    map: {},
 
                     display: function (AOI_ID) {
                         this.ID = parseInt(AOI_ID);
@@ -23228,8 +23263,8 @@ angular.module('myApp.services', [])
                                 weight: 1.5,
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
-                            }).addTo(map);
-                            map.fitBounds(this.layer.getBounds(), {
+                            }).addTo(AOI.map);
+                            AOI.map.fitBounds(this.layer.getBounds(), {
                                 padding: [1, 1]
                             });
                         } else {
@@ -23238,7 +23273,7 @@ angular.module('myApp.services', [])
                                 color: '#EB660C', weight: 1.5, fillOpacity: .3,
                                 where: "AOI_ID =" + this.ID + "",
                                 pane: 'AOIfeature'
-                            }).addTo(map);
+                            }).addTo(AOI.map);
                         }
 
                         this.layer.on("load", function (evt) {
@@ -23255,7 +23290,7 @@ angular.module('myApp.services', [])
                             });
 
                             try {
-                                map.fitBounds(mbounds);
+                                AOI.map.fitBounds(mbounds);
 
                                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
                             }
@@ -23263,7 +23298,7 @@ angular.module('myApp.services', [])
                                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                                 //so for now we will zoom out on error and allow this event to fire again.
 
-                                map.setView([33.51, -78.3], 6); //it should try again.
+                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
                             }
                         });
 
@@ -23272,9 +23307,9 @@ angular.module('myApp.services', [])
                     },
                     hide: function () {
                         if (this.isVisible) {
-                            map.removeLayer(this.layer);
+                            AOI.map.removeLayer(this.layer);
                         }
-                        map.setView([33.51, -78.3], 6);
+                        AOI.map.setView([33.51, -78.3], 6);
                         this.isVisible = false;
                     },
                     zoomTo: function () {
@@ -23287,7 +23322,7 @@ angular.module('myApp.services', [])
                             // extend the bounds of the collection to fit the bounds of the new feature
                             mbounds.extend(layerBounds);
                         });
-                        map.fitBounds(mbounds);
+                        AOI.map.fitBounds(mbounds);
 
 
                     },
@@ -24996,30 +25031,30 @@ angular.module('myApp.services', [])
                     unloadData: function () {
                         if (this.isLoaded) {
 
-                            map.removeLayer(this.oceanDisposalSites);
-                            map.removeLayer(this.HydrokineticLeases);
-                            map.removeLayer(this.windPlanningLayer);
-                            map.removeLayer(this.windLeaseLayer);
-                            map.removeLayer(this.windrpLayer);
-                            map.removeLayer(this.marineMineralsLeases);
-                            map.removeLayer(this.wavePower);
-                            map.removeLayer(this.tidalPower);
-                            map.removeLayer(this.currentPower);
-                            map.removeLayer(this.beachNourish);
-                            map.removeLayer(this.coastalEnergyFacilities);
-                            map.removeLayer(this.CEElevation);
-                            map.removeLayer(this.TISubmarineLayer);
-                            map.removeLayer(this.TIDangerZonesLayer);
-                            map.removeLayer(this.CEPlaceLayer);
-                            map.removeLayer(this.CETribalLayer);
-                            map.removeLayer(this.TIVessels);
-                            map.removeLayer(this.TIPrincipalPortsLayer);
-                            map.removeLayer(this.NRCNearbyLayer);
-                            map.removeLayer(this.NRCReefsLayer);
-                            map.removeLayer(this.NRCSoftCoralLayer);
-                            map.removeLayer(this.NRCStoneyCoralLayer);
-                            map.removeLayer(this.NRCBarrierLayer);
-                            map.removeLayer(this.ECCoastalCountiesLayer);
+                            AOI.map.removeLayer(this.oceanDisposalSites);
+                            AOI.map.removeLayer(this.HydrokineticLeases);
+                            AOI.map.removeLayer(this.windPlanningLayer);
+                            AOI.map.removeLayer(this.windLeaseLayer);
+                            AOI.map.removeLayer(this.windrpLayer);
+                            AOI.map.removeLayer(this.marineMineralsLeases);
+                            AOI.map.removeLayer(this.wavePower);
+                            AOI.map.removeLayer(this.tidalPower);
+                            AOI.map.removeLayer(this.currentPower);
+                            AOI.map.removeLayer(this.beachNourish);
+                            AOI.map.removeLayer(this.coastalEnergyFacilities);
+                            AOI.map.removeLayer(this.CEElevation);
+                            AOI.map.removeLayer(this.TISubmarineLayer);
+                            AOI.map.removeLayer(this.TIDangerZonesLayer);
+                            AOI.map.removeLayer(this.CEPlaceLayer);
+                            AOI.map.removeLayer(this.CETribalLayer);
+                            AOI.map.removeLayer(this.TIVessels);
+                            AOI.map.removeLayer(this.TIPrincipalPortsLayer);
+                            AOI.map.removeLayer(this.NRCNearbyLayer);
+                            AOI.map.removeLayer(this.NRCReefsLayer);
+                            AOI.map.removeLayer(this.NRCSoftCoralLayer);
+                            AOI.map.removeLayer(this.NRCStoneyCoralLayer);
+                            AOI.map.removeLayer(this.NRCBarrierLayer);
+                            AOI.map.removeLayer(this.ECCoastalCountiesLayer);
 
                             this.windLeaseLayerIsVisible = false;
                             this.windrpLayerIsVisible = false;
@@ -25116,60 +25151,60 @@ angular.module('myApp.services', [])
                     ECCoastalCountiesLayerIsVisible: false,
                     toggleECCoastalCountiesLayer: function () {
                         if (!this.ECCoastalCountiesLayerIsVisible) {
-                            this.ECCoastalCountiesLayer.addTo(map);
+                            this.ECCoastalCountiesLayer.addTo(AOI.map);
                             this.ECCoastalCountiesLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.ECCoastalCountiesLayer);
+                            AOI.map.removeLayer(this.ECCoastalCountiesLayer);
                             this.ECCoastalCountiesLayerIsVisible = false;
                         }
                     },
                     NRCBarrierLayerIsVisible: false,
                     toggleNRCBarrierLayer: function () {
                         if (!this.NRCBarrierLayerIsVisible) {
-                            this.NRCBarrierLayer.addTo(map);
+                            this.NRCBarrierLayer.addTo(AOI.map);
                             this.NRCBarrierLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCBarrierLayer);
+                            AOI.map.removeLayer(this.NRCBarrierLayer);
                             this.NRCBarrierLayerIsVisible = false;
                         }
                     },
                     NRCStoneyCoralLayerIsVisible: false,
                     toggleNRCStoneyCoralLayer: function () {
                         if (!this.NRCStoneyCoralLayerIsVisible) {
-                            this.NRCStoneyCoralLayer.addTo(map);
+                            this.NRCStoneyCoralLayer.addTo(AOI.map);
                             this.NRCStoneyCoralLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCStoneyCoralLayer);
+                            AOI.map.removeLayer(this.NRCStoneyCoralLayer);
                             this.NRCStoneyCoralLayerIsVisible = false;
                         }
                     },
                     NRCSoftCoralLayerIsVisible: false,
                     toggleNRCSoftCoralLayer: function () {
                         if (!this.NRCSoftCoralLayerIsVisible) {
-                            this.NRCSoftCoralLayer.addTo(map);
+                            this.NRCSoftCoralLayer.addTo(AOI.map);
                             this.NRCSoftCoralLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCSoftCoralLayer);
+                            AOI.map.removeLayer(this.NRCSoftCoralLayer);
                             this.NRCSoftCoralLayerIsVisible = false;
                         }
                     },
                     NRCReefsLayerIsVisible: false,
                     toggleNRCReefsLayer: function () {
                         if (!this.NRCReefsLayerIsVisible) {
-                            this.NRCReefsLayer.addTo(map);
+                            this.NRCReefsLayer.addTo(AOI.map);
                             this.NRCReefsLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCReefsLayer);
+                            AOI.map.removeLayer(this.NRCReefsLayer);
                             this.NRCReefsLayerIsVisible = false;
                         }
                     },
                     NRCNearbyLayerIsVisible: false,
                     toggleNRCNearby: function () {
                         if (!this.NRCNearbyLayerIsVisible) {
-                            this.NRCNearbyLayer.addTo(map);
+                            this.NRCNearbyLayer.addTo(AOI.map);
                             this.NRCNearbyLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCNearbyLayer);
+                            AOI.map.removeLayer(this.NRCNearbyLayer);
                             this.NRCNearbyLayerIsVisible = false;
                         }
                     },
@@ -25177,72 +25212,72 @@ angular.module('myApp.services', [])
                     TIPrincipalPortsIsVisible: false,
                     toggleTIPrincipalPorts: function () {
                         if (!this.TIPrincipalPortsIsVisible) {
-                            this.TIPrincipalPortsLayer.addTo(map);
+                            this.TIPrincipalPortsLayer.addTo(AOI.map);
                             this.TIPrincipalPortsIsVisible = true;
                         } else {
-                            map.removeLayer(this.TIPrincipalPortsLayer);
+                            AOI.map.removeLayer(this.TIPrincipalPortsLayer);
                             this.TIPrincipalPortsIsVisible = false;
                         }
                     },
                     TIVesselsIsVisible: false,
                     toggleTIVessels: function () {
                         if (!this.TIVesselsIsVisible) {
-                            this.TIVessels.addTo(map);
+                            this.TIVessels.addTo(AOI.map);
                             this.TIVesselsIsVisible = true;
                         } else {
-                            map.removeLayer(this.TIVessels);
+                            AOI.map.removeLayer(this.TIVessels);
                             this.TIVesselsIsVisible = false;
                         }
                     },
                     CEPlaceLayerIsVisible: false,
                     toggleCEPlaceLayer: function () {
                         if (!this.CEPlaceLayerIsVisible) {
-                            this.CEPlaceLayer.addTo(map);
-                            this.CETribalLayer.addTo(map);
+                            this.CEPlaceLayer.addTo(AOI.map);
+                            this.CETribalLayer.addTo(AOI.map);
                             this.CEPlaceLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.CEPlaceLayer);
-                            map.removeLayer(this.CETribalLayer);
+                            AOI.map.removeLayer(this.CEPlaceLayer);
+                            AOI.map.removeLayer(this.CETribalLayer);
                             this.CEPlaceLayerIsVisible = false;
                         }
                     },
                     windLeaseLayerIsVisible: false,
                     toggleWindLeaseLayer: function () {
                         if (!this.windLeaseLayerIsVisible) {
-                            this.windLeaseLayer.addTo(map);
+                            this.windLeaseLayer.addTo(AOI.map);
                             this.windLeaseLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.windLeaseLayer);
+                            AOI.map.removeLayer(this.windLeaseLayer);
                             this.windLeaseLayerIsVisible = false;
                         }
                     },
                     windPlanningLayerIsVisible: false,
                     toggleWindPlanningLayer: function () {
                         if (!this.windPlanningLayerIsVisible) {
-                            this.windPlanningLayer.addTo(map);
+                            this.windPlanningLayer.addTo(AOI.map);
                             this.windPlanningLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.windPlanningLayer);
+                            AOI.map.removeLayer(this.windPlanningLayer);
                             this.windPlanningLayerIsVisible = false;
                         }
                     },
                     oceanDisposalSitesIsVisible: false,
                     toggleOceanDisposalSites: function () {
                         if (!this.oceanDisposalSitesIsVisible) {
-                            this.oceanDisposalSites.addTo(map);
+                            this.oceanDisposalSites.addTo(AOI.map);
                             this.oceanDisposalSitesIsVisible = true;
                         } else {
-                            map.removeLayer(this.oceanDisposalSites);
+                            AOI.map.removeLayer(this.oceanDisposalSites);
                             this.oceanDisposalSitesIsVisible = false;
                         }
                     },
                     HydrokineticLeasesIsVisible: false,
                     toggleHydrokineticLeases: function () {
                         if (!this.HydrokineticLeasesIsVisible) {
-                            this.HydrokineticLeases.addTo(map);
+                            this.HydrokineticLeases.addTo(AOI.map);
                             this.HydrokineticLeasesIsVisible = true;
                         } else {
-                            map.removeLayer(this.HydrokineticLeases);
+                            AOI.map.removeLayer(this.HydrokineticLeases);
                             this.HydrokineticLeasesIsVisible = false;
                         }
                     },
@@ -25250,60 +25285,60 @@ angular.module('myApp.services', [])
                     marineMineralsLeasesIsVisable: false,
                     toggleMarineMineralsLeases: function () {
                         if (!this.marineMineralsLeasesIsVisable) {
-                            this.marineMineralsLeases.addTo(map);
+                            this.marineMineralsLeases.addTo(AOI.map);
                             this.marineMineralsLeasesIsVisable = true;
                         } else {
-                            map.removeLayer(this.marineMineralsLeases);
+                            AOI.map.removeLayer(this.marineMineralsLeases);
                             this.marineMineralsLeasesIsVisable = false;
                         }
                     },
                     wavePowerIsVisable: false,
                     togglewavePower: function () {
                         if (!this.wavePowerIsVisable) {
-                            this.wavePower.addTo(map);
+                            this.wavePower.addTo(AOI.map);
                             this.wavePowerIsVisable = true;
                         } else {
-                            map.removeLayer(this.wavePower);
+                            AOI.map.removeLayer(this.wavePower);
                             this.wavePowerIsVisable = false;
                         }
                     },
                     tidalPowerIsVisable: false,
                     toggletidalPower: function () {
                         if (!this.tidalPowerIsVisable) {
-                            this.tidalPower.addTo(map);
+                            this.tidalPower.addTo(AOI.map);
                             this.tidalPowerIsVisable = true;
                         } else {
-                            map.removeLayer(this.tidalPower);
+                            AOI.map.removeLayer(this.tidalPower);
                             this.tidalPowerIsVisable = false;
                         }
                     },
                     currentPowerIsVisable: false,
                     togglecurrentPower: function () {
                         if (!this.currentPowerIsVisable) {
-                            this.currentPower.addTo(map);
+                            this.currentPower.addTo(AOI.map);
                             this.currentPowerIsVisable = true;
                         } else {
-                            map.removeLayer(this.currentPower);
+                            AOI.map.removeLayer(this.currentPower);
                             this.currentPowerIsVisable = false;
                         }
                     },
                     beachNourishIsVisable: false,
                     togglebeachNourish: function () {
                         if (!this.beachNourishIsVisable) {
-                            this.beachNourish.addTo(map);
+                            this.beachNourish.addTo(AOI.map);
                             this.beachNourishIsVisable = true;
                         } else {
-                            map.removeLayer(this.beachNourish);
+                            AOI.map.removeLayer(this.beachNourish);
                             this.beachNourishIsVisable = false;
                         }
                     },
                     coastalEnergyFacilitiesIsVisable: false,
                     togglecoastalEnergyFacilities: function () {
                         if (!this.coastalEnergyFacilitiesIsVisable) {
-                            this.coastalEnergyFacilities.addTo(map);
+                            this.coastalEnergyFacilities.addTo(AOI.map);
                             this.coastalEnergyFacilitiesIsVisable = true;
                         } else {
-                            map.removeLayer(this.coastalEnergyFacilities);
+                            AOI.map.removeLayer(this.coastalEnergyFacilities);
                             this.coastalEnergyFacilitiesIsVisable = false;
                         }
                     },
@@ -25311,40 +25346,40 @@ angular.module('myApp.services', [])
                     windrpLayerIsVisible: false,
                     toggleWindrpLayer: function () {
                         if (!this.windrpLayerIsVisible) {
-                            this.windrpLayer.addTo(map);
+                            this.windrpLayer.addTo(AOI.map);
                             this.windrpLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.windrpLayer);
+                            AOI.map.removeLayer(this.windrpLayer);
                             this.windrpLayerIsVisible = false;
                         }
                     },
                     CEElevationIsVisable: false,
                     toggleCEElevation: function () {
                         if (!this.CEElevationIsVisable) {
-                            this.CEElevation.addTo(map);
+                            this.CEElevation.addTo(AOI.map);
                             this.CEElevationIsVisable = true;
                         } else {
-                            map.removeLayer(this.CEElevation);
+                            AOI.map.removeLayer(this.CEElevation);
                             this.CEElevationIsVisable = false;
                         }
                     },
                     TISubmarineIsVisable: false,
                     toggleTISubmarine: function () {
                         if (!this.TISubmarineIsVisable) {
-                            this.TISubmarineLayer.addTo(map);
+                            this.TISubmarineLayer.addTo(AOI.map);
                             this.TISubmarineIsVisable = true;
                         } else {
-                            map.removeLayer(this.TISubmarineLayer);
+                            AOI.map.removeLayer(this.TISubmarineLayer);
                             this.TISubmarineIsVisable = false;
                         }
                     },
                     TIDangerZonesIsVisable: false,
                     toggleTIDangerZones: function () {
                         if (!this.TIDangerZonesIsVisable) {
-                            this.TIDangerZonesLayer.addTo(map);
+                            this.TIDangerZonesLayer.addTo(AOI.map);
                             this.TIDangerZonesIsVisable = true;
                         } else {
-                            map.removeLayer(this.TIDangerZonesLayer);
+                            AOI.map.removeLayer(this.TIDangerZonesLayer);
                             this.TIDangerZonesIsVisable = false;
                         }
                     },
@@ -25997,11 +26032,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
     .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q',
-        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q) {
+        '$stateParams', '$q', 'myGPService',
+        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService) {
             //this one loads once on start up
 
             $scope.AOI = AOI;
+
             $scope.baseMapControlOn = false;
 
             AOI.inPrintWindow = false;
@@ -26016,7 +26052,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     future: true
                 });
             }
-            $scope.drawlocked = false;
             $scope.drawOrSubmitCommand = "DRAW";
 
             Highcharts.setOptions({
@@ -26036,7 +26071,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
             $scope.showSubmitModal = function () {
-
                 ModalService.showModal({
                     templateUrl: "modalDraw.html",
                     controller: "submitModalController"
@@ -26045,7 +26079,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         $scope.customResult = "All good!";
                     });
                 });
-
             };
 
             $scope.startSpin = function () {
@@ -26054,66 +26087,21 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.stopSpin = function () {
                 usSpinnerService.stop('spinner-1');
             };
-            var EMGPService = L.esri.GP.service({
-                url: AOI.config.ortEnergyGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var CEGPService = L.esri.GP.service({
-                url: AOI.config.ortCommonGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var TIGPService = L.esri.GP.service({
-                url: AOI.config.ortTranspoGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var NRCGPService = L.esri.GP.service({
-                url: AOI.config.ortNaturalGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var ECGPService = L.esri.GP.service({
-                url: AOI.config.ortEconGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-
-            $scope.baseMapSwitch = function () {
-
-                if ($scope.baseMapControlOn) {
-                    $scope.removeMapControl({control: baseMapControl});
-                    $scope.baseMapControlOn = false;
-
-                } else {
-                    baseMapControl.addTo(map);
-                    $scope.baseMapControlOn = true;
-                }
-            };
+            var EMGPService = new myGPService(AOI.config.ortEnergyGPService);
+            var CEGPService = new myGPService(AOI.config.ortCommonGPService);
+            var TIGPService = new myGPService(AOI.config.ortTranspoGPService);
+            var NRCGPService = new myGPService(AOI.config.ortNaturalGPService);
+            var ECGPService = new myGPService(AOI.config.ortEconGPService);
 
 
-            var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-            var allPromises;
+            var allPromises = [];
             $scope.drawIt = function () {
-                //var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-
 
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
                     case "DRAW":
 
-                        if ($scope.drawenabled) {
+                        if ($scope.drawtoolOn) {
                             if ($scope.drawlocked) {
                                 $scope.drawOff();
                             } else {
@@ -26122,139 +26110,40 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         }
                         break;
                     case "Subm":
-                        var drawPromises = [];
-                        EMGPdeferred = null, CEGPdeferred = null, TIGPdeferred = null, NRCGPdeferred = null, ECGPdeferred = null;
-                        EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
-                        drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
                         $scope.showSubmitModal();
 
                         $scope.drawOrSubmitCommand = "Working";
-                        var EMGPTask = EMGPService.createTask();
-                        var CEGPTask = CEGPService.createTask();
-                        var TIGPTask = TIGPService.createTask();
-                        var NRCGPTask = NRCGPService.createTask();
-                        var ECGPTask = ECGPService.createTask();
-
-                        EMGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        EMGPTask.setOutputParam("Output_Report");
-                        CEGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        CEGPTask.setOutputParam("Output_Report");
-                        TIGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        TIGPTask.setOutputParam("Output_Report");
-                        NRCGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        NRCGPTask.setOutputParam("Output_Report");
-                        ECGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        ECGPTask.setOutputParam("Output_Report");
 
                         $scope.startSpin();
 
+                        allPromises.push(EMGPService.run());
+                        allPromises.push(CEGPService.run());
+                        allPromises.push(TIGPService.run());
+                        allPromises.push(NRCGPService.run());
+                        allPromises.push(ECGPService.run());
 
-                        EMGPTask.run(function (error, EMgeojson, EMresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                $scope.$apply();
-                                EMGPdeferred.resolve();
-                            }
-                            else if (EMgeojson) {
-                                EMGPdeferred.resolve(EMgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
-                            }
-                        });
-
-                        CEGPTask.run(function (error, CEgeojson, CEresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-
-                                $scope.$apply();
-                                CEGPdeferred.resolve();
-                            }
-                            else if (CEgeojson) {
-                                CEGPdeferred.resolve(CEgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
-
-                            }
-
-                        });
-                        TIGPTask.run(function (error, TIgeojson, TIresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                TIGPdeferred.resolve();
-                                $scope.$apply();
-                            }
-                            else if (TIgeojson) {
-                                TIGPdeferred.resolve(TIgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
-                            }
-
-                        });
-                        NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                NRCGPdeferred.resolve();
-                                $scope.$apply();
-                            }
-                            else if (NRCgeojson) {
-                                NRCGPdeferred.resolve(NRCgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
-                            }
-
-                        });
-                        ECGPTask.run(function (error, ECgeojson, ECresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                ECGPdeferred.resolve();
-
-                                $scope.$apply();
-                            }
-                            else if (ECgeojson) {
-                                ECGPdeferred.resolve(ECgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
-
-                            }
-
-                        });
-                        allPromises = $q.all(drawPromises);
-
-                        allPromises.then(function (results) {
+                        $q.all(allPromises).then(function (results) {
                             AOI.featureCollection = {
                                 fields: null,
                                 features: null
                             };
 
-                            if (results[0] || results[1] || results[2] || results[3] || results[4]) {
+                            if (results[0].output || results[1].output || results[2].output || results[3].output || results[4].output) {
 
-                                if (results[0]) AOI.featureCollection = {
-                                    fields: results[0].fields,
-                                    features: results[0].features
+                                if (results[0].output) AOI.featureCollection = {
+                                    fields: results[0].output.fields,
+                                    features: results[0].output.features
                                 };
-                                if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
-                                if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
-                                if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
-                                if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
-
-                                $scope.stopSpin();
-                                $scope.completeDraw();
-
-
+                                if (results[1].output) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].output.features);
+                                if (results[2].output)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].output.features);
+                                if (results[3].output) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].output.features);
+                                if (results[4].output)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].output.features);
                             }
 
-                        }).catch(function (result) {
+                            $scope.stopSpin();
+                            $scope.completeDraw();
 
+                        }).catch(function (result) {
                             $scope.stopSpin();
                         }).finally(function () {
 
@@ -26328,7 +26217,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.reset();
             };
             $scope.startMenu = function () {
-
                 $scope.reset();
             };
             $scope.reset = function () { //unloads AOI but leaves slider pane on
@@ -26351,9 +26239,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.AOIoff();
                 $scope.paneoff();
                 AOI.unloadData();
-
                 $scope.drawtoolOn = true;
-
             };
 
             $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
@@ -26655,27 +26541,30 @@ angular.module('myApp.directives', [])
         return {
             restrict: 'E',
             scope: {
-                zoomLevel: '=',
                 drawEnabled: '=',
-                drawLocked: '=',
-                basemapControlEnabled: '=',
                 searchControlEnabled: '=',
                 mouseOver: '=',
                 mouseOut: '=',
                 polyLayerEnabled: '=',
-                resetMap: '='
+                resetMap: '=',
+                drawButtonText: '=',
+                drawIt: '=',
+                drawOn: '=',
+                drawOff: '=',
+                map: '='
             },
+            replace: true,
             templateUrl: 'partials/ortMap.html',
             controller: ['$scope', '$element', 'L', 'AOI', function ($scope, $element, L, AOI) {
 
 
-                var map = L.map('map', {
+                $scope.map = L.map('map', {
                     zoomControl: false,
                     maxZoom: 12
                 });
 
-                map.setView([33.51, -78.3], 6);
-                map.createPane('AOIfeature');
+                $scope.map.setView([33.51, -78.3], 6);
+                $scope.map.createPane('AOIfeature');
 
                 var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
                         attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
@@ -26694,7 +26583,7 @@ angular.module('myApp.directives', [])
                         maxZoom: 12
                     });
 
-                esriOceans.addTo(map);
+                esriOceans.addTo($scope.map);
 
                 var baseMaps = {
                     "Grey": esriGrey,
@@ -26735,86 +26624,107 @@ angular.module('myApp.directives', [])
                             }
                         })
                     ]
-                }).addTo(map);
+                });
 
-                $scope.zoomLevel = map.getZoom();
-
-
+                $scope.zoomLevel = $scope.map.getZoom();
+                $scope.basemapControlEnabled = false;
 
                 var polylayer;
 
-                map.on('pm:create', function (e) {
+                $scope.map.on('pm:create', function (e) {
                     polylayer = e.layer;
                     AOI.drawLayerShape = polylayer.toGeoJSON();
-                    $scope.drawOrSubmitCommand = "Submit";
+                    $scope.drawButtonText = "Submit";
                     $scope.$apply();
                 });
 
                 $scope.$watch('polyLayerEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        if (!newValue) map.removeLayer(polyLayer);
+                        //if (!newValue) $scope.map.removeLayer(polyLayer);
                     }
                 });
+
+                $scope.drawAvailable = false;
+
+                $scope.drawOn = function () {
+                    $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                    $scope.map.setMaxZoom($scope.map.getZoom());
+                    $scope.map.dragging.disable(); //no panning
+                    $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                    $scope.map.doubleClickZoom.disable();
+                    $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                    //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                    searchControl.disable();
+                    $scope.drawLocked = true;
+                    $scope.drawButtonText = "Drawing";
+                    $scope.polyLayerEnabled = false;
+                    $scope.map.pm.enableDraw('Poly');
+
+                    //$element.css('width', '100%');
+                    //$scope.map.invalidateSize();
+                };
+
+                $scope.drawOff = function () {
+                    $scope.map.setMinZoom(1);
+                    $scope.map.setMaxZoom(12);
+                    $scope.map.dragging.enable(); // panning
+                    $scope.map.touchZoom.enable(); // 2 finger zooms from touchscreens
+                    $scope.map.doubleClickZoom.enable();
+                    $scope.map.boxZoom.enable(); // shift mouse drag zooming.
+                    //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                    $scope.map.dragging.enable();
+                    searchControl.enable();
+                    $scope.drawLocked = false;
+                    $scope.map.pm.disableDraw('Poly');
+                };
 
                 $scope.$watch('drawEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
                         if (newValue) {
-                            map.setMinZoom(map.getZoom()); //lock map view at current zoom level
-                            map.setMaxZoom(map.getZoom());
-                            map.dragging.disable(); //no panning
-                            map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                            map.doubleClickZoom.disable();
-                            map.boxZoom.disable(); //no shift mouse drag zooming.
-                            //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                            searchControl.disable();
-                            $scope.drawlocked = true;
-                            $scope.drawOrSubmitCommand = "Drawing";
-                            $scope.polyLayerEnabled = false;
-                            map.pm.enableDraw('Poly');
-
-                            $element[0].css('width', '100%');
-                            map.invalidateSize();
+                            searchControl.addTo($scope.map);
+                            $element.css('width', '100%');
+                            $element.find('#map').css('width', '100%');
+                            $scope.map.invalidateSize();
                         } else {
-                            map.setMinZoom(1);
-                            map.setMaxZoom(12);
-                            map.dragging.enable(); // panning
-                            map.touchZoom.enable(); // 2 finger zooms from touchscreens
-                            map.doubleClickZoom.enable();
-                            map.boxZoom.enable(); // shift mouse drag zooming.
-                            //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                            map.dragging.enable();
-                            searchControl.enable();
-                            $scope.drawlocked = false;
-                            map.pm.disableDraw('Poly');
-
-                            $element[0].css('width', '50%');
-                            map.invalidateSize();
+                            $scope.map.removeControl(searchControl);
+                            $element.css('width', '50%');
+                            $element.find('#map').css('width', '50%');
+                            $scope.map.invalidateSize();
+                            $scope.drawOff();
+                            $scope.map.removeLayer(polylayer);
                         }
                     }
                 });
 
 
-
                 $scope.$watch('basemapControlEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        if (newValue) baseMapControl.addTo(map);
-                        else map.removeControl(baseMapControl);
+                        if (newValue) baseMapControl.addTo($scope.map);
+                        else $scope.map.removeControl(baseMapControl);
                     }
                 });
 
                 $scope.removeLayer = function (layer) {
-                    map.removeLayer(layer);
+                    $scope.map.removeLayer(layer);
                 };
 
-                map.on('zoomend', function (e) {
-                    var zoomlevel = map.getZoom();
-                    $scope.drawAvailable = ((zoomlevel <= 12) && (zoomlevel >= 10 ));
+                $scope.map.on('zoomend', function (e) {
+                    if ($scope.drawEnabled) {
+                        var zoomlevel = $scope.map.getZoom();
+                        if ((zoomlevel <= 12) && (zoomlevel >= 10 ) && !$scope.drawAvailable) {
+                            $scope.drawAvailable = true;
+                            $scope.$apply();
+                        } else if ((zoomlevel > 12) && (zoomlevel < 10) && $scope.drawAvailable) {
+                            $scope.drawAvailable = false;
+                            $scope.$apply();
+                        }
+                    }
                 });
 
                 $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        if (newValue) searchControl.addTo(map);
-                        else map.removeControl(searchControl);
+                        if (newValue) searchControl.addTo($scope.map);
+                        else $scope.map.removeControl(searchControl);
                     }
                 });
 
@@ -26826,20 +26736,22 @@ angular.module('myApp.directives', [])
                         where: "AOI_ID =" + AOI_id + "",
                         color: '#EB660C', weight: 1.5, fillOpacity: .3,
                         simplifyFactor: 2.0
-                    }).addTo(map);
+                    }).addTo($scope.map);
                 };
 
                 $scope.mouseOut = function () {
-                    map.removeLayer(mouseLayer);
-                    mouseLayer = null;
+                    if (mouseLayer) {
+                        $scope.map.removeLayer(mouseLayer);
+                        mouseLayer = null;
+                    }
                 };
 
                 $scope.resetMap = function () {
-                    $scope.baseMapControlOn = false;
-                    $scope.searchControlOn = false;
-                    $scope.drawtoolOn = false;
-                    $scope.polyLayerOn = false;
-                    map.setView([33.51, -78.3], 6);
+                    $scope.baseMapControlEnabled = false;
+                    $scope.searchControlEnabled = false;
+                    $scope.drawEnabled = false;
+                    $scope.polyLayerEnabled = false;
+                    $scope.map.setView([33.51, -78.3], 6);
                 }
 
             }]

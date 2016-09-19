@@ -31,6 +31,40 @@ angular.module('myApp.services', [])
     .factory('L', function () {
         return window.L;
     })
+    .factory('myGPService', ['L', 'AOI', '$q', function (L, AOI, $q) {
+        var myGPService = function (url) {
+            var gpService = L.esri.GP.service({
+                url: url,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
+
+            var task = gpService.createTask();
+
+            return {
+                run: function () {
+                    var deferred = $q.defer();
+
+                    task.setParam("Report_Boundary", AOI.drawLayerShape);
+                    task.setOutputParam("Output_Report");
+
+                    task.run(function (error, geojson) {
+                        if (error) {
+                            deferred.resolve(error)
+                        } else {
+                            deferred.resolve({output: geojson.Output_Report})
+                        }
+                    });
+
+                    return deferred.promise;
+                }
+            };
+        };
+
+        return myGPService;
+    }])
     .provider('AOI', function () {
         var config = {
                 ortMapServer: '',
@@ -120,6 +154,7 @@ angular.module('myApp.services', [])
                     ECFishRevenue: [],
                     TIPilot: [],
                     TIAnchorage: [],
+                    map: {},
 
                     display: function (AOI_ID) {
                         this.ID = parseInt(AOI_ID);
@@ -129,8 +164,8 @@ angular.module('myApp.services', [])
                                 weight: 1.5,
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
-                            }).addTo(map);
-                            map.fitBounds(this.layer.getBounds(), {
+                            }).addTo(AOI.map);
+                            AOI.map.fitBounds(this.layer.getBounds(), {
                                 padding: [1, 1]
                             });
                         } else {
@@ -139,7 +174,7 @@ angular.module('myApp.services', [])
                                 color: '#EB660C', weight: 1.5, fillOpacity: .3,
                                 where: "AOI_ID =" + this.ID + "",
                                 pane: 'AOIfeature'
-                            }).addTo(map);
+                            }).addTo(AOI.map);
                         }
 
                         this.layer.on("load", function (evt) {
@@ -156,7 +191,7 @@ angular.module('myApp.services', [])
                             });
 
                             try {
-                                map.fitBounds(mbounds);
+                                AOI.map.fitBounds(mbounds);
 
                                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
                             }
@@ -164,7 +199,7 @@ angular.module('myApp.services', [])
                                 //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                                 //so for now we will zoom out on error and allow this event to fire again.
 
-                                map.setView([33.51, -78.3], 6); //it should try again.
+                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
                             }
                         });
 
@@ -173,9 +208,9 @@ angular.module('myApp.services', [])
                     },
                     hide: function () {
                         if (this.isVisible) {
-                            map.removeLayer(this.layer);
+                            AOI.map.removeLayer(this.layer);
                         }
-                        map.setView([33.51, -78.3], 6);
+                        AOI.map.setView([33.51, -78.3], 6);
                         this.isVisible = false;
                     },
                     zoomTo: function () {
@@ -188,7 +223,7 @@ angular.module('myApp.services', [])
                             // extend the bounds of the collection to fit the bounds of the new feature
                             mbounds.extend(layerBounds);
                         });
-                        map.fitBounds(mbounds);
+                        AOI.map.fitBounds(mbounds);
 
 
                     },
@@ -1897,30 +1932,30 @@ angular.module('myApp.services', [])
                     unloadData: function () {
                         if (this.isLoaded) {
 
-                            map.removeLayer(this.oceanDisposalSites);
-                            map.removeLayer(this.HydrokineticLeases);
-                            map.removeLayer(this.windPlanningLayer);
-                            map.removeLayer(this.windLeaseLayer);
-                            map.removeLayer(this.windrpLayer);
-                            map.removeLayer(this.marineMineralsLeases);
-                            map.removeLayer(this.wavePower);
-                            map.removeLayer(this.tidalPower);
-                            map.removeLayer(this.currentPower);
-                            map.removeLayer(this.beachNourish);
-                            map.removeLayer(this.coastalEnergyFacilities);
-                            map.removeLayer(this.CEElevation);
-                            map.removeLayer(this.TISubmarineLayer);
-                            map.removeLayer(this.TIDangerZonesLayer);
-                            map.removeLayer(this.CEPlaceLayer);
-                            map.removeLayer(this.CETribalLayer);
-                            map.removeLayer(this.TIVessels);
-                            map.removeLayer(this.TIPrincipalPortsLayer);
-                            map.removeLayer(this.NRCNearbyLayer);
-                            map.removeLayer(this.NRCReefsLayer);
-                            map.removeLayer(this.NRCSoftCoralLayer);
-                            map.removeLayer(this.NRCStoneyCoralLayer);
-                            map.removeLayer(this.NRCBarrierLayer);
-                            map.removeLayer(this.ECCoastalCountiesLayer);
+                            AOI.map.removeLayer(this.oceanDisposalSites);
+                            AOI.map.removeLayer(this.HydrokineticLeases);
+                            AOI.map.removeLayer(this.windPlanningLayer);
+                            AOI.map.removeLayer(this.windLeaseLayer);
+                            AOI.map.removeLayer(this.windrpLayer);
+                            AOI.map.removeLayer(this.marineMineralsLeases);
+                            AOI.map.removeLayer(this.wavePower);
+                            AOI.map.removeLayer(this.tidalPower);
+                            AOI.map.removeLayer(this.currentPower);
+                            AOI.map.removeLayer(this.beachNourish);
+                            AOI.map.removeLayer(this.coastalEnergyFacilities);
+                            AOI.map.removeLayer(this.CEElevation);
+                            AOI.map.removeLayer(this.TISubmarineLayer);
+                            AOI.map.removeLayer(this.TIDangerZonesLayer);
+                            AOI.map.removeLayer(this.CEPlaceLayer);
+                            AOI.map.removeLayer(this.CETribalLayer);
+                            AOI.map.removeLayer(this.TIVessels);
+                            AOI.map.removeLayer(this.TIPrincipalPortsLayer);
+                            AOI.map.removeLayer(this.NRCNearbyLayer);
+                            AOI.map.removeLayer(this.NRCReefsLayer);
+                            AOI.map.removeLayer(this.NRCSoftCoralLayer);
+                            AOI.map.removeLayer(this.NRCStoneyCoralLayer);
+                            AOI.map.removeLayer(this.NRCBarrierLayer);
+                            AOI.map.removeLayer(this.ECCoastalCountiesLayer);
 
                             this.windLeaseLayerIsVisible = false;
                             this.windrpLayerIsVisible = false;
@@ -2017,60 +2052,60 @@ angular.module('myApp.services', [])
                     ECCoastalCountiesLayerIsVisible: false,
                     toggleECCoastalCountiesLayer: function () {
                         if (!this.ECCoastalCountiesLayerIsVisible) {
-                            this.ECCoastalCountiesLayer.addTo(map);
+                            this.ECCoastalCountiesLayer.addTo(AOI.map);
                             this.ECCoastalCountiesLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.ECCoastalCountiesLayer);
+                            AOI.map.removeLayer(this.ECCoastalCountiesLayer);
                             this.ECCoastalCountiesLayerIsVisible = false;
                         }
                     },
                     NRCBarrierLayerIsVisible: false,
                     toggleNRCBarrierLayer: function () {
                         if (!this.NRCBarrierLayerIsVisible) {
-                            this.NRCBarrierLayer.addTo(map);
+                            this.NRCBarrierLayer.addTo(AOI.map);
                             this.NRCBarrierLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCBarrierLayer);
+                            AOI.map.removeLayer(this.NRCBarrierLayer);
                             this.NRCBarrierLayerIsVisible = false;
                         }
                     },
                     NRCStoneyCoralLayerIsVisible: false,
                     toggleNRCStoneyCoralLayer: function () {
                         if (!this.NRCStoneyCoralLayerIsVisible) {
-                            this.NRCStoneyCoralLayer.addTo(map);
+                            this.NRCStoneyCoralLayer.addTo(AOI.map);
                             this.NRCStoneyCoralLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCStoneyCoralLayer);
+                            AOI.map.removeLayer(this.NRCStoneyCoralLayer);
                             this.NRCStoneyCoralLayerIsVisible = false;
                         }
                     },
                     NRCSoftCoralLayerIsVisible: false,
                     toggleNRCSoftCoralLayer: function () {
                         if (!this.NRCSoftCoralLayerIsVisible) {
-                            this.NRCSoftCoralLayer.addTo(map);
+                            this.NRCSoftCoralLayer.addTo(AOI.map);
                             this.NRCSoftCoralLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCSoftCoralLayer);
+                            AOI.map.removeLayer(this.NRCSoftCoralLayer);
                             this.NRCSoftCoralLayerIsVisible = false;
                         }
                     },
                     NRCReefsLayerIsVisible: false,
                     toggleNRCReefsLayer: function () {
                         if (!this.NRCReefsLayerIsVisible) {
-                            this.NRCReefsLayer.addTo(map);
+                            this.NRCReefsLayer.addTo(AOI.map);
                             this.NRCReefsLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCReefsLayer);
+                            AOI.map.removeLayer(this.NRCReefsLayer);
                             this.NRCReefsLayerIsVisible = false;
                         }
                     },
                     NRCNearbyLayerIsVisible: false,
                     toggleNRCNearby: function () {
                         if (!this.NRCNearbyLayerIsVisible) {
-                            this.NRCNearbyLayer.addTo(map);
+                            this.NRCNearbyLayer.addTo(AOI.map);
                             this.NRCNearbyLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.NRCNearbyLayer);
+                            AOI.map.removeLayer(this.NRCNearbyLayer);
                             this.NRCNearbyLayerIsVisible = false;
                         }
                     },
@@ -2078,72 +2113,72 @@ angular.module('myApp.services', [])
                     TIPrincipalPortsIsVisible: false,
                     toggleTIPrincipalPorts: function () {
                         if (!this.TIPrincipalPortsIsVisible) {
-                            this.TIPrincipalPortsLayer.addTo(map);
+                            this.TIPrincipalPortsLayer.addTo(AOI.map);
                             this.TIPrincipalPortsIsVisible = true;
                         } else {
-                            map.removeLayer(this.TIPrincipalPortsLayer);
+                            AOI.map.removeLayer(this.TIPrincipalPortsLayer);
                             this.TIPrincipalPortsIsVisible = false;
                         }
                     },
                     TIVesselsIsVisible: false,
                     toggleTIVessels: function () {
                         if (!this.TIVesselsIsVisible) {
-                            this.TIVessels.addTo(map);
+                            this.TIVessels.addTo(AOI.map);
                             this.TIVesselsIsVisible = true;
                         } else {
-                            map.removeLayer(this.TIVessels);
+                            AOI.map.removeLayer(this.TIVessels);
                             this.TIVesselsIsVisible = false;
                         }
                     },
                     CEPlaceLayerIsVisible: false,
                     toggleCEPlaceLayer: function () {
                         if (!this.CEPlaceLayerIsVisible) {
-                            this.CEPlaceLayer.addTo(map);
-                            this.CETribalLayer.addTo(map);
+                            this.CEPlaceLayer.addTo(AOI.map);
+                            this.CETribalLayer.addTo(AOI.map);
                             this.CEPlaceLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.CEPlaceLayer);
-                            map.removeLayer(this.CETribalLayer);
+                            AOI.map.removeLayer(this.CEPlaceLayer);
+                            AOI.map.removeLayer(this.CETribalLayer);
                             this.CEPlaceLayerIsVisible = false;
                         }
                     },
                     windLeaseLayerIsVisible: false,
                     toggleWindLeaseLayer: function () {
                         if (!this.windLeaseLayerIsVisible) {
-                            this.windLeaseLayer.addTo(map);
+                            this.windLeaseLayer.addTo(AOI.map);
                             this.windLeaseLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.windLeaseLayer);
+                            AOI.map.removeLayer(this.windLeaseLayer);
                             this.windLeaseLayerIsVisible = false;
                         }
                     },
                     windPlanningLayerIsVisible: false,
                     toggleWindPlanningLayer: function () {
                         if (!this.windPlanningLayerIsVisible) {
-                            this.windPlanningLayer.addTo(map);
+                            this.windPlanningLayer.addTo(AOI.map);
                             this.windPlanningLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.windPlanningLayer);
+                            AOI.map.removeLayer(this.windPlanningLayer);
                             this.windPlanningLayerIsVisible = false;
                         }
                     },
                     oceanDisposalSitesIsVisible: false,
                     toggleOceanDisposalSites: function () {
                         if (!this.oceanDisposalSitesIsVisible) {
-                            this.oceanDisposalSites.addTo(map);
+                            this.oceanDisposalSites.addTo(AOI.map);
                             this.oceanDisposalSitesIsVisible = true;
                         } else {
-                            map.removeLayer(this.oceanDisposalSites);
+                            AOI.map.removeLayer(this.oceanDisposalSites);
                             this.oceanDisposalSitesIsVisible = false;
                         }
                     },
                     HydrokineticLeasesIsVisible: false,
                     toggleHydrokineticLeases: function () {
                         if (!this.HydrokineticLeasesIsVisible) {
-                            this.HydrokineticLeases.addTo(map);
+                            this.HydrokineticLeases.addTo(AOI.map);
                             this.HydrokineticLeasesIsVisible = true;
                         } else {
-                            map.removeLayer(this.HydrokineticLeases);
+                            AOI.map.removeLayer(this.HydrokineticLeases);
                             this.HydrokineticLeasesIsVisible = false;
                         }
                     },
@@ -2151,60 +2186,60 @@ angular.module('myApp.services', [])
                     marineMineralsLeasesIsVisable: false,
                     toggleMarineMineralsLeases: function () {
                         if (!this.marineMineralsLeasesIsVisable) {
-                            this.marineMineralsLeases.addTo(map);
+                            this.marineMineralsLeases.addTo(AOI.map);
                             this.marineMineralsLeasesIsVisable = true;
                         } else {
-                            map.removeLayer(this.marineMineralsLeases);
+                            AOI.map.removeLayer(this.marineMineralsLeases);
                             this.marineMineralsLeasesIsVisable = false;
                         }
                     },
                     wavePowerIsVisable: false,
                     togglewavePower: function () {
                         if (!this.wavePowerIsVisable) {
-                            this.wavePower.addTo(map);
+                            this.wavePower.addTo(AOI.map);
                             this.wavePowerIsVisable = true;
                         } else {
-                            map.removeLayer(this.wavePower);
+                            AOI.map.removeLayer(this.wavePower);
                             this.wavePowerIsVisable = false;
                         }
                     },
                     tidalPowerIsVisable: false,
                     toggletidalPower: function () {
                         if (!this.tidalPowerIsVisable) {
-                            this.tidalPower.addTo(map);
+                            this.tidalPower.addTo(AOI.map);
                             this.tidalPowerIsVisable = true;
                         } else {
-                            map.removeLayer(this.tidalPower);
+                            AOI.map.removeLayer(this.tidalPower);
                             this.tidalPowerIsVisable = false;
                         }
                     },
                     currentPowerIsVisable: false,
                     togglecurrentPower: function () {
                         if (!this.currentPowerIsVisable) {
-                            this.currentPower.addTo(map);
+                            this.currentPower.addTo(AOI.map);
                             this.currentPowerIsVisable = true;
                         } else {
-                            map.removeLayer(this.currentPower);
+                            AOI.map.removeLayer(this.currentPower);
                             this.currentPowerIsVisable = false;
                         }
                     },
                     beachNourishIsVisable: false,
                     togglebeachNourish: function () {
                         if (!this.beachNourishIsVisable) {
-                            this.beachNourish.addTo(map);
+                            this.beachNourish.addTo(AOI.map);
                             this.beachNourishIsVisable = true;
                         } else {
-                            map.removeLayer(this.beachNourish);
+                            AOI.map.removeLayer(this.beachNourish);
                             this.beachNourishIsVisable = false;
                         }
                     },
                     coastalEnergyFacilitiesIsVisable: false,
                     togglecoastalEnergyFacilities: function () {
                         if (!this.coastalEnergyFacilitiesIsVisable) {
-                            this.coastalEnergyFacilities.addTo(map);
+                            this.coastalEnergyFacilities.addTo(AOI.map);
                             this.coastalEnergyFacilitiesIsVisable = true;
                         } else {
-                            map.removeLayer(this.coastalEnergyFacilities);
+                            AOI.map.removeLayer(this.coastalEnergyFacilities);
                             this.coastalEnergyFacilitiesIsVisable = false;
                         }
                     },
@@ -2212,40 +2247,40 @@ angular.module('myApp.services', [])
                     windrpLayerIsVisible: false,
                     toggleWindrpLayer: function () {
                         if (!this.windrpLayerIsVisible) {
-                            this.windrpLayer.addTo(map);
+                            this.windrpLayer.addTo(AOI.map);
                             this.windrpLayerIsVisible = true;
                         } else {
-                            map.removeLayer(this.windrpLayer);
+                            AOI.map.removeLayer(this.windrpLayer);
                             this.windrpLayerIsVisible = false;
                         }
                     },
                     CEElevationIsVisable: false,
                     toggleCEElevation: function () {
                         if (!this.CEElevationIsVisable) {
-                            this.CEElevation.addTo(map);
+                            this.CEElevation.addTo(AOI.map);
                             this.CEElevationIsVisable = true;
                         } else {
-                            map.removeLayer(this.CEElevation);
+                            AOI.map.removeLayer(this.CEElevation);
                             this.CEElevationIsVisable = false;
                         }
                     },
                     TISubmarineIsVisable: false,
                     toggleTISubmarine: function () {
                         if (!this.TISubmarineIsVisable) {
-                            this.TISubmarineLayer.addTo(map);
+                            this.TISubmarineLayer.addTo(AOI.map);
                             this.TISubmarineIsVisable = true;
                         } else {
-                            map.removeLayer(this.TISubmarineLayer);
+                            AOI.map.removeLayer(this.TISubmarineLayer);
                             this.TISubmarineIsVisable = false;
                         }
                     },
                     TIDangerZonesIsVisable: false,
                     toggleTIDangerZones: function () {
                         if (!this.TIDangerZonesIsVisable) {
-                            this.TIDangerZonesLayer.addTo(map);
+                            this.TIDangerZonesLayer.addTo(AOI.map);
                             this.TIDangerZonesIsVisable = true;
                         } else {
-                            map.removeLayer(this.TIDangerZonesLayer);
+                            AOI.map.removeLayer(this.TIDangerZonesLayer);
                             this.TIDangerZonesIsVisable = false;
                         }
                     },

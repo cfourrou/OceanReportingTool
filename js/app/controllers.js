@@ -185,11 +185,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
     .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q',
-        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q) {
+        '$stateParams', '$q', 'myGPService',
+        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService) {
             //this one loads once on start up
 
             $scope.AOI = AOI;
+
             $scope.baseMapControlOn = false;
 
             AOI.inPrintWindow = false;
@@ -204,7 +205,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                     future: true
                 });
             }
-            $scope.drawlocked = false;
             $scope.drawOrSubmitCommand = "DRAW";
 
             Highcharts.setOptions({
@@ -224,7 +224,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
             $scope.showSubmitModal = function () {
-
                 ModalService.showModal({
                     templateUrl: "modalDraw.html",
                     controller: "submitModalController"
@@ -233,7 +232,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         $scope.customResult = "All good!";
                     });
                 });
-
             };
 
             $scope.startSpin = function () {
@@ -242,66 +240,21 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             $scope.stopSpin = function () {
                 usSpinnerService.stop('spinner-1');
             };
-            var EMGPService = L.esri.GP.service({
-                url: AOI.config.ortEnergyGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var CEGPService = L.esri.GP.service({
-                url: AOI.config.ortCommonGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var TIGPService = L.esri.GP.service({
-                url: AOI.config.ortTranspoGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var NRCGPService = L.esri.GP.service({
-                url: AOI.config.ortNaturalGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var ECGPService = L.esri.GP.service({
-                url: AOI.config.ortEconGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-
-            $scope.baseMapSwitch = function () {
-
-                if ($scope.baseMapControlOn) {
-                    $scope.removeMapControl({control: baseMapControl});
-                    $scope.baseMapControlOn = false;
-
-                } else {
-                    baseMapControl.addTo(map);
-                    $scope.baseMapControlOn = true;
-                }
-            };
+            var EMGPService = new myGPService(AOI.config.ortEnergyGPService);
+            var CEGPService = new myGPService(AOI.config.ortCommonGPService);
+            var TIGPService = new myGPService(AOI.config.ortTranspoGPService);
+            var NRCGPService = new myGPService(AOI.config.ortNaturalGPService);
+            var ECGPService = new myGPService(AOI.config.ortEconGPService);
 
 
-            var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-            var allPromises;
+            var allPromises = [];
             $scope.drawIt = function () {
-                //var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-
 
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
 
                     case "DRAW":
 
-                        if ($scope.drawenabled) {
+                        if ($scope.drawtoolOn) {
                             if ($scope.drawlocked) {
                                 $scope.drawOff();
                             } else {
@@ -310,139 +263,40 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         }
                         break;
                     case "Subm":
-                        var drawPromises = [];
-                        EMGPdeferred = null, CEGPdeferred = null, TIGPdeferred = null, NRCGPdeferred = null, ECGPdeferred = null;
-                        EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
-                        drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
                         $scope.showSubmitModal();
 
                         $scope.drawOrSubmitCommand = "Working";
-                        var EMGPTask = EMGPService.createTask();
-                        var CEGPTask = CEGPService.createTask();
-                        var TIGPTask = TIGPService.createTask();
-                        var NRCGPTask = NRCGPService.createTask();
-                        var ECGPTask = ECGPService.createTask();
-
-                        EMGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        EMGPTask.setOutputParam("Output_Report");
-                        CEGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        CEGPTask.setOutputParam("Output_Report");
-                        TIGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        TIGPTask.setOutputParam("Output_Report");
-                        NRCGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        NRCGPTask.setOutputParam("Output_Report");
-                        ECGPTask.setParam("Report_Boundary", AOI.drawLayerShape);
-                        ECGPTask.setOutputParam("Output_Report");
 
                         $scope.startSpin();
 
+                        allPromises.push(EMGPService.run());
+                        allPromises.push(CEGPService.run());
+                        allPromises.push(TIGPService.run());
+                        allPromises.push(NRCGPService.run());
+                        allPromises.push(ECGPService.run());
 
-                        EMGPTask.run(function (error, EMgeojson, EMresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                $scope.$apply();
-                                EMGPdeferred.resolve();
-                            }
-                            else if (EMgeojson) {
-                                EMGPdeferred.resolve(EMgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
-                            }
-                        });
-
-                        CEGPTask.run(function (error, CEgeojson, CEresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-
-                                $scope.$apply();
-                                CEGPdeferred.resolve();
-                            }
-                            else if (CEgeojson) {
-                                CEGPdeferred.resolve(CEgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
-
-                            }
-
-                        });
-                        TIGPTask.run(function (error, TIgeojson, TIresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                TIGPdeferred.resolve();
-                                $scope.$apply();
-                            }
-                            else if (TIgeojson) {
-                                TIGPdeferred.resolve(TIgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
-                            }
-
-                        });
-                        NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                NRCGPdeferred.resolve();
-                                $scope.$apply();
-                            }
-                            else if (NRCgeojson) {
-                                NRCGPdeferred.resolve(NRCgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
-                            }
-
-                        });
-                        ECGPTask.run(function (error, ECgeojson, ECresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                ECGPdeferred.resolve();
-
-                                $scope.$apply();
-                            }
-                            else if (ECgeojson) {
-                                ECGPdeferred.resolve(ECgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
-
-                            }
-
-                        });
-                        allPromises = $q.all(drawPromises);
-
-                        allPromises.then(function (results) {
+                        $q.all(allPromises).then(function (results) {
                             AOI.featureCollection = {
                                 fields: null,
                                 features: null
                             };
 
-                            if (results[0] || results[1] || results[2] || results[3] || results[4]) {
+                            if (results[0].output || results[1].output || results[2].output || results[3].output || results[4].output) {
 
-                                if (results[0]) AOI.featureCollection = {
-                                    fields: results[0].fields,
-                                    features: results[0].features
+                                if (results[0].output) AOI.featureCollection = {
+                                    fields: results[0].output.fields,
+                                    features: results[0].output.features
                                 };
-                                if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
-                                if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
-                                if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
-                                if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
-
-                                $scope.stopSpin();
-                                $scope.completeDraw();
-
-
+                                if (results[1].output) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].output.features);
+                                if (results[2].output)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].output.features);
+                                if (results[3].output) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].output.features);
+                                if (results[4].output)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].output.features);
                             }
 
-                        }).catch(function (result) {
+                            $scope.stopSpin();
+                            $scope.completeDraw();
 
+                        }).catch(function (result) {
                             $scope.stopSpin();
                         }).finally(function () {
 
@@ -516,7 +370,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.reset();
             };
             $scope.startMenu = function () {
-
                 $scope.reset();
             };
             $scope.reset = function () { //unloads AOI but leaves slider pane on
@@ -539,9 +392,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                 $scope.AOIoff();
                 $scope.paneoff();
                 AOI.unloadData();
-
                 $scope.drawtoolOn = true;
-
             };
 
             $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane

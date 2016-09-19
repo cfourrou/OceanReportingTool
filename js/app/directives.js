@@ -100,27 +100,30 @@ angular.module('myApp.directives', [])
         return {
             restrict: 'E',
             scope: {
-                zoomLevel: '=',
                 drawEnabled: '=',
-                drawLocked: '=',
-                basemapControlEnabled: '=',
                 searchControlEnabled: '=',
                 mouseOver: '=',
                 mouseOut: '=',
                 polyLayerEnabled: '=',
-                resetMap: '='
+                resetMap: '=',
+                drawButtonText: '=',
+                drawIt: '=',
+                drawOn: '=',
+                drawOff: '=',
+                map: '='
             },
+            replace: true,
             templateUrl: 'partials/ortMap.html',
             controller: ['$scope', '$element', 'L', 'AOI', function ($scope, $element, L, AOI) {
 
 
-                var map = L.map('map', {
+                $scope.map = L.map('map', {
                     zoomControl: false,
                     maxZoom: 12
                 });
 
-                map.setView([33.51, -78.3], 6);
-                map.createPane('AOIfeature');
+                $scope.map.setView([33.51, -78.3], 6);
+                $scope.map.createPane('AOIfeature');
 
                 var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
                         attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
@@ -139,7 +142,7 @@ angular.module('myApp.directives', [])
                         maxZoom: 12
                     });
 
-                esriOceans.addTo(map);
+                esriOceans.addTo($scope.map);
 
                 var baseMaps = {
                     "Grey": esriGrey,
@@ -180,86 +183,107 @@ angular.module('myApp.directives', [])
                             }
                         })
                     ]
-                }).addTo(map);
+                });
 
-                $scope.zoomLevel = map.getZoom();
-
-
+                $scope.zoomLevel = $scope.map.getZoom();
+                $scope.basemapControlEnabled = false;
 
                 var polylayer;
 
-                map.on('pm:create', function (e) {
+                $scope.map.on('pm:create', function (e) {
                     polylayer = e.layer;
                     AOI.drawLayerShape = polylayer.toGeoJSON();
-                    $scope.drawOrSubmitCommand = "Submit";
+                    $scope.drawButtonText = "Submit";
                     $scope.$apply();
                 });
 
                 $scope.$watch('polyLayerEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        if (!newValue) map.removeLayer(polyLayer);
+                        //if (!newValue) $scope.map.removeLayer(polyLayer);
                     }
                 });
+
+                $scope.drawAvailable = false;
+
+                $scope.drawOn = function () {
+                    $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                    $scope.map.setMaxZoom($scope.map.getZoom());
+                    $scope.map.dragging.disable(); //no panning
+                    $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                    $scope.map.doubleClickZoom.disable();
+                    $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                    //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                    searchControl.disable();
+                    $scope.drawLocked = true;
+                    $scope.drawButtonText = "Drawing";
+                    $scope.polyLayerEnabled = false;
+                    $scope.map.pm.enableDraw('Poly');
+
+                    //$element.css('width', '100%');
+                    //$scope.map.invalidateSize();
+                };
+
+                $scope.drawOff = function () {
+                    $scope.map.setMinZoom(1);
+                    $scope.map.setMaxZoom(12);
+                    $scope.map.dragging.enable(); // panning
+                    $scope.map.touchZoom.enable(); // 2 finger zooms from touchscreens
+                    $scope.map.doubleClickZoom.enable();
+                    $scope.map.boxZoom.enable(); // shift mouse drag zooming.
+                    //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                    $scope.map.dragging.enable();
+                    searchControl.enable();
+                    $scope.drawLocked = false;
+                    $scope.map.pm.disableDraw('Poly');
+                };
 
                 $scope.$watch('drawEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
                         if (newValue) {
-                            map.setMinZoom(map.getZoom()); //lock map view at current zoom level
-                            map.setMaxZoom(map.getZoom());
-                            map.dragging.disable(); //no panning
-                            map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                            map.doubleClickZoom.disable();
-                            map.boxZoom.disable(); //no shift mouse drag zooming.
-                            //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                            searchControl.disable();
-                            $scope.drawlocked = true;
-                            $scope.drawOrSubmitCommand = "Drawing";
-                            $scope.polyLayerEnabled = false;
-                            map.pm.enableDraw('Poly');
-
-                            $element[0].css('width', '100%');
-                            map.invalidateSize();
+                            searchControl.addTo($scope.map);
+                            $element.css('width', '100%');
+                            $element.find('#map').css('width', '100%');
+                            $scope.map.invalidateSize();
                         } else {
-                            map.setMinZoom(1);
-                            map.setMaxZoom(12);
-                            map.dragging.enable(); // panning
-                            map.touchZoom.enable(); // 2 finger zooms from touchscreens
-                            map.doubleClickZoom.enable();
-                            map.boxZoom.enable(); // shift mouse drag zooming.
-                            //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                            map.dragging.enable();
-                            searchControl.enable();
-                            $scope.drawlocked = false;
-                            map.pm.disableDraw('Poly');
-
-                            $element[0].css('width', '50%');
-                            map.invalidateSize();
+                            $scope.map.removeControl(searchControl);
+                            $element.css('width', '50%');
+                            $element.find('#map').css('width', '50%');
+                            $scope.map.invalidateSize();
+                            $scope.drawOff();
+                            $scope.map.removeLayer(polylayer);
                         }
                     }
                 });
 
 
-
                 $scope.$watch('basemapControlEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        if (newValue) baseMapControl.addTo(map);
-                        else map.removeControl(baseMapControl);
+                        if (newValue) baseMapControl.addTo($scope.map);
+                        else $scope.map.removeControl(baseMapControl);
                     }
                 });
 
                 $scope.removeLayer = function (layer) {
-                    map.removeLayer(layer);
+                    $scope.map.removeLayer(layer);
                 };
 
-                map.on('zoomend', function (e) {
-                    var zoomlevel = map.getZoom();
-                    $scope.drawAvailable = ((zoomlevel <= 12) && (zoomlevel >= 10 ));
+                $scope.map.on('zoomend', function (e) {
+                    if ($scope.drawEnabled) {
+                        var zoomlevel = $scope.map.getZoom();
+                        if ((zoomlevel <= 12) && (zoomlevel >= 10 ) && !$scope.drawAvailable) {
+                            $scope.drawAvailable = true;
+                            $scope.$apply();
+                        } else if ((zoomlevel > 12) && (zoomlevel < 10) && $scope.drawAvailable) {
+                            $scope.drawAvailable = false;
+                            $scope.$apply();
+                        }
+                    }
                 });
 
                 $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        if (newValue) searchControl.addTo(map);
-                        else map.removeControl(searchControl);
+                        if (newValue) searchControl.addTo($scope.map);
+                        else $scope.map.removeControl(searchControl);
                     }
                 });
 
@@ -271,20 +295,22 @@ angular.module('myApp.directives', [])
                         where: "AOI_ID =" + AOI_id + "",
                         color: '#EB660C', weight: 1.5, fillOpacity: .3,
                         simplifyFactor: 2.0
-                    }).addTo(map);
+                    }).addTo($scope.map);
                 };
 
                 $scope.mouseOut = function () {
-                    map.removeLayer(mouseLayer);
-                    mouseLayer = null;
+                    if (mouseLayer) {
+                        $scope.map.removeLayer(mouseLayer);
+                        mouseLayer = null;
+                    }
                 };
 
                 $scope.resetMap = function () {
-                    $scope.baseMapControlOn = false;
-                    $scope.searchControlOn = false;
-                    $scope.drawtoolOn = false;
-                    $scope.polyLayerOn = false;
-                    map.setView([33.51, -78.3], 6);
+                    $scope.baseMapControlEnabled = false;
+                    $scope.searchControlEnabled = false;
+                    $scope.drawEnabled = false;
+                    $scope.polyLayerEnabled = false;
+                    $scope.map.setView([33.51, -78.3], 6);
                 }
 
             }]
