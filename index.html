@@ -221,7 +221,7 @@
                         {{drawOrSubmitCommand}}
                     </div>
                     <div id="basemapbutton" class="drawbutton2" ng-click="baseMapSwitch()"><img class="basemap-button"
-                                                                                                src="img/basemap.svg?0618ee7a3cf7ba3c">
+                                                                                                src="img/basemap.svg?4dd6582aaabbd6d0">
 
                         BASEMAP
 
@@ -230,35 +230,17 @@
 
                 </div>
 
-                <div id="bigmap" class="mapclass" >
-                    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
-                    <div ng-cloak ng-show="drawtoolOn" id="drawtool" class="drawTools">
-                        <div class="w100">Map Navigation</div>
-                        <div class="w100 floatitleft">
-                            <div class="drawtoolsbase" ng-class="drawlocked? 'drawbutton-dis':'findButton-enl'"><img
-                                    class="basemap-button"
-                                    src="img/texticon.svg?ccc119d74104ebd5">FIND
-                            </div>
-
-                        </div>
-
-
-                        <div class="w100 floatitleft">
-                            <div class="w35 floatitleft">Map Tools</div>
-
-                            <div class="floatitleft" ng-show="!drawenabled">Zoom in closer to draw</div>
-                        </div>
-                    </div>
-                </div>
+                <ort-map zoom-level="zoomlevel" draw-enabled="drawtoolOn"
+                         basemap-control-enabled="baseMapControlOn" search-control-enabled="searchControlOn"
+                         mouse-over="mover" mouse-out="mout" poly-layer-enabled="polyLayerOn"
+                         reset-map="resetMap">
+                </ort-map>
 
                 <div id="slide_div">
-
-
                 </div>
 
                 <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
-                     ps-custom-top="55px"
-                >
+                     ps-custom-top="55px">
                     <div ui-view class="h900"></div>
                     <div id="foot" class="footer2">
                         <div class="footerleft"><a target="_blank" href="https://www.commerce.gov/">United States
@@ -289,7 +271,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?68858de50eb7b8fa"></script>
+<script src="js/ort.js?282e886596e1faa0"></script>
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

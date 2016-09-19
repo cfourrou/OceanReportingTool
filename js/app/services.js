@@ -25,9 +25,11 @@ angular.module('myApp.services', [])
 
 
     })
-
     .factory('_', function () {
         return window._; // assumes underscore has already been loaded on the page
+    })
+    .factory('L', function () {
+        return window.L;
     })
     .provider('AOI', function () {
         var config = {
@@ -118,7 +120,6 @@ angular.module('myApp.services', [])
                     ECFishRevenue: [],
                     TIPilot: [],
                     TIAnchorage: [],
-
 
                     display: function (AOI_ID) {
                         this.ID = parseInt(AOI_ID);
@@ -2335,7 +2336,6 @@ angular.module('myApp.services', [])
 
 
                             minicLayer.on("load", function (evt) {
-
                                 var bounds = L.latLngBounds([]);
                                 minicLayer.eachFeature(function (layer) {
                                     var layerBounds = layer.getBounds();

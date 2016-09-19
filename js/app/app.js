@@ -198,7 +198,7 @@ ortLayerOptional[44] =
     num: 44,
     displayName: 'Coastal Barrier'
 
-}
+};
 var toggle = false;
 
 var mouseLayer, searchControl;
@@ -275,66 +275,20 @@ addLoadEvent(preloader);
 
 }(Highcharts));
 
-
 var marker;
-
-
-var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-        maxZoom: 12
-    }),
-    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-        maxZoom: 12
-    }),
-    esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-        maxZoom: 12
-    }),
-    esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
-        maxZoom: 12
-    })
-    ;
-
-
-var nauticalchart = L.esri.imageMapLayer({
-    url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-    useCors: false,
-    opacity:.5
-});
-
-
-var map = L.map('bigmap', {
-    zoomControl: false,
-    maxZoom: 12
-
-});
 var smallmap;
-var baseMaps = {
-    "Grey": esriGrey,
-    "Oceans": esriOceans,
-    "Streets": esriStreets,
-    "NatGeo World": esriNatGeo
-};
-var mapOverlay = {
-    "Nautical Chart": nauticalchart
-};
-
-var baselayer = esriOceans.addTo(map);
-
 
 //for (var i = 0; i < ortLayerOptional.length; i++) {
 //    map.createPane('optionalfeature' + i);
 //}
 //;
 
-ortLayerOptional.forEach(function (obj, index) {
-    map.createPane('optionalfeature' + index);
-});
+// todo: move to ortMap directive
+//ortLayerOptional.forEach(function (obj, index) {
+//    map.createPane('optionalfeature' + index);
+//});
 
-map.setView([33.51, -78.3], 6);
-map.createPane('AOIfeature');
+
 
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
