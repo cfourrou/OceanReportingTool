@@ -23298,9 +23298,12 @@ angular.module('myApp.services', [])
                         var vm = this;
 
                         vm.name = name;
+
+
+
                         vm.windrpLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[0].num,
-                            pane: 'optionalfeature0',
+                            url: config.ortMapServer + config.windrpLayer,
+                            pane: 'windrpLayerPane',
                             style: function (feature) {
                                 if (feature.properties.Speed_90 >= 8.8) {
                                     return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -23321,31 +23324,31 @@ angular.module('myApp.services', [])
                         });
 
                         vm.windLeaseLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[1].num,
-                            pane: 'optionalfeature1',
+                            url: config.ortMapServer + config.windLeaseLayer,
+                            pane: 'windLeaseLayerPane',
                             style: function (feature) {
 
                                 return {color: 'white', weight: 1, fillOpacity: .5};
                             }
                         });
                         vm.windPlanningLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[2].num,
-                            pane: 'optionalfeature2',
+                            url: config.ortMapServer + config.windPlanningLayer,
+                            pane: 'windPlanningLayerPane',
                             style: function (feature) {
 
                                 return {color: 'Black', weight: 1, fillOpacity: .5};
                             }
                         });
                         vm.oceanDisposalSites = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[3].num,
-                            pane: 'optionalfeature3',
+                            url: config.ortMapServer + config.oceanDisposalSites,
+                            pane: 'oceanDisposalSitesPane',
                             style: function (feature) {
                                 return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
                             }
                         });
                         vm.marineMineralsLeases = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[4].num,
-                            pane: 'optionalfeature4',
+                            url: config.ortMapServer + config.marineMineralsLeases,
+                            pane: 'marineMineralsLeasesPane',
                             style: function (feature) {
                                 return {color: '#7300D9', weight: 2, fillOpacity: 0};
                             }
@@ -23353,8 +23356,8 @@ angular.module('myApp.services', [])
 
 
                         vm.HydrokineticLeases = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[6].num,
-                            pane: 'optionalfeature6',
+                            url: config.ortMapServer + config.HydrokineticLeases,
+                            pane: 'HydrokineticLeasesPane',
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {
                                     icon: L.icon({
@@ -23368,8 +23371,8 @@ angular.module('myApp.services', [])
                         });
 
                         vm.wavePower = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[8].num,
-                            pane: 'optionalfeature8',
+                            url: config.ortMapServer + config.wavePower,
+                            pane: 'wavePowerPane',
                             style: function (feature) {
                                 if (feature.properties.ann_wef > 40) {
                                     return {color: '#B0B497', weight: 1, fillOpacity: .8};
@@ -23399,29 +23402,29 @@ angular.module('myApp.services', [])
 
                         vm.tidalPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
-                            pane: 'optionalfeature9',
-                            layers: [ortLayerOptional[9].num],
+                            pane: 'tidalPowerPane',
+                            layers: [config.tidalPower],
                             opacity: .8
                         });
 
                         vm.currentPower = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
-                            pane: 'optionalfeature10',
-                            layers: [ortLayerOptional[10].num],
+                            pane: 'currentPowerPane',
+                            layers: [config.currentPower],
                             opacity: .8
                         });
 
                         vm.beachNourish = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[11].num,
-                            pane: 'optionalfeature11',
+                            url: config.ortMapServer + config.beachNourish,
+                            pane: 'beachNourishPane',
                             style: function (feature) {
                                 return {color: '#8B572A', weight: 4, fillOpacity: 0};
                             }
                         });
 
                         vm.coastalEnergyFacilities = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[16].num,
-                            pane: 'optionalfeature16',
+                            url: config.ortMapServer + config.coastalEnergyFacilities,
+                            pane: 'coastalEnergyFacilitiesPane',
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {
                                     icon: L.icon({
@@ -23435,22 +23438,22 @@ angular.module('myApp.services', [])
                         });
 
                         vm.CEElevation = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[26].num,
-                            pane: 'optionalfeature26',
+                            url: config.ortMapServer + config.CEElevation,
+                            pane: 'CEElevationPane',
                             style: function (feature) {
                                 return {color: '#3283BB', weight: 2, fillOpacity: 0};
                             }
                         });
                         vm.TISubmarineLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[34].num,
-                            pane: 'optionalfeature34',
+                            url: config.ortMapServer + config.TISubmarineLayer,
+                            pane: 'TISubmarineLayerPane',
                             style: function (feature) {
                                 return {color: '#880cf4', weight: 2, fillOpacity: 0};
                             }
                         });
                         vm.TIDangerZonesLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[35].num,
-                            pane: 'optionalfeature35',
+                            url: config.ortMapServer + config.TIDangerZonesLayer,
+                            pane: 'TIDangerZonesLayerPane',
 
                             style: function (feature) {
                                 if (feature.properties.agencyOfUse === 'NASA') {
@@ -23472,8 +23475,8 @@ angular.module('myApp.services', [])
                         });
 
                         vm.CEPlaceLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + [ortLayerOptional[36].num],
-                            pane: 'optionalfeature36',
+                            url: config.ortMapServer + [config.CEPlaceLayer],
+                            pane: 'CEPlaceLayerPane',
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {
                                     icon: L.icon({
@@ -23486,8 +23489,8 @@ angular.module('myApp.services', [])
                             }
                         });
                         vm.TIPrincipalPortsLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + [ortLayerOptional[39].num],
-                            pane: 'optionalfeature39',
+                            url: config.ortMapServer + [config.TIPrincipalPortsLayer],
+                            pane: 'TIPrincipalPortsLayerPane',
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {
                                     icon: L.icon({
@@ -23500,8 +23503,8 @@ angular.module('myApp.services', [])
                             }
                         });
                         vm.NRCReefsLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + [ortLayerOptional[41].num],
-                            pane: 'optionalfeature41',
+                            url: config.ortMapServer + [config.NRCReefsLayer],
+                            pane: 'NRCReefsLayerPane',
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {
                                     icon: L.icon({
@@ -23514,30 +23517,30 @@ angular.module('myApp.services', [])
                             }
                         });
                         vm.CETribalLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[37].num,
-                            pane: 'optionalfeature37',
+                            url: config.ortMapServer + config.CETribalLayer,
+                            pane: 'CETribalLayerPane',
                             style: function (feature) {
                                 return {fillColor: '#ffffbe', color: '#e69901', weight: 1.5, fillOpacity: .5};
                             }
                         });
                         vm.NRCNearbyLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[40].num,
-                            pane: 'optionalfeature40',
+                            url: config.ortMapServer + config.NRCNearbyLayer,
+                            pane: 'NRCNearbyLayerPane',
                             style: function (feature) {
                                 return {color: '#75bc73', weight: 1.5, fillOpacity: .7};
                             }
                         });
                         vm.NRCBarrierLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[44].num,
-                            pane: 'optionalfeature44',
+                            url: config.ortMapServer + config.NRCBarrierLayer,
+                            pane: 'NRCBarrierLayerPane',
                             style: function (feature) {
                                 return {color: '#d6ce70', weight: 1.5, fillOpacity: .7};
                             }
                         });
 
                         vm.TIVessels = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[38].num,
-                            pane: 'optionalfeature38',
+                            url: config.ortMapServer + config.TIVessels,
+                            pane: 'TIVesselsPane',
                             style: function (feature) {
                                 if (feature.properties.all_2011 > 1500) {
                                     return {color: '#d4321e', weight: 1, fillOpacity: .8};
@@ -23559,19 +23562,19 @@ angular.module('myApp.services', [])
 
                         vm.NRCSoftCoralLayer = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
-                            pane: 'optionalfeature42',
-                            layers: [ortLayerOptional[42].num],
+                            pane: 'NRCSoftCoralLayerPane',
+                            layers: [config.NRCSoftCoralLayer],
                             opacity: .8
                         });
                         vm.NRCStoneyCoralLayer = L.esri.dynamicMapLayer({
                             url: config.ortMapServer,
-                            pane: 'optionalfeature43',
-                            layers: [ortLayerOptional[43].num],
+                            pane: 'NRCStoneyCoralLayerPane',
+                            layers: [config.NRCStoneyCoralLayer],
                             opacity: .8
                         });
                         vm.ECCoastalCountiesLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[32].num,
-                            pane: 'optionalfeature32',
+                            url: config.ortMapServer + config.ECCoastalCountiesLayer,
+                            pane: 'ECCoastalCountiesLayerPane',
                             style: function (feature) {
                                 return {color: '#b613ba', weight: 1.5, fillOpacity: 0};
                             }
@@ -26794,205 +26797,6 @@ angular.module('myApp.directives', [])
 ;
 'use strict';
 
-
-var ortLayerOptional = [];
-
-
-ortLayerOptional[0] =
-{
-    num: '19',
-    displayName: 'Wind Resource Potential'
-};
-ortLayerOptional[1] =
-{
-    num: '18',
-    displayName: 'Active Renewable Energy Leases'
-};
-ortLayerOptional[2] =
-{
-    num: '22',
-    displayName: 'BOEM_Wind_Planning_Areas'
-};
-ortLayerOptional[3] =
-{
-    num: '23',
-    displayName: 'OceanDisposalSites'
-};
-ortLayerOptional[4] =
-{
-    num: '21',
-    displayName: 'Marine Minerals Leases',
-    layerName: 'Sand_n_GravelLeaseAreas'
-};
-ortLayerOptional[5] =
-{
-    num: null,
-    displayName: 'Sediment Resources'
-};
-ortLayerOptional[6] =
-{
-    num: '3',
-    displayName: 'Hydrokinetic Leases',
-    layerName: 'MarineHydrokineticProjects'
-};
-ortLayerOptional[7] =
-{
-    num: null,
-    displayName: 'Surficial Sediment Classification'
-};
-ortLayerOptional[8] =
-{
-    num: 20,
-    displayName: 'Wave Power',
-    layerName: 'Ocean Wave Resource Potential'
-};
-ortLayerOptional[9] =
-{
-    num: 32,
-    displayName: 'Tidal Power',
-    layerName: 'usa_mc_wm'
-};
-ortLayerOptional[10] =
-{
-    num: 31,
-    displayName: 'Current Power',
-    layerName: 'us_oc_ms'
-};
-ortLayerOptional[11] =
-{
-    num: 6,
-    displayName: 'Beach Nourishment',
-    layerName: 'SC_BeachProjects'
-};
-ortLayerOptional[12] =
-{
-    num: null,
-    displayName: 'Oil and Gas Planing Area'
-};
-ortLayerOptional[13] =
-{
-    num: null,
-    displayName: 'Oil and Gas Active Lease'
-};
-ortLayerOptional[14] =
-{
-    num: null,
-    displayName: 'Oil and Gas Wells'
-};
-ortLayerOptional[15] =
-{
-    num: null,
-    displayName: 'Oil and Gas Resource potential'
-};
-ortLayerOptional[16] =
-{
-    num: 1,
-    displayName: 'Coastal Energy Facilities'
-};
-
-
-ortLayerOptional[26] =
-{
-    num: 5,
-    displayName: 'bathymetric_Contours'
-};
-ortLayerOptional[27] =
-{
-    num: null,
-    displayName: 'smallmap'
-};
-ortLayerOptional[28] =
-{
-    num: null,
-    displayName: 'smallmapprint'
-};
-ortLayerOptional[29] =
-{
-    num: null,
-    displayName: 'Area of Polygon'
-};
-ortLayerOptional[30] =
-{
-    num: null,
-    displayName: 'FederalGeoRegulations'
-};
-ortLayerOptional[31] =
-{
-    num: null,
-    displayName: 'PoliticalBoundaries'
-};
-ortLayerOptional[32] =
-{
-    num: 53,
-    displayName: 'CoastalCounties'
-}
-ortLayerOptional[33] =
-{
-    num: null,
-    displayName: 'FederalAndStateWaters'
-}
-ortLayerOptional[34] =
-{
-    num: 34,
-    displayName: 'SubmarineCables'
-}
-ortLayerOptional[35] =
-{
-    num: 37,
-    displayName: 'DangerZones'
-}
-ortLayerOptional[36] =
-{
-    num: 0,
-    displayName: 'Places'
-}
-ortLayerOptional[37] =
-{
-    num: 9,
-    displayName: 'tribal Lands'
-}
-
-ortLayerOptional[38] =
-{
-    num: 42,
-    displayName: 'vessel count'
-}
-ortLayerOptional[39] =
-{
-    num: 33,
-    displayName: 'Principle Ports'
-}
-ortLayerOptional[40] =
-{
-    num: 49,
-    displayName: 'Nearby Protected Areas',
-    layerName: 'MPA_selected'
-
-}
-ortLayerOptional[41] =
-{
-    num: 43,
-    displayName: 'Artificial Reefs',
-    layerName: 'ArtificialReefs'
-
-}
-ortLayerOptional[42] =
-{
-    num: 50,
-    displayName: 'Soft Coral'
-}
-ortLayerOptional[43] =
-{
-    num: 51,
-    displayName: 'Stoney Coral'
-
-}
-ortLayerOptional[44] =
-{
-    num: 44,
-    displayName: 'Coastal Barrier'
-
-}
 var toggle = false;
 
 var mouseLayer, searchControl;
@@ -27118,14 +26922,6 @@ var mapOverlay = {
 var baselayer = esriOceans.addTo(map);
 
 
-//for (var i = 0; i < ortLayerOptional.length; i++) {
-//    map.createPane('optionalfeature' + i);
-//}
-//;
-
-ortLayerOptional.forEach(function (obj, index) {
-    map.createPane('optionalfeature' + index);
-});
 
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
@@ -27165,7 +26961,36 @@ $http.get("gis_config.json").then(function (result) {
                 ortCommonGPService: result.data['ortCommonGPService'].data,
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,
-                ortEconGPService: result.data['ortEconGPService'].data
+                ortEconGPService: result.data['ortEconGPService'].data,
+                windrpLayer:result.data['optionalLayerPanes'].windrpLayer.num,
+                windLeaseLayer:result.data['optionalLayerPanes'].windLeaseLayer.num,
+                windPlanningLayer:result.data['optionalLayerPanes'].windPlanningLayer.num,
+                oceanDisposalSites:result.data['optionalLayerPanes'].oceanDisposalSites.num,
+                marineMineralsLeases:result.data['optionalLayerPanes'].marineMineralsLeases.num,
+                HydrokineticLeases:result.data['optionalLayerPanes'].HydrokineticLeases.num,
+                wavePower:result.data['optionalLayerPanes'].wavePower.num,
+                tidalPower:result.data['optionalLayerPanes'].tidalPower.num,
+                currentPower:result.data['optionalLayerPanes'].currentPower.num,
+                beachNourish:result.data['optionalLayerPanes'].beachNourish.num,
+                coastalEnergyFacilities:result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
+                CEElevation:result.data['optionalLayerPanes'].CEElevation.num,
+                ECCoastalCountiesLayer:result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
+                TISubmarineLayer:result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                TIDangerZonesLayer:result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
+                CEPlaceLayer:result.data['optionalLayerPanes'].CEPlaceLayer.num,
+                CETribalLayer:result.data['optionalLayerPanes'].CETribalLayer.num,
+                TIVessels:result.data['optionalLayerPanes'].TIVessels.num,
+                TIPrincipalPortsLayer:result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
+                NRCNearbyLayer:result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                NRCReefsLayer:result.data['optionalLayerPanes'].NRCReefsLayer.num,
+                NRCSoftCoralLayer:result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
+                NRCStoneyCoralLayer:result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
+                NRCBarrierLayer:result.data['optionalLayerPanes'].NRCBarrierLayer.num
+
+            });
+
+            angular.forEach(result.data['optionalLayerPanes'],function(value, key){
+                map.createPane(key + 'Pane');
             });
 
 

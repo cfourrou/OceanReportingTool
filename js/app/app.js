@@ -1,204 +1,5 @@
 'use strict';
 
-
-var ortLayerOptional = [];
-
-
-ortLayerOptional[0] =
-{
-    num: '19',
-    displayName: 'Wind Resource Potential'
-};
-ortLayerOptional[1] =
-{
-    num: '18',
-    displayName: 'Active Renewable Energy Leases'
-};
-ortLayerOptional[2] =
-{
-    num: '22',
-    displayName: 'BOEM_Wind_Planning_Areas'
-};
-ortLayerOptional[3] =
-{
-    num: '23',
-    displayName: 'OceanDisposalSites'
-};
-ortLayerOptional[4] =
-{
-    num: '21',
-    displayName: 'Marine Minerals Leases',
-    layerName: 'Sand_n_GravelLeaseAreas'
-};
-ortLayerOptional[5] =
-{
-    num: null,
-    displayName: 'Sediment Resources'
-};
-ortLayerOptional[6] =
-{
-    num: '3',
-    displayName: 'Hydrokinetic Leases',
-    layerName: 'MarineHydrokineticProjects'
-};
-ortLayerOptional[7] =
-{
-    num: null,
-    displayName: 'Surficial Sediment Classification'
-};
-ortLayerOptional[8] =
-{
-    num: 20,
-    displayName: 'Wave Power',
-    layerName: 'Ocean Wave Resource Potential'
-};
-ortLayerOptional[9] =
-{
-    num: 32,
-    displayName: 'Tidal Power',
-    layerName: 'usa_mc_wm'
-};
-ortLayerOptional[10] =
-{
-    num: 31,
-    displayName: 'Current Power',
-    layerName: 'us_oc_ms'
-};
-ortLayerOptional[11] =
-{
-    num: 6,
-    displayName: 'Beach Nourishment',
-    layerName: 'SC_BeachProjects'
-};
-ortLayerOptional[12] =
-{
-    num: null,
-    displayName: 'Oil and Gas Planing Area'
-};
-ortLayerOptional[13] =
-{
-    num: null,
-    displayName: 'Oil and Gas Active Lease'
-};
-ortLayerOptional[14] =
-{
-    num: null,
-    displayName: 'Oil and Gas Wells'
-};
-ortLayerOptional[15] =
-{
-    num: null,
-    displayName: 'Oil and Gas Resource potential'
-};
-ortLayerOptional[16] =
-{
-    num: 1,
-    displayName: 'Coastal Energy Facilities'
-};
-
-
-ortLayerOptional[26] =
-{
-    num: 5,
-    displayName: 'bathymetric_Contours'
-};
-ortLayerOptional[27] =
-{
-    num: null,
-    displayName: 'smallmap'
-};
-ortLayerOptional[28] =
-{
-    num: null,
-    displayName: 'smallmapprint'
-};
-ortLayerOptional[29] =
-{
-    num: null,
-    displayName: 'Area of Polygon'
-};
-ortLayerOptional[30] =
-{
-    num: null,
-    displayName: 'FederalGeoRegulations'
-};
-ortLayerOptional[31] =
-{
-    num: null,
-    displayName: 'PoliticalBoundaries'
-};
-ortLayerOptional[32] =
-{
-    num: 53,
-    displayName: 'CoastalCounties'
-}
-ortLayerOptional[33] =
-{
-    num: null,
-    displayName: 'FederalAndStateWaters'
-}
-ortLayerOptional[34] =
-{
-    num: 34,
-    displayName: 'SubmarineCables'
-}
-ortLayerOptional[35] =
-{
-    num: 37,
-    displayName: 'DangerZones'
-}
-ortLayerOptional[36] =
-{
-    num: 0,
-    displayName: 'Places'
-}
-ortLayerOptional[37] =
-{
-    num: 9,
-    displayName: 'tribal Lands'
-}
-
-ortLayerOptional[38] =
-{
-    num: 42,
-    displayName: 'vessel count'
-}
-ortLayerOptional[39] =
-{
-    num: 33,
-    displayName: 'Principle Ports'
-}
-ortLayerOptional[40] =
-{
-    num: 49,
-    displayName: 'Nearby Protected Areas',
-    layerName: 'MPA_selected'
-
-}
-ortLayerOptional[41] =
-{
-    num: 43,
-    displayName: 'Artificial Reefs',
-    layerName: 'ArtificialReefs'
-
-}
-ortLayerOptional[42] =
-{
-    num: 50,
-    displayName: 'Soft Coral'
-}
-ortLayerOptional[43] =
-{
-    num: 51,
-    displayName: 'Stoney Coral'
-
-}
-ortLayerOptional[44] =
-{
-    num: 44,
-    displayName: 'Coastal Barrier'
-
-}
 var toggle = false;
 
 var mouseLayer, searchControl;
@@ -324,14 +125,6 @@ var mapOverlay = {
 var baselayer = esriOceans.addTo(map);
 
 
-//for (var i = 0; i < ortLayerOptional.length; i++) {
-//    map.createPane('optionalfeature' + i);
-//}
-//;
-
-ortLayerOptional.forEach(function (obj, index) {
-    map.createPane('optionalfeature' + index);
-});
 
 map.setView([33.51, -78.3], 6);
 map.createPane('AOIfeature');
@@ -371,7 +164,36 @@ $http.get("gis_config.json").then(function (result) {
                 ortCommonGPService: result.data['ortCommonGPService'].data,
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,
-                ortEconGPService: result.data['ortEconGPService'].data
+                ortEconGPService: result.data['ortEconGPService'].data,
+                windrpLayer:result.data['optionalLayerPanes'].windrpLayer.num,
+                windLeaseLayer:result.data['optionalLayerPanes'].windLeaseLayer.num,
+                windPlanningLayer:result.data['optionalLayerPanes'].windPlanningLayer.num,
+                oceanDisposalSites:result.data['optionalLayerPanes'].oceanDisposalSites.num,
+                marineMineralsLeases:result.data['optionalLayerPanes'].marineMineralsLeases.num,
+                HydrokineticLeases:result.data['optionalLayerPanes'].HydrokineticLeases.num,
+                wavePower:result.data['optionalLayerPanes'].wavePower.num,
+                tidalPower:result.data['optionalLayerPanes'].tidalPower.num,
+                currentPower:result.data['optionalLayerPanes'].currentPower.num,
+                beachNourish:result.data['optionalLayerPanes'].beachNourish.num,
+                coastalEnergyFacilities:result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
+                CEElevation:result.data['optionalLayerPanes'].CEElevation.num,
+                ECCoastalCountiesLayer:result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
+                TISubmarineLayer:result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                TIDangerZonesLayer:result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
+                CEPlaceLayer:result.data['optionalLayerPanes'].CEPlaceLayer.num,
+                CETribalLayer:result.data['optionalLayerPanes'].CETribalLayer.num,
+                TIVessels:result.data['optionalLayerPanes'].TIVessels.num,
+                TIPrincipalPortsLayer:result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
+                NRCNearbyLayer:result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                NRCReefsLayer:result.data['optionalLayerPanes'].NRCReefsLayer.num,
+                NRCSoftCoralLayer:result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
+                NRCStoneyCoralLayer:result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
+                NRCBarrierLayer:result.data['optionalLayerPanes'].NRCBarrierLayer.num
+
+            });
+
+            angular.forEach(result.data['optionalLayerPanes'],function(value, key){
+                map.createPane(key + 'Pane');
             });
 
 
