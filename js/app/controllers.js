@@ -35,8 +35,12 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
-    vm.checked = true; // This will be binded using the ps-open attribute
-
+    if ($state.includes('draw')) {
+        //vm.checked = false; // This will be binded using the ps-open attribute
+        vm.paneoff();
+    } else {
+        vm.checked = true;
+    }
 
     vm.showSubmitModal = function () {
         ModalService.showModal({
@@ -55,13 +59,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     vm.stopSpin = function () {
         usSpinnerService.stop('spinner-1');
     };
-    var EMGPService = new myGPService(AOIConfig.ortEnergyGPService);
-    var CEGPService = new myGPService(AOIConfig.ortCommonGPService);
-    var TIGPService = new myGPService(AOIConfig.ortTranspoGPService);
-    var NRCGPService = new myGPService(AOIConfig.ortNaturalGPService);
-    var ECGPService = new myGPService(AOIConfig.ortEconGPService);
-
-    var allPromises = [];
 
     vm.drawIt = function () {
 
@@ -78,7 +75,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 }
                 break;
             case "Subm":
-                allPromises = [];
+                //allPromises = [];
 
                 vm.showSubmitModal();
 
@@ -86,35 +83,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
                 vm.startSpin();
 
-                allPromises.push(EMGPService.run());
-                allPromises.push(CEGPService.run());
-                allPromises.push(TIGPService.run());
-                allPromises.push(NRCGPService.run());
-                allPromises.push(ECGPService.run());
-
-                $q.all(allPromises).then(function (results) {
-                    delete AOI.featureCollection;
-
-                    if (!results[0].error || !results[1].error || !results[2].error || !results[3].error || !results[4].error) {
-
-                        if (results[0]) AOI.featureCollection = {
-                            fields: results[0].fields,
-                            features: results[0].features
-                        };
-                        if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
-                        if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
-                        if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
-                        if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
-                    }
-
+                AOI.getReport().then(function () {
                     vm.stopSpin();
-                    vm.completeDraw();
+                    vm.drawtoolOn = false;
+                    vm.searchControlEnabled = false;
+                    vm.drawOrSubmitCommand = "DRAW";
+                    vm.baseMapControlOn = false;
 
-                }).catch(function (result) {
-                    vm.stopSpin();
-                }).finally(function () {
-
-
+                    $state.go('CEview');
+                    vm.paneon();
                 });
 
                 break;
@@ -128,33 +105,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 vm.completeDraw();
                 break;
         }
-    };
-
-    vm.cancelEVERYTHING = function () {
-        if (EMGPdeferred) {
-            EMGPdeferred.reject("canceled");
-
-            allPromises = null;
-        }
-        if (CEGPdeferred)CEGPdeferred.reject("canceled");
-        if (TIGPdeferred)TIGPdeferred.reject("canceled");
-        if (NRCGPdeferred) NRCGPdeferred.reject("canceled");
-        if (ECGPdeferred) ECGPdeferred.reject("canceled");
-
-
-    };
-
-    vm.completeDraw = function () {
-        vm.drawtoolOn = false;
-        vm.searchControlEnabled = false;
-        vm.drawOrSubmitCommand = "DRAW";
-        vm.baseMapControlOn = false;
-
-        $state.go('CEview');
-        vm.paneon();
-        AOI.unloadData();
-        AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID, "My Report");
-        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
     };
 
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
@@ -285,15 +235,13 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         if ($location.search().AOI !== '-9999') {
             AOI.loadData($location.search().AOI, '');
         } else {
-            AOI.drawAreaJobId['CE'] = $location.search().CE;
-            AOI.drawAreaJobId['EM'] = $location.search().EM;
-            AOI.drawAreaJobId['EC'] = $location.search().EC;
-            AOI.drawAreaJobId['NRC'] = $location.search().NRC;
-            AOI.drawAreaJobId['TI'] = $location.search().TI;
-            //AOI.name = "My Report";
+            AOI.drawAreaJobId.CE = $location.search().CE;
+            AOI.drawAreaJobId.EM = $location.search().EM;
+            AOI.drawAreaJobId.EC = $location.search().EC;
+            AOI.drawAreaJobId.NRC = $location.search().NRC;
+            AOI.drawAreaJobId.TI = $location.search().TI;
             AOI.ID = -9999;
-
-            AOI.loadData(AOI, "My Report");
+            AOI.getSavedReport();
         }
     }
 }
@@ -434,6 +382,34 @@ EconCtrl.prototype.childPaneOn = function () {
     this.paneon();
 };
 
+function SearchCtrl (AOI) {
+    var vm = this;
+
+    vm.childChecked(false);
+    AOI.toggleFull = false;
+    //vm.childOff();
+    AOI.inPrintWindow = false;
+
+    //vm.childSearchControlOn = true;
+
+    if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
+}
+
+SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
+//SearchCtrl.prototype.childOff = function () {
+//    this.off();
+//};
+SearchCtrl.prototype.childChecked = function (value) {
+    this.checked = value;
+    return this.checked;
+};
+SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
+    return this.drawOrSubmitCommand;
+};
+SearchCtrl.prototype.childStartSpin = function () {
+    this.startSpin();
+};
+
 angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, close) {
         $scope.metadataurl = metaurl;
@@ -503,16 +479,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
-    .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
-
-        $scope.off();
-        AOI.inPrintWindow = false;
-
-        $scope.searchControlOn = true;
-
-        if ($scope.drawOrSubmitCommand === "Working") $scope.startSpin();
-
-    }])
+    .controller('SearchCtrl', ['AOI', SearchCtrl])
 
 
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])

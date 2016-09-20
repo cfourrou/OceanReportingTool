@@ -196,7 +196,7 @@ $http.get("gis_config.json").then(function (result) {
                 .state('draw', {
                     url: '/draw',
                     templateUrl: 'partials/draw.html',
-                    controller: 'SearchCtrl'
+                    controller: 'SearchCtrl as Searchvm'
                 })
                 .state('print', {
 
