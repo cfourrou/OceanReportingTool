@@ -715,16 +715,14 @@ angular.module('myApp.services', [])
 
                     var ack = [];
 
-                    for (var i = 0, j = featureCollection.length; i < j; i++) {
-                        switch (featureCollection[i].DATASET_NM) {
+                    angular.forEach(featureCollection, function (feature, i) {
+                        switch (feature.DATASET_NM) {
                             case "Anchorage_Areas":
-                                AOI.TIAnchorage[cv] = {
+                                AOI.TIAnchorage.push({
                                     TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
                                     Name: (featureCollection[i].Name || 'Unknown'),
                                     PERC_COVER: (featureCollection[i].PERC_COVER || 0)
-
-
-                                };
+                                });
 
 
                                 if ((cv === 0) && (featureCollection[i].METADATA_URL != null)) {
@@ -1912,7 +1910,7 @@ angular.module('myApp.services', [])
                                 bb++;
                                 break;
                         }
-                    }
+                    });
 
 
                     var y = 35;
