@@ -52,7 +52,7 @@ angular.module('myApp.services', [])
             }]
         };
     })
-    .factory('myGPService', ['L', 'AOIConfig', '$q', function (L, AOI, $q) {
+    .factory('myGPService', ['L', '$q', function (L, $q) {
         var myGPService = function (url) {
             var gpService = L.esri.GP.service({
                 url: url,
@@ -65,16 +65,16 @@ angular.module('myApp.services', [])
             var task = gpService.createTask();
 
             return {
-                run: function () {
+                run: function (shape) {
                     var deferred = $q.defer();
 
-                    task.setParam("Report_Boundary", AOI.drawLayerShape);
+                    task.setParam("Report_Boundary", shape);
                     task.setOutputParam("Output_Report");
 
                     task.run(function (error, geojson) {
-                        if (error) {
-                            deferred.resolve(error)
-                        } else {
+                        if (error) deferred.resolve(error);
+                        else {
+                            geojson.Output_Report.jobId = geojson.jobId;
                             deferred.resolve(geojson.Output_Report)
                         }
                     });
@@ -108,11 +108,11 @@ angular.module('myApp.services', [])
         };
         return myQueryService;
     }])
-    .factory('myGetService', ['L', '$q', 'AOIConfig', function (L, $q, AOI) {
+    .factory('myGetService', ['L', '$q', 'AOIConfig', function (L, $q, AOIConfig) {
         return {
-            get: function (jobId) {
+            get: function (url, jobId) {
                 var deferred = $q.defer();
-                L.esri.get(AOIConfig.ortCommonGPService + '/jobs/' + jobId + '/results/Output_Report', {}, function (error, response) {
+                L.esri.get(url + '/jobs/' + jobId + '/results/Output_Report', {}, function (error, response) {
                     if (error) deferred.reject(error);
                     else deferred.resolve(response);
                 });
@@ -120,11 +120,11 @@ angular.module('myApp.services', [])
             }
         };
     }])
-    .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService',
-        function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService) {
+    .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService', 'myGPService',
+        function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService, myGPService) {
             var AOI = {
                 OceanJobContributionsSeries: [],
-                drawAreaJobId: [],
+                drawAreaJobId: {},
                 Shared: false,
                 url: $window.location.href.split('#'),
                 layer: null,
@@ -196,24 +196,15 @@ angular.module('myApp.services', [])
 
                     AOI.ID = parseInt(AOI_ID);
                     if (AOI.ID === -9999) {
-                        if (AOI.drawLayerShape) {
-                            AOI.loadShape();
-                        } else {
-                            L.esri.get(AOIConfig.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
-                                if (error) {
-
-                                } else {
-                                    AOI.drawLayerShape = {
-                                        type: "Feature",
-                                        geometry: {
-                                            type: "Polygon",
-                                            coordinates: response.value.features[0].geometry.rings
-                                        }
-                                    };
-                                    AOI.loadShape();
-                                }
-                            });
-                        }
+                        AOI.layer = L.geoJson(AOI.drawLayerShape, {
+                            color: '#EB660C',
+                            weight: 1.5,
+                            fillOpacity: .3,
+                            pane: 'AOIfeature'
+                        }).addTo(AOI.map);
+                        AOI.map.fitBounds(AOI.layer.getBounds(), {
+                            padding: [1, 1]
+                        });
                     } else {
                         AOI.layer = L.esri.featureLayer({
                             url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
@@ -252,17 +243,6 @@ angular.module('myApp.services', [])
                     AOI.isVisible = true;
 
                 },
-                loadShape: function () {
-                    AOI.layer = L.geoJson(AOI.drawLayerShape, {
-                        color: '#EB660C',
-                        weight: 1.5,
-                        fillOpacity: .3,
-                        pane: 'AOIfeature'
-                    }).addTo(AOI.map);
-                    AOI.map.fitBounds(AOI.layer.getBounds(), {
-                        padding: [1, 1]
-                    });
-                },
                 hide: function () {
 
                     if (AOI.isVisible) {
@@ -286,9 +266,85 @@ angular.module('myApp.services', [])
 
                 },
                 isVisible: false,
+                getReport: function () {
+                    var allPromises = [];
+
+                    var EMGPService = new myGPService(AOIConfig.ortEnergyGPService);
+                    var CEGPService = new myGPService(AOIConfig.ortCommonGPService);
+                    var TIGPService = new myGPService(AOIConfig.ortTranspoGPService);
+                    var NRCGPService = new myGPService(AOIConfig.ortNaturalGPService);
+                    var ECGPService = new myGPService(AOIConfig.ortEconGPService);
+
+                    allPromises.push(EMGPService.run(AOI.drawLayerShape));
+                    allPromises.push(CEGPService.run(AOI.drawLayerShape));
+                    allPromises.push(TIGPService.run(AOI.drawLayerShape));
+                    allPromises.push(NRCGPService.run(AOI.drawLayerShape));
+                    allPromises.push(ECGPService.run(AOI.drawLayerShape));
+
+                    return $q.all(allPromises).then(function (results) {
+                        AOI.featureCollection = {fields: null, features: []};
+
+                        AOI.drawAreaJobId.EM = results[0].jobId;
+                        AOI.drawAreaJobId.CE = results[1].jobId;
+                        AOI.drawAreaJobId.TI = results[2].jobId;
+                        AOI.drawAreaJobId.NRC = results[3].jobId;
+                        AOI.drawAreaJobId.EC = results[4].jobId;
+
+                        angular.forEach(results, function (result, i) {
+                            if (!result.error) {
+                                if (!AOI.featureCollection.fields) AOI.featureCollection.fields = result.fields;
+                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, result.features);
+                            }
+                        });
+
+                        AOI.unloadData();
+                        AOI.loadData(-9999, '');
+                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
+                    });
+
+
+                },
+                getSavedReport: function () {
+                    var promises = [];
+
+                    var shapeDeferred = $q.defer();
+                    promises.push(shapeDeferred.promise);
+                    L.esri.get(AOIConfig.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId.CE + '/inputs/Report_Boundary', {}, function (error, response) {
+                        if (error) {
+
+                        } else {
+                            AOI.drawLayerShape = {
+                                type: "Feature",
+                                geometry: {
+                                    type: "Polygon",
+                                    coordinates: response.value.features[0].geometry.rings
+                                }
+                            };
+                            shapeDeferred.resolve();
+                        }
+                    });
+                    AOI.featureCollection = {fields: null, features: []};
+                    promises.push(myGetService.get(AOIConfig.ortCommonGPService, AOI.drawAreaJobId.CE));
+                    promises.push(myGetService.get(AOIConfig.ortEnergyGPService, AOI.drawAreaJobId.EM));
+                    promises.push(myGetService.get(AOIConfig.ortNaturalGPService, AOI.drawAreaJobId.NRC));
+                    promises.push(myGetService.get(AOIConfig.ortTranspoGPService, AOI.drawAreaJobId.TI));
+                    promises.push(myGetService.get(AOIConfig.ortEconGPService, AOI.drawAreaJobId.EC));
+
+
+                    $q.all(promises).then(function (results) {
+                        angular.forEach(results, function (result, i) {
+                            if (result) {
+                                if (!result.error) {
+                                    if (!AOI.featureCollection.fields) AOI.featureCollection.fields = result.value.fields;
+                                    AOI.featureCollection.features.push.apply(AOI.featureCollection.features, result.value.features);
+                                }
+                            }
+                        });
+                        AOI.loadData(-9999, '');
+                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
+                    });
+                },
                 loadData: function (AOI_ID, name) {
-
-
                     AOI.display(AOI_ID);
 
                     AOI.name = name;
@@ -573,33 +629,17 @@ angular.module('myApp.services', [])
                     });
 
                     if (AOI.ID === -9999) {
-                        if (!AOI.drawAreaJobId) {
-                            var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
+                        var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
 
-                            var newarray = [];
-                            angular.forEach(featureCollection.features, function (feature) {
-                                var newobject = {};
-                                angular.forEach(featureCollection.fields, function (field) {
-                                    newobject[field.name] = feature.attributes[field.name];
-                                });
-                                newarray.push(newobject);
+                        var newarray = [];
+                        angular.forEach(featureCollection.features, function (feature) {
+                            var newobject = {};
+                            angular.forEach(featureCollection.fields, function (field) {
+                                newobject[field.name] = feature.attributes[field.name];
                             });
-                            AOI.massageData(newarray);
-                        } else {
-                            var promises = [];
-                            AOI.featureCollection = {fields: null, features: []};
-                            angular.forEach(AOI.drawAreaJobId, function (value, key) {
-                                promises.push(myGetService.get(value).then(function (response) {
-                                    if (!AOI.featureCollection.fields) {
-                                        AOI.featureCollection.fields = response.value.fields;
-                                    }
-                                    AOI.featureCollection.features.push(response.value.features);
-                                }));
-                            });
-                            $q.all(promises).then(function () {
-                                AOI.massageData(newarray);
-                            });
-                        }
+                            newarray.push(newobject);
+                        });
+                        AOI.massageData(newarray);
 
                     } else {
                         var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerData);
@@ -620,9 +660,7 @@ angular.module('myApp.services', [])
                         });
                     }
                     AOI.isLoaded = true;
-                }
-                ,
-
+                },
                 massageData: function (featureCollection) {
 
                     var k = 0;
@@ -1997,7 +2035,7 @@ angular.module('myApp.services', [])
                     AOI.loadOceanJobContributionsChart();
                     //because? and until all direct DOM manipulation is removed from code, this $apply is useful to
                     // clear some digest issue that appear as timing issues.
-                    if (AOI.ID !== -9999)  {
+                    if (AOI.ID !== -9999) {
 
                         //$rootScope.$apply();
                     }
@@ -2007,7 +2045,7 @@ angular.module('myApp.services', [])
                 unloadData: function () {
 
                     if (AOI.isLoaded) {
-
+                        AOI.map.removeLayer(AOI.layer);
                         AOI.map.removeLayer(AOI.oceanDisposalSites);
                         AOI.map.removeLayer(AOI.HydrokineticLeases);
                         AOI.map.removeLayer(AOI.windPlanningLayer);
@@ -2101,7 +2139,7 @@ angular.module('myApp.services', [])
                         AOI.ECStateGDP.length = 0;
                         AOI.ECCountyGDP.length = 0;
                         AOI.OceanJobContributionsSeries.length = 0;
-                        AOI.drawAreaJobId.length = 0;
+                        AOI.drawAreaJobId = {};
                         AOI.Shared = false;
                         AOI.CEPlaces.length = 0;
                         AOI.TIShipping.length = 0;
@@ -2833,11 +2871,11 @@ angular.module('myApp.services', [])
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
                     if (AOI.ID === -9999) {
                         shareURL = shareURL +
-                            '&TI=' + AOI.drawAreaJobId['TI'] +
-                            '&EC=' + AOI.drawAreaJobId['EC'] +
-                            '&CE=' + AOI.drawAreaJobId['CE'] +
-                            '&NRC=' + AOI.drawAreaJobId['NRC'] +
-                            '&EM=' + AOI.drawAreaJobId['EM']
+                            '&TI=' + AOI.drawAreaJobId.TI +
+                            '&EC=' + AOI.drawAreaJobId.EC +
+                            '&CE=' + AOI.drawAreaJobId.CE +
+                            '&NRC=' + AOI.drawAreaJobId.NRC +
+                            '&EM=' + AOI.drawAreaJobId.EM
                     }
                     return (shareURL);
                 }

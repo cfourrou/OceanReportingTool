@@ -115,7 +115,12 @@ angular.module('myApp.directives', [])
             replace: true,
             templateUrl: 'partials/ortMap.html',
             controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', function ($scope, $element, L, AOI, AOIConfig) {
-
+                function clearMouseLayer () {
+                    if (mouseLayer) {
+                        $scope.map.removeLayer(mouseLayer);
+                        mouseLayer = null;
+                    }
+                }
 
                 $scope.map = L.map('map', {
                     zoomControl: false,
@@ -234,6 +239,7 @@ angular.module('myApp.directives', [])
                 $scope.$watch('drawEnabled', function (newValue, oldValue) {
                     if (newValue !== oldValue) {
                         if (newValue) {
+                            clearMouseLayer();
                             searchControl.addTo($scope.map);
                             $element.css('width', '100%');
                             $element.find('#map').css('width', '100%');
@@ -296,10 +302,7 @@ angular.module('myApp.directives', [])
                 };
 
                 $scope.mouseOut = function () {
-                    if (mouseLayer) {
-                        $scope.map.removeLayer(mouseLayer);
-                        mouseLayer = null;
-                    }
+                    clearMouseLayer();
                 };
 
                 $scope.resetMap = function () {
@@ -308,6 +311,7 @@ angular.module('myApp.directives', [])
                     $scope.drawEnabled = false;
                     $scope.polyLayerEnabled = false;
                     $scope.map.setView([33.51, -78.3], 6);
+                    clearMouseLayer();
                 };
 
                 // create panes???
