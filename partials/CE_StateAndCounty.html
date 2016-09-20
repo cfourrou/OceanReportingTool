@@ -1,7 +1,5 @@
 <div class="infographic-box-medium" tabindex="0">
     <div>
-
-
         <div class="infographicTitle">
             <div class="floatitleft">State and County</div>
             <!-- iButton start-->
@@ -37,7 +35,7 @@
         </div>
         <div class="h20"></div>
         <div class="floatitleft padbottom10">
-            <div ng-repeat="istate in AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
+            <div ng-repeat="istate in AOIvm.AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
 
 
                 <div class="infolisthead2">{{istate.st_name}}
@@ -46,7 +44,7 @@
                 <div class="infolist">
 
 
-                    <div ng-repeat="icounty in AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
+                    <div ng-repeat="icounty in AOIvm.AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
 
 
                         <div class="infolistitem">{{icounty.cntyname}}</div>
@@ -58,7 +56,7 @@
 
             </div>
         </div>
-        <highchart id="stateAndFedContainer" config="AOI.highchartsNGState" class="stateandFedchart"></highchart>
+        <highchart id="stateAndFedContainer" config="AOIvm.AOI.highchartsNGState" class="stateandFedchart"></highchart>
 
         <div>
 

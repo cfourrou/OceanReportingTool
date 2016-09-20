@@ -121,11 +121,11 @@
 </div>
 <div id="wrapper">
     <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl as mainSlide">
+    <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl as vm">
         <script type="text/ng-template" id="Share1.html">
             <div id="custom-modal">
                 <div id="overlay">
-                    <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <a href="" class="modal-close" ng-click="vm.close('Cancel')">
                         <svg class="" viewBox="0 0 24 24">
                             <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                             <path d="M0 0h24v24h-24z" fill="none"/>
@@ -143,7 +143,7 @@
             <div id="custom-modal">
                 <div id="overlay">
                     <div class="backgroundortblue">
-                        <a href="" class="modal-close" ng-click="close('Cancel')">
+                        <a href="" class="modal-close" ng-click="vm.close('Cancel')">
                             <svg class="" viewBox="0 0 24 24">
                                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                 <path d="M0 0h24v24h-24z" fill="none"/>
@@ -191,16 +191,16 @@
         <div id="main_content" class="inner">
             <div class="nav_bar">
                 <div class="nav_menu_left">
-                    <a ui-sref="splash" class="resetbutton" ng-click="startOver()" role="button">RESET</a>
-                    <a ui-sref="menu" class="areasbutton" ng-click="startMenu()" role="button">KNOWN AREAS</a>
-                    <a ui-sref="draw" class="drawbutton" ng-click="off()" role="button">DRAW AREA</a>
+                    <a ui-sref="splash" class="resetbutton" ng-click="vm.startOver()" role="button">RESET</a>
+                    <a ui-sref="menu" class="areasbutton" ng-click="vm.startMenu()" role="button">KNOWN AREAS</a>
+                    <a ui-sref="draw" class="drawbutton" ng-click="vm.off()" role="button">DRAW AREA</a>
 
 
                 </div>
-                <div ng-cloak ng-show="AOI.isLoaded" class="nav_menu_right">
+                <div ng-cloak ng-show="vm.AOI.isLoaded" class="nav_menu_right">
 
                     <button class="rightbuttonItalics" role="button" ui-sref="CEview" href="">
-                        {{AOI.name.toUpperCase()}}
+                        {{vm.AOI.name.toUpperCase()}}
                     </button>
                     <button class="rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
                     <button class="rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
@@ -214,16 +214,17 @@
             </div>
             <div id="contentliquid">
 
-                <ort-map zoom-level="zoomlevel" draw-enabled="drawtoolOn" draw-on="drawOn" draw-off="drawOff" map="AOI.map"
-                         basemap-control-enabled="baseMapControlOn" search-control-enabled="searchControlOn"
-                         mouse-over="mover" mouse-out="mout" poly-layer-enabled="polyLayerOn"
-                         reset-map="resetMap" draw-button-text="drawOrSubmitCommand" draw-it="drawIt">
+                <ort-map zoom-level="vm.zoomlevel" draw-enabled="vm.drawtoolOn" draw-on="vm.drawOn"
+                         draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
+                         search-control-enabled="vm.searchControlOn" mouse-over="vm.mover" mouse-out="vm.mout"
+                         poly-layer-enabled="vm.polyLayerOn" reset-map="vm.resetMap"
+                         draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt">
                 </ort-map>
 
                 <div id="slide_div">
                 </div>
 
-                <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
+                <div id="slide1" pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
                      ps-custom-top="55px">
                     <div ui-view class="h900"></div>
                     <div id="foot" class="footer2">
@@ -255,7 +256,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?c9dcaeb4dde84ad5"></script>
+<script src="js/ort.js?bd36104cfb944e3a"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

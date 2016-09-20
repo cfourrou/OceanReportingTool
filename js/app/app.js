@@ -153,12 +153,12 @@ $http.get("gis_config.json").then(function (result) {
                 .state('CEview', {
 
                     templateUrl: 'partials/CommonElements.html',
-                    controller: 'AOICtrl'
+                    controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
                     url: '/AOI?AOIdetail',
                     templateUrl: 'partials/CommonElements.html',
-                    controller: 'AOICtrl'
+                    controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {
 

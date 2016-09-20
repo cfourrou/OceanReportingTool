@@ -42,13 +42,13 @@
 
         </div>
         <div class="infomenu">
-            <div class="infoDropDownMenu2" ng-click="congressActivate()">
+            <div class="infoDropDownMenu2" ng-click="AOIvm.congressActivate()">
                 <div class="boundaryItem">
                     <div class="floatitleft w79"> Congressional Districts</div>
-                    <div class="infomenuplus">{{congressMenu}}</div>
+                    <div class="infomenuplus">{{AOIvm.congressMenu}}</div>
                 </div>
 
-                <div class="infoDropDownList" ng-show="congressIsActive" ng-repeat="congress in AOI.CECongress">
+                <div class="infoDropDownList" ng-show="AOIvm.congressIsActive" ng-repeat="congress in AOIvm.AOI.CECongress">
                     <div class="politicallist floatitleft" ng-if="$odd">{{congress.stateName}} {{congress.NAMELSAD}}
                     </div>
                     <div class="politicallist floatitleft" ng-if="$even">{{congress.stateName}} {{congress.NAMELSAD}}
@@ -56,25 +56,25 @@
                 </div>
             </div>
             <div class="infomenuspacer"></div>
-            <div class="infoDropDownMenu2" ng-click="senateActivate()">
+            <div class="infoDropDownMenu2" ng-click="AOIvm.senateActivate()">
                 <div class="boundaryItem">
                     <div class="floatitleft w79"> State Senate</div>
-                    <div class="infomenuplus">{{senateMenu}}</div>
+                    <div class="infomenuplus">{{AOIvm.senateMenu}}</div>
                 </div>
 
-                <div class="infoDropDownList" ng-show="senateIsActive" ng-repeat="senate in AOI.CESenate">
+                <div class="infoDropDownList" ng-show="AOIvm.senateIsActive" ng-repeat="senate in AOIvm.AOI.CESenate">
                     <div class="politicallist floatitleft" ng-if="$odd">{{senate.stateName}} {{senate.NAMELSAD}}</div>
                     <div class="politicallist floatitleft" ng-if="$even">{{senate.stateName}} {{senate.NAMELSAD}}</div>
                 </div>
             </div>
             <div class="infomenuspacer"></div>
-            <div class="infoDropDownMenu2" ng-click="houseActivate()">
+            <div class="infoDropDownMenu2" ng-click="AOIvm.houseActivate()">
                 <div class="boundaryItem">
                     <div class="floatitleft w79"> State House</div>
-                    <div class="infomenuplus">{{houseMenu}}</div>
+                    <div class="infomenuplus">{{AOIvm.houseMenu}}</div>
                 </div>
 
-                <div class="infoDropDownList" ng-show="houseIsActive" ng-repeat="house in AOI.CEHouse">
+                <div class="infoDropDownList" ng-show="AOIvm.houseIsActive" ng-repeat="house in AOIvm.AOI.CEHouse">
                     <div class="politicallist floatitleft" ng-if="$odd">{{house.stateName}} {{house.NAMELSAD}}</div>
                     <div class="politicallist floatitleft" ng-if="even">{{house.stateName}} {{house.NAMELSAD}}</div>
                 </div>
