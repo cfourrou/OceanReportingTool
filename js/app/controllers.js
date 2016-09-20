@@ -164,6 +164,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
     .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
+        var vm = this;
         $scope.AOI = AOI;
         AOI.inPrintWindow = false;
         $scope.name = "EnergyAndMineralsCtrl";
@@ -225,7 +226,9 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 
             $scope.box = [];
+
             var len = 2000;
+
             for (var i = 0; i < len; i++) {
                 $scope.box.push({
                     myid: i,
