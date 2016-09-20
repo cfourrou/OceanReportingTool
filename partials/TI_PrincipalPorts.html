@@ -32,11 +32,11 @@
 
             </div>
             <!-- iButton end-->
-            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.TIPrincipalPortsIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleTIPrincipalPorts()" ng-include="'img/switch_off.svg'"></div>
+            <div class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
+                <div ng-class="TIvm.AOI.TIPrincipalPortsIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="TIvm.AOI.toggleTIPrincipalPorts()" ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div class="sliderbuttont2" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
+            <div class="sliderbuttont2" ng-hide="TIvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
         <div>
@@ -51,17 +51,17 @@
 
                     </div>
                     <div class="anchorbox"><img class="anchordistance" src="img/transportation-anchor.svg">
-                        <div class="distancetext">{{AOI.TIPrincipalPorts[0].Dist_Mi.toFixed(2)}} miles</div>
+                        <div class="distancetext">{{TIvm.AOI.TIPrincipalPorts[0].Dist_Mi.toFixed(2)}} miles</div>
                     </div>
                     <div class="anchorbox"><img class="anchordistance" src="img/transportation-anchor.svg">
-                        <div class="distancetext">{{AOI.TIPrincipalPorts[1].Dist_Mi.toFixed(2)}} miles</div>
+                        <div class="distancetext">{{TIvm.AOI.TIPrincipalPorts[1].Dist_Mi.toFixed(2)}} miles</div>
                     </div>
                 </div>
 
             </div>
 
             <div class="GreyText14 floatitleft padLeft15 w100"
-                 ng-repeat="x in AOI.TIPrincipalPorts| orderBy : 'Dist_Mi'">
+                 ng-repeat="x in TIvm.AOI.TIPrincipalPorts| orderBy : 'Dist_Mi'">
                 <img class="anchor" src="img/transportation-anchor.svg">{{x.PortName}} - {{x.Total| number}} tonnage
             </div>
         </div>

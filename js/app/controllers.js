@@ -1,7 +1,7 @@
 'use strict';
 
-function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                        myQueryService, AOIConfig) {
+function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
+                       myQueryService, AOIConfig) {
     //this one loads once on start up
     var vm = this;
 
@@ -299,10 +299,12 @@ function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, 
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
-PageslideCtrl.prototype.mout = function (id) {};
-PageslideCtrl.prototype.paneon = function (id) {};
+PageslideCtrl.prototype.mout = function (id) {
+};
+PageslideCtrl.prototype.paneon = function (id) {
+};
 
-function AOICtrl (AOI, webService) {
+function AOICtrl(AOI, webService) {
     var vm = this;
 
     vm.AOI = AOI;
@@ -360,10 +362,10 @@ AOICtrl.prototype.childPaneOn = function () {
     this.paneon();
 };
 
-function NaturalResourceCtrl (AOI, webService) {
+function NaturalResourceCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
-    AOI.inPrintWindow = false;
+    vm.AOI.inPrintWindow = false;
     vm.name = "NaturalResourcesCtrl";
     webService.getData('NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
@@ -373,8 +375,63 @@ function NaturalResourceCtrl (AOI, webService) {
 }
 
 NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
-NaturalResourceCtrl.childPaneOn = function () {
-  this.paneon();
+NaturalResourceCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function TransportationAndInfrastructureCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "TransportationAndInfrastructureCtrl";
+    webService.getData('TI_config.json').then(function (result) {
+        vm.TIConfig = result;
+    });
+
+
+    vm.childPaneOn();
+
+}
+TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
+TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function EnergyAndMineralsCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "EnergyAndMineralsCtrl";
+    webService.getData('EM_config.json').then(function (result) {
+        vm.EMConfig = result;
+    });
+
+
+    vm.childPaneOn();
+}
+
+EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
+EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function EconCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "EconCtrl";
+    webService.getData('EC_config.json').then(function (result) {
+        vm.ECConfig = result;
+    });
+
+
+    vm.childPaneOn();
+
+}
+
+EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
+EconCtrl.prototype.childPaneOn = function () {
+    this.paneon();
 };
 
 angular.module('myApp.controllers', ["pageslide-directive"])
@@ -458,43 +515,15 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
 
-    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "EnergyAndMineralsCtrl";
-        webService.getData('EM_config.json').then(function (result) {
-            $scope.EMConfig = result;
-        });
+    .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
 
 
-        $scope.paneon();
-    }])
+    .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
 
-    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "TransportationAndInfrastructureCtrl";
-        webService.getData('TI_config.json').then(function (result) {
-            $scope.TIConfig = result;
-        });
-
-
-        $scope.paneon();
-
-    }])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
 
-    .controller('EconCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "EconCtrl";
-        webService.getData('EC_config.json').then(function (result) {
-            $scope.ECConfig = result;
-        });
+    .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
 
-
-        $scope.paneon();
-    }])
 
     .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
         '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', PageslideCtrl]);

@@ -2,18 +2,18 @@
     <div id="wrbox1">
         <div id="line1a">Wind Resource Potential</div>
 
-        <div id="slider_but0" class="sliderbutton" ng-hide="AOI.toggleFull===true">
-            <div ng-class="AOI.windrpLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="AOI.toggleWindrpLayer()" ng-include="'img/switch_off.svg'"></div>
+        <div id="slider_but0" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.windrpLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleWindrpLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
 
 
     <div id="line2">
         <div class="floatitleft w25"> Weighted Average:<br>
-            {{AOI.wind[0].AVG_WGHT}} m/s
+            {{EMvm.AOI.wind[0].AVG_WGHT}} m/s
         </div>
         <div>
 
@@ -22,7 +22,7 @@
                             alttext="Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy."
                             message="message"
                             modal-img="img/info.svg"
-                            metadata-url="{{AOI.wind[0].CAPACITY}}"></info-directive>
+                            metadata-url="{{EMvm.AOI.wind[0].CAPACITY}}"></info-directive>
 
             <script type="text/ng-template" id="modal0.html">
                 <div id="custom-modal">
@@ -45,7 +45,7 @@
         </div>
         <div id="spacer">&nbsp;</div>
         <div class="floatitleft w38">Potential Houses Supported Annually:
-            {{AOI.wind[0].HOUSES_SUM}}
+            {{EMvm.AOI.wind[0].HOUSES_SUM}}
         </div>
         <!-- iButton start-->
         <div>
@@ -136,7 +136,7 @@
         <img class="windmillbinary" id="binaryImage"/>
     </div>
     <!--div id="container"></div-->
-    <highchart id="container" config="AOI.highchartsNG"></highchart>
+    <highchart id="container" config="EMvm.AOI.highchartsNG"></highchart>
 
 
     <br>

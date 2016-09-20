@@ -32,20 +32,20 @@
 
             </div>
             <!-- iButton end-->
-            <!--<div id="slider_but47" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.TISubmarineIsVisable ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
+            <!--<div id="slider_but47" class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
+                <div ng-class="TIvm.AOI.TISubmarineIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="TIvm.AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
             </div>-->
 
         </div>
         <div>
             <div class="GreyText14 floatitleft padLeft15 w100">
-                <span class="boemline2b"><ng-hide ng-hide="AOI.TIShippingTotal>=0">0
-                </ng-hide>{{AOI.TIShippingTotal}}</span><span
+                <span class="boemline2b"><ng-hide ng-hide="TIvm.AOI.TIShippingTotal>=0">0
+                </ng-hide>{{TIvm.AOI.TIShippingTotal}}</span><span
                     class="boemline2a"> within 1nm</span>
 
             </div>
-            <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in AOI.TIShipping">
+            <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in TIvm.AOI.TIShipping">
                 {{x.THEMELAYER}} - {{x.THEMELAYER_CNT}}
             </div>
         </div>

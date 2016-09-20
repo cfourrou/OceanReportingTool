@@ -168,17 +168,17 @@ $http.get("gis_config.json").then(function (result) {
                 .state('TIview', {
 
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
-                    controller: 'TransportationAndInfrastructureCtrl'
+                    controller: 'TransportationAndInfrastructureCtrl as TIvm'
                 })
                 .state('EMview', {
 
                     templateUrl: 'partials/EnergyAndMinerals.html',
-                    controller: 'EnergyAndMineralsCtrl'
+                    controller: 'EnergyAndMineralsCtrl as EMvm'
                 })
                 .state('ECview', {
 
                     templateUrl: 'partials/EconomicsAndCommerce.html',
-                    controller: 'EconCtrl'
+                    controller: 'EconCtrl as ECvm'
                 })
                 .state('meta', {
 

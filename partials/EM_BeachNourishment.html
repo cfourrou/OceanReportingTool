@@ -1,10 +1,10 @@
 <div class="infographic-box-medium" tabindex="0">
     <div id="wrbox1">
-        <div id="slider_but11" class="sliderbutton" ng-hide="AOI.toggleFull===true">
-            <div ng-class="AOI.beachNourishIsVisable ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="AOI.togglebeachNourish()" ng-include="'img/switch_off.svg'"></div>
+        <div id="slider_but11" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.beachNourishIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.togglebeachNourish()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
+        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
         <div class="infographicline1">Beach Nourishment Projects</div>
 
@@ -44,7 +44,7 @@
 
             <div class="floatitleft GreyText10 padLeft15">
                 <table class="table_beachnourishment">
-                    <tr ng-repeat="beach in AOI.beachNur | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
+                    <tr ng-repeat="beach in EMvm.AOI.beachNur | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
 
 
                         <td ng-if="$odd" class="oddrow">
@@ -59,7 +59,7 @@
                         <td class="table_beachnourishmentchart">
 
                             <table>
-                                <tr ng-repeat="year in AOI.beachNur | filter: {BEACH_AREA: beach.BEACH_AREA}:true | orderBy : 'YEAR'">
+                                <tr ng-repeat="year in EMvm.AOI.beachNur | filter: {BEACH_AREA: beach.BEACH_AREA}:true | orderBy : 'YEAR'">
 
                                     <td class="table_beachnourishmentchartrow">
                                         <div ng-class="'a_'+year.YEAR" class="beachnourishchartbar"
@@ -87,7 +87,7 @@
             <div class="beachnourishchartyearbox">
 
             </div>
-            <div ng-repeat="yearx in AOI.beachNur | unique: 'YEAR' | orderBy : 'YEAR'" class=" GreyText12 padLeft25">
+            <div ng-repeat="yearx in EMvm.AOI.beachNur | unique: 'YEAR' | orderBy : 'YEAR'" class=" GreyText12 padLeft25">
                 <svg width="8" height="8">
                     <rect width="8" height="8" ng-class="'a_'+yearx.YEAR"/>
                 </svg>

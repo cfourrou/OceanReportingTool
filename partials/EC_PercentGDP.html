@@ -38,11 +38,11 @@
 
 
             </div>
-            <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in AOI.ECStateGDP| orderBy : 'st_name'">
+            <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in ECvm.AOI.ECStateGDP| orderBy : 'st_name'">
                 <div><b>{{x.st_name}}</b> : {{x.PercentTotGDP}}%</div>
 
             </div>
-            <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in AOI.ECCountyGDP| orderBy : 'cntyname'">
+            <div class="GreyText12 floatitleft padLeft15 w100" ng-repeat="x in ECvm.AOI.ECCountyGDP| orderBy : 'cntyname'">
                 <div><b>{{x.cntyname}}</b> : {{x.PercentTotGDP}}%</div>
 
             </div>
