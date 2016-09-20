@@ -1,6 +1,7 @@
 'use strict';
 
-function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService) {
+function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
+                        myQueryService, AOIConfig) {
     //this one loads once on start up
     var vm = this;
 
@@ -54,11 +55,11 @@ function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, 
     vm.stopSpin = function () {
         usSpinnerService.stop('spinner-1');
     };
-    var EMGPService = new myGPService(AOI.config.ortEnergyGPService);
-    var CEGPService = new myGPService(AOI.config.ortCommonGPService);
-    var TIGPService = new myGPService(AOI.config.ortTranspoGPService);
-    var NRCGPService = new myGPService(AOI.config.ortNaturalGPService);
-    var ECGPService = new myGPService(AOI.config.ortEconGPService);
+    var EMGPService = new myGPService(AOIConfig.ortEnergyGPService);
+    var CEGPService = new myGPService(AOIConfig.ortCommonGPService);
+    var TIGPService = new myGPService(AOIConfig.ortTranspoGPService);
+    var NRCGPService = new myGPService(AOIConfig.ortNaturalGPService);
+    var ECGPService = new myGPService(AOIConfig.ortEconGPService);
 
     var allPromises = [];
 
@@ -228,7 +229,7 @@ function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, 
 
     vm.paneon = function () {
         vm.checked = true;
-        document.getElementById("slide1").style.width = '50%';
+        //document.getElementById("slide1").style.width = '50%';
         AOI.toggleFull = false;
     };
 
@@ -236,146 +237,63 @@ function PageslideCtrl (AOI, ModalService, $state, usSpinnerService, $location, 
     vm.aoistates = [];
 
 
-    var query = L.esri.query({
-        url: AOI.config.ortMapServer + AOI.config.ortLayerAOI
+    var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerAOI);
 
+    queryService.query("KNOWN_AREA='Special Interest Areas'").then(function (featureCollection) {
+        vm.aoismenu = [];
+        angular.forEach(featureCollection.features, function (feature, i) {
+            vm.aoismenu.push({
+                AOI_NAME: feature.properties.AOI_NAME,
+                COMMON_NM: feature.properties.COMMON_NM,
+                REPORT_TYPE: feature.properties.REPORT_TYPE,
+                AOI_ID: feature.properties.AOI_ID,
+                DATASET_NM: feature.properties.DATASET_NM,
+                DESC_: feature.properties.DESC_
+            });
+        });
+
+        vm.aoismenu.sort(function (a, b) {
+            return a.AOI_NAME.localeCompare(b.AOI_NAME);
+        });
+    }).catch(function (error) {
+        // todo: what to do on error?
+        console.log(error);
     });
 
-    query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
-
-        var ba = 0;
-
-        for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-
-            vm.aoismenu[ba] = {
+    queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
+        angular.forEach(featureCollection.features, function (feature, i) {
+            vm.aoistates[i] = {
                 AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
                 COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                REPORT_TYPE: featureCollection.features[i].properties.REPORT_TYPE,
+                REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                 AOI_ID: featureCollection.features[i].properties.AOI_ID,
                 DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
                 DESC_: featureCollection.features[i].properties.DESC_
             };
-            ba++;
+        });
 
-        }
-
-        vm.aoismenu.sort(function (a, b) {
-
+        vm.aoistates.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
+    }).catch(function (error) {
+        // todo: what to do on error?
+        console.log(error);
     });
-
-
-    query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
-            var ba = 0;
-            for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-                vm.aoistates[ba] = {
-                    AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
-                    COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                    REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
-                    AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                    DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                    DESC_: featureCollection.features[i].properties.DESC_
-                };
-                ba++;
-            }
-
-            vm.aoistates.sort(function (a, b) {
-                return a.AOI_NAME.localeCompare(b.AOI_NAME);
-            });
-
-        }
-    );
-
 
     if ($location.search().AOI) {
         AOI.Shared = true;
         if ($location.search().AOI !== '-9999') {
-            query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
-                    AOI.name = featureCollection.features[0].properties.AOI_NAME;
-                }
-            );
-            AOI.loadData($location.search().AOI, AOI.name);
-
-
+            AOI.loadData($location.search().AOI, '');
         } else {
             AOI.drawAreaJobId['CE'] = $location.search().CE;
             AOI.drawAreaJobId['EM'] = $location.search().EM;
             AOI.drawAreaJobId['EC'] = $location.search().EC;
             AOI.drawAreaJobId['NRC'] = $location.search().NRC;
             AOI.drawAreaJobId['TI'] = $location.search().TI;
-            AOI.name = "My Report";
+            //AOI.name = "My Report";
             AOI.ID = -9999;
 
-            var promise1 = $q.defer(), promise2 = $q.defer(), promise3 = $q.defer(), promise4 = $q.defer(), promise5 = $q.defer(), promise6 = $q.defer();
-            var promises = [promise1.promise, promise2.promise, promise3.promise, promise4.promise, promise5.promise, promise6.promise];
-
-            L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
-                if (error) {
-
-                } else {
-
-                    AOI.drawLayerShape = {
-                        type: "Feature",
-                        geometry: {
-                            type: "Polygon",
-                            coordinates: response.value.features[0].geometry.rings,
-
-                        }
-
-                    };
-
-                    promise1.resolve();
-                }
-            });
-
-            L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/results/Output_Report', {}, function (error, response) {
-                if (error) {
-
-                } else {
-                    AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
-                    promise2.resolve();
-                }
-                L.esri.get(AOI.config.ortEnergyGPService + '/jobs/' + AOI.drawAreaJobId['EM'] + '/results/Output_Report', {}, function (error, response) {
-                    if (error) {
-                        ;
-                    } else {
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                        promise3.resolve();
-                    }
-                });
-                L.esri.get(AOI.config.ortNaturalGPService + '/jobs/' + AOI.drawAreaJobId['NRC'] + '/results/Output_Report', {}, function (error, response) {
-                    if (error) {
-
-                    } else {
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                        promise4.resolve();
-                    }
-                });
-                L.esri.get(AOI.config.ortTranspoGPService + '/jobs/' + AOI.drawAreaJobId['TI'] + '/results/Output_Report', {}, function (error, response) {
-                    if (error) {
-
-                    } else {
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                        promise5.resolve();
-                    }
-                });
-                L.esri.get(AOI.config.ortEconGPService + '/jobs/' + AOI.drawAreaJobId['EC'] + '/results/Output_Report', {}, function (error, response) {
-                    if (error) {
-
-                    } else {
-                        AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                        promise6.resolve();
-                    }
-                });
-
-            });
-            $q.all(promises).then(function () {
-                AOI.loadData(AOI.ID, AOI.name);
-                AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
-            });
-
-
+            AOI.loadData(AOI, "My Report");
         }
     }
 }
@@ -438,26 +356,36 @@ AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
 AOICtrl.prototype.childMouseOut = function (id) {
     this.mout(id);
 };
-AOICtrl.prototype.childPaneOn = function (id) {
-    this.paneon(id);
+AOICtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function NaturalResourceCtrl (AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    AOI.inPrintWindow = false;
+    vm.name = "NaturalResourcesCtrl";
+    webService.getData('NRC_config.json').then(function (result) {
+        vm.NRCConfig = result;
+    });
+
+    vm.childPaneOn();
+}
+
+NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
+NaturalResourceCtrl.childPaneOn = function () {
+  this.paneon();
 };
 
 angular.module('myApp.controllers', ["pageslide-directive"])
-
-
     .controller('ModalController', function ($scope, metaurl, close) {
-
         $scope.metadataurl = metaurl;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
-
-
     })
     .controller('submitModalController', function ($scope, close) {
-
         close(false, 6000);//close after 10 seconds anyway.
-
     })
 
     .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService', function (AOI, $scope, $timeout, $document, webService) {
@@ -554,16 +482,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.paneon();
 
     }])
-    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "NaturalResourcesCtrl";
-        webService.getData('NRC_config.json').then(function (result) {
-            $scope.NRCConfig = result;
-        });
-
-        $scope.paneon();
-    }])
+    .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
 
     .controller('EconCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
         $scope.AOI = AOI;
@@ -578,7 +497,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     }])
 
     .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', PageslideCtrl]);
+        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', PageslideCtrl]);
 
 
 angular.element(document).ready(function () {

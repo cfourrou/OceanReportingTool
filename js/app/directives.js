@@ -114,7 +114,7 @@ angular.module('myApp.directives', [])
             },
             replace: true,
             templateUrl: 'partials/ortMap.html',
-            controller: ['$scope', '$element', 'L', 'AOI', function ($scope, $element, L, AOI) {
+            controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', function ($scope, $element, L, AOI, AOIConfig) {
 
 
                 $scope.map = L.map('map', {
@@ -174,7 +174,7 @@ angular.module('myApp.directives', [])
                     providers: [
                         L.esri.Geocoding.arcgisOnlineProvider(),
                         new L.esri.Geocoding.FeatureLayerProvider({
-                            url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
+                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
                             searchFields: ['AOI_NAME'],
                             label: 'Known Areas',
                             bufferRadius: 5000,
@@ -288,7 +288,7 @@ angular.module('myApp.directives', [])
 
                 $scope.mouseOver = function (AOI_id) {
                     mouseLayer = L.esri.featureLayer({
-                        url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
+                        url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
                         where: "AOI_ID =" + AOI_id + "",
                         color: '#EB660C', weight: 1.5, fillOpacity: .3,
                         simplifyFactor: 2.0
@@ -311,7 +311,7 @@ angular.module('myApp.directives', [])
                 };
 
                 // create panes???
-                angular.forEach(AOI.config.optionalLayers,function(value, key){
+                angular.forEach(AOIConfig.optionalLayers,function(value, key){
                     $scope.map.createPane(key + 'Pane');
                 });
             }]

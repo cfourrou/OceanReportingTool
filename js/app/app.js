@@ -104,10 +104,10 @@ $http.get("gis_config.json").then(function (result) {
             'ngAria'
 
         ])
-        .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
 
-            AOIProvider.config({
+            AOIConfigProvider.set({
                 ortMapServer: result.data['ortMapServer'].data,
                 ortLayerData: result.data['ortLayerData'].data,
                 ortLayerAOI: result.data['ortLayerAOI'].data,
@@ -148,7 +148,7 @@ $http.get("gis_config.json").then(function (result) {
 
                 .state('otherwise', {
                     url: '/main',
-                    templateUrl: 'partials/splash.html',
+                    templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
 
@@ -163,7 +163,7 @@ $http.get("gis_config.json").then(function (result) {
                 .state('NRCview', {
 
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
-                    controller: 'NaturalResourcesCtrl'
+                    controller: 'NaturalResourcesCtrl as NRCvm'
                 })
                 .state('TIview', {
 
