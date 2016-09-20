@@ -2480,7 +2480,7 @@ angular.module('myApp.services', [])
 
                     }
                     if (AOI.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
-                    else smallmap = L.map('map').setView([45.526, -122.667], 1);
+                    else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
                     L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
                     L.esri.basemapLayer('OceansLabels').addTo(smallmap);
                     esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
