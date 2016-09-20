@@ -246,8 +246,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             var NRCGPService = new myGPService(AOI.config.ortNaturalGPService);
             var ECGPService = new myGPService(AOI.config.ortEconGPService);
 
-
             var allPromises = [];
+
             $scope.drawIt = function () {
 
                 switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
@@ -263,6 +263,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         }
                         break;
                     case "Subm":
+                        allPromises = [];
+
                         $scope.showSubmitModal();
 
                         $scope.drawOrSubmitCommand = "Working";
@@ -276,21 +278,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
                         allPromises.push(ECGPService.run());
 
                         $q.all(allPromises).then(function (results) {
-                            AOI.featureCollection = {
-                                fields: null,
-                                features: null
-                            };
+                            delete AOI.featureCollection;
 
-                            if (results[0].output || results[1].output || results[2].output || results[3].output || results[4].output) {
+                            if (!results[0].error || !results[1].error || !results[2].error || !results[3].error || !results[4].error) {
 
-                                if (results[0].output) AOI.featureCollection = {
-                                    fields: results[0].output.fields,
-                                    features: results[0].output.features
+                                if (results[0]) AOI.featureCollection = {
+                                    fields: results[0].fields,
+                                    features: results[0].features
                                 };
-                                if (results[1].output) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].output.features);
-                                if (results[2].output)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].output.features);
-                                if (results[3].output) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].output.features);
-                                if (results[4].output)  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].output.features);
+                                if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
+                                if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
+                                if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
+                                if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
                             }
 
                             $scope.stopSpin();
@@ -332,7 +331,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
             $scope.completeDraw = function () {
                 $scope.drawtoolOn = false;
-                $scope.polyLayerOn = false;
                 $scope.searchControlEnabled = false;
                 $scope.drawOrSubmitCommand = "DRAW";
                 $scope.baseMapControlOn = false;
