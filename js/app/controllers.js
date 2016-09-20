@@ -421,7 +421,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService', function (AOI, $scope, $timeout, $document, webService) {
+    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService',
+        function (AOI, $scope, $timeout, $document, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
         $scope.congressIsActive = true;

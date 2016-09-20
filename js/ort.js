@@ -26407,7 +26407,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService', function (AOI, $scope, $timeout, $document, webService) {
+    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService',
+        function (AOI, $scope, $timeout, $document, webService) {
         $scope.AOI = AOI;
         AOI.inPrintWindow = true;
         $scope.congressIsActive = true;
@@ -26631,7 +26632,10 @@ angular.module('myApp.directives', [])
                     zoomControl: false,
                     maxZoom: 12
                 });
-
+                // create panes???
+                angular.forEach(AOIConfig.optionalLayers,function(value, key){
+                    $scope.map.createPane(key + 'Pane');
+                });
                 $scope.map.setView([33.51, -78.3], 6);
                 $scope.map.createPane('AOIfeature');
 
@@ -26818,11 +26822,6 @@ angular.module('myApp.directives', [])
                     $scope.map.setView([33.51, -78.3], 6);
                     clearMouseLayer();
                 };
-
-                // create panes???
-                angular.forEach(AOIConfig.optionalLayers,function(value, key){
-                    $scope.map.createPane(key + 'Pane');
-                });
             }]
         }
     }]);

@@ -126,7 +126,10 @@ angular.module('myApp.directives', [])
                     zoomControl: false,
                     maxZoom: 12
                 });
-
+                // create panes???
+                angular.forEach(AOIConfig.optionalLayers,function(value, key){
+                    $scope.map.createPane(key + 'Pane');
+                });
                 $scope.map.setView([33.51, -78.3], 6);
                 $scope.map.createPane('AOIfeature');
 
@@ -313,11 +316,6 @@ angular.module('myApp.directives', [])
                     $scope.map.setView([33.51, -78.3], 6);
                     clearMouseLayer();
                 };
-
-                // create panes???
-                angular.forEach(AOIConfig.optionalLayers,function(value, key){
-                    $scope.map.createPane(key + 'Pane');
-                });
             }]
         }
     }]);
