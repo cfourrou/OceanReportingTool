@@ -80,8 +80,6 @@ var marker;
 var smallmap;
 
 
-
-
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
 
@@ -118,37 +116,33 @@ $http.get("gis_config.json").then(function (result) {
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,
                 ortEconGPService: result.data['ortEconGPService'].data,
-                windrpLayer:result.data['optionalLayerPanes'].windrpLayer.num,
-                windLeaseLayer:result.data['optionalLayerPanes'].windLeaseLayer.num,
-                windPlanningLayer:result.data['optionalLayerPanes'].windPlanningLayer.num,
-                oceanDisposalSites:result.data['optionalLayerPanes'].oceanDisposalSites.num,
-                marineMineralsLeases:result.data['optionalLayerPanes'].marineMineralsLeases.num,
-                HydrokineticLeases:result.data['optionalLayerPanes'].HydrokineticLeases.num,
-                wavePower:result.data['optionalLayerPanes'].wavePower.num,
-                tidalPower:result.data['optionalLayerPanes'].tidalPower.num,
-                currentPower:result.data['optionalLayerPanes'].currentPower.num,
-                beachNourish:result.data['optionalLayerPanes'].beachNourish.num,
-                coastalEnergyFacilities:result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                CEElevation:result.data['optionalLayerPanes'].CEElevation.num,
-                ECCoastalCountiesLayer:result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
-                TISubmarineLayer:result.data['optionalLayerPanes'].TISubmarineLayer.num,
-                TIDangerZonesLayer:result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
-                CEPlaceLayer:result.data['optionalLayerPanes'].CEPlaceLayer.num,
-                CETribalLayer:result.data['optionalLayerPanes'].CETribalLayer.num,
-                TIVessels:result.data['optionalLayerPanes'].TIVessels.num,
-                TIPrincipalPortsLayer:result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                NRCNearbyLayer:result.data['optionalLayerPanes'].NRCNearbyLayer.num,
-                NRCReefsLayer:result.data['optionalLayerPanes'].NRCReefsLayer.num,
-                NRCSoftCoralLayer:result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
-                NRCStoneyCoralLayer:result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
-                NRCBarrierLayer:result.data['optionalLayerPanes'].NRCBarrierLayer.num
-
+                optionalLayers: {
+                    windrpLayer: result.data['optionalLayerPanes'].windrpLayer.num,
+                    windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
+                    windPlanningLayer: result.data['optionalLayerPanes'].windPlanningLayer.num,
+                    oceanDisposalSites: result.data['optionalLayerPanes'].oceanDisposalSites.num,
+                    marineMineralsLeases: result.data['optionalLayerPanes'].marineMineralsLeases.num,
+                    HydrokineticLeases: result.data['optionalLayerPanes'].HydrokineticLeases.num,
+                    wavePower: result.data['optionalLayerPanes'].wavePower.num,
+                    tidalPower: result.data['optionalLayerPanes'].tidalPower.num,
+                    currentPower: result.data['optionalLayerPanes'].currentPower.num,
+                    beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
+                    coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
+                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                    TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
+                    CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
+                    CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
+                    TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
+                    TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                    NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
+                    NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
+                    NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
+                    NRCBarrierLayer: result.data['optionalLayerPanes'].NRCBarrierLayer.num
+                }
             });
-
-            angular.forEach(result.data['optionalLayerPanes'],function(value, key){
-                map.createPane(key + 'Pane');
-            });
-
 
             $stateProvider
 

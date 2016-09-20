@@ -197,12 +197,6 @@ angular.module('myApp.directives', [])
                     $scope.$apply();
                 });
 
-                $scope.$watch('polyLayerEnabled', function (newValue, oldValue) {
-                    if (newValue !== oldValue) {
-                        //if (!newValue) $scope.map.removeLayer(polyLayer);
-                    }
-                });
-
                 $scope.drawAvailable = false;
 
                 $scope.drawOn = function () {
@@ -213,7 +207,7 @@ angular.module('myApp.directives', [])
                     $scope.map.doubleClickZoom.disable();
                     $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
                     //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                    searchControl.disable();
+                    if (searchControl) searchControl.disable();
                     $scope.drawLocked = true;
                     $scope.drawButtonText = "Drawing";
                     $scope.polyLayerEnabled = false;
@@ -232,7 +226,7 @@ angular.module('myApp.directives', [])
                     $scope.map.boxZoom.enable(); // shift mouse drag zooming.
                     //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
                     $scope.map.dragging.enable();
-                    searchControl.enable();
+                    if (searchControl) searchControl.enable();
                     $scope.drawLocked = false;
                     $scope.map.pm.disableDraw('Poly');
                 };
@@ -250,7 +244,10 @@ angular.module('myApp.directives', [])
                             $element.find('#map').css('width', '50%');
                             $scope.map.invalidateSize();
                             $scope.drawOff();
-                            $scope.map.removeLayer(polylayer);
+                            if (polylayer) {
+                                $scope.map.fitBounds(polylayer.getBounds());
+                                $scope.map.removeLayer(polylayer);
+                            }
                         }
                     }
                 });
@@ -311,8 +308,12 @@ angular.module('myApp.directives', [])
                     $scope.drawEnabled = false;
                     $scope.polyLayerEnabled = false;
                     $scope.map.setView([33.51, -78.3], 6);
-                }
+                };
 
+                // create panes???
+                angular.forEach(AOI.config.optionalLayers,function(value, key){
+                    $scope.map.createPane(key + 'Pane');
+                });
             }]
         }
     }]);
