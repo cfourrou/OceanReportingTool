@@ -34,11 +34,11 @@
 
             </div>
             <!-- iButton end-->
-            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.NRCNearbyLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleNRCNearby()" ng-include="'img/switch_off.svg'"></div>
+            <div class="inlinesliderbutton" ng-hide="NRCvm.AOI.toggleFull===true">
+                <div ng-class="NRCvm.AOI.NRCNearbyLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="NRCvm.AOI.toggleNRCNearby()" ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div class="sliderbuttont2" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
+            <div class="sliderbuttont2" ng-hide="NRCvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
 
@@ -59,7 +59,7 @@
                     <img src="img/svg-elements_nerrs-logo.svg">
 
                     <div class="floatitleft padLeft15 padbottom10">
-                        <div ng-repeat="x in AOI.NRCNearby  | orderBy : 'Site_Name'">
+                        <div ng-repeat="x in NRCvm.AOI.NRCNearby  | orderBy : 'Site_Name'">
                             <a href="{{x.URL}}" target="_blank">{{x.Site_Name}}</a>
                         </div>
                     </div>

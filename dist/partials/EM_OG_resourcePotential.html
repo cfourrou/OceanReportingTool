@@ -4,7 +4,7 @@
 
         <div class="infographicline3">
             <span class="boemline2a ">There are</span>
-            <span class="boemline2b ">{{AOI.OGresource[0].TOTAL_CNT}}</span>
+            <span class="boemline2b ">{{EMvm.AOI.OGresource[0].TOTAL_CNT}}</span>
             <span class="boemline2a ">plays within the area</span>
 
         </div>
@@ -64,7 +64,7 @@
                     <th class="OGTableBorderShort">Gas (tcf)</th>
                     <th class="OGTableBorderShort">BOE (bbl)</th>
                 </tr>
-                <tr class="GreychartBorder" ng-repeat="lease in AOI.OGresource | orderBy : 'OCS_Play'">
+                <tr class="GreychartBorder" ng-repeat="lease in EMvm.AOI.OGresource | orderBy : 'OCS_Play'">
                     <td class="GreychartBorder">
                         <div>{{lease.OCS_Play}}</div>
                     </td>

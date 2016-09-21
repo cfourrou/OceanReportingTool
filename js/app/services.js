@@ -1710,7 +1710,7 @@ angular.module('myApp.services', [])
                         smallmap.remove();
 
                     }
-                    if (AOI.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
+                    if (AOI.inPrintWindow) smallmap = L.map('smallmap', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
                     else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
                     L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
                     L.esri.basemapLayer('OceansLabels').addTo(smallmap);
@@ -1762,8 +1762,8 @@ angular.module('myApp.services', [])
                             img.width = dimensions.x;
                             img.height = dimensions.y;
                             img.src = canvas.toDataURL();
-                            document.getElementById('map3').innerHTML = '';
-                            document.getElementById('map3').appendChild(img);
+                            document.getElementById('smallmap').innerHTML = '';
+                            document.getElementById('smallmap').appendChild(img);
                         });
                     }
 
@@ -2017,7 +2017,7 @@ angular.module('myApp.services', [])
                             chart: {
                                 spacing: 0,
                                 margin: 0,
-                                type: 'column'
+                                type: 'column',
                             },
                             title: {
                                 text: null

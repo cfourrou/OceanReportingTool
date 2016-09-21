@@ -2,7 +2,7 @@
 indivdual infographics ID's 1-25 for EM
 -->
 
-<a ng-click="AOI.toggleFullSlider('EM')" href="" id="togglefull" class="toggleicon"
+<a ng-click="EMvm.AOI.toggleFullSlider('EM')" href="" id="togglefull" class="toggleicon"
    ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="toggleimg" src="img/ArrowButton.svg"></a>
 
 <div class="padding30 slide-right">
@@ -10,8 +10,8 @@ indivdual infographics ID's 1-25 for EM
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> <div  tabindex="0">Energy and Minerals</div>
-            <div class="narrative" ng-bind-html="AOI.narratives[1].narrative | unsafe" tabindex="0"></div>
-            <div ng-repeat="EMConf in EMConfig | orderBy: 'priority'">
+            <div class="narrative" ng-bind-html="EMvm.AOI.narratives[1].narrative | unsafe" tabindex="0"></div>
+            <div ng-repeat="EMConf in EMvm.EMConfig | orderBy: 'priority'">
                 <div ng-if="EMConf.priority" class="zeroheightkludge" ng-include="EMConf.filename"></div>
             </div>
 

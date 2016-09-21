@@ -34,11 +34,11 @@
             </div>
             <!-- iButton end-->
 
-            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.ECCoastalCountiesLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleECCoastalCountiesLayer()" ng-include="'img/switch_off.svg'"></div>
+            <div class="inlinesliderbutton" ng-hide="ECvm.AOI.toggleFull===true">
+                <div ng-class="ECvm.AOI.ECCoastalCountiesLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="ECvm.AOI.toggleECCoastalCountiesLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div class="sliderbuttont2" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
+            <div class="sliderbuttont2" ng-hide="ECvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
         <div>
@@ -66,7 +66,7 @@
                         <th>Total Houses</th>
                         <th>Median Household Income</th>
                     </tr>
-                    <tr class="GreyText14" ng-repeat="x in AOI.ECCountyGDP | orderBy : 'cntyname'">
+                    <tr class="GreyText14" ng-repeat="x in ECvm.AOI.ECCountyGDP | orderBy : 'cntyname'">
 
                         <td class="GreyText14 CamelCase">
                             <div><b>{{x.cntyname| lowercase}}</b></div>

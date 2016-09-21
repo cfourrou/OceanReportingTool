@@ -3,38 +3,16 @@
 /* Directives */
 
 
-function printDirective($state) {
-    var printSection = document.getElementById("printSection");
-
-    function printElement(elem) {
-        var domClone = elem.cloneNode(true);
-        if (!printSection) {
-            printSection = document.createElement("div");
-            printSection.id = "printSection";
-            document.body.appendChild(printSection);
-        } else {
-            printSection.innerHTML = "";
-        }
-        printSection.appendChild(domClone);
-    }
-
-    function link($scope, element, attrs) {
-        element.on("click", function () {
-            var elemToPrint = document.getElementById(attrs.printElementId);
-            if (elemToPrint) {
-                printElement(elemToPrint);
-                window.print();
-                $state.go('CEview');
-            }
-        });
-        $scope.updatePrint = function () {
-            var elemToPrint = document.getElementById(attrs.printElementId);
-            if (elemToPrint) {
-                printElement(elemToPrint);
-                window.print();
-                $state.go('CEview');
-            }
-        }
+function printDirective($state,$timeout) {
+    function link(scope, element, attrs) {
+        $timeout(function () {
+            var printElement = element[0].cloneNode(true);
+            printElement.id = 'printSection';
+            document.body.appendChild(printElement);
+            window.print();
+            printElement.innerHTML = "";
+            $state.go('CEview');
+        },5300)
     }
 
     return {
@@ -43,14 +21,13 @@ function printDirective($state) {
     };
 }
 
-
 angular.module('myApp.directives', [])
     .directive('appVersion', ['version', function (version) {
         return function (scope, elm, attrs) {
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$state', printDirective])
+    .directive("ngPrint", ['$state','$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -115,7 +92,7 @@ angular.module('myApp.directives', [])
             replace: true,
             templateUrl: 'partials/ortMap.html',
             controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', function ($scope, $element, L, AOI, AOIConfig) {
-                function clearMouseLayer () {
+                function clearMouseLayer() {
                     if (mouseLayer) {
                         $scope.map.removeLayer(mouseLayer);
                         mouseLayer = null;
@@ -127,7 +104,7 @@ angular.module('myApp.directives', [])
                     maxZoom: 12
                 });
                 // create panes???
-                angular.forEach(AOIConfig.optionalLayers,function(value, key){
+                angular.forEach(AOIConfig.optionalLayers, function (value, key) {
                     $scope.map.createPane(key + 'Pane');
                 });
                 $scope.map.setView([33.51, -78.3], 6);

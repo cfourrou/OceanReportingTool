@@ -33,11 +33,11 @@
             </div>
             <!-- iButton end-->
 
-            <div id="slider_but36" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.CEPlaceLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleCEPlaceLayer()" ng-include="'img/switch_off.svg'"></div>
+            <div id="slider_but36" class="inlinesliderbutton" ng-hide="AOIvm.AOI.toggleFull===true">
+                <div ng-class="AOIvm.AOI.CEPlaceLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOIvm.AOI.toggleCEPlaceLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div id="slbuttxt0" class="sliderbuttont2" ng-hide="AOI.toggleFull===true">DISPLAY ON MAP
+            <div id="slbuttxt0" class="sliderbuttont2" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
         <div>
@@ -64,7 +64,7 @@
                         <th>Population (2010)</th>
                         <th>Distance in Miles</th>
                     </tr>
-                    <tr class="GreyText14" ng-repeat="x in AOI.CEPlaces ">
+                    <tr class="GreyText14" ng-repeat="x in AOIvm.AOI.CEPlaces ">
                         <td class="GreyText14 CamelCase">
                             <div>{{x.Name| lowercase}}</div>
                         </td>
@@ -103,7 +103,7 @@
                         <th>Tribal Lands</th>
                         <th>Distance in Miles</th>
                     </tr>
-                    <tr class="GreyText14" ng-repeat="x in AOI.CETribalLands | orderBy : 'Dist_Mi'">
+                    <tr class="GreyText14" ng-repeat="x in AOIvm.AOI.CETribalLands | orderBy : 'Dist_Mi'">
                         <td class="GreyText14">
                             <div>{{x.NAMELSAD}}</div>
                         </td>

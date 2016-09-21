@@ -1,7 +1,7 @@
 <!--
 indivdual infographics ID's 66-75 for EC
 -->
-<a ng-click="AOI.toggleFullSlider('EC')" href="" id="togglefull" class="toggleicon"
+<a ng-click="ECvm.AOI.toggleFullSlider('EC')" href="" id="togglefull" class="toggleicon"
    ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="toggleimg" src="img/ArrowButton.svg"></a>
 
 
@@ -10,8 +10,8 @@ indivdual infographics ID's 66-75 for EC
 
     <div id="sliderData">
         <div id="AOItab" class="AOItabClass"> <div  tabindex="0">Economics and Commerce</div>
-            <div class="narrative" ng-bind-html="AOI.narratives[4].narrative | unsafe" tabindex="0"></div>
-            <div ng-repeat="ECConf in ECConfig | orderBy: 'priority'">
+            <div class="narrative" ng-bind-html="ECvm.AOI.narratives[4].narrative | unsafe" tabindex="0"></div>
+            <div ng-repeat="ECConf in ECvm.ECConfig | orderBy: 'priority'">
                 <div ng-if="ECConf.priority" class="zeroheightkludge" ng-include="ECConf.filename"></div>
             </div>
         </div>

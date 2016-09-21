@@ -1,8 +1,8 @@
 <div class="infographic-box-small" tabindex="0">
     <div id="wrbox1">
-        <div id="slider_but6" class="sliderbutton" ng-hide="AOI.toggleFull===true">
-            <div ng-class="AOI.HydrokineticLeasesIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="AOI.toggleHydrokineticLeases()" ng-include="'img/switch_off.svg'"></div>
+        <div id="slider_but6" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.HydrokineticLeasesIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleHydrokineticLeases()" ng-include="'img/switch_off.svg'"></div>
         </div>
 
         <div class="infographicline1">
@@ -44,10 +44,10 @@
 
 
         </div>
-        <div ng-repeat="count in AOI.hydrok | filter:query as filtered">
+        <div ng-repeat="count in EMvm.AOI.hydrok | filter:query as filtered">
         </div>
-        <div ng-repeat="dispx in AOI.hydrok | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in AOI.hydrok | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+        <div ng-repeat="dispx in EMvm.AOI.hydrok | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+            <div ng-repeat="count in EMvm.AOI.hydrok | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
             </div>
             <div id="boemline2">
                 <span class="boemline2b">{{filtered.length}}</span>

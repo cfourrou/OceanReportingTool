@@ -7,5 +7,4 @@
     { "filename":"partials/CE_PoliticalBoundaries.html", "priority":32 },
     { "filename":"partials/CE_StateAndCounty.html", "priority":26 },
     { "filename":"partials/CE_Places.html", "priority":33 }
-
 ]

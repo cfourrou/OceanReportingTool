@@ -1,8 +1,8 @@
 <div class="infographic-box-small" tabindex="0">
     <div id="wrbox1">
-        <div id="slider_but3" class="sliderbutton" ng-hide="AOI.toggleFull===true">
-            <div ng-class="AOI.oceanDisposalSitesIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="AOI.toggleOceanDisposalSites()" ng-include="'img/switch_off.svg'"></div>
+        <div id="slider_but3" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.oceanDisposalSitesIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleOceanDisposalSites()" ng-include="'img/switch_off.svg'"></div>
         </div>
 
         <div class="infographicline1">Ocean Disposal Sites</div>
@@ -47,10 +47,10 @@
 
         </div>
         <div class="GreyText10 padLeft15 floatitleft">
-            <div ng-repeat="count in AOI.disp | filter:query as filtered">
+            <div ng-repeat="count in EMvm.AOI.disp | filter:query as filtered">
             </div>
-            <div ng-repeat="dispx in AOI.disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-                <div ng-repeat="count in AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+            <div ng-repeat="dispx in EMvm.AOI.disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+                <div ng-repeat="count in EMvm.AOI.disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
                 </div>
                 <div id="boemline2">
                     <span class="boemline2b">{{filtered.length}}</span>

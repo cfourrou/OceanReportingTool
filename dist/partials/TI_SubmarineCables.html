@@ -33,16 +33,16 @@
 
             </div>
             <!-- iButton end-->
-            <div id="slider_but46" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.TISubmarineIsVisable ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
+            <div id="slider_but46" class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
+                <div ng-class="TIvm.AOI.TISubmarineIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="TIvm.AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
             </div>
 
         </div>
         <div>
             <div class="GreyText14 floatitleft padLeft15 w100">
 
-                <span class="boemline2b"><ng-hide ng-hide="AOI.TISubmarine[0].TOTAL_CNT>=0">0</ng-hide>{{AOI.TISubmarine[0].TOTAL_CNT}}</span><span
+                <span class="boemline2b"><ng-hide ng-hide="TIvm.AOI.TISubmarine[0].TOTAL_CNT>=0">0</ng-hide>{{TIvm.AOI.TISubmarine[0].TOTAL_CNT}}</span><span
                     class="boemline2a"> within 1nm</span>
 
                 <div class="CommonlineSwatchLine ">
@@ -56,7 +56,7 @@
 
             </div>
             <div class="GreyText12 floatitleft padLeft15 w100"
-                 ng-repeat="x in AOI.TISubmarine| orderBy : 'OwnerStatus'| unique: 'OwnerStatus'">
+                 ng-repeat="x in TIvm.AOI.TISubmarine| orderBy : 'OwnerStatus'| unique: 'OwnerStatus'">
                 {{x.OwnerStatus}}
             </div>
         </div>

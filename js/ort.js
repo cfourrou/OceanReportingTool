@@ -24809,7 +24809,7 @@ angular.module('myApp.services', [])
                         smallmap.remove();
 
                     }
-                    if (AOI.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
+                    if (AOI.inPrintWindow) smallmap = L.map('smallmap', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
                     else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
                     L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
                     L.esri.basemapLayer('OceansLabels').addTo(smallmap);
@@ -24861,8 +24861,8 @@ angular.module('myApp.services', [])
                             img.width = dimensions.x;
                             img.height = dimensions.y;
                             img.src = canvas.toDataURL();
-                            document.getElementById('map3').innerHTML = '';
-                            document.getElementById('map3').appendChild(img);
+                            document.getElementById('smallmap').innerHTML = '';
+                            document.getElementById('smallmap').appendChild(img);
                         });
                     }
 
@@ -25116,7 +25116,7 @@ angular.module('myApp.services', [])
                             chart: {
                                 spacing: 0,
                                 margin: 0,
-                                type: 'column'
+                                type: 'column',
                             },
                             title: {
                                 text: null
@@ -25599,7 +25599,69 @@ EconCtrl.prototype.childPaneOn = function () {
     this.paneon();
 };
 
-function SearchCtrl (AOI) {
+
+function PrintCtrl($rootScope, AOI, $timeout, webService  ) {
+    //what is going on?
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = true;
+    vm.name = "PrintCtrl";
+    vm.congressIsActive = true;
+    vm.senateIsActive = true;
+    vm.houseIsActive = true;
+    vm.congressMenu = "-";
+    vm.senateMenu = "-";
+    vm.houseMenu = "-";
+    webService.getData('CE_config.json').then(function (result) {
+        vm.CEConfig = result;
+    });
+    webService.getData('EM_config.json').then(function (result) {
+        vm.EMConfig = result;
+    });
+    webService.getData('TI_config.json').then(function (result) {
+        vm.TIConfig = result;
+    });
+    webService.getData('NRC_config.json').then(function (result) {
+        vm.NRCConfig = result;
+    });
+    webService.getData('EC_config.json').then(function (result) {
+        vm.ECConfig = result;
+    });
+
+
+    $rootScope.$on('$viewContentLoaded', function () {
+        // document is ready, place  code here
+        $timeout(function () {
+            vm.AOI.loadSmallMap(false);
+            //vm.saveAsBinary();
+          //  $timeout(function () {
+                //vm.updatePrint();
+            //}, 3000);
+        }, 1500);
+
+
+    });
+
+
+    //vm.saveAsBinary = function () {
+    //
+    //    var svg = document.getElementById('container')
+    //        .children[0].innerHTML;
+    //    var canvas = document.createElement("canvas");
+    //    canvg(canvas, svg, {});
+    //
+    //    var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
+    //
+    //
+    //    $('#binaryImage').attr('src', img);
+    //
+    //
+    //}
+
+}
+PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
+
+function SearchCtrl(AOI) {
     var vm = this;
 
     vm.childChecked(false);
@@ -25638,63 +25700,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService',
-        function (AOI, $scope, $timeout, $document, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = true;
-        $scope.congressIsActive = true;
-        $scope.senateIsActive = true;
-        $scope.houseIsActive = true;
-        $scope.congressMenu = "-";
-        $scope.senateMenu = "-";
-        $scope.houseMenu = "-";
-        webService.getData('CE_config.json').then(function (result) {
-            $scope.CEConfig = result;
-        });
-        webService.getData('EM_config.json').then(function (result) {
-            $scope.EMConfig = result;
-        });
-        webService.getData('TI_config.json').then(function (result) {
-            $scope.TIConfig = result;
-        });
-        webService.getData('NRC_config.json').then(function (result) {
-            $scope.NRCConfig = result;
-        });
-        webService.getData('EC_config.json').then(function (result) {
-            $scope.ECConfig = result;
-        });
+    .controller('PrintCtrl', ['$rootScope','AOI', '$timeout','webService', PrintCtrl])
 
-
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-                AOI.loadSmallMap(false);
-                $scope.saveAsBinary();
-                $timeout(function () {
-                    $scope.updatePrint();
-                }, 3000);
-            }, 1500);
-
-
-        });
-
-
-        $scope.saveAsBinary = function () {
-
-            var svg = document.getElementById('container')
-                .children[0].innerHTML;
-            var canvas = document.createElement("canvas");
-            canvg(canvas, svg, {});
-
-            var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-
-
-            $('#binaryImage').attr('src', img);
-
-
-        }
-
-    }])
 
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
@@ -25740,38 +25747,16 @@ angular.module('myApp.filters', [])
 /* Directives */
 
 
-function printDirective($state) {
-    var printSection = document.getElementById("printSection");
-
-    function printElement(elem) {
-        var domClone = elem.cloneNode(true);
-        if (!printSection) {
-            printSection = document.createElement("div");
-            printSection.id = "printSection";
-            document.body.appendChild(printSection);
-        } else {
-            printSection.innerHTML = "";
-        }
-        printSection.appendChild(domClone);
-    }
-
-    function link($scope, element, attrs) {
-        element.on("click", function () {
-            var elemToPrint = document.getElementById(attrs.printElementId);
-            if (elemToPrint) {
-                printElement(elemToPrint);
-                window.print();
-                $state.go('CEview');
-            }
-        });
-        $scope.updatePrint = function () {
-            var elemToPrint = document.getElementById(attrs.printElementId);
-            if (elemToPrint) {
-                printElement(elemToPrint);
-                window.print();
-                $state.go('CEview');
-            }
-        }
+function printDirective($state,$timeout) {
+    function link(scope, element, attrs) {
+        $timeout(function () {
+            var printElement = element[0].cloneNode(true);
+            printElement.id = 'printSection';
+            document.body.appendChild(printElement);
+            window.print();
+            printElement.innerHTML = "";
+            $state.go('CEview');
+        },5300)
     }
 
     return {
@@ -25780,14 +25765,13 @@ function printDirective($state) {
     };
 }
 
-
 angular.module('myApp.directives', [])
     .directive('appVersion', ['version', function (version) {
         return function (scope, elm, attrs) {
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$state', printDirective])
+    .directive("ngPrint", ['$state','$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -25852,7 +25836,7 @@ angular.module('myApp.directives', [])
             replace: true,
             templateUrl: 'partials/ortMap.html',
             controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', function ($scope, $element, L, AOI, AOIConfig) {
-                function clearMouseLayer () {
+                function clearMouseLayer() {
                     if (mouseLayer) {
                         $scope.map.removeLayer(mouseLayer);
                         mouseLayer = null;
@@ -25864,7 +25848,7 @@ angular.module('myApp.directives', [])
                     maxZoom: 12
                 });
                 // create panes???
-                angular.forEach(AOIConfig.optionalLayers,function(value, key){
+                angular.forEach(AOIConfig.optionalLayers, function (value, key) {
                     $scope.map.createPane(key + 'Pane');
                 });
                 $scope.map.setView([33.51, -78.3], 6);
@@ -26262,7 +26246,7 @@ $http.get("gis_config.json").then(function (result) {
                 .state('print', {
 
                     templateUrl: 'partials/printPreview.html',
-                    controller: 'printCtrl'
+                    controller: 'PrintCtrl as Printvm'
                 })
             ;
         }])
