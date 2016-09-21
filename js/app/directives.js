@@ -313,14 +313,12 @@ angular.module('myApp.directives', [])
                 templateUrl: 'partials/smallOrtMap.html',
                 controller: ['$scope', 'L', 'AOI', 'AOIConfig', function ($scope, L, AOI, AOIConfig) {
                     $scope.AOI = AOI;
-
-
-                    if (smallmap) smallmap.remove();
-                    var smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
-                    //else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans').addTo(smallmap);
-                    L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                    if ($scope.AOI.smallmap) $scope.AOI.smallmap.remove();
+                    $scope.AOI.smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
+                    //else $scope.AOI.smallmap = L.map('$scope.AOI.smallmap').setView([45.526, -122.667], 1);
+                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallmap);
+                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallmap);
+                    var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
                         attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
                         maxZoom: 12,
                         useCors: true
@@ -332,9 +330,9 @@ angular.module('myApp.directives', [])
                             color: '#EB660C',
                             weight: 1.5,
                             fillOpacity: .3
-                        }).addTo(smallmap);
+                        }).addTo($scope.AOI.smallmap);
                         var minibounds = minicLayer.getBounds();
-                        smallmap.fitBounds(minibounds);
+                        $scope.AOI.smallmap.fitBounds(minibounds);
 
                     } else {
                         minicLayer = L.esri.featureLayer({
@@ -343,7 +341,7 @@ angular.module('myApp.directives', [])
                             color: '#EB660C',
                             weight: 1.5,
                             fillOpacity: .3
-                        }).addTo(smallmap);
+                        }).addTo($scope.AOI.smallmap);
 
 
                         minicLayer.on("load", function (evt) {
@@ -353,16 +351,16 @@ angular.module('myApp.directives', [])
                                 bounds.extend(layerBounds);
                             });
                             //AOI.minibounds = bounds;
-                            smallmap.fitBounds(bounds);
+                            $scope.AOI.smallmap.fitBounds(bounds);
                             minicLayer.off('load');
                         });
                     }
-                    smallmap.invalidateSize();
+                    $scope.AOI.smallmap.invalidateSize();
                     var test1 = false;
                     if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage(smallmap, function (err, canvas) {
+                        leafletImage($scope.AOI.smallmap, function (err, canvas) {
                             var img = document.createElement('img');
-                            var dimensions = smallmap.getSize();
+                            var dimensions = $scope.AOI.smallmap.getSize();
                             img.width = dimensions.x;
                             img.height = dimensions.y;
                             img.src = canvas.toDataURL();

@@ -409,38 +409,8 @@ function PrintCtrl($rootScope, AOI, $timeout, webService  ) {
     webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
-
-
-    $rootScope.$on('$viewContentLoaded', function () {
-        // document is ready, place  code here
-        $timeout(function () {
-            vm.AOI.loadSmallMap(false);
-            //vm.saveAsBinary();
-          //  $timeout(function () {
-                //vm.updatePrint();
-            //}, 3000);
-        }, 1500);
-
-
-    });
-
-
-    //vm.saveAsBinary = function () {
-    //
-    //    var svg = document.getElementById('container')
-    //        .children[0].innerHTML;
-    //    var canvas = document.createElement("canvas");
-    //    canvg(canvas, svg, {});
-    //
-    //    var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-    //
-    //
-    //    $('#binaryImage').attr('src', img);
-    //
-    //
-    //}
-
 }
+
 PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
 
 function SearchCtrl(AOI) {
