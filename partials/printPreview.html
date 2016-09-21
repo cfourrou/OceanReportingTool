@@ -1,20 +1,20 @@
 <div class="padding30 slide-right">
     <div class="CEHeader">
         <div id="AOIname">Building Printable Page</div>
-        <div id="shareIcons">
-            <div id="shareIcon">
-                <div ng-print print-element-id="sliderData"><!--img src="img/Printer.svg"--></div>
-            </div>
+        <!--<div id="shareIcons">-->
+            <!--<div id="shareIcon">-->
+                <!--<div ng-print print-element-id="sliderData">&lt;!&ndash;img src="img/Printer.svg"&ndash;&gt;</div>-->
+            <!--</div>-->
             <!--div id="shareIcon"><img src="img/PDF.svg" ng-click="exportMyPDF('printElement')"></div-->
 
-        </div>
+        <!--</div>-->
 
     </div>
 
     <div class="clear">&nbsp;</div>
 
     <div id="sliderData" class="h100">
-        <div class="overflowauto" id="printElement">
+        <div class="overflowauto" ng-print>
             <div>{{AOI.name.toUpperCase()}}</div>
             <div id="AOItab" class="AOItabClassPrint"> Common Elements
                 <div class="narrative" ng-bind-html="AOI.narratives[0].narrative | unsafe"></div>

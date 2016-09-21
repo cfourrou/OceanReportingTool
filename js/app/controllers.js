@@ -1,7 +1,7 @@
 'use strict';
 
 function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                       myQueryService, AOIConfig) {
+                       myQueryService, AOIConfig, $rootScope) {
     //this one loads once on start up
     var vm = this;
 
@@ -35,12 +35,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
-    if ($state.includes('draw')) {
-        //vm.checked = false; // This will be binded using the ps-open attribute
-        vm.paneoff();
-    } else {
-        vm.checked = true;
-    }
+    vm.checked = true;
 
     vm.showSubmitModal = function () {
         ModalService.showModal({
@@ -244,6 +239,12 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
+
+    $rootScope.$on('$stateChangeSuccess', function (e, toState) {
+        if (toState.name === 'draw') {
+            vm.off();
+        }
+    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -372,9 +373,7 @@ function EconCtrl(AOI, webService) {
         vm.ECConfig = result;
     });
 
-
     vm.childPaneOn();
-
 }
 
 EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
@@ -382,27 +381,13 @@ EconCtrl.prototype.childPaneOn = function () {
     this.paneon();
 };
 
-function SearchCtrl (AOI) {
+function SearchCtrl(AOI) {
     var vm = this;
-
-    vm.childChecked(false);
-    AOI.toggleFull = false;
-    //vm.childOff();
     AOI.inPrintWindow = false;
-
-    //vm.childSearchControlOn = true;
-
     if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
 }
 
 SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
-//SearchCtrl.prototype.childOff = function () {
-//    this.off();
-//};
-SearchCtrl.prototype.childChecked = function (value) {
-    this.checked = value;
-    return this.checked;
-};
 SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
     return this.drawOrSubmitCommand;
 };
@@ -423,78 +408,84 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
     .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService',
         function (AOI, $scope, $timeout, $document, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = true;
-        $scope.congressIsActive = true;
-        $scope.senateIsActive = true;
-        $scope.houseIsActive = true;
-        $scope.congressMenu = "-";
-        $scope.senateMenu = "-";
-        $scope.houseMenu = "-";
-        webService.getData('CE_config.json').then(function (result) {
-            $scope.CEConfig = result;
-        });
-        webService.getData('EM_config.json').then(function (result) {
-            $scope.EMConfig = result;
-        });
-        webService.getData('TI_config.json').then(function (result) {
-            $scope.TIConfig = result;
-        });
-        webService.getData('NRC_config.json').then(function (result) {
-            $scope.NRCConfig = result;
-        });
-        webService.getData('EC_config.json').then(function (result) {
-            $scope.ECConfig = result;
-        });
+            $scope.AOI = AOI;
+            AOI.inPrintWindow = true;
+            $scope.congressIsActive = true;
+            $scope.senateIsActive = true;
+            $scope.houseIsActive = true;
+            $scope.congressMenu = "-";
+            $scope.senateMenu = "-";
+            $scope.houseMenu = "-";
+            webService.getData('CE_config.json').then(function (result) {
+                $scope.CEConfig = result;
+            });
+            webService.getData('EM_config.json').then(function (result) {
+                $scope.EMConfig = result;
+            });
+            webService.getData('TI_config.json').then(function (result) {
+                $scope.TIConfig = result;
+            });
+            webService.getData('NRC_config.json').then(function (result) {
+                $scope.NRCConfig = result;
+            });
+            webService.getData('EC_config.json').then(function (result) {
+                $scope.ECConfig = result;
+            });
 
 
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-                AOI.loadSmallMap(false);
-                $scope.saveAsBinary();
-                $timeout(function () {
-                    $scope.updatePrint();
-                }, 3000);
-            }, 1500);
+            //$scope.$on('$viewContentLoaded', function () {
+                // document is ready, place  code here
+                //$timeout(function () {
+                //    AOI.loadSmallMap(false);
+            //        $scope.saveAsBinary();
+            //        $timeout(function () {
+            //            $scope.updatePrint();
+            //        }, 3000);
+            //    }, 1500);
 
 
-        });
+            //});
 
 
-        $scope.saveAsBinary = function () {
+            $scope.saveAsBinary = function () {
 
-            var svg = document.getElementById('container')
-                .children[0].innerHTML;
-            var canvas = document.createElement("canvas");
-            canvg(canvas, svg, {});
+                var svg = document.getElementById('container')
+                    .children[0].innerHTML;
+                var canvas = document.createElement("canvas");
+                canvg(canvas, svg, {});
 
-            var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-
-
-            $('#binaryImage').attr('src', img);
+                var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
 
 
-        }
+                $('#binaryImage').attr('src', img);
 
-    }])
+
+            };
+
+            function print() {
+                var elem = angular.element(document.querySelector('#printElement'));
+                var domClone = elem.cloneNode(true);
+                if (!printSection) {
+                    var printSection = document.createElement("div");
+                    printSection.id = "printSection";
+                    $document.body.appendChild(printSection);
+                } else {
+                    printSection.innerHTML = "";
+                }
+                printSection.appendChild(domClone);
+                window.print();
+            }
+
+        }])
 
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
-
-
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
-
-
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
-
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
-
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-
-
     .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', PageslideCtrl]);
+        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
 
 
 angular.element(document).ready(function () {
