@@ -485,8 +485,8 @@ angular.module('myApp.services', [])
                         }
                     });
 
-                    AOI.CEElevation = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.CEElevation,
+                    AOI.CEElevationLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.CEElevationLayer,
                         pane: 'CEElevationPane',
                         style: function (feature) {
                             return {color: '#3283BB', weight: 2, fillOpacity: 0};
@@ -662,1258 +662,477 @@ angular.module('myApp.services', [])
                     AOI.isLoaded = true;
                 },
                 massageData: function (featureCollection) {
+                    angular.forEach(featureCollection, function (feature) {
 
-                    var k = 0;
-                    var ba = 0;
-                    var bb = 0;
-                    var bc = 0;
-                    var bd = 0;
-                    var be = 0;
-                    var bf = 0;
-                    var bg = 0;
-                    var bh = 0;
-                    var bi = 0;
-                    var bj = 0;
-                    var bk = 0;
-                    var bl = 0;
-                    var bm = 0;
-                    var bn = 0;
-                    var bo = 0;
-                    var bp = 0;
-                    var bq = 0;
-                    var br = 0;
-                    var bs = 0;
-                    var bt = 0;
-                    var bu = 0;
-                    var bv = 0;
-                    var bw = 0;
-                    var bx = 0;
-                    var by = 0;
-                    var bz = 0;
-                    var ca = 0;
-                    var cb = 0;
-                    var cc = 0;
-                    var cd = 0;
-                    var ce = 0;
-                    var cf = 0;
-                    var cg = 0;
-                    var ch = 0;
-                    var ci = 0;
-                    var cj = 0;
-                    var ck = 0;
-                    var cl = 0;
-                    var cm = 0;
-                    var cn = 0;
-                    var co = 0;
-                    var cp = 0;
-                    var cq = 0;
-                    var cr = 0;
-                    var cs = 0;
-                    var ct = 0;
-                    var cu = 0;
-                    var cv = 0;
-
-                    var ack = [];
-
-                    for (var i = 0, j = featureCollection.length; i < j; i++) {
-                        switch (featureCollection[i].DATASET_NM) {
+                        switch (feature.DATASET_NM) {
                             case "Anchorage_Areas":
-                                AOI.TIAnchorage[cv] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Name: (featureCollection[i].Name || 'Unknown'),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 0)
-
-
-                                };
-
-
-                                if ((cv === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cv++;
+                                AOI.TIAnchorage.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "Pilot_Boarding_Areas":
-                                AOI.TIPilot[cu] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                };
-
-
-                                if ((cu === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cu++;
+                                AOI.TIPilot.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "SATL_FishRevenue_AllYrs":
-                                AOI.ECFishRevenue[ct] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    FishingRev_value_min: (featureCollection[i].FishingRev_value_min || 0),
-                                    FishingRev_value_max: (featureCollection[i].FishingRev_value_max || 0),
-                                    FishingRev_total: (featureCollection[i].FishingRev_total || 0)
-
-
-                                };
-
-
-                                if ((ct === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                ct++;
+                                AOI.ECFishRevenue.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    FishingRev_value_min: (feature.FishingRev_value_min || 0),
+                                    FishingRev_value_max: (feature.FishingRev_value_max || 0),
+                                    FishingRev_total: (feature.FishingRev_total || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "CBRAs":
-                                AOI.NRCBarrier[cs] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                };
-
-
-                                if ((cs === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cs++;
+                                AOI.NRCBarrier.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "ArtificialReefs":
-                                AOI.NRCReefs[cr] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                };
-
-
-                                if ((cr === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cr++;
+                                AOI.NRCReefs.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "StonyCoralALL":
-                                AOI.NRCStonyCoral[cq] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-
-                                    Coral_Suitability: (featureCollection[i].Coral_Suitability || '')
-
-
-                                };
-
-
-                                if ((cq === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cq++;
+                                AOI.NRCStonyCoral.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Coral_Suitability: (feature.Coral_Suitability || '')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "SoftCoralALL":
-                                AOI.NRCSoftCoral[cp] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-
-                                    Coral_Suitability: (featureCollection[i].Coral_Suitability || '')
-
-
-                                };
-
-
-                                if ((cp === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cp++;
+                                AOI.NRCSoftCoral.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Coral_Suitability: (feature.Coral_Suitability || '')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "MPA_selected":
-                                AOI.NRCNearby[co] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Site_Name: (featureCollection[i].Site_Name || 'Unknown'),
-                                    URL: (featureCollection[i].URL || '')
-
-
-                                };
-
-
-                                if ((co === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                co++;
+                                AOI.NRCNearby.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Site_Name: (feature.Site_Name || 'Unknown'),
+                                    URL: (feature.URL || '')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "PrincipalPorts":
-                                AOI.TIPrincipalPorts[cn] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    PortName: (featureCollection[i].PortName || 'Unknown'),
-                                    Total: (featureCollection[i].Total || 0),
-                                    Dist_Mi: (featureCollection[i].Dist_Mi || 0)
-
-
-                                };
-
-
-                                if ((cn === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cn++;
+                                AOI.TIPrincipalPorts.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    PortName: (feature.PortName || 'Unknown'),
+                                    Total: (feature.Total || 0),
+                                    Dist_Mi: (feature.Dist_Mi || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "vessel_traffic_atl_2011":
-                                AOI.TIVessel[cm] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    all_2011_avg: (featureCollection[i].all_2011_avg || 0)
-
-
-                                };
-
-
-                                if ((cm === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cm++;
+                                AOI.TIVessel.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    all_2011_avg: (feature.all_2011_avg || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "RightWhales":
-                                AOI.TIRightWhale[cl] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 0)
-
-
-                                };
-
-
-                                if ((cl === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cl++;
+                                AOI.TIRightWhale.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    PERC_COVER: (feature.PERC_COVER || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "ShippingLanes":
-                                AOI.TIShipping[ck] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    THEMELAYER: (featureCollection[i].THEMELAYER || 'Unknown'),
-                                    THEMELAYER_CNT: (featureCollection[i].THEMELAYER_CNT || 'Unknown')
-
-                                };
-                                AOI.TIShippingTotal += featureCollection[i].THEMELAYER_CNT;
-
-                                if ((ck === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                ck++;
+                                AOI.TIShipping.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    THEMELAYER: (feature.THEMELAYER || 'Unknown'),
+                                    THEMELAYER_CNT: (feature.THEMELAYER_CNT || 'Unknown')
+                                });
+                                AOI.TIShippingTotal += feature.THEMELAYER_CNT;
+                                AOI.addMetadata(feature);
                                 break;
-
                             case "Places":
-                                AOI.CEPlaces[cj] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Name: (featureCollection[i].Name || 'Unknown'),
-                                    ST: (featureCollection[i].ST || 'Unknown'),
-                                    Dist_Mi: (featureCollection[i].Dist_Mi || 0),
-                                    Census2010: ((featureCollection[i].Census2010 === -1) ? ' ' : (featureCollection[i].Census2010 || ' '))
-
-                                };
-
-
-                                if ((cj === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cj++;
+                                AOI.CEPlaces.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'Unknown'),
+                                    ST: (feature.ST || 'Unknown'),
+                                    Dist_Mi: (feature.Dist_Mi || 0),
+                                    Census2010: ((feature.Census2010 === -1) ? ' ' : (feature.Census2010 || ' '))
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "CoastalStates":
                             case "Coastal_Shoreline_Counties_2010":
-                                AOI.ECCountyGDP[ci] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    cntyname: (featureCollection[i].cntyname || featureCollection[i].st_name),
-                                    MedHHInc: (featureCollection[i].MedHHInc || 0),
-                                    TotalHouses: (featureCollection[i].TotalHouses || 0),
-                                    Population: (featureCollection[i].Population || 0),
-                                    PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
-
-                                };
-
-
-                                if ((ci === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                ci++;
+                                AOI.ECCountyGDP.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    cntyname: (feature.cntyname || feature.st_name),
+                                    MedHHInc: (feature.MedHHInc || 0),
+                                    TotalHouses: (feature.TotalHouses || 0),
+                                    Population: (feature.Population || 0),
+                                    PercentTotGDP: (feature.PercentTotGDP || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
-
-
                             case "ENOW_2013":
+                                AOI.ECEcon.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'Unknown'),
+                                    cntyname: (feature.cntyname || 'Unknown'),
+                                    st_name: (feature.st_name || 'Unknown'),
+                                    OceanSector: (feature.OceanSector || 'Unknown'),
+                                    Employment: (feature.Employment || 0),
+                                    Wages: (feature.Wages || 0),
+                                    GDP: (feature.GDP || 0),
 
+                                    Emp_LivingResources: (feature.Emp_LivingResources || 0),
+                                    Emp_MarineConstruction: (feature.Emp_MarineConstruction || 0),
+                                    Emp_MarineTransp: (feature.Emp_MarineTransp || 0),
+                                    Emp_OffshoreMineralExt: (feature.Emp_OffshoreMineralExt || 0),
+                                    Emp_ShipAndBoatBuilding: (feature.Emp_ShipAndBoatBuilding || 0),
+                                    Emp_TourismAndRec: (feature.Emp_TourismAndRec || 0),
+                                    Wages_LivingResources: (feature.Wages_LivingResources || 0),
+                                    Wages_MarineConstruction: (feature.Wages_MarineConstruction || 0),
+                                    Wages_MarineTransp: (feature.Wages_MarineTransp || 0),
+                                    Wages_OffshoreMineralExt: (feature.Wages_OffshoreMineralExt || 0),
+                                    Wages_ShipAndBoatBuilding: (feature.Wages_ShipAndBoatBuilding || 0),
+                                    Wages_TourismAndRec: (feature.Wages_TourismAndRec || 0),
 
-                                AOI.ECEcon[cg] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Name: (featureCollection[i].Name || 'Unknown'),
-                                    cntyname: (featureCollection[i].cntyname || 'Unknown'),
-                                    st_name: (featureCollection[i].st_name || 'Unknown'),
-                                    OceanSector: (featureCollection[i].OceanSector || 'Unknown'),
-                                    Employment: (featureCollection[i].Employment || 0),
-                                    Wages: (featureCollection[i].Wages || 0),
-                                    GDP: (featureCollection[i].GDP || 0),
-
-                                    Emp_LivingResources: (featureCollection[i].Emp_LivingResources || 0),
-                                    Emp_MarineConstruction: (featureCollection[i].Emp_MarineConstruction || 0),
-                                    Emp_MarineTransp: (featureCollection[i].Emp_MarineTransp || 0),
-                                    Emp_OffshoreMineralExt: (featureCollection[i].Emp_OffshoreMineralExt || 0),
-                                    Emp_ShipAndBoatBuilding: (featureCollection[i].Emp_ShipAndBoatBuilding || 0),
-                                    Emp_TourismAndRec: (featureCollection[i].Emp_TourismAndRec || 0),
-                                    Wages_LivingResources: (featureCollection[i].Wages_LivingResources || 0),
-                                    Wages_MarineConstruction: (featureCollection[i].Wages_MarineConstruction || 0),
-                                    Wages_MarineTransp: (featureCollection[i].Wages_MarineTransp || 0),
-                                    Wages_OffshoreMineralExt: (featureCollection[i].Wages_OffshoreMineralExt || 0),
-                                    Wages_ShipAndBoatBuilding: (featureCollection[i].Wages_ShipAndBoatBuilding || 0),
-                                    Wages_TourismAndRec: (featureCollection[i].Wages_TourismAndRec || 0),
-
-                                    GDP_LivingResources: ((featureCollection[i].GDP_LivingResources === -9999) ? 0 : (featureCollection[i].GDP_LivingResources || 0)),
-                                    GDP_MarineConstruction: ((featureCollection[i].GDP_MarineConstruction === -9999) ? 0 : (featureCollection[i].GDP_MarineConstruction || 0)),
-                                    GDP_MarineTransp: ((featureCollection[i].GDP_MarineTransp === -9999) ? 0 : (featureCollection[i].GDP_MarineTransp || 0)),
-                                    GDP_OffshoreMineralExt: ((featureCollection[i].GDP_OffshoreMineralExt === -9999) ? 0 : (featureCollection[i].GDP_OffshoreMineralExt || 0)),
-                                    GDP_ShipAndBoatBuilding: ((featureCollection[i].GDP_ShipAndBoatBuilding === -9999) ? 0 : (featureCollection[i].GDP_ShipAndBoatBuilding || 0)),
-                                    GDP_TourismAndRec: ((featureCollection[i].GDP_TourismAndRec === -9999) ? 0 : (featureCollection[i].GDP_TourismAndRec || 0))
-
-
-                                };
-                                switch (featureCollection[i].OceanSector) {
+                                    GDP_LivingResources: ((feature.GDP_LivingResources === -9999) ? 0 : (feature.GDP_LivingResources || 0)),
+                                    GDP_MarineConstruction: ((feature.GDP_MarineConstruction === -9999) ? 0 : (feature.GDP_MarineConstruction || 0)),
+                                    GDP_MarineTransp: ((feature.GDP_MarineTransp === -9999) ? 0 : (feature.GDP_MarineTransp || 0)),
+                                    GDP_OffshoreMineralExt: ((feature.GDP_OffshoreMineralExt === -9999) ? 0 : (feature.GDP_OffshoreMineralExt || 0)),
+                                    GDP_ShipAndBoatBuilding: ((feature.GDP_ShipAndBoatBuilding === -9999) ? 0 : (feature.GDP_ShipAndBoatBuilding || 0)),
+                                    GDP_TourismAndRec: ((feature.GDP_TourismAndRec === -9999) ? 0 : (feature.GDP_TourismAndRec || 0))
+                                });
+                                switch (feature.OceanSector) {
                                     case "All Ocean Sectors":
-                                        AOI.ECEconEmploy[AOI.ECEconEmploy.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Employment || 0)];
-                                        AOI.ECEconGDP[AOI.ECEconGDP.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].GDP || 0)];
-                                        AOI.ECEconWages[AOI.ECEconWages.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Wages || 0)];
+                                        AOI.ECEconEmploy[AOI.ECEconEmploy.length] = [(feature.cntyname || feature.st_name), (feature.Employment || 0)];
+                                        AOI.ECEconGDP[AOI.ECEconGDP.length] = [(feature.cntyname || feature.st_name), (feature.GDP || 0)];
+                                        AOI.ECEconWages[AOI.ECEconWages.length] = [(feature.cntyname || feature.st_name), (feature.Wages || 0)];
                                         break;
-
                                 }
-
-                                if ((cg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cg++;
+                                AOI.addMetadata(feature);
                                 break;
                             case "NMFS_HMS_Fish":
-                                AOI.NRCMigratoryFish[ce] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
-                                    SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                };
-
-                                if ((ce === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                ce++;
+                                AOI.NRCMigratoryFish.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    LIFE_STAGE: (feature.LIFE_STAGE || 'Unknown'),
+                                    SPECIES: (feature.SPECIES || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
-
                             case "NMFS_HMS_Sharks":
-                                AOI.NRCMigratorySharks[cf] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
-                                    SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                };
-
-                                if ((cf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cf++;
+                                AOI.NRCMigratorySharks.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    LIFE_STAGE: (feature.LIFE_STAGE || 'Unknown'),
+                                    SPECIES: (feature.SPECIES || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "NMFS_CHD_SouthAtl":
-                                AOI.NRCCriticalHab[cd] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    AREANAME: (featureCollection[i].AREANAME || 'Unknown'),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                };
-
-                                if ((cd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cd++;
+                                AOI.NRCCriticalHab.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AREANAME: (feature.AREANAME || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "SERO_HAPC_PartK":
-                                AOI.NRCHabConcern[cc] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    AREA_NAME: (featureCollection[i].AREA_NAME || 'Unknown'),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                };
-
-                                if ((cc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cc++;
+                                AOI.NRCHabConcern.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AREA_NAME: (feature.AREA_NAME || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "Danger_Zones_and_Restricted_Areas":
-                                AOI.TIDangerZones[cb] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    boundaryType: (featureCollection[i].boundaryType || 'Unknown'),
-                                    agencyOfUse: (featureCollection[i].agencyOfUse || 'Unknown'),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown'),
-                                    Style: 'c_' + (featureCollection[i].agencyOfUse || 'Unknown').substr(-4, 4)
-
-                                };
-
-                                if ((cb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                cb++;
+                                AOI.TIDangerZones.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    boundaryType: (feature.boundaryType || 'Unknown'),
+                                    agencyOfUse: (feature.agencyOfUse || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown'),
+                                    Style: 'c_' + (feature.agencyOfUse || 'Unknown').substr(-4, 4)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "Coastal_Maintained_Channels":
-                                AOI.TICoastal[ca] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                };
-
-                                if ((ca === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                ca++;
+                                AOI.TICoastal.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "SubmarineCables":
-                                AOI.TISubmarine[bz] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Owner: (featureCollection[i].Owner || 'Unknown'),
-                                    STATUS: (featureCollection[i].STATUS || 'Unknown'),
-                                    OwnerStatus: (featureCollection[i].Owner || 'Unknown') + " - " + (featureCollection[i].STATUS || 'Unknown')
-
-
-                                };
-
-                                if ((bz === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bz++;
+                                AOI.TISubmarine.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Owner: (feature.Owner || 'Unknown'),
+                                    STATUS: (feature.STATUS || 'Unknown'),
+                                    OwnerStatus: (feature.Owner || 'Unknown') + " - " + (feature.STATUS || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "FederalAndStateWaters":
-                                AOI.CEFederalAndState[by] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    jurisdiction: (featureCollection[i].jurisdiction || 'Unknown'),
-                                    perc_jurisdiction: (featureCollection[i].perc_jurisdiction || 'Unknown'),
-                                    Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown')
-
-                                };
-
-                                if ((by === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
+                                AOI.CEFederalAndState.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    jurisdiction: (feature.jurisdiction || 'Unknown'),
+                                    perc_jurisdiction: (feature.perc_jurisdiction || 'Unknown'),
+                                    Area_mi2: (feature.Area_mi2 || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                if (feature.TOTAL_CNT > 0) {
+                                    if ((feature.jurisdiction.substring(0, 3)) === "Fed") {
+                                        AOI.CEFederalTotal = parseInt(AOI.CEFederalTotal, 10) + parseInt(feature.Area_mi2, 10);
+                                    } else  AOI.CEStateTotal = parseInt(AOI.CEStateTotal, 10) + parseInt(feature.Area_mi2, 10);
                                 }
-
-                                if (featureCollection[i].TOTAL_CNT > 0) {
-
-                                    if ((featureCollection[i].jurisdiction.substring(0, 3)) === "Fed") {
-
-                                        AOI.CEFederalTotal = parseInt(AOI.CEFederalTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
-
-
-                                    } else  AOI.CEStateTotal = parseInt(AOI.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
-
-                                }
-
-                                by++;
                                 break;
                             case "CoastalCounties":
-                                AOI.CECoastalCounties[bx] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    cntyname: (featureCollection[i].cntyname || 'Unknown'),
-                                    st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
-                                    ctystate: (featureCollection[i].st_abbr || 'Unknown'),
-                                    st_name: (featureCollection[i].st_name || 'Unknown')
-                                };
-
-                                if ((bx === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bx++;
+                                AOI.CECoastalCounties.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    cntyname: (feature.cntyname || 'Unknown'),
+                                    st_abbr: (feature.st_abbr || 'Unknown'),
+                                    ctystate: (feature.st_abbr || 'Unknown'),
+                                    st_name: (feature.st_name || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "Coastal_State_Legislative_Districts_House":
-                                AOI.CEHouse[bv] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                    stateName: (featureCollection[i].stateName || 'Unknown')
-
-
-                                };
-
-                                if ((bv === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bv++;
+                                AOI.CEHouse.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    stateName: (feature.stateName || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "Coastal_State_Legislative_Districts_Senate":
-                                AOI.CESenate[bw] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                    stateName: (featureCollection[i].stateName || 'Unknown')
-
-
-                                };
-
-                                if ((bw === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bw++;
+                                AOI.CESenate.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    stateName: (feature.stateName || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "Coastal_Congressional_Districts_114th":
-                                AOI.CECongress[bu] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                    stateName: (featureCollection[i].stateName || 'Unknown')
-
-
-                                };
-
-                                if ((bu === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bu++;
+                                AOI.CECongress.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    stateName: (feature.stateName || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "FederalGeoRegulations":
-                                AOI.CEFedGeoRegs[bt] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    FederalGeoRegulationsName: (featureCollection[i].FederalGeoRegulationsName || 'Unknown'),
-                                    FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown'),
-                                    DescriptionURL: (featureCollection[i].DescriptionURL || '')
-
-
-                                };
-
-                                if ((bt === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bt++;
+                                AOI.CEFedGeoRegs.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    FederalGeoRegulationsName: (feature.FederalGeoRegulationsName || 'Unknown'),
+                                    FederalGeoRegulationsID: (feature.FederalGeoRegulationsID || 'Unknown'),
+                                    DescriptionURL: (feature.DescriptionURL || '')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "AOI_input":
-                                AOI.CEAreaOfPoly[bs] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown'),
-                                    Area_km2: (featureCollection[i].Area_km2 || 'Unknown'),
-                                    Area_nm2: (featureCollection[i].Area_nm2 || 'Unknown')
-
-                                };
-
-
-                                bs++;
+                                AOI.CEAreaOfPoly.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Area_mi2: (feature.Area_mi2 || 'Unknown'),
+                                    Area_km2: (feature.Area_km2 || 'Unknown'),
+                                    Area_nm2: (feature.Area_nm2 || 'Unknown')
+                                });
                                 break;
                             case "crm_v1":
-                                AOI.CEElevation[br] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    depth_min_m: (featureCollection[i].depth_min_m || 'Unknown'),
-                                    depth_max_m: (featureCollection[i].depth_max_m || 'Unknown'),
-                                    depth_mean_m: (featureCollection[i].depth_mean_m || 'Unknown')
-
-                                };
-
-                                if ((br === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                br++;
+                                AOI.CEElevation.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    depth_min_m: (feature.depth_min_m || 'Unknown'),
+                                    depth_max_m: (feature.depth_max_m || 'Unknown'),
+                                    depth_mean_m: (feature.depth_mean_m || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "CoastalEnergyFacilities":
-                                AOI.coastfac[bq] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Name: (featureCollection[i].Name || 'None'),
-                                    Type: (featureCollection[i].Type || 'None'),
-                                    CAPACITY: (featureCollection[i].CAPACITY || 'None'),
-                                    Dist_Mi: (featureCollection[i].Dist_Mi || 'None')
-
-                                };
-
-                                if ((bq === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bq++;
+                                AOI.coastfac.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'None'),
+                                    Type: (feature.Type || 'None'),
+                                    CAPACITY: (feature.CAPACITY || 'None'),
+                                    Dist_Mi: (feature.Dist_Mi || 'None')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "OG_ResourcePotential":
-                                AOI.OGresource[bp] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    OCS_Play: (featureCollection[i].OCS_Play || 'None'),
-                                    UTRR_Oil: (featureCollection[i].UTRR_Oil || 'None'),
-                                    UTRR_Gas: (featureCollection[i].UTRR_Gas || 'None'),
-                                    UTRR_BOE: (featureCollection[i].UTRR_BOE || 'None')
-
-                                };
-
-                                if ((bp === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bp++;
+                                AOI.OGresource.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    OCS_Play: (feature.OCS_Play || 'None'),
+                                    UTRR_Oil: (feature.UTRR_Oil || 'None'),
+                                    UTRR_Gas: (feature.UTRR_Gas || 'None'),
+                                    UTRR_BOE: (feature.UTRR_BOE || 'None')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "OG_Wells":
-                                AOI.OGWells[bo] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    COMPANY_NA: (featureCollection[i].COMPANY_NA || 'None'),
-                                    STATUS: (featureCollection[i].STATUS || 'None')
-
-                                };
-
-                                if ((bo === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bo++;
+                                AOI.OGWells.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    COMPANY_NA: (feature.COMPANY_NA || 'None'),
+                                    STATUS: (feature.STATUS || 'None')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "al_20160301":
-                                AOI.OGLease[bn] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Lease_Numb: (featureCollection[i].Lease_Numb || 'None'),
-                                    Lease_expt: (featureCollection[i].Lease_expt || 'None')
-
-                                };
-
-                                if ((bn === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bn++;
+                                AOI.OGLease.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Lease_Numb: (feature.Lease_Numb || 'None'),
+                                    Lease_expt: (feature.Lease_expt || 'None')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "OilandGasPlanningAreas":
-                                AOI.OGPlanA[bm] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    Region: (featureCollection[i].Region || 'unknown')
-
-                                };
-
-                                if ((bm === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bm++;
+                                AOI.OGPlanA.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Region: (feature.Region || 'unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "SC_BeachProjects":
-                                AOI.beachNur[bl] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    BEACH_AREA: (featureCollection[i].BEACH_AREA || 'unknown'),
-                                    YEAR: (featureCollection[i].YEAR || '0'),
-                                    SAND_VOL_C: (featureCollection[i].SAND_VOL_C || '0'),
-                                    Dist_Mi: ((featureCollection[i].Dist_Mi === ' ') ? '0' : featureCollection[i].Dist_Mi )
-                                };
-
-                                if ((bl === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bl++;
+                                AOI.beachNur.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    BEACH_AREA: (feature.BEACH_AREA || 'unknown'),
+                                    YEAR: (feature.YEAR || '0'),
+                                    SAND_VOL_C: (feature.SAND_VOL_C || '0'),
+                                    Dist_Mi: ((feature.Dist_Mi === ' ') ? '0' : feature.Dist_Mi )
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "us_oc_ms":
-                                AOI.currentpwr[bk] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    AVG_OCEAN_CURRENT: (featureCollection[i].AVG_OCEAN_CURRENT || 0),
-                                    SUITABILITY_OCEAN_SPEED: (featureCollection[i].SUITABILITY_OCEAN_SPEED || 'NO')
-                                };
-
-                                if ((featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bk++;
+                                AOI.currentpwr.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AVG_OCEAN_CURRENT: (feature.AVG_OCEAN_CURRENT || 0),
+                                    SUITABILITY_OCEAN_SPEED: (feature.SUITABILITY_OCEAN_SPEED || 'NO')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "usa_mc_wm":
-                                AOI.tidalpwr[bj] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    AVG_TIDAL_CURRENT: (featureCollection[i].AVG_TIDAL_CURRENT || 0),
-                                    SUITABILITY_TIDAL_DEPTH: (featureCollection[i].SUITABILITY_TIDAL_DEPTH || 'NO'),
-                                    SUITABILITY_TIDAL_AREA: (featureCollection[i].SUITABILITY_TIDAL_AREA || 'NO'),
-                                    SUITABILITY_TIDAL_SPEED: (featureCollection[i].SUITABILITY_TIDAL_SPEED || 'NO')
-                                };
-
-                                if ((featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bj++;
+                                AOI.tidalpwr.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AVG_TIDAL_CURRENT: (feature.AVG_TIDAL_CURRENT || 0),
+                                    SUITABILITY_TIDAL_DEPTH: (feature.SUITABILITY_TIDAL_DEPTH || 'NO'),
+                                    SUITABILITY_TIDAL_AREA: (feature.SUITABILITY_TIDAL_AREA || 'NO'),
+                                    SUITABILITY_TIDAL_SPEED: (feature.SUITABILITY_TIDAL_SPEED || 'NO')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "OceanWaveResourcePotential":
-                                AOI.wavepwr[bi] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
-                                    SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
-                                };
-
-                                if ((featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bi++;
+                                AOI.wavepwr.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AVG_WAVE_POWER: (feature.AVG_WAVE_POWER || 0),
+                                    SUITABILITY_OCEAN_POWER: (feature.SUITABILITY_OCEAN_POWER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
-
                             case "OceanDisposalSites":
-                                AOI.disp[be] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
-                                };
-
-                                if ((be === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                be++;
+                                AOI.disp.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    PRIMARY_USE: (feature.primaryUse || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "MarineHydrokineticProjects":
-                                if (featureCollection[i].TOTAL_CNT > 0) {
-                                    AOI.hydrok[bg] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        PRIMARY_USE: (featureCollection[i].energyType ) + ' projects'
-                                    };
+                                if (feature.TOTAL_CNT > 0) {
+                                    AOI.hydrok.push({
+                                        TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                        PRIMARY_USE: (feature.energyType ) + ' projects'
+                                    });
                                 }
-                                if ((bg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-                                bg++;
-
+                                AOI.addMetadata(feature);
                                 break;
                             case "ecstdb2014":
-                                if (featureCollection[i].TOTAL_CNT > 0) {
-                                    AOI.surfsed[bh] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        PRIMARY_USE: ((featureCollection[i].CLASSIFICA === ' ') ? 'Unknown' : featureCollection[i].CLASSIFICA )
-                                    };
+                                if (feature.TOTAL_CNT > 0) {
+                                    AOI.surfsed.push({
+                                        TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                        PRIMARY_USE: ((feature.CLASSIFICA === ' ') ? 'Unknown' : feature.CLASSIFICA )
+                                    });
                                 }
-                                if ((bh === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bh++;
-
+                                AOI.addMetadata(feature);
                                 break;
-
                             case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
-                                AOI.mml[bf] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-                                };
-
-                                if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bf++;
+                                AOI.mml.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
-
                             case "TribalLands":
-                                AOI.CETribalLands[bd] = {
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                    Dist_Mi: (featureCollection[i].Dist_Mi || 0)
-                                };
-                                if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bd++;
+                                AOI.CETribalLands.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    Dist_Mi: (feature.Dist_Mi || 0)
+                                });
+                                AOI.addMetadata(feature);
                                 break;
-
-
                             case  "BOEM_Wind_Planning_Areas":
-                                AOI.boem[ba] = {
-                                    INFO: featureCollection[i].INFO,
-                                    PROT_NUMBE: featureCollection[i].PROT_NUMBE,
-                                    LINK1: featureCollection[i].LINK1,
-                                    LINK2: featureCollection[i].LINK2,
-                                    PERC_COVER: featureCollection[i].PERC_COVER,
-                                    TOTAL_BLOC: featureCollection[i].TOTAL_BLOC,
-                                    TOTAL_CNT: featureCollection[i].TOTAL_CNT,
-                                    METADATA_URL: featureCollection[i].METADATA_URL
-                                };
-                                if ((ba === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-
-                                    k++;
-
-                                }
-
-                                ba++;
+                                AOI.boem.push({
+                                    INFO: feature.INFO,
+                                    PROT_NUMBE: feature.PROT_NUMBE,
+                                    LINK1: feature.LINK1,
+                                    LINK2: feature.LINK2,
+                                    PERC_COVER: feature.PERC_COVER,
+                                    TOTAL_BLOC: feature.TOTAL_BLOC,
+                                    TOTAL_CNT: feature.TOTAL_CNT,
+                                    METADATA_URL: feature.METADATA_URL
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case "ActiveRenewableEnergyLeases":
-                                AOI.arel[bc] = {
-                                    Lease_Numb: featureCollection[i].Lease_Numb,
-                                    Company: featureCollection[i].Company,
-                                    INFO: featureCollection[i].INFO,
-                                    PROT_NUMBE: featureCollection[i].PROT_NUMBE,
-                                    LINK1: featureCollection[i].LINK1,
-                                    LINK2: featureCollection[i].LINK2,
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 0),
-                                    TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    METADATA_URL: featureCollection[i].METADATA_URL
-                                };
-                                if ((bc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
-
-
-                                bc++;
+                                AOI.arel.push({
+                                    Lease_Numb: feature.Lease_Numb,
+                                    Company: feature.Company,
+                                    INFO: feature.INFO,
+                                    PROT_NUMBE: feature.PROT_NUMBE,
+                                    LINK1: feature.LINK1,
+                                    LINK2: feature.LINK2,
+                                    PERC_COVER: (feature.PERC_COVER || 0),
+                                    TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    METADATA_URL: feature.METADATA_URL
+                                });
+                                AOI.addMetadata(feature);
                                 break;
                             case  "WindResourcePotential":
-                                AOI.wind[bb] = {
-                                    WIND_CLASS: (featureCollection[i].WIND_CLASS),
-                                    AVG_WGHT: (featureCollection[i].AVG_WGHT || 0).toFixed(2),
-                                    PERC_COVER: (featureCollection[i].PERC_COVER || 0),
-                                    HOUSES_SUM: (featureCollection[i].HOUSES_SUM || 0).toLocaleString(),
-                                    CAPACITY: (featureCollection[i].CAPACITY || 0).toLocaleString(),
-                                    TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
-                                    TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                    METADATA_URL: featureCollection[i].METADATA_URL
-                                };
-                                if ((bb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                    AOI.metadata[k] = {
-                                        REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                        COMMON_NM: featureCollection[i].COMMON_NM,
-                                        METADATA_URL: featureCollection[i].METADATA_URL,
-                                        METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                        METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                        METADATA_SORT: featureCollection[i].METADATA_SORT
-                                    };
-                                    k++;
-                                }
+                                AOI.wind.push({
+                                    WIND_CLASS: (feature.WIND_CLASS),
+                                    AVG_WGHT: (feature.AVG_WGHT || 0).toFixed(2),
+                                    PERC_COVER: (feature.PERC_COVER || 0),
+                                    HOUSES_SUM: (feature.HOUSES_SUM || 0).toLocaleString(),
+                                    CAPACITY: (feature.CAPACITY || 0).toLocaleString(),
+                                    TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    METADATA_URL: feature.METADATA_URL
+                                });
+                                AOI.addMetadata(feature);
 
-
-                                if (featureCollection[i].TOTAL_CNT > 0) {
-                                    switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
+                                if (feature.TOTAL_CNT > 0) {
+                                    switch (feature.WIND_CLASS.substring(0, 3)) {
                                         case "Sup":
-                                            AOI.windclass[0] = featureCollection[i].PERC_COVER;
+                                            AOI.windclass[0] = feature.PERC_COVER;
                                             break;
                                         case "Out":
-                                            AOI.windclass[1] = featureCollection[i].PERC_COVER;
+                                            AOI.windclass[1] = feature.PERC_COVER;
                                             break;
                                         case "Exc":
-                                            AOI.windclass[2] = featureCollection[i].PERC_COVER;
+                                            AOI.windclass[2] = feature.PERC_COVER;
                                             break;
                                         case "Goo":
-                                            AOI.windclass[3] = featureCollection[i].PERC_COVER;
+                                            AOI.windclass[3] = feature.PERC_COVER;
                                             break;
                                         case "Fai":
-                                            AOI.windclass[4] = featureCollection[i].PERC_COVER;
+                                            AOI.windclass[4] = feature.PERC_COVER;
                                             break;
                                         case "Uns":
-                                            AOI.windclass[5] = featureCollection[i].PERC_COVER;
+                                            AOI.windclass[5] = feature.PERC_COVER;
                                             break;
                                     }
-
                                 }
-                                bb++;
                                 break;
                         }
-                    }
-
+                    });
 
                     var y = 35;
                     var x = 35;
@@ -2042,6 +1261,18 @@ angular.module('myApp.services', [])
 
 
                 },
+                addMetadata: function (feature) {
+                    if (feature.METADATA_URL != null) {
+                        AOI.metadata.push({
+                            REPORT_CAT: feature.REPORT_CAT,
+                            COMMON_NM: feature.COMMON_NM,
+                            METADATA_URL: feature.METADATA_URL,
+                            METADATA_OWNER: feature.METADATA_OWNER,
+                            METADATA_OWNER_ABV: feature.METADATA_OWNER_ABV,
+                            METADATA_SORT: feature.METADATA_SORT
+                        });
+                    }
+                },
                 unloadData: function () {
 
                     if (AOI.isLoaded) {
@@ -2057,7 +1288,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.currentPower);
                         AOI.map.removeLayer(AOI.beachNourish);
                         AOI.map.removeLayer(AOI.coastalEnergyFacilities);
-                        AOI.map.removeLayer(AOI.CEElevation);
+                        AOI.map.removeLayer(AOI.CEElevationLayer);
                         AOI.map.removeLayer(AOI.TISubmarineLayer);
                         AOI.map.removeLayer(AOI.TIDangerZonesLayer);
                         AOI.map.removeLayer(AOI.CEPlaceLayer);
@@ -2393,10 +1624,10 @@ angular.module('myApp.services', [])
                 toggleCEElevation: function () {
 
                     if (!AOI.CEElevationIsVisable) {
-                        AOI.CEElevation.addTo(AOI.map);
+                        AOI.CEElevationLayer.addTo(AOI.map);
                         AOI.CEElevationIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.CEElevation);
+                        AOI.map.removeLayer(AOI.CEElevationLayer);
                         AOI.CEElevationIsVisable = false;
                     }
                 },
