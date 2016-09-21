@@ -34,9 +34,9 @@
 
             </div>
             <!-- iButton end-->
-            <div id="slider_but26" class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.CEElevationIsVisable ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
+            <div id="slider_but26" class="inlinesliderbutton" ng-hide="AOIvm.AOI.toggleFull===true">
+                <div ng-class="AOIvm.AOI.CEElevationIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="AOIvm.AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
             </div>
 
         </div>
@@ -44,12 +44,12 @@
             <div class="CommonSwatchLine floatitleft">
                 <div class="swatch floatitleft "><img src="img/contours-01.svg"></div>
                 <div class="CEElevationData">
-                    <div><b>Max:</b> {{AOI.CEElevation[0].depth_max_m}}<span
-                            ng-show="AOI.CEElevation[0].depth_max_m != 'Unknown'">m</span></div>
-                    <div><b>Mean:</b> {{AOI.CEElevation[0].depth_mean_m}}<span
-                            ng-show="AOI.CEElevation[0].depth_mean_m != 'Unknown'">m</span></div>
-                    <div><b>Min:</b> {{AOI.CEElevation[0].depth_min_m}}<span
-                            ng-show="AOI.CEElevation[0].depth_min_m != 'Unknown'">m</span></div>
+                    <div><b>Max:</b> {{AOIvm.AOI.CEElevation[0].depth_max_m}}<span
+                            ng-show="AOIvm.AOI.CEElevation[0].depth_max_m != 'Unknown'">m</span></div>
+                    <div><b>Mean:</b> {{AOIvm.AOI.CEElevation[0].depth_mean_m}}<span
+                            ng-show="AOIvm.AOI.CEElevation[0].depth_mean_m != 'Unknown'">m</span></div>
+                    <div><b>Min:</b> {{AOIvm.AOI.CEElevation[0].depth_min_m}}<span
+                            ng-show="AOIvm.AOI.CEElevation[0].depth_min_m != 'Unknown'">m</span></div>
 
                 </div>
             </div>

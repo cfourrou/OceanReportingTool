@@ -201,7 +201,7 @@ $http.get("gis_config.json").then(function (result) {
                 .state('print', {
 
                     templateUrl: 'partials/printPreview.html',
-                    controller: 'printCtrl'
+                    controller: 'PrintCtrl as Printvm'
                 })
             ;
         }])

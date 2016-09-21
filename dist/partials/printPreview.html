@@ -1,6 +1,6 @@
 <div class="padding30 slide-right">
     <div class="CEHeader">
-        <div id="AOIname">Building Printable Page</div>
+        <div id="AOIname">Building Printable Page thingy</div>
         <div id="shareIcons">
             <div id="shareIcon">
                 <div ng-print print-element-id="sliderData"><!--img src="img/Printer.svg"--></div>
@@ -14,22 +14,23 @@
     <div class="clear">&nbsp;</div>
 
     <div id="sliderData" class="h100">
+        {{Printvm.name}} ack!
         <div class="overflowauto" id="printElement">
-            <div>{{AOI.name.toUpperCase()}}</div>
+            <div>{{Printvm.AOI.name.toUpperCase()}}</div>
             <div id="AOItab" class="AOItabClassPrint"> Common Elements
-                <div class="narrative" ng-bind-html="AOI.narratives[0].narrative | unsafe"></div>
-                <div ng-repeat="x in CEConfig | orderBy: 'priority'">
+                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
+                <span ng-controller="Printvm as CEvm"><div ng-repeat="x in CEvm.CEConfig | orderBy: 'priority'">
 
                     <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
 
-                </div>
+                </div></span>
             </div>
 
             <div class="clear">&nbsp;</div>
 
             <div id="AOItab" class="AOItabClass"> Energy and Minerals
-                <div class="narrative" ng-bind-html="AOI.narratives[1].narrative | unsafe"></div>
-                <div ng-repeat="x in EMConfig | orderBy: 'priority'">
+                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
+                <div ng-repeat="x inPrintvm.EMConfig | orderBy: 'priority'">
 
                     <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
 
@@ -39,8 +40,8 @@
             <div class="clear">&nbsp;</div>
 
             <div id="AOItab" class="AOItabClass"> Natural Resources and Conservation
-                <div class="narrative" ng-bind-html="AOI.narratives[2].narrative | unsafe"></div>
-                <div ng-repeat="x in NRCConfig | orderBy: 'priority'">
+                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
+                <div ng-repeat="x in Printvm.NRCConfig | orderBy: 'priority'">
 
                     <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
 
@@ -51,8 +52,8 @@
             <div class="clear">&nbsp;</div>
 
             <div id="AOItab" class="AOItabClass"> Transportation and Infrastructure
-                <div class="narrative" ng-bind-html="AOI.narratives[3].narrative | unsafe"></div>
-                <div ng-repeat="x in TIConfig | orderBy: 'priority'">
+                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
+                <div ng-repeat="x in Printvm.TIConfig | orderBy: 'priority'">
 
                     <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
 
@@ -62,8 +63,8 @@
             <div class="clear">&nbsp;</div>
 
             <div id="AOItab" class="AOItabClass"> Economics And Commerce
-                <div class="narrative" ng-bind-html="AOI.narratives[4].narrative | unsafe"></div>
-                <div ng-repeat="x in ECConfig | orderBy: 'priority'">
+                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
+                <div ng-repeat="x in Printvm.ECConfig | orderBy: 'priority'">
 
                     <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
 

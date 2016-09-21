@@ -37,13 +37,13 @@
 
         </div>
 
-        <div ng-repeat="dispx in AOI.surfsed | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in AOI.surfsed | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered ">
+        <div ng-repeat="dispx in EMvm.AOI.surfsed | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+            <div ng-repeat="count in EMvm.AOI.surfsed | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered ">
 
             </div>
                 <span class="floatitleft blackBoldText14 SedimentChart">
                     <div class="SedimentCenteredData">{{filtered.length}}</div>
-                    <div ng-style="{'width': (filtered.length/AOI.surfsed.length)*100 + '%' }"
+                    <div ng-style="{'width': (filtered.length/EMvm.AOI.surfsed.length)*100 + '%' }"
                          class="SedimentBar floatitleft"></div>
 
 
@@ -55,7 +55,7 @@
                 <span class="marginleft5px">{{dispx.PRIMARY_USE}}</span>
             </div>
         </div>
-        <div id="boemline2" ng-show="!AOI.surfsed.length">
+        <div id="boemline2" ng-show="!EMvm.AOI.surfsed.length">
             <span class="boemline2b">0 </span>
             <span class="boemline2a">Samples</span>
         </div>

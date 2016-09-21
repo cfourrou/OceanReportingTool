@@ -1,9 +1,9 @@
 <div class="infographic-box-small" tabindex="0">
     <div id="wrbox1">
 
-        <div id="slider_but1" class="sliderbutton" ng-hide="AOI.toggleFull===true">
-            <div ng-class="AOI.windLeaseLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="AOI.toggleWindLeaseLayer()" ng-include="'img/switch_off.svg'"></div>
+        <div id="slider_but1" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.windLeaseLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleWindLeaseLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
 
         <div class="infographicline1">
@@ -43,14 +43,14 @@
         <div class="swatch"><img src="img/Renewable_Energy_Leases.svg"></div>
 
         <div class="infographicline2">
-            <span class="boemline2b">{{AOI.arel[0].TOTAL_CNT}}</span>
+            <span class="boemline2b">{{EMvm.AOI.arel[0].TOTAL_CNT}}</span>
             <span class="boemline2a">BOEM Active Renewable Energy Leases</span>
         </div>
         <div id="boemline2">
             <span class="boemline2a">Covers</span>
-            <span class="boemline2b">{{AOI.arel[0].PERC_COVER.toFixed(0)}}</span>
+            <span class="boemline2b">{{EMvm.AOI.arel[0].PERC_COVER.toFixed(0)}}</span>
             <span class="boemline2a">%, including</span>
-            <span class="boemline2b">{{AOI.arel[0].TOTAL_BLOC}}</span>
+            <span class="boemline2b">{{EMvm.AOI.arel[0].TOTAL_BLOC}}</span>
             <span class="boemline2a">OCS blocks</span>
         </div>
     </div>

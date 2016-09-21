@@ -3,16 +3,16 @@
 /* Directives */
 
 
-function printDirective($timeout, $state) {
+function printDirective($state,$timeout) {
     function link(scope, element, attrs) {
         $timeout(function () {
             var printElement = element[0].cloneNode(true);
             printElement.id = 'printSection';
             document.body.appendChild(printElement);
             window.print();
-            printElement.innerHtml = '';
+            printElement.innerHTML = "";
             $state.go('CEview');
-        }, 3000);
+        },5300)
     }
 
     return {
@@ -21,14 +21,13 @@ function printDirective($timeout, $state) {
     };
 }
 
-
 angular.module('myApp.directives', [])
     .directive('appVersion', ['version', function (version) {
         return function (scope, elm, attrs) {
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$timeout', '$state', printDirective])
+    .directive("ngPrint", ['$state','$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',

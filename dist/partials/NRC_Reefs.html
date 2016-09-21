@@ -33,9 +33,9 @@
 
             </div>
             <!-- iButton end-->
-            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.NRCReefsLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleNRCReefsLayer()" ng-include="'img/switch_off.svg'"></div>
+            <div class="inlinesliderbutton" ng-hide="NRCvm.AOI.toggleFull===true">
+                <div ng-class="NRCvm.AOI.NRCReefsLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="NRCvm.AOI.toggleNRCReefsLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
                     <div class="floatitleft padbottom10 padLeft15 w45">
 
 
-                        <span class="boemline2b"><ng-hide ng-hide="AOI.NRCReefs[0].TOTAL_CNT>=1">0</ng-hide>{{AOI.NRCReefs[0].TOTAL_CNT}}</span><span
+                        <span class="boemline2b"><ng-hide ng-hide="NRCvm.AOI.NRCReefs[0].TOTAL_CNT>=1">0</ng-hide>{{NRCvm.AOI.NRCReefs[0].TOTAL_CNT}}</span><span
                             class="boemline2a"> Reefs Intersect</span>
 
 

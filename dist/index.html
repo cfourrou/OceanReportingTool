@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?888164b07fe73de3">
+    <link rel="stylesheet" href="css/ort.min.css?ca3a28927322059a">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -121,7 +121,7 @@
 </div>
 <div id="wrapper">
     <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl">
+    <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl as vm">
         <script type="text/ng-template" id="Share1.html">
             <div id="custom-modal">
                 <div id="overlay">
@@ -191,16 +191,16 @@
         <div id="main_content" class="inner">
             <div class="nav_bar">
                 <div class="nav_menu_left">
-                    <a ui-sref="splash" class="resetbutton" ng-click="startOver()" role="button">RESET</a>
-                    <a ui-sref="menu" class="areasbutton" ng-click="startMenu()" role="button">KNOWN AREAS</a>
-                    <a ui-sref="draw" class="drawbutton" ng-click="off()" role="button">DRAW AREA</a>
+                    <a ui-sref="splash" class="resetbutton" ng-click="vm.startOver()" role="button">RESET</a>
+                    <a ui-sref="menu" class="areasbutton" ng-click="vm.startMenu()" role="button">KNOWN AREAS</a>
+                    <a ui-sref="draw" class="drawbutton" ng-click="vm.off()" role="button">DRAW AREA</a>
 
 
                 </div>
-                <div ng-cloak ng-show="AOI.isLoaded" class="nav_menu_right">
+                <div ng-cloak ng-show="vm.AOI.isLoaded" class="nav_menu_right">
 
                     <button class="rightbuttonItalics" role="button" ui-sref="CEview" href="">
-                        {{AOI.name.toUpperCase()}}
+                        {{vm.AOI.name.toUpperCase()}}
                     </button>
                     <button class="rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
                     <button class="rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
@@ -214,51 +214,18 @@
             </div>
             <div id="contentliquid">
 
-                <div ng-cloak ng-show="drawtoolOn" id="drawtoolbottom" class="drawTools2">
-                    <div ng-class="drawenabled? 'drawbutton-enl':'drawbutton-dis'" ng-click="drawIt()"
-                         class="drawbutton1">
-                        <ng-include class="basemap-button" src="'img/MapInput_2.svg'"></ng-include>
-                        {{drawOrSubmitCommand}}
-                    </div>
-                    <div id="basemapbutton" class="drawbutton2" ng-click="baseMapSwitch()"><img class="basemap-button"
-                                                                                                src="img/basemap.svg?0618ee7a3cf7ba3c">
-
-                        BASEMAP
-
-
-                    </div>
-
-                </div>
-
-                <div id="bigmap" class="mapclass" >
-                    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
-                    <div ng-cloak ng-show="drawtoolOn" id="drawtool" class="drawTools">
-                        <div class="w100">Map Navigation</div>
-                        <div class="w100 floatitleft">
-                            <div class="drawtoolsbase" ng-class="drawlocked? 'drawbutton-dis':'findButton-enl'"><img
-                                    class="basemap-button"
-                                    src="img/texticon.svg?ccc119d74104ebd5">FIND
-                            </div>
-
-                        </div>
-
-
-                        <div class="w100 floatitleft">
-                            <div class="w35 floatitleft">Map Tools</div>
-
-                            <div class="floatitleft" ng-show="!drawenabled">Zoom in closer to draw</div>
-                        </div>
-                    </div>
-                </div>
+                <ort-map zoom-level="vm.zoomlevel" draw-enabled="vm.drawtoolOn" draw-on="vm.drawOn"
+                         draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
+                         search-control-enabled="vm.searchControlOn" mouse-over="vm.mover" mouse-out="vm.mout"
+                         poly-layer-enabled="vm.polyLayerOn" reset-map="vm.resetMap"
+                         draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt">
+                </ort-map>
 
                 <div id="slide_div">
-
-
                 </div>
 
-                <div id="slide1" pageslide ps-open="checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
-                     ps-custom-top="55px"
-                >
+                <div id="slide1" pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
+                     ps-custom-top="55px" ng-style="vm.checked ? {'width':'50%'} : ''">
                     <div ui-view class="h900"></div>
                     <div id="foot" class="footer2">
                         <div class="footerleft"><a target="_blank" href="https://www.commerce.gov/">United States
@@ -289,7 +256,8 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?68858de50eb7b8fa"></script>
+<script src="js/ort.js?c41d3f43a435b95c"></script>
+
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->
 <script>AccessifyHTML5();</script>

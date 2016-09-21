@@ -381,6 +381,68 @@ EconCtrl.prototype.childPaneOn = function () {
     this.paneon();
 };
 
+
+function PrintCtrl($rootScope, AOI, $timeout, webService  ) {
+    //what is going on?
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = true;
+    vm.name = "PrintCtrl";
+    vm.congressIsActive = true;
+    vm.senateIsActive = true;
+    vm.houseIsActive = true;
+    vm.congressMenu = "-";
+    vm.senateMenu = "-";
+    vm.houseMenu = "-";
+    webService.getData('CE_config.json').then(function (result) {
+        vm.CEConfig = result;
+    });
+    webService.getData('EM_config.json').then(function (result) {
+        vm.EMConfig = result;
+    });
+    webService.getData('TI_config.json').then(function (result) {
+        vm.TIConfig = result;
+    });
+    webService.getData('NRC_config.json').then(function (result) {
+        vm.NRCConfig = result;
+    });
+    webService.getData('EC_config.json').then(function (result) {
+        vm.ECConfig = result;
+    });
+
+
+    $rootScope.$on('$viewContentLoaded', function () {
+        // document is ready, place  code here
+        $timeout(function () {
+            vm.AOI.loadSmallMap(false);
+            //vm.saveAsBinary();
+          //  $timeout(function () {
+                //vm.updatePrint();
+            //}, 3000);
+        }, 1500);
+
+
+    });
+
+
+    //vm.saveAsBinary = function () {
+    //
+    //    var svg = document.getElementById('container')
+    //        .children[0].innerHTML;
+    //    var canvas = document.createElement("canvas");
+    //    canvg(canvas, svg, {});
+    //
+    //    var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
+    //
+    //
+    //    $('#binaryImage').attr('src', img);
+    //
+    //
+    //}
+
+}
+PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
+
 function SearchCtrl(AOI) {
     var vm = this;
     AOI.inPrintWindow = false;
@@ -406,77 +468,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService',
-        function (AOI, $scope, $timeout, $document, webService) {
-            $scope.AOI = AOI;
-            AOI.inPrintWindow = true;
-            $scope.congressIsActive = true;
-            $scope.senateIsActive = true;
-            $scope.houseIsActive = true;
-            $scope.congressMenu = "-";
-            $scope.senateMenu = "-";
-            $scope.houseMenu = "-";
-            webService.getData('CE_config.json').then(function (result) {
-                $scope.CEConfig = result;
-            });
-            webService.getData('EM_config.json').then(function (result) {
-                $scope.EMConfig = result;
-            });
-            webService.getData('TI_config.json').then(function (result) {
-                $scope.TIConfig = result;
-            });
-            webService.getData('NRC_config.json').then(function (result) {
-                $scope.NRCConfig = result;
-            });
-            webService.getData('EC_config.json').then(function (result) {
-                $scope.ECConfig = result;
-            });
+    .controller('PrintCtrl', ['$rootScope','AOI', '$timeout','webService', PrintCtrl])
 
-
-            //$scope.$on('$viewContentLoaded', function () {
-                // document is ready, place  code here
-                //$timeout(function () {
-                //    AOI.loadSmallMap(false);
-            //        $scope.saveAsBinary();
-            //        $timeout(function () {
-            //            $scope.updatePrint();
-            //        }, 3000);
-            //    }, 1500);
-
-
-            //});
-
-
-            $scope.saveAsBinary = function () {
-
-                var svg = document.getElementById('container')
-                    .children[0].innerHTML;
-                var canvas = document.createElement("canvas");
-                canvg(canvas, svg, {});
-
-                var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-
-
-                $('#binaryImage').attr('src', img);
-
-
-            };
-
-            function print() {
-                var elem = angular.element(document.querySelector('#printElement'));
-                var domClone = elem.cloneNode(true);
-                if (!printSection) {
-                    var printSection = document.createElement("div");
-                    printSection.id = "printSection";
-                    $document.body.appendChild(printSection);
-                } else {
-                    printSection.innerHTML = "";
-                }
-                printSection.appendChild(domClone);
-                window.print();
-            }
-
-        }])
 
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])

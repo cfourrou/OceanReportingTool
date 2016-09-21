@@ -23124,3545 +23124,2601 @@ angular.module('myApp.services', [])
 
 
     })
-
     .factory('_', function () {
         return window._; // assumes underscore has already been loaded on the page
     })
-    .provider('AOI', function () {
+    .factory('L', function () {
+        return window.L;
+    })
+    .provider('AOIConfig', function () {
         var config = {
-                ortMapServer: '',
-                ortLayerAOI: '',
-                ortLayerData: '',
-                ortEnergyGPService: '',
-                ortCommonGPService: '',
-                ortTranspoGPService: '',
-                ortNaturalGPService: '',
-                ortEconGPService: ''
-            },
-            AOI;
+            ortMapServer: '',
+            ortLayerAOI: '',
+            ortLayerData: '',
+            ortEnergyGPService: '',
+            ortCommonGPService: '',
+            ortTranspoGPService: '',
+            ortNaturalGPService: '',
+            ortEconGPService: ''
+        };
 
         return {
-            config: function (value) {
+            set: function (value) {
                 config = value;
             },
-            $get: ['$rootScope', '$window', function ($rootScope, $window) {
+            $get: [function () {
+                return config
+            }]
+        };
+    })
+    .factory('myGPService', ['L', '$q', function (L, $q) {
+        var myGPService = function (url) {
+            var gpService = L.esri.GP.service({
+                url: url,
+                useCors: false,
+                async: true,
+                path: 'submitJob',
+                asyncInterval: 1
+            });
 
+            var task = gpService.createTask();
 
-                AOI = {
-                    OceanJobContributionsSeries: [],
-                    drawAreaJobId: [],
-                    Shared: false,
-                    url: $window.location.href.split('#'),
-                    config: config,
-                    layer: null,
-                    feature: null,
-                    ID: null,
-                    name: null,
-                    added: false,
-                    boem: [],
-                    metadata: [],
-                    arel: [],
-                    wind: [],
-                    disp: [],
-                    mml: [],
-                    hydrok: [],
-                    optLayer: [],
-                    CETribalLands: [],
-                    surfsed: [],
-                    wavepwr: [],
-                    tidalpwr: [],
-                    currentpwr: [],
-                    beachNur: [],
-                    OGPlanA: [],
-                    OGLease: [],
-                    OGWells: [],
-                    OGresource: [],
-                    coastfac: [],
-                    CEElevation: [],
-                    windclass: [],
-                    CEAreaOfPoly: [],
-                    CEFedGeoRegs: [],
-                    CECongress: [],
-                    CEHouse: [],
-                    CESenate: [],
-                    CECoastalCounties: [],
-                    CEFederalAndState: [],
-                    CEFederalTotal: 0,
-                    CEStateTotal: 0,
-                    TISubmarine: [],
-                    TICoastal: [],
-                    TIDangerZones: [],
-                    NRCHabConcern: [],
-                    NRCCriticalHab: [],
-                    NRCMigratorySharks: [],
-                    NRCMigratoryFish: [],
-                    ECEcon: [],
-                    ECEconEmploy: [],
-                    ECEconGDP: [],
-                    ECEconWages: [],
-                    ECStateGDP: [],
-                    ECCountyGDP: [],
-                    CEPlaces: [],
-                    TIShipping: [],
-                    TIShippingTotal: 0,
-                    TIRightWhale: [],
-                    TIVessel: [],
-                    TIPrincipalPorts: [],
-                    NRCNearby: [],
-                    NRCSoftCoral: [],
-                    NRCStonyCoral: [],
-                    NRCReefs: [],
-                    NRCBarrier: [],
-                    ECCoastalCounties: [],
-                    ECFishRevenue: [],
-                    TIPilot: [],
-                    TIAnchorage: [],
+            return {
+                run: function (shape) {
+                    var deferred = $q.defer();
 
+                    task.setParam("Report_Boundary", shape);
+                    task.setOutputParam("Output_Report");
 
-                    display: function (AOI_ID) {
-                        this.ID = parseInt(AOI_ID);
-                        if (this.ID === -9999) {
-                            this.layer = L.geoJson(this.drawLayerShape, {
-                                color: '#EB660C',
-                                weight: 1.5,
-                                fillOpacity: .3,
-                                pane: 'AOIfeature'
-                            }).addTo(map);
-                            map.fitBounds(this.layer.getBounds(), {
-                                padding: [1, 1]
-                            });
-                        } else {
-                            this.layer = L.esri.featureLayer({
-                                url: config.ortMapServer + config.ortLayerAOI,
-                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
-                                where: "AOI_ID =" + this.ID + "",
-                                pane: 'AOIfeature'
-                            }).addTo(map);
+                    task.run(function (error, geojson) {
+                        if (error) deferred.resolve(error);
+                        else {
+                            geojson.Output_Report.jobId = geojson.jobId;
+                            deferred.resolve(geojson.Output_Report)
                         }
+                    });
 
-                        this.layer.on("load", function (evt) {
-                            // create a new empty Leaflet bounds object
+                    return deferred.promise;
+                }
+            };
+        };
 
-                            var mbounds = L.latLngBounds([]);
-                            // loop through the features returned by the server
+        return myGPService;
+    }])
+    .factory('myQueryService', ['L', '$q', function (L, $q) {
+        var myQueryService = function (url) {
+            var leafletQuery = L.esri.query({
+                url: url
+            });
 
-                            AOI.layer.eachFeature(function (layer) {
-                                // get the bounds of an individual feature
-                                var layerBounds = layer.getBounds();
-                                // extend the bounds of the collection to fit the bounds of the new feature
-                                mbounds.extend(layerBounds);
-                            });
+            return {
+                query: function (where) {
+                    var deferred = $q.defer();
+                    leafletQuery.returnGeometry(false).where(where).run(function (error, featureCollection, response) {
+                        if (error) deferred.reject(error);
+                        else {
+                            featureCollection.fields = response.fields;
+                            deferred.resolve(featureCollection);
+                        }
+                    });
+                    return deferred.promise;
+                }
+            }
+        };
+        return myQueryService;
+    }])
+    .factory('myGetService', ['L', '$q', 'AOIConfig', function (L, $q, AOIConfig) {
+        return {
+            get: function (url, jobId) {
+                var deferred = $q.defer();
+                L.esri.get(url + '/jobs/' + jobId + '/results/Output_Report', {}, function (error, response) {
+                    if (error) deferred.reject(error);
+                    else deferred.resolve(response);
+                });
+                return deferred.promise;
+            }
+        };
+    }])
+    .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService', 'myGPService',
+        function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService, myGPService) {
+            var AOI = {
+                OceanJobContributionsSeries: [],
+                drawAreaJobId: {},
+                Shared: false,
+                url: $window.location.href.split('#'),
+                layer: null,
+                feature: null,
+                ID: null,
+                name: null,
+                added: false,
+                boem: [],
+                metadata: [],
+                arel: [],
+                wind: [],
+                disp: [],
+                mml: [],
+                hydrok: [],
+                optLayer: [],
+                CETribalLands: [],
+                surfsed: [],
+                wavepwr: [],
+                tidalpwr: [],
+                currentpwr: [],
+                beachNur: [],
+                OGPlanA: [],
+                OGLease: [],
+                OGWells: [],
+                OGresource: [],
+                coastfac: [],
+                CEElevation: [],
+                windclass: [],
+                CEAreaOfPoly: [],
+                CEFedGeoRegs: [],
+                CECongress: [],
+                CEHouse: [],
+                CESenate: [],
+                CECoastalCounties: [],
+                CEFederalAndState: [],
+                CEFederalTotal: 0,
+                CEStateTotal: 0,
+                TISubmarine: [],
+                TICoastal: [],
+                TIDangerZones: [],
+                NRCHabConcern: [],
+                NRCCriticalHab: [],
+                NRCMigratorySharks: [],
+                NRCMigratoryFish: [],
+                ECEcon: [],
+                ECEconEmploy: [],
+                ECEconGDP: [],
+                ECEconWages: [],
+                ECStateGDP: [],
+                ECCountyGDP: [],
+                CEPlaces: [],
+                TIShipping: [],
+                TIShippingTotal: 0,
+                TIRightWhale: [],
+                TIVessel: [],
+                TIPrincipalPorts: [],
+                NRCNearby: [],
+                NRCSoftCoral: [],
+                NRCStonyCoral: [],
+                NRCReefs: [],
+                NRCBarrier: [],
+                ECCoastalCounties: [],
+                ECFishRevenue: [],
+                TIPilot: [],
+                TIAnchorage: [],
+                map: {},
 
-                            try {
-                                map.fitBounds(mbounds);
+                display: function (AOI_ID) {
 
-                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
-                            }
-                            catch (err) {
-                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                                //so for now we will zoom out on error and allow this event to fire again.
-
-                                map.setView([33.51, -78.3], 6); //it should try again.
-                            }
+                    AOI.ID = parseInt(AOI_ID);
+                    if (AOI.ID === -9999) {
+                        AOI.layer = L.geoJson(AOI.drawLayerShape, {
+                            color: '#EB660C',
+                            weight: 1.5,
+                            fillOpacity: .3,
+                            pane: 'AOIfeature'
+                        }).addTo(AOI.map);
+                        AOI.map.fitBounds(AOI.layer.getBounds(), {
+                            padding: [1, 1]
                         });
+                    } else {
+                        AOI.layer = L.esri.featureLayer({
+                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                            color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                            where: "AOI_ID =" + AOI.ID + "",
+                            pane: 'AOIfeature'
+                        }).addTo(AOI.map);
+                    }
 
-                        this.isVisible = true;
-
-                    },
-                    hide: function () {
-                        if (this.isVisible) {
-                            map.removeLayer(this.layer);
-                        }
-                        map.setView([33.51, -78.3], 6);
-                        this.isVisible = false;
-                    },
-                    zoomTo: function () {
+                    AOI.layer.on("load", function (evt) {
+                        // create a new empty Leaflet bounds object
 
                         var mbounds = L.latLngBounds([]);
                         // loop through the features returned by the server
-                        this.layer.eachFeature(function (layer) {
+
+                        AOI.layer.eachFeature(function (layer) {
                             // get the bounds of an individual feature
                             var layerBounds = layer.getBounds();
                             // extend the bounds of the collection to fit the bounds of the new feature
                             mbounds.extend(layerBounds);
                         });
-                        map.fitBounds(mbounds);
+
+                        try {
+                            AOI.map.fitBounds(mbounds);
+
+                            AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                        }
+                        catch (err) {
+                            //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                            //so for now we will zoom out on error and allow this event to fire again.
+
+                            AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                        }
+                    });
+
+                    AOI.isVisible = true;
+
+                },
+                hide: function () {
+
+                    if (AOI.isVisible) {
+                        AOI.map.removeLayer(AOI.layer);
+                    }
+                    AOI.map.setView([33.51, -78.3], 6);
+                    AOI.isVisible = false;
+                },
+                zoomTo: function () {
+
+                    var mbounds = L.latLngBounds([]);
+                    // loop through the features returned by the server
+                    AOI.layer.eachFeature(function (layer) {
+                        // get the bounds of an individual feature
+                        var layerBounds = layer.getBounds();
+                        // extend the bounds of the collection to fit the bounds of the new feature
+                        mbounds.extend(layerBounds);
+                    });
+                    AOI.map.fitBounds(mbounds);
 
 
-                    },
-                    isVisible: false,
-                    loadData: function (AOI_ID, name) {
+                },
+                isVisible: false,
+                getReport: function () {
+                    var allPromises = [];
 
-                        this.display(AOI_ID);
+                    var EMGPService = new myGPService(AOIConfig.ortEnergyGPService);
+                    var CEGPService = new myGPService(AOIConfig.ortCommonGPService);
+                    var TIGPService = new myGPService(AOIConfig.ortTranspoGPService);
+                    var NRCGPService = new myGPService(AOIConfig.ortNaturalGPService);
+                    var ECGPService = new myGPService(AOIConfig.ortEconGPService);
 
-                        var vm = this;
+                    allPromises.push(EMGPService.run(AOI.drawLayerShape));
+                    allPromises.push(CEGPService.run(AOI.drawLayerShape));
+                    allPromises.push(TIGPService.run(AOI.drawLayerShape));
+                    allPromises.push(NRCGPService.run(AOI.drawLayerShape));
+                    allPromises.push(ECGPService.run(AOI.drawLayerShape));
 
-                        vm.name = name;
-                        vm.windrpLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[0].num,
-                            pane: 'optionalfeature0',
-                            style: function (feature) {
-                                if (feature.properties.Speed_90 >= 8.8) {
-                                    return {color: '#0E3708', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.Speed_90 >= 8.0) {
-                                    return {color: '#5C9227', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.Speed_90 >= 7.5) {
-                                    return {color: '#A6C900', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.Speed_90 >= 7.0) {
-                                    return {color: '#EFCF06', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.Speed_90 >= 6.6) {
-                                    return {color: '#D96704', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.Speed_90 < 6.6) {
-                                    return {color: '#A90306', weight: 1, fillOpacity: .8};
-                                } else {
-                                    return {color: 'white', weight: 1, fillOpacity: .8};
+                    return $q.all(allPromises).then(function (results) {
+                        AOI.featureCollection = {fields: null, features: []};
+
+                        AOI.drawAreaJobId.EM = results[0].jobId;
+                        AOI.drawAreaJobId.CE = results[1].jobId;
+                        AOI.drawAreaJobId.TI = results[2].jobId;
+                        AOI.drawAreaJobId.NRC = results[3].jobId;
+                        AOI.drawAreaJobId.EC = results[4].jobId;
+
+                        angular.forEach(results, function (result, i) {
+                            if (!result.error) {
+                                if (!AOI.featureCollection.fields) AOI.featureCollection.fields = result.fields;
+                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, result.features);
+                            }
+                        });
+
+                        AOI.unloadData();
+                        AOI.loadData(-9999, '');
+                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
+                    });
+
+
+                },
+                getSavedReport: function () {
+                    var promises = [];
+
+                    var shapeDeferred = $q.defer();
+                    promises.push(shapeDeferred.promise);
+                    L.esri.get(AOIConfig.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId.CE + '/inputs/Report_Boundary', {}, function (error, response) {
+                        if (error) {
+
+                        } else {
+                            AOI.drawLayerShape = {
+                                type: "Feature",
+                                geometry: {
+                                    type: "Polygon",
+                                    coordinates: response.value.features[0].geometry.rings
+                                }
+                            };
+                            shapeDeferred.resolve();
+                        }
+                    });
+                    AOI.featureCollection = {fields: null, features: []};
+                    promises.push(myGetService.get(AOIConfig.ortCommonGPService, AOI.drawAreaJobId.CE));
+                    promises.push(myGetService.get(AOIConfig.ortEnergyGPService, AOI.drawAreaJobId.EM));
+                    promises.push(myGetService.get(AOIConfig.ortNaturalGPService, AOI.drawAreaJobId.NRC));
+                    promises.push(myGetService.get(AOIConfig.ortTranspoGPService, AOI.drawAreaJobId.TI));
+                    promises.push(myGetService.get(AOIConfig.ortEconGPService, AOI.drawAreaJobId.EC));
+
+
+                    $q.all(promises).then(function (results) {
+                        angular.forEach(results, function (result, i) {
+                            if (result) {
+                                if (!result.error) {
+                                    if (!AOI.featureCollection.fields) AOI.featureCollection.fields = result.value.fields;
+                                    AOI.featureCollection.features.push.apply(AOI.featureCollection.features, result.value.features);
                                 }
                             }
                         });
+                        AOI.loadData(-9999, '');
+                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
+                    });
+                },
+                loadData: function (AOI_ID, name) {
+                    AOI.display(AOI_ID);
 
-                        vm.windLeaseLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[1].num,
-                            pane: 'optionalfeature1',
-                            style: function (feature) {
+                    AOI.name = name;
 
-                                return {color: 'white', weight: 1, fillOpacity: .5};
+                    AOI.windrpLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windrpLayer,
+                        pane: 'windrpLayerPane',
+                        style: function (feature) {
+                            if (feature.properties.Speed_90 >= 8.8) {
+                                return {color: '#0E3708', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 8.0) {
+                                return {color: '#5C9227', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 7.5) {
+                                return {color: '#A6C900', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 7.0) {
+                                return {color: '#EFCF06', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 >= 6.6) {
+                                return {color: '#D96704', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.Speed_90 < 6.6) {
+                                return {color: '#A90306', weight: 1, fillOpacity: .8};
+                            } else {
+                                return {color: 'white', weight: 1, fillOpacity: .8};
                             }
-                        });
-                        vm.windPlanningLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[2].num,
-                            pane: 'optionalfeature2',
-                            style: function (feature) {
+                        }
+                    });
 
-                                return {color: 'Black', weight: 1, fillOpacity: .5};
-                            }
-                        });
-                        vm.oceanDisposalSites = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[3].num,
-                            pane: 'optionalfeature3',
-                            style: function (feature) {
-                                return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
-                            }
-                        });
-                        vm.marineMineralsLeases = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[4].num,
-                            pane: 'optionalfeature4',
-                            style: function (feature) {
-                                return {color: '#7300D9', weight: 2, fillOpacity: 0};
-                            }
-                        });
+                    AOI.windLeaseLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windLeaseLayer,
+                        pane: 'windLeaseLayerPane',
+                        style: function (feature) {
+
+                            return {color: 'white', weight: 1, fillOpacity: .5};
+                        }
+                    });
+                    AOI.windPlanningLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windPlanningLayer,
+                        pane: 'windPlanningLayerPane',
+                        style: function (feature) {
+
+                            return {color: 'Black', weight: 1, fillOpacity: .5};
+                        }
+                    });
+                    AOI.oceanDisposalSites = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.oceanDisposalSites,
+                        pane: 'oceanDisposalSitesPane',
+                        style: function (feature) {
+                            return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
+                        }
+                    });
+                    AOI.marineMineralsLeases = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.marineMineralsLeases,
+                        pane: 'marineMineralsLeasesPane',
+                        style: function (feature) {
+                            return {color: '#7300D9', weight: 2, fillOpacity: 0};
+                        }
+                    });
 
 
-                        vm.HydrokineticLeases = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[6].num,
-                            pane: 'optionalfeature6',
-                            pointToLayer: function (feature, latlng) {
-                                return L.marker(latlng, {
-                                    icon: L.icon({
-                                        iconUrl: 'img/HydrokineticLeasesGraphic.svg',
-                                        iconSize: [32, 37],
-                                        iconAnchor: [16, 37],
-                                        popupAnchor: [0, -28]
-                                    })
-                                });
-                            }
-                        });
+                    AOI.HydrokineticLeases = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.HydrokineticLeases,
+                        pane: 'HydrokineticLeasesPane',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/HydrokineticLeasesGraphic.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                })
+                            });
+                        }
+                    });
 
-                        vm.wavePower = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[8].num,
-                            pane: 'optionalfeature8',
-                            style: function (feature) {
-                                if (feature.properties.ann_wef > 40) {
-                                    return {color: '#B0B497', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 30.0) {
-                                    return {color: '#B6BC9E', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 20.0) {
-                                    return {color: '#BBC1A4', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 15.0) {
-                                    return {color: '#C0C6A8', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 10.0) {
-                                    return {color: '#C9D0B1', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 8.0) {
-                                    return {color: '#D0D8B9', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 6) {
-                                    return {color: '#D5DDC0', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 4.0) {
-                                    return {color: '#DEE7C9', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef > 2.0) {
-                                    return {color: '#E4EFD2', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.ann_wef < 2.01) {
-                                    return {color: '#EBF6D8', weight: 1, fillOpacity: .8};
-                                } else {
-                                    return {color: 'white', weight: 1, fillOpacity: .8};
-                                }
+                    AOI.wavePower = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.wavePower,
+                        pane: 'wavePowerPane',
+                        style: function (feature) {
+                            if (feature.properties.ann_wef > 40) {
+                                return {color: '#B0B497', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 30.0) {
+                                return {color: '#B6BC9E', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 20.0) {
+                                return {color: '#BBC1A4', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 15.0) {
+                                return {color: '#C0C6A8', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 10.0) {
+                                return {color: '#C9D0B1', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 8.0) {
+                                return {color: '#D0D8B9', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 6) {
+                                return {color: '#D5DDC0', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 4.0) {
+                                return {color: '#DEE7C9', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef > 2.0) {
+                                return {color: '#E4EFD2', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.ann_wef < 2.01) {
+                                return {color: '#EBF6D8', weight: 1, fillOpacity: .8};
+                            } else {
+                                return {color: 'white', weight: 1, fillOpacity: .8};
                             }
-                        });
+                        }
+                    });
 
-                        vm.tidalPower = L.esri.dynamicMapLayer({
-                            url: config.ortMapServer,
-                            pane: 'optionalfeature9',
-                            layers: [ortLayerOptional[9].num],
-                            opacity: .8
-                        });
+                    AOI.tidalPower = L.esri.dynamicMapLayer({
+                        url: AOIConfig.ortMapServer,
+                        pane: 'tidalPowerPane',
+                        layers: [AOIConfig.optionalLayers.tidalPower],
+                        opacity: .8
+                    });
 
-                        vm.currentPower = L.esri.dynamicMapLayer({
-                            url: config.ortMapServer,
-                            pane: 'optionalfeature10',
-                            layers: [ortLayerOptional[10].num],
-                            opacity: .8
-                        });
+                    AOI.currentPower = L.esri.dynamicMapLayer({
+                        url: AOIConfig.ortMapServer,
+                        pane: 'currentPowerPane',
+                        layers: [AOIConfig.optionalLayers.currentPower],
+                        opacity: .8
+                    });
 
-                        vm.beachNourish = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[11].num,
-                            pane: 'optionalfeature11',
-                            style: function (feature) {
-                                return {color: '#8B572A', weight: 4, fillOpacity: 0};
-                            }
-                        });
+                    AOI.beachNourish = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.beachNourish,
+                        pane: 'beachNourishPane',
+                        style: function (feature) {
+                            return {color: '#8B572A', weight: 4, fillOpacity: 0};
+                        }
+                    });
 
-                        vm.coastalEnergyFacilities = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[16].num,
-                            pane: 'optionalfeature16',
-                            pointToLayer: function (feature, latlng) {
-                                return L.marker(latlng, {
-                                    icon: L.icon({
-                                        iconUrl: 'img/CoastalEnergyGraphic.svg',
-                                        iconSize: [32, 37],
-                                        iconAnchor: [16, 37],
-                                        popupAnchor: [0, -28]
-                                    })
-                                });
-                            }
-                        });
+                    AOI.coastalEnergyFacilities = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.coastalEnergyFacilities,
+                        pane: 'coastalEnergyFacilitiesPane',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/CoastalEnergyGraphic.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                })
+                            });
+                        }
+                    });
 
-                        vm.CEElevation = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[26].num,
-                            pane: 'optionalfeature26',
-                            style: function (feature) {
-                                return {color: '#3283BB', weight: 2, fillOpacity: 0};
-                            }
-                        });
-                        vm.TISubmarineLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[34].num,
-                            pane: 'optionalfeature34',
-                            style: function (feature) {
-                                return {color: '#880cf4', weight: 2, fillOpacity: 0};
-                            }
-                        });
-                        vm.TIDangerZonesLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[35].num,
-                            pane: 'optionalfeature35',
+                    AOI.CEElevationLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.CEElevationLayer,
+                        pane: 'CEElevationPane',
+                        style: function (feature) {
+                            return {color: '#3283BB', weight: 2, fillOpacity: 0};
+                        }
+                    });
+                    AOI.TISubmarineLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TISubmarineLayer,
+                        pane: 'TISubmarineLayerPane',
+                        style: function (feature) {
+                            return {color: '#880cf4', weight: 2, fillOpacity: 0};
+                        }
+                    });
+                    AOI.TIDangerZonesLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TIDangerZonesLayer,
+                        pane: 'TIDangerZonesLayerPane',
 
-                            style: function (feature) {
-                                if (feature.properties.agencyOfUse === 'NASA') {
-                                    return {color: '#1a5dad', weight: 1, fillOpacity: .7};
-                                } else if (feature.properties.agencyOfUse === 'U.S. Air Force') {
-                                    return {color: '#7dc7ec', weight: 1, fillOpacity: .7};
-                                } else if (feature.properties.agencyOfUse === 'U.S. Army') {
-                                    return {color: '#ffd800', weight: 1, fillOpacity: .7};
-                                } else if (feature.properties.agencyOfUse === 'U.S. Marine Corps') {
-                                    return {color: '#b6100c', weight: 1, fillOpacity: .7};
-                                } else if (feature.properties.agencyOfUse === 'U.S. Navy') {
-                                    return {color: '#1c2f6b', weight: 1, fillOpacity: .7};
-                                } else if (feature.properties.agencyOfUse === 'U.S. Coast Guard') {
-                                    return {color: '#f3871a', weight: 1, fillOpacity: .7};
-                                } else {
-                                    return {color: '#b1b1b1', weight: 1, fillOpacity: .7};
-                                }
+                        style: function (feature) {
+                            if (feature.properties.agencyOfUse === 'NASA') {
+                                return {color: '#1a5dad', weight: 1, fillOpacity: .7};
+                            } else if (feature.properties.agencyOfUse === 'U.S. Air Force') {
+                                return {color: '#7dc7ec', weight: 1, fillOpacity: .7};
+                            } else if (feature.properties.agencyOfUse === 'U.S. Army') {
+                                return {color: '#ffd800', weight: 1, fillOpacity: .7};
+                            } else if (feature.properties.agencyOfUse === 'U.S. Marine Corps') {
+                                return {color: '#b6100c', weight: 1, fillOpacity: .7};
+                            } else if (feature.properties.agencyOfUse === 'U.S. Navy') {
+                                return {color: '#1c2f6b', weight: 1, fillOpacity: .7};
+                            } else if (feature.properties.agencyOfUse === 'U.S. Coast Guard') {
+                                return {color: '#f3871a', weight: 1, fillOpacity: .7};
+                            } else {
+                                return {color: '#b1b1b1', weight: 1, fillOpacity: .7};
                             }
-                        });
+                        }
+                    });
 
-                        vm.CEPlaceLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + [ortLayerOptional[36].num],
-                            pane: 'optionalfeature36',
-                            pointToLayer: function (feature, latlng) {
-                                return L.marker(latlng, {
-                                    icon: L.icon({
-                                        iconUrl: 'img/Map_marker.svg',
-                                        iconSize: [32, 37],
-                                        iconAnchor: [16, 37],
-                                        popupAnchor: [0, -28]
-                                    })
-                                }).bindPopup(feature.properties.NAME);
-                            }
-                        });
-                        vm.TIPrincipalPortsLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + [ortLayerOptional[39].num],
-                            pane: 'optionalfeature39',
-                            pointToLayer: function (feature, latlng) {
-                                return L.marker(latlng, {
-                                    icon: L.icon({
-                                        iconUrl: 'img/transportation-anchor.svg',
-                                        iconSize: [32, 37],
-                                        iconAnchor: [16, 37],
-                                        popupAnchor: [0, -28]
-                                    })
-                                });
-                            }
-                        });
-                        vm.NRCReefsLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + [ortLayerOptional[41].num],
-                            pane: 'optionalfeature41',
-                            pointToLayer: function (feature, latlng) {
-                                return L.marker(latlng, {
-                                    icon: L.icon({
-                                        iconUrl: 'img/svg-elements_reefs.svg',
-                                        iconSize: [32, 37],
-                                        iconAnchor: [16, 37],
-                                        popupAnchor: [0, -28]
-                                    })
-                                });
-                            }
-                        });
-                        vm.CETribalLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[37].num,
-                            pane: 'optionalfeature37',
-                            style: function (feature) {
-                                return {fillColor: '#ffffbe', color: '#e69901', weight: 1.5, fillOpacity: .5};
-                            }
-                        });
-                        vm.NRCNearbyLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[40].num,
-                            pane: 'optionalfeature40',
-                            style: function (feature) {
-                                return {color: '#75bc73', weight: 1.5, fillOpacity: .7};
-                            }
-                        });
-                        vm.NRCBarrierLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[44].num,
-                            pane: 'optionalfeature44',
-                            style: function (feature) {
-                                return {color: '#d6ce70', weight: 1.5, fillOpacity: .7};
-                            }
-                        });
+                    AOI.CEPlaceLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + [AOIConfig.optionalLayers.CEPlaceLayer],
+                        pane: 'CEPlaceLayerPane',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/Map_marker.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                })
+                            }).bindPopup(feature.properties.NAME);
+                        }
+                    });
+                    AOI.TIPrincipalPortsLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + [AOIConfig.optionalLayers.TIPrincipalPortsLayer],
+                        pane: 'TIPrincipalPortsLayerPane',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/transportation-anchor.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                })
+                            });
+                        }
+                    });
+                    AOI.NRCReefsLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + [AOIConfig.optionalLayers.NRCReefsLayer],
+                        pane: 'NRCReefsLayerPane',
+                        pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng, {
+                                icon: L.icon({
+                                    iconUrl: 'img/svg-elements_reefs.svg',
+                                    iconSize: [32, 37],
+                                    iconAnchor: [16, 37],
+                                    popupAnchor: [0, -28]
+                                })
+                            });
+                        }
+                    });
+                    AOI.CETribalLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.CETribalLayer,
+                        pane: 'CETribalLayerPane',
+                        style: function (feature) {
+                            return {fillColor: '#ffffbe', color: '#e69901', weight: 1.5, fillOpacity: .5};
+                        }
+                    });
+                    AOI.NRCNearbyLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.NRCNearbyLayer,
+                        pane: 'NRCNearbyLayerPane',
+                        style: function (feature) {
+                            return {color: '#75bc73', weight: 1.5, fillOpacity: .7};
+                        }
+                    });
+                    AOI.NRCBarrierLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.NRCBarrierLayer,
+                        pane: 'NRCBarrierLayerPane',
+                        style: function (feature) {
+                            return {color: '#d6ce70', weight: 1.5, fillOpacity: .7};
+                        }
+                    });
 
-                        vm.TIVessels = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[38].num,
-                            pane: 'optionalfeature38',
-                            style: function (feature) {
-                                if (feature.properties.all_2011 > 1500) {
-                                    return {color: '#d4321e', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.all_2011 > 750) {
-                                    return {color: '#ee815e', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.all_2011 > 250) {
-                                    return {color: '#fbd39e', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.all_2011 > 75) {
-                                    return {color: '#d9dec1', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.all_2011 > 0) {
-                                    return {color: '#a7b9c8', weight: 1, fillOpacity: .8};
-                                } else if (feature.properties.all_2011 = 0) {
-                                    return {color: '#4776b3', weight: 1, fillOpacity: .8};
-                                } else {
-                                    return {color: '#4776b3', weight: 1, fillOpacity: .8};
-                                }
+                    AOI.TIVessels = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TIVessels,
+                        pane: 'TIVesselsPane',
+                        style: function (feature) {
+                            if (feature.properties.all_2011 > 1500) {
+                                return {color: '#d4321e', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.all_2011 > 750) {
+                                return {color: '#ee815e', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.all_2011 > 250) {
+                                return {color: '#fbd39e', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.all_2011 > 75) {
+                                return {color: '#d9dec1', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.all_2011 > 0) {
+                                return {color: '#a7b9c8', weight: 1, fillOpacity: .8};
+                            } else if (feature.properties.all_2011 = 0) {
+                                return {color: '#4776b3', weight: 1, fillOpacity: .8};
+                            } else {
+                                return {color: '#4776b3', weight: 1, fillOpacity: .8};
                             }
-                        });
+                        }
+                    });
 
-                        vm.NRCSoftCoralLayer = L.esri.dynamicMapLayer({
-                            url: config.ortMapServer,
-                            pane: 'optionalfeature42',
-                            layers: [ortLayerOptional[42].num],
-                            opacity: .8
-                        });
-                        vm.NRCStoneyCoralLayer = L.esri.dynamicMapLayer({
-                            url: config.ortMapServer,
-                            pane: 'optionalfeature43',
-                            layers: [ortLayerOptional[43].num],
-                            opacity: .8
-                        });
-                        vm.ECCoastalCountiesLayer = L.esri.featureLayer({
-                            url: config.ortMapServer + ortLayerOptional[32].num,
-                            pane: 'optionalfeature32',
-                            style: function (feature) {
-                                return {color: '#b613ba', weight: 1.5, fillOpacity: 0};
-                            }
-                        });
+                    AOI.NRCSoftCoralLayer = L.esri.dynamicMapLayer({
+                        url: AOIConfig.ortMapServer,
+                        pane: 'NRCSoftCoralLayerPane',
+                        layers: [AOIConfig.optionalLayers.NRCSoftCoralLayer],
+                        opacity: .8
+                    });
+                    AOI.NRCStoneyCoralLayer = L.esri.dynamicMapLayer({
+                        url: AOIConfig.ortMapServer,
+                        pane: 'NRCStoneyCoralLayerPane',
+                        layers: [AOIConfig.optionalLayers.NRCStoneyCoralLayer],
+                        opacity: .8
+                    });
+                    AOI.ECCoastalCountiesLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.ECCoastalCountiesLayer,
+                        pane: 'ECCoastalCountiesLayerPane',
+                        style: function (feature) {
+                            return {color: '#b613ba', weight: 1.5, fillOpacity: 0};
+                        }
+                    });
 
-                        var query = L.esri.query({
-                            url: config.ortMapServer + config.ortLayerData
-                        });
+                    if (AOI.ID === -9999) {
+                        var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
 
-                        if (vm.ID === -9999) {
-                            var featureCollection = JSON.parse(JSON.stringify(vm.featureCollection));
+                        var newarray = [];
+                        angular.forEach(featureCollection.features, function (feature) {
+                            var newobject = {};
+                            angular.forEach(featureCollection.fields, function (field) {
+                                newobject[field.name] = feature.attributes[field.name];
+                            });
+                            newarray.push(newobject);
+                        });
+                        AOI.massageData(newarray);
+
+                    } else {
+                        var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerData);
+                        queryService.query("AOI_ID =" + AOI.ID + "").then(function (featureCollection) {
+                            AOI.name = featureCollection.features[0].properties.AOI_NAME;
 
                             var newarray = [];
                             angular.forEach(featureCollection.features, function (feature) {
                                 var newobject = {};
                                 angular.forEach(featureCollection.fields, function (field) {
-                                    newobject[field.name] = feature.attributes[field.name];
+                                    newobject[field.name] = feature.properties[field.name];
                                 });
                                 newarray.push(newobject);
                             });
+                            //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                            vm.massageData(newarray);
-
-                        } else {
-                            query.returnGeometry(false).where("AOI_ID =" + vm.ID + "").run(function (error, featureCollection, response) {
-
-                                var newarray = [];
-                                angular.forEach(featureCollection.features, function (feature) {
-                                    var newobject = {};
-                                    angular.forEach(response.fields, function (field) {
-                                        newobject[field.name] = feature.properties[field.name];
-                                    });
-                                    newarray.push(newobject);
-                                });
-                                //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
-
-                                vm.massageData(newarray);
-                            });
-                        }
-                        vm.isLoaded = true;
+                            AOI.massageData(newarray);
+                        });
                     }
-                    ,
-
-                    massageData: function (featureCollection) {
-                        var vm = this;
-                        var k = 0;
-                        var ba = 0;
-                        var bb = 0;
-                        var bc = 0;
-                        var bd = 0;
-                        var be = 0;
-                        var bf = 0;
-                        var bg = 0;
-                        var bh = 0;
-                        var bi = 0;
-                        var bj = 0;
-                        var bk = 0;
-                        var bl = 0;
-                        var bm = 0;
-                        var bn = 0;
-                        var bo = 0;
-                        var bp = 0;
-                        var bq = 0;
-                        var br = 0;
-                        var bs = 0;
-                        var bt = 0;
-                        var bu = 0;
-                        var bv = 0;
-                        var bw = 0;
-                        var bx = 0;
-                        var by = 0;
-                        var bz = 0;
-                        var ca = 0;
-                        var cb = 0;
-                        var cc = 0;
-                        var cd = 0;
-                        var ce = 0;
-                        var cf = 0;
-                        var cg = 0;
-                        var ch = 0;
-                        var ci = 0;
-                        var cj = 0;
-                        var ck = 0;
-                        var cl = 0;
-                        var cm = 0;
-                        var cn = 0;
-                        var co = 0;
-                        var cp = 0;
-                        var cq = 0;
-                        var cr = 0;
-                        var cs = 0;
-                        var ct = 0;
-                        var cu = 0;
-                        var cv = 0;
-
-                        var ack = [];
-
-                        for (var i = 0, j = featureCollection.length; i < j; i++) {
-                            switch (featureCollection[i].DATASET_NM) {
-                                case "Anchorage_Areas":
-                                    vm.TIAnchorage[cv] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Name: (featureCollection[i].Name || 'Unknown'),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0)
-
-
-                                    };
-
-
-                                    if ((cv === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cv++;
-                                    break;
-                                case "Pilot_Boarding_Areas":
-                                    vm.TIPilot[cu] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                    };
-
-
-                                    if ((cu === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cu++;
-                                    break;
-                                case "SATL_FishRevenue_AllYrs":
-                                    vm.ECFishRevenue[ct] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        FishingRev_value_min: (featureCollection[i].FishingRev_value_min || 0),
-                                        FishingRev_value_max: (featureCollection[i].FishingRev_value_max || 0),
-                                        FishingRev_total: (featureCollection[i].FishingRev_total || 0)
-
-
-                                    };
-
-
-                                    if ((ct === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    ct++;
-                                    break;
-                                case "CBRAs":
-                                    vm.NRCBarrier[cs] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                    };
-
-
-                                    if ((cs === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cs++;
-                                    break;
-                                case "ArtificialReefs":
-                                    vm.NRCReefs[cr] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                    };
-
-
-                                    if ((cr === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cr++;
-                                    break;
-                                case "StonyCoralALL":
-                                    vm.NRCStonyCoral[cq] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-
-                                        Coral_Suitability: (featureCollection[i].Coral_Suitability || '')
-
-
-                                    };
-
-
-                                    if ((cq === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cq++;
-                                    break;
-                                case "SoftCoralALL":
-                                    vm.NRCSoftCoral[cp] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-
-                                        Coral_Suitability: (featureCollection[i].Coral_Suitability || '')
-
-
-                                    };
-
-
-                                    if ((cp === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cp++;
-                                    break;
-                                case "MPA_selected":
-                                    vm.NRCNearby[co] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Site_Name: (featureCollection[i].Site_Name || 'Unknown'),
-                                        URL: (featureCollection[i].URL || '')
-
-
-                                    };
-
-
-                                    if ((co === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    co++;
-                                    break;
-                                case "PrincipalPorts":
-                                    vm.TIPrincipalPorts[cn] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        PortName: (featureCollection[i].PortName || 'Unknown'),
-                                        Total: (featureCollection[i].Total || 0),
-                                        Dist_Mi: (featureCollection[i].Dist_Mi || 0)
-
-
-                                    };
-
-
-                                    if ((cn === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cn++;
-                                    break;
-                                case "vessel_traffic_atl_2011":
-                                    vm.TIVessel[cm] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        all_2011_avg: (featureCollection[i].all_2011_avg || 0)
-
-
-                                    };
-
-
-                                    if ((cm === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cm++;
-                                    break;
-                                case "RightWhales":
-                                    vm.TIRightWhale[cl] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0)
-
-
-                                    };
-
-
-                                    if ((cl === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cl++;
-                                    break;
-                                case "ShippingLanes":
-                                    vm.TIShipping[ck] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        THEMELAYER: (featureCollection[i].THEMELAYER || 'Unknown'),
-                                        THEMELAYER_CNT: (featureCollection[i].THEMELAYER_CNT || 'Unknown')
-
-                                    };
-                                    vm.TIShippingTotal += featureCollection[i].THEMELAYER_CNT;
-
-                                    if ((ck === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    ck++;
-                                    break;
-
-                                case "Places":
-                                    vm.CEPlaces[cj] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Name: (featureCollection[i].Name || 'Unknown'),
-                                        ST: (featureCollection[i].ST || 'Unknown'),
-                                        Dist_Mi: (featureCollection[i].Dist_Mi || 0),
-                                        Census2010: ((featureCollection[i].Census2010 === -1) ? ' ' : (featureCollection[i].Census2010 || ' '))
-
-                                    };
-
-
-                                    if ((cj === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cj++;
-                                    break;
-                                case "CoastalStates":
-                                case "Coastal_Shoreline_Counties_2010":
-                                    vm.ECCountyGDP[ci] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        cntyname: (featureCollection[i].cntyname || featureCollection[i].st_name),
-                                        MedHHInc: (featureCollection[i].MedHHInc || 0),
-                                        TotalHouses: (featureCollection[i].TotalHouses || 0),
-                                        Population: (featureCollection[i].Population || 0),
-                                        PercentTotGDP: (featureCollection[i].PercentTotGDP || 0)
-
-                                    };
-
-
-                                    if ((ci === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    ci++;
-                                    break;
-
-
-                                case "ENOW_2013":
-
-
-                                    vm.ECEcon[cg] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Name: (featureCollection[i].Name || 'Unknown'),
-                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
-                                        st_name: (featureCollection[i].st_name || 'Unknown'),
-                                        OceanSector: (featureCollection[i].OceanSector || 'Unknown'),
-                                        Employment: (featureCollection[i].Employment || 0),
-                                        Wages: (featureCollection[i].Wages || 0),
-                                        GDP: (featureCollection[i].GDP || 0),
-
-                                        Emp_LivingResources: (featureCollection[i].Emp_LivingResources || 0),
-                                        Emp_MarineConstruction: (featureCollection[i].Emp_MarineConstruction || 0),
-                                        Emp_MarineTransp: (featureCollection[i].Emp_MarineTransp || 0),
-                                        Emp_OffshoreMineralExt: (featureCollection[i].Emp_OffshoreMineralExt || 0),
-                                        Emp_ShipAndBoatBuilding: (featureCollection[i].Emp_ShipAndBoatBuilding || 0),
-                                        Emp_TourismAndRec: (featureCollection[i].Emp_TourismAndRec || 0),
-                                        Wages_LivingResources: (featureCollection[i].Wages_LivingResources || 0),
-                                        Wages_MarineConstruction: (featureCollection[i].Wages_MarineConstruction || 0),
-                                        Wages_MarineTransp: (featureCollection[i].Wages_MarineTransp || 0),
-                                        Wages_OffshoreMineralExt: (featureCollection[i].Wages_OffshoreMineralExt || 0),
-                                        Wages_ShipAndBoatBuilding: (featureCollection[i].Wages_ShipAndBoatBuilding || 0),
-                                        Wages_TourismAndRec: (featureCollection[i].Wages_TourismAndRec || 0),
-
-                                        GDP_LivingResources: ((featureCollection[i].GDP_LivingResources === -9999) ? 0 : (featureCollection[i].GDP_LivingResources || 0)),
-                                        GDP_MarineConstruction: ((featureCollection[i].GDP_MarineConstruction === -9999) ? 0 : (featureCollection[i].GDP_MarineConstruction || 0)),
-                                        GDP_MarineTransp: ((featureCollection[i].GDP_MarineTransp === -9999) ? 0 : (featureCollection[i].GDP_MarineTransp || 0)),
-                                        GDP_OffshoreMineralExt: ((featureCollection[i].GDP_OffshoreMineralExt === -9999) ? 0 : (featureCollection[i].GDP_OffshoreMineralExt || 0)),
-                                        GDP_ShipAndBoatBuilding: ((featureCollection[i].GDP_ShipAndBoatBuilding === -9999) ? 0 : (featureCollection[i].GDP_ShipAndBoatBuilding || 0)),
-                                        GDP_TourismAndRec: ((featureCollection[i].GDP_TourismAndRec === -9999) ? 0 : (featureCollection[i].GDP_TourismAndRec || 0))
-
-
-                                    };
-                                    switch (featureCollection[i].OceanSector) {
-                                        case "All Ocean Sectors":
-                                            vm.ECEconEmploy[vm.ECEconEmploy.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Employment || 0)];
-                                            vm.ECEconGDP[vm.ECEconGDP.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].GDP || 0)];
-                                            vm.ECEconWages[vm.ECEconWages.length] = [(featureCollection[i].cntyname || featureCollection[i].st_name), (featureCollection[i].Wages || 0)];
-                                            break;
-
-                                    }
-
-                                    if ((cg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cg++;
-                                    break;
-                                case "NMFS_HMS_Fish":
-                                    vm.NRCMigratoryFish[ce] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
-                                        SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                    };
-
-                                    if ((ce === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    ce++;
-                                    break;
-
-                                case "NMFS_HMS_Sharks":
-                                    vm.NRCMigratorySharks[cf] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        LIFE_STAGE: (featureCollection[i].LIFE_STAGE || 'Unknown'),
-                                        SPECIES: (featureCollection[i].SPECIES || 'Unknown'),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                    };
-
-                                    if ((cf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cf++;
-                                    break;
-                                case "NMFS_CHD_SouthAtl":
-                                    vm.NRCCriticalHab[cd] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        AREANAME: (featureCollection[i].AREANAME || 'Unknown'),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                    };
-
-                                    if ((cd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cd++;
-                                    break;
-                                case "SERO_HAPC_PartK":
-                                    vm.NRCHabConcern[cc] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        AREA_NAME: (featureCollection[i].AREA_NAME || 'Unknown'),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown')
-
-                                    };
-
-                                    if ((cc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cc++;
-                                    break;
-                                case "Danger_Zones_and_Restricted_Areas":
-                                    vm.TIDangerZones[cb] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        boundaryType: (featureCollection[i].boundaryType || 'Unknown'),
-                                        agencyOfUse: (featureCollection[i].agencyOfUse || 'Unknown'),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 'Unknown'),
-                                        Style: 'c_' + (featureCollection[i].agencyOfUse || 'Unknown').substr(-4, 4)
-
-                                    };
-
-                                    if ((cb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    cb++;
-                                    break;
-                                case "Coastal_Maintained_Channels":
-                                    vm.TICoastal[ca] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-
-                                    };
-
-                                    if ((ca === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    ca++;
-                                    break;
-                                case "SubmarineCables":
-                                    vm.TISubmarine[bz] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Owner: (featureCollection[i].Owner || 'Unknown'),
-                                        STATUS: (featureCollection[i].STATUS || 'Unknown'),
-                                        OwnerStatus: (featureCollection[i].Owner || 'Unknown') + " - " + (featureCollection[i].STATUS || 'Unknown')
-
-
-                                    };
-
-                                    if ((bz === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bz++;
-                                    break;
-                                case "FederalAndStateWaters":
-                                    vm.CEFederalAndState[by] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        jurisdiction: (featureCollection[i].jurisdiction || 'Unknown'),
-                                        perc_jurisdiction: (featureCollection[i].perc_jurisdiction || 'Unknown'),
-                                        Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown')
-
-                                    };
-
-                                    if ((by === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-                                    if (featureCollection[i].TOTAL_CNT > 0) {
-
-                                        if ((featureCollection[i].jurisdiction.substring(0, 3)) === "Fed") {
-
-                                            vm.CEFederalTotal = parseInt(vm.CEFederalTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
-
-
-                                        } else  vm.CEStateTotal = parseInt(vm.CEStateTotal, 10) + parseInt(featureCollection[i].Area_mi2, 10);
-
-                                    }
-
-                                    by++;
-                                    break;
-                                case "CoastalCounties":
-                                    vm.CECoastalCounties[bx] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        cntyname: (featureCollection[i].cntyname || 'Unknown'),
-                                        st_abbr: (featureCollection[i].st_abbr || 'Unknown'),
-                                        ctystate: (featureCollection[i].st_abbr || 'Unknown'),
-                                        st_name: (featureCollection[i].st_name || 'Unknown')
-                                    };
-
-                                    if ((bx === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bx++;
-                                    break;
-                                case "Coastal_State_Legislative_Districts_House":
-                                    vm.CEHouse[bv] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                        stateName: (featureCollection[i].stateName || 'Unknown')
-
-
-                                    };
-
-                                    if ((bv === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bv++;
-                                    break;
-                                case "Coastal_State_Legislative_Districts_Senate":
-                                    vm.CESenate[bw] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                        stateName: (featureCollection[i].stateName || 'Unknown')
-
-
-                                    };
-
-                                    if ((bw === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bw++;
-                                    break;
-                                case "Coastal_Congressional_Districts_114th":
-                                    vm.CECongress[bu] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                        stateName: (featureCollection[i].stateName || 'Unknown')
-
-
-                                    };
-
-                                    if ((bu === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bu++;
-                                    break;
-                                case "FederalGeoRegulations":
-                                    vm.CEFedGeoRegs[bt] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        FederalGeoRegulationsName: (featureCollection[i].FederalGeoRegulationsName || 'Unknown'),
-                                        FederalGeoRegulationsID: (featureCollection[i].FederalGeoRegulationsID || 'Unknown'),
-                                        DescriptionURL: (featureCollection[i].DescriptionURL || '')
-
-
-                                    };
-
-                                    if ((bt === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bt++;
-                                    break;
-                                case "AOI_input":
-                                    vm.CEAreaOfPoly[bs] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Area_mi2: (featureCollection[i].Area_mi2 || 'Unknown'),
-                                        Area_km2: (featureCollection[i].Area_km2 || 'Unknown'),
-                                        Area_nm2: (featureCollection[i].Area_nm2 || 'Unknown')
-
-                                    };
-
-
-                                    bs++;
-                                    break;
-                                case "crm_v1":
-                                    vm.CEElevation[br] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        depth_min_m: (featureCollection[i].depth_min_m || 'Unknown'),
-                                        depth_max_m: (featureCollection[i].depth_max_m || 'Unknown'),
-                                        depth_mean_m: (featureCollection[i].depth_mean_m || 'Unknown')
-
-                                    };
-
-                                    if ((br === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    br++;
-                                    break;
-                                case "CoastalEnergyFacilities":
-                                    vm.coastfac[bq] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Name: (featureCollection[i].Name || 'None'),
-                                        Type: (featureCollection[i].Type || 'None'),
-                                        CAPACITY: (featureCollection[i].CAPACITY || 'None'),
-                                        Dist_Mi: (featureCollection[i].Dist_Mi || 'None')
-
-                                    };
-
-                                    if ((bq === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bq++;
-                                    break;
-                                case "OG_ResourcePotential":
-                                    vm.OGresource[bp] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        OCS_Play: (featureCollection[i].OCS_Play || 'None'),
-                                        UTRR_Oil: (featureCollection[i].UTRR_Oil || 'None'),
-                                        UTRR_Gas: (featureCollection[i].UTRR_Gas || 'None'),
-                                        UTRR_BOE: (featureCollection[i].UTRR_BOE || 'None')
-
-                                    };
-
-                                    if ((bp === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bp++;
-                                    break;
-                                case "OG_Wells":
-                                    vm.OGWells[bo] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        COMPANY_NA: (featureCollection[i].COMPANY_NA || 'None'),
-                                        STATUS: (featureCollection[i].STATUS || 'None')
-
-                                    };
-
-                                    if ((bo === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bo++;
-                                    break;
-                                case "al_20160301":
-                                    vm.OGLease[bn] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Lease_Numb: (featureCollection[i].Lease_Numb || 'None'),
-                                        Lease_expt: (featureCollection[i].Lease_expt || 'None')
-
-                                    };
-
-                                    if ((bn === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bn++;
-                                    break;
-                                case "OilandGasPlanningAreas":
-                                    vm.OGPlanA[bm] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        Region: (featureCollection[i].Region || 'unknown')
-
-                                    };
-
-                                    if ((bm === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bm++;
-                                    break;
-                                case "SC_BeachProjects":
-                                    vm.beachNur[bl] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        BEACH_AREA: (featureCollection[i].BEACH_AREA || 'unknown'),
-                                        YEAR: (featureCollection[i].YEAR || '0'),
-                                        SAND_VOL_C: (featureCollection[i].SAND_VOL_C || '0'),
-                                        Dist_Mi: ((featureCollection[i].Dist_Mi === ' ') ? '0' : featureCollection[i].Dist_Mi )
-                                    };
-
-                                    if ((bl === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bl++;
-                                    break;
-                                case "us_oc_ms":
-                                    vm.currentpwr[bk] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        AVG_OCEAN_CURRENT: (featureCollection[i].AVG_OCEAN_CURRENT || 0),
-                                        SUITABILITY_OCEAN_SPEED: (featureCollection[i].SUITABILITY_OCEAN_SPEED || 'NO')
-                                    };
-
-                                    if ((featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bk++;
-                                    break;
-                                case "usa_mc_wm":
-                                    vm.tidalpwr[bj] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        AVG_TIDAL_CURRENT: (featureCollection[i].AVG_TIDAL_CURRENT || 0),
-                                        SUITABILITY_TIDAL_DEPTH: (featureCollection[i].SUITABILITY_TIDAL_DEPTH || 'NO'),
-                                        SUITABILITY_TIDAL_AREA: (featureCollection[i].SUITABILITY_TIDAL_AREA || 'NO'),
-                                        SUITABILITY_TIDAL_SPEED: (featureCollection[i].SUITABILITY_TIDAL_SPEED || 'NO')
-                                    };
-
-                                    if ((featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bj++;
-                                    break;
-                                case "OceanWaveResourcePotential":
-                                    vm.wavepwr[bi] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        AVG_WAVE_POWER: (featureCollection[i].AVG_WAVE_POWER || 0),
-                                        SUITABILITY_OCEAN_POWER: (featureCollection[i].SUITABILITY_OCEAN_POWER || 'Unknown')
-                                    };
-
-                                    if ((featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bi++;
-                                    break;
-
-                                case "OceanDisposalSites":
-                                    vm.disp[be] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        PRIMARY_USE: (featureCollection[i].primaryUse || 'Unknown')
-                                    };
-
-                                    if ((be === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    be++;
-                                    break;
-                                case "MarineHydrokineticProjects":
-                                    if (featureCollection[i].TOTAL_CNT > 0) {
-                                        vm.hydrok[bg] = {
-                                            TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                            PRIMARY_USE: (featureCollection[i].energyType ) + ' projects'
-                                        };
-                                    }
-                                    if ((bg === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-                                    bg++;
-
-                                    break;
-                                case "ecstdb2014":
-                                    if (featureCollection[i].TOTAL_CNT > 0) {
-                                        vm.surfsed[bh] = {
-                                            TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                            PRIMARY_USE: ((featureCollection[i].CLASSIFICA === ' ') ? 'Unknown' : featureCollection[i].CLASSIFICA )
-                                        };
-                                    }
-                                    if ((bh === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bh++;
-
-                                    break;
-
-                                case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
-                                    vm.mml[bf] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0)
-
-                                    };
-
-                                    if ((bf === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bf++;
-                                    break;
-
-                                case "TribalLands":
-                                    vm.CETribalLands[bd] = {
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        NAMELSAD: (featureCollection[i].NAMELSAD || 'Unknown'),
-                                        Dist_Mi: (featureCollection[i].Dist_Mi || 0)
-                                    };
-                                    if ((bd === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bd++;
-                                    break;
-
-
-                                case  "BOEM_Wind_Planning_Areas":
-                                    vm.boem[ba] = {
-                                        INFO: featureCollection[i].INFO,
-                                        PROT_NUMBE: featureCollection[i].PROT_NUMBE,
-                                        LINK1: featureCollection[i].LINK1,
-                                        LINK2: featureCollection[i].LINK2,
-                                        PERC_COVER: featureCollection[i].PERC_COVER,
-                                        TOTAL_BLOC: featureCollection[i].TOTAL_BLOC,
-                                        TOTAL_CNT: featureCollection[i].TOTAL_CNT,
-                                        METADATA_URL: featureCollection[i].METADATA_URL
-                                    };
-                                    if ((ba === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-
-                                        k++;
-
-                                    }
-
-                                    ba++;
-                                    break;
-                                case "ActiveRenewableEnergyLeases":
-                                    vm.arel[bc] = {
-                                        Lease_Numb: featureCollection[i].Lease_Numb,
-                                        Company: featureCollection[i].Company,
-                                        INFO: featureCollection[i].INFO,
-                                        PROT_NUMBE: featureCollection[i].PROT_NUMBE,
-                                        LINK1: featureCollection[i].LINK1,
-                                        LINK2: featureCollection[i].LINK2,
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0),
-                                        TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        METADATA_URL: featureCollection[i].METADATA_URL
-                                    };
-                                    if ((bc === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    bc++;
-                                    break;
-                                case  "WindResourcePotential":
-                                    vm.wind[bb] = {
-                                        WIND_CLASS: (featureCollection[i].WIND_CLASS),
-                                        AVG_WGHT: (featureCollection[i].AVG_WGHT || 0).toFixed(2),
-                                        PERC_COVER: (featureCollection[i].PERC_COVER || 0),
-                                        HOUSES_SUM: (featureCollection[i].HOUSES_SUM || 0).toLocaleString(),
-                                        CAPACITY: (featureCollection[i].CAPACITY || 0).toLocaleString(),
-                                        TOTAL_BLOC: (featureCollection[i].TOTAL_BLOC || 0),
-                                        TOTAL_CNT: (featureCollection[i].TOTAL_CNT || 0),
-                                        METADATA_URL: featureCollection[i].METADATA_URL
-                                    };
-                                    if ((bb === 0) && (featureCollection[i].METADATA_URL != null)) {
-                                        vm.metadata[k] = {
-                                            REPORT_CAT: featureCollection[i].REPORT_CAT,
-                                            COMMON_NM: featureCollection[i].COMMON_NM,
-                                            METADATA_URL: featureCollection[i].METADATA_URL,
-                                            METADATA_OWNER: featureCollection[i].METADATA_OWNER,
-                                            METADATA_OWNER_ABV: featureCollection[i].METADATA_OWNER_ABV,
-                                            METADATA_SORT: featureCollection[i].METADATA_SORT
-                                        };
-                                        k++;
-                                    }
-
-
-                                    if (featureCollection[i].TOTAL_CNT > 0) {
-                                        switch (featureCollection[i].WIND_CLASS.substring(0, 3)) {
-                                            case "Sup":
-                                                vm.windclass[0] = featureCollection[i].PERC_COVER;
-                                                break;
-                                            case "Out":
-                                                vm.windclass[1] = featureCollection[i].PERC_COVER;
-                                                break;
-                                            case "Exc":
-                                                vm.windclass[2] = featureCollection[i].PERC_COVER;
-                                                break;
-                                            case "Goo":
-                                                vm.windclass[3] = featureCollection[i].PERC_COVER;
-                                                break;
-                                            case "Fai":
-                                                vm.windclass[4] = featureCollection[i].PERC_COVER;
-                                                break;
-                                            case "Uns":
-                                                vm.windclass[5] = featureCollection[i].PERC_COVER;
-                                                break;
-                                        }
-
-                                    }
-                                    bb++;
-                                    break;
-                            }
-                        }
-
-
-                        var y = 35;
-                        var x = 35;
-                        var chartrow = 1;
-
-                        for (i = 0; i < vm.ECEcon.length; i++) {
-
-                            if (i && (i % 3 === 0)) {
-                                y += 120;
-                                x = 35;
-                                chartrow++;
-                            } else if (i) x += 135;
-
-                            vm.OceanJobContributionsSeries[i] = {
-                                center: [x, y],
-                                "name": vm.ECEcon[i].Name,
-                                "showInLegend": (i === 0 ? true : false),
-                                "data": [
-                                    ["Marine Construction", vm.ECEcon[i].GDP_MarineConstruction],
-                                    ["Living Resources", vm.ECEcon[i].GDP_LivingResources],
-                                    ["Marine Transportation", vm.ECEcon[i].GDP_MarineTransp],
-                                    ["Offshore Mineral Extraction", vm.ECEcon[i].GDP_OffshoreMineralExt],
-                                    ["Ship and Boat Building", vm.ECEcon[i].GDP_ShipAndBoatBuilding],
-                                    ["Tourism and Recreation", vm.ECEcon[i].GDP_TourismAndRec]
-                                ],
-                                title: {
-
-                                    style: {color: '#4a4a4a'},
-                                    align: 'center',
-                                    format: '{name}',
-                                    verticalAlign: 'top',
-                                    y: -20
-                                }
-                            }
-
-                        }
-                        vm.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
-
-
-                        if (vm.wavepwr.length > 0) {
-                            if (vm.wavepwr[0].AVG_WAVE_POWER > 40) {
-                                vm.wavepwr[0].COLOR = '#B0B497';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 30.0) {
-                                vm.wavepwr[0].COLOR = '#B6BC9E';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 20.0) {
-                                vm.wavepwr[0].COLOR = '#BBC1A4';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 15.0) {
-                                vm.wavepwr[0].COLOR = '#C0C6A8';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 10.0) {
-                                vm.wavepwr[0].COLOR = '#C9D0B1';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 8.0) {
-                                vm.wavepwr[0].COLOR = '#D0D8B9';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 6) {
-                                vm.wavepwr[0].COLOR = '#D5DDC0';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 4.0) {
-                                vm.wavepwr[0].COLOR = '#DEE7C9';
-
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER > 2.0) {
-                                vm.wavepwr[0].COLOR = '#E4EFD2';
-                            } else if (vm.wavepwr[0].AVG_WAVE_POWER < 2.01) {
-                                vm.wavepwr[0].COLOR = '#EBF6D8';
-                            } else {
-                                vm.wavepwr[0].COLOR = 'white';
-                            }
-                        }
-                        vm.windclass[6] = (vm.windclass.reduce(function (prev, cur) {
-                            return prev.toFixed(2) - cur.toFixed(2);
-                        }, 100));
-                        if (vm.boem[0] == null) {
-                            vm.boem[0] = {
-                                INFO: "NA",
-                                PROT_NUMBE: 0,
-                                LINK1: "NA",
-                                LINK2: "NA",
-                                PERC_COVER: 0,
-                                TOTAL_BLOC: 0,
-                                TOTAL_CNT: 0
-                            };
-                        }
-                        if (vm.arel[0] == null) {
-                            vm.arel[0] = {
-                                Lease_Numb: 0,
-                                Company: "NA",
-                                INFO: "NA",
-                                PROT_NUMBE: 0,
-                                LINK1: "NA",
-                                LINK2: "NA",
-                                PERC_COVER: 0,
-                                TOTAL_BLOC: 0,
-                                TOTAL_CNT: 0
-                            };
-                        }
-                        vm.TIPrincipalPorts.sort(function (a, b) {
-                            return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
-                        });
-                        vm.CEPlaces.sort(function (a, b) {
-                            return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
-                        });
-                        vm.boem.sort(function (a, b) {
-                            return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
-                        });
-                        vm.arel.sort(function (a, b) {
-                            return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
-                        });
-
-                        if (vm.boem[0].TOTAL_CNT === 0) {
-                            vm.boem[0].PERC_COVER = 0;
-                            vm.boem[0].TOTAL_BLOC = 0;
-                        }
-                        if (vm.arel[0] == null)vm.arel[0].TOTAL_CNT = 0;
-                        if (vm.arel[0].TOTAL_CNT === 0) {
-                            vm.arel[0].PERC_COVER = 0;
-                            vm.arel[0].TOTAL_BLOC = 0;
-                        }
-                        this.loadWindChart();
-                        this.loadStateChart();
-                        this.loadOceanJobEmployeesChart();
-                        this.loadOceanJobDollarsChart();
-                        this.loadOceanJobContributionsChart();
-                        //because? and until all direct DOM manipulation is removed from code, this $apply is useful to clear some digest issue that appear as timing issues.
-                        if (vm.ID !== -9999)  $rootScope.$apply();
-
-
-                    },
-                    unloadData: function () {
-                        if (this.isLoaded) {
-
-                            map.removeLayer(this.oceanDisposalSites);
-                            map.removeLayer(this.HydrokineticLeases);
-                            map.removeLayer(this.windPlanningLayer);
-                            map.removeLayer(this.windLeaseLayer);
-                            map.removeLayer(this.windrpLayer);
-                            map.removeLayer(this.marineMineralsLeases);
-                            map.removeLayer(this.wavePower);
-                            map.removeLayer(this.tidalPower);
-                            map.removeLayer(this.currentPower);
-                            map.removeLayer(this.beachNourish);
-                            map.removeLayer(this.coastalEnergyFacilities);
-                            map.removeLayer(this.CEElevation);
-                            map.removeLayer(this.TISubmarineLayer);
-                            map.removeLayer(this.TIDangerZonesLayer);
-                            map.removeLayer(this.CEPlaceLayer);
-                            map.removeLayer(this.CETribalLayer);
-                            map.removeLayer(this.TIVessels);
-                            map.removeLayer(this.TIPrincipalPortsLayer);
-                            map.removeLayer(this.NRCNearbyLayer);
-                            map.removeLayer(this.NRCReefsLayer);
-                            map.removeLayer(this.NRCSoftCoralLayer);
-                            map.removeLayer(this.NRCStoneyCoralLayer);
-                            map.removeLayer(this.NRCBarrierLayer);
-                            map.removeLayer(this.ECCoastalCountiesLayer);
-
-                            this.windLeaseLayerIsVisible = false;
-                            this.windrpLayerIsVisible = false;
-                            this.windPlanningLayerIsVisible = false;
-                            this.oceanDisposalSitesIsVisible = false;
-                            this.marineMineralsLeases = false;
-                            this.HydrokineticLeasesIsVisible = false;
-                            this.wavePowerIsVisable = false;
-                            this.tidalPowerIsVisable = false;
-                            this.currentPowerIsVisable = false;
-                            this.beachNourishIsVisable = false;
-                            this.coastalEnergyFacilitiesIsVisable = false;
-                            this.CEElevationIsVisable = false;
-                            this.TISubmarineIsVisable = false;
-                            this.TIDangerZonesIsVisable = false;
-                            this.CEPlaceLayerIsVisible = false;
-                            this.TIVesselsIsVisible = false;
-                            this.TIPrincipalPortsIsVisible = false;
-                            this.NRCNearbyLayerIsVisible = false;
-                            this.NRCReefsLayerIsVisible = false;
-                            this.NRCSoftCoralLayerIsVisible = false;
-                            this.NRCStoneyCoralLayerIsVisible = false;
-                            this.NRCBarrierLayerIsVisible = false;
-                            this.ECCoastalCountiesLayerIsVisible = false;
-
-
-                            this.wind.length = 0;
-                            this.boem.length = 0;
-                            this.metadata.length = 0;
-                            this.optLayer.length = 0;
-                            this.windclass.length = 0;
-                            this.disp.length = 0;
-                            this.mml.length = 0;
-                            this.hydrok.length = 0;
-                            this.CETribalLands.length = 0;
-                            this.surfsed.length = 0;
-                            this.wavepwr.length = 0;
-                            this.tidalpwr.length = 0;
-                            this.currentpwr.length = 0;
-                            this.beachNur.length = 0;
-                            this.OGPlanA.length = 0;
-                            this.OGLease.length = 0;
-                            this.OGWells.length = 0;
-                            this.OGresource.length = 0;
-                            this.coastfac.length = 0;
-                            this.CEElevation.length = 0;
-                            this.CEAreaOfPoly.length = 0;
-                            this.CEFedGeoRegs.length = 0;
-                            this.CECongress.length = 0;
-                            this.CEHouse.length = 0;
-                            this.CESenate.length = 0;
-                            this.CECoastalCounties.length = 0;
-                            this.CEFederalAndState.length = 0;
-                            this.CEFederalTotal = 0;
-                            this.CEStateTotal = 0;
-                            this.TISubmarine.length = 0;
-                            this.TICoastal.length = 0;
-                            this.TIDangerZones.length = 0;
-                            this.NRCHabConcern.length = 0;
-                            this.NRCCriticalHab.length = 0;
-                            this.NRCMigratoryFish.length = 0;
-                            this.NRCMigratorySharks.length = 0;
-                            this.ECEcon.length = 0;
-                            this.ECEconEmploy.length = 0;
-                            this.ECEconGDP.length = 0;
-                            this.ECEconWages.length = 0;
-                            this.ECStateGDP.length = 0;
-                            this.ECCountyGDP.length = 0;
-                            this.OceanJobContributionsSeries.length = 0;
-                            this.drawAreaJobId.length = 0;
-                            this.Shared = false;
-                            this.CEPlaces.length = 0;
-                            this.TIShipping.length = 0;
-                            this.TIShippingTotal = 0;
-                            this.TIRightWhale.length = 0;
-                            this.TIVessel.length = 0;
-                            this.TIPrincipalPorts.length = 0;
-                            this.NRCNearby.length = 0;
-                            this.NRCReefs.length = 0;
-                            this.NRCSoftCoral.length = 0;
-                            this.NRCStonyCoral.length = 0;
-                            this.NRCBarrier.length = 0;
-                            this.ECCoastalCounties.length = 0;
-                            this.ECFishRevenue.length = 0;
-                            this.TIAnchorage.length = 0;
-                            this.TIPilot.length = 0;
-
-                            this.hide();
-
-                        }
-                        this.isLoaded = false;
-                    },
-                    isLoaded: false,
-                    ECCoastalCountiesLayerIsVisible: false,
-                    toggleECCoastalCountiesLayer: function () {
-                        if (!this.ECCoastalCountiesLayerIsVisible) {
-                            this.ECCoastalCountiesLayer.addTo(map);
-                            this.ECCoastalCountiesLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.ECCoastalCountiesLayer);
-                            this.ECCoastalCountiesLayerIsVisible = false;
-                        }
-                    },
-                    NRCBarrierLayerIsVisible: false,
-                    toggleNRCBarrierLayer: function () {
-                        if (!this.NRCBarrierLayerIsVisible) {
-                            this.NRCBarrierLayer.addTo(map);
-                            this.NRCBarrierLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.NRCBarrierLayer);
-                            this.NRCBarrierLayerIsVisible = false;
-                        }
-                    },
-                    NRCStoneyCoralLayerIsVisible: false,
-                    toggleNRCStoneyCoralLayer: function () {
-                        if (!this.NRCStoneyCoralLayerIsVisible) {
-                            this.NRCStoneyCoralLayer.addTo(map);
-                            this.NRCStoneyCoralLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.NRCStoneyCoralLayer);
-                            this.NRCStoneyCoralLayerIsVisible = false;
-                        }
-                    },
-                    NRCSoftCoralLayerIsVisible: false,
-                    toggleNRCSoftCoralLayer: function () {
-                        if (!this.NRCSoftCoralLayerIsVisible) {
-                            this.NRCSoftCoralLayer.addTo(map);
-                            this.NRCSoftCoralLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.NRCSoftCoralLayer);
-                            this.NRCSoftCoralLayerIsVisible = false;
-                        }
-                    },
-                    NRCReefsLayerIsVisible: false,
-                    toggleNRCReefsLayer: function () {
-                        if (!this.NRCReefsLayerIsVisible) {
-                            this.NRCReefsLayer.addTo(map);
-                            this.NRCReefsLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.NRCReefsLayer);
-                            this.NRCReefsLayerIsVisible = false;
-                        }
-                    },
-                    NRCNearbyLayerIsVisible: false,
-                    toggleNRCNearby: function () {
-                        if (!this.NRCNearbyLayerIsVisible) {
-                            this.NRCNearbyLayer.addTo(map);
-                            this.NRCNearbyLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.NRCNearbyLayer);
-                            this.NRCNearbyLayerIsVisible = false;
-                        }
-                    },
-
-                    TIPrincipalPortsIsVisible: false,
-                    toggleTIPrincipalPorts: function () {
-                        if (!this.TIPrincipalPortsIsVisible) {
-                            this.TIPrincipalPortsLayer.addTo(map);
-                            this.TIPrincipalPortsIsVisible = true;
-                        } else {
-                            map.removeLayer(this.TIPrincipalPortsLayer);
-                            this.TIPrincipalPortsIsVisible = false;
-                        }
-                    },
-                    TIVesselsIsVisible: false,
-                    toggleTIVessels: function () {
-                        if (!this.TIVesselsIsVisible) {
-                            this.TIVessels.addTo(map);
-                            this.TIVesselsIsVisible = true;
-                        } else {
-                            map.removeLayer(this.TIVessels);
-                            this.TIVesselsIsVisible = false;
-                        }
-                    },
-                    CEPlaceLayerIsVisible: false,
-                    toggleCEPlaceLayer: function () {
-                        if (!this.CEPlaceLayerIsVisible) {
-                            this.CEPlaceLayer.addTo(map);
-                            this.CETribalLayer.addTo(map);
-                            this.CEPlaceLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.CEPlaceLayer);
-                            map.removeLayer(this.CETribalLayer);
-                            this.CEPlaceLayerIsVisible = false;
-                        }
-                    },
-                    windLeaseLayerIsVisible: false,
-                    toggleWindLeaseLayer: function () {
-                        if (!this.windLeaseLayerIsVisible) {
-                            this.windLeaseLayer.addTo(map);
-                            this.windLeaseLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.windLeaseLayer);
-                            this.windLeaseLayerIsVisible = false;
-                        }
-                    },
-                    windPlanningLayerIsVisible: false,
-                    toggleWindPlanningLayer: function () {
-                        if (!this.windPlanningLayerIsVisible) {
-                            this.windPlanningLayer.addTo(map);
-                            this.windPlanningLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.windPlanningLayer);
-                            this.windPlanningLayerIsVisible = false;
-                        }
-                    },
-                    oceanDisposalSitesIsVisible: false,
-                    toggleOceanDisposalSites: function () {
-                        if (!this.oceanDisposalSitesIsVisible) {
-                            this.oceanDisposalSites.addTo(map);
-                            this.oceanDisposalSitesIsVisible = true;
-                        } else {
-                            map.removeLayer(this.oceanDisposalSites);
-                            this.oceanDisposalSitesIsVisible = false;
-                        }
-                    },
-                    HydrokineticLeasesIsVisible: false,
-                    toggleHydrokineticLeases: function () {
-                        if (!this.HydrokineticLeasesIsVisible) {
-                            this.HydrokineticLeases.addTo(map);
-                            this.HydrokineticLeasesIsVisible = true;
-                        } else {
-                            map.removeLayer(this.HydrokineticLeases);
-                            this.HydrokineticLeasesIsVisible = false;
-                        }
-                    },
-
-                    marineMineralsLeasesIsVisable: false,
-                    toggleMarineMineralsLeases: function () {
-                        if (!this.marineMineralsLeasesIsVisable) {
-                            this.marineMineralsLeases.addTo(map);
-                            this.marineMineralsLeasesIsVisable = true;
-                        } else {
-                            map.removeLayer(this.marineMineralsLeases);
-                            this.marineMineralsLeasesIsVisable = false;
-                        }
-                    },
-                    wavePowerIsVisable: false,
-                    togglewavePower: function () {
-                        if (!this.wavePowerIsVisable) {
-                            this.wavePower.addTo(map);
-                            this.wavePowerIsVisable = true;
-                        } else {
-                            map.removeLayer(this.wavePower);
-                            this.wavePowerIsVisable = false;
-                        }
-                    },
-                    tidalPowerIsVisable: false,
-                    toggletidalPower: function () {
-                        if (!this.tidalPowerIsVisable) {
-                            this.tidalPower.addTo(map);
-                            this.tidalPowerIsVisable = true;
-                        } else {
-                            map.removeLayer(this.tidalPower);
-                            this.tidalPowerIsVisable = false;
-                        }
-                    },
-                    currentPowerIsVisable: false,
-                    togglecurrentPower: function () {
-                        if (!this.currentPowerIsVisable) {
-                            this.currentPower.addTo(map);
-                            this.currentPowerIsVisable = true;
-                        } else {
-                            map.removeLayer(this.currentPower);
-                            this.currentPowerIsVisable = false;
-                        }
-                    },
-                    beachNourishIsVisable: false,
-                    togglebeachNourish: function () {
-                        if (!this.beachNourishIsVisable) {
-                            this.beachNourish.addTo(map);
-                            this.beachNourishIsVisable = true;
-                        } else {
-                            map.removeLayer(this.beachNourish);
-                            this.beachNourishIsVisable = false;
-                        }
-                    },
-                    coastalEnergyFacilitiesIsVisable: false,
-                    togglecoastalEnergyFacilities: function () {
-                        if (!this.coastalEnergyFacilitiesIsVisable) {
-                            this.coastalEnergyFacilities.addTo(map);
-                            this.coastalEnergyFacilitiesIsVisable = true;
-                        } else {
-                            map.removeLayer(this.coastalEnergyFacilities);
-                            this.coastalEnergyFacilitiesIsVisable = false;
-                        }
-                    },
-
-                    windrpLayerIsVisible: false,
-                    toggleWindrpLayer: function () {
-                        if (!this.windrpLayerIsVisible) {
-                            this.windrpLayer.addTo(map);
-                            this.windrpLayerIsVisible = true;
-                        } else {
-                            map.removeLayer(this.windrpLayer);
-                            this.windrpLayerIsVisible = false;
-                        }
-                    },
-                    CEElevationIsVisable: false,
-                    toggleCEElevation: function () {
-                        if (!this.CEElevationIsVisable) {
-                            this.CEElevation.addTo(map);
-                            this.CEElevationIsVisable = true;
-                        } else {
-                            map.removeLayer(this.CEElevation);
-                            this.CEElevationIsVisable = false;
-                        }
-                    },
-                    TISubmarineIsVisable: false,
-                    toggleTISubmarine: function () {
-                        if (!this.TISubmarineIsVisable) {
-                            this.TISubmarineLayer.addTo(map);
-                            this.TISubmarineIsVisable = true;
-                        } else {
-                            map.removeLayer(this.TISubmarineLayer);
-                            this.TISubmarineIsVisable = false;
-                        }
-                    },
-                    TIDangerZonesIsVisable: false,
-                    toggleTIDangerZones: function () {
-                        if (!this.TIDangerZonesIsVisable) {
-                            this.TIDangerZonesLayer.addTo(map);
-                            this.TIDangerZonesIsVisable = true;
-                        } else {
-                            map.removeLayer(this.TIDangerZonesLayer);
-                            this.TIDangerZonesIsVisable = false;
-                        }
-                    },
-                    toggleFull: false,
-                    toggleFullSlider: function (pageID) {
-
-                        this.toggleFull = !this.toggleFull;
-                        this.doFullSlider(pageID);
-                    },
-                    doFullSlider: function (pageID) {
-
-                        if (this.toggleFull) {
-
-                            // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-                            document.getElementById("slide1").style.width = '100%';
-                            document.getElementById("togglefull").style.marginLeft = '0px';
-                            document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-                            document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
-                            document.getElementById("togglefull").style.transform = "rotate(180deg)";
-
-                            var elems = document.getElementsByClassName('AOItabClass2');
-                            for (var i = 0; i < elems.length; i++) {
-                                elems[i].style.display = 'inline-block';
-                            }
-
-
-                            if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
-
-
-                                this.loadSmallMap(false);
-
-                            }
-
-                        } else {
-
-                            document.getElementById("togglefull").style.marginLeft = "-25px";
-
-                            document.getElementById("slide1").style.width = '50%';
-                            var elems = document.getElementsByClassName('AOItabClass2');
-                            for (var i = 0; i < elems.length; i++) {
-                                elems[i].style.display = 'none';
-                            }
-
-                            document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
-                            // Code for IE9
-                            document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
-                            document.getElementById("togglefull").style.transform = "rotate(0deg)";
-
-                        }
-
-
-                    },
-                    loadSmallMap: function (useCanvas) {
-                        if (smallmap) {
-                            smallmap.remove();
-
-                        }
-                        if (this.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
-                        else smallmap = L.map('map').setView([45.526, -122.667], 1);
-                        L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
-                        L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                        esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                            maxZoom: 12,
-                            useCors: true
-                        });
-
-                        var minicLayer;
-                        if (this.ID === -9999) {
-                            minicLayer = L.geoJson(this.drawLayerShape, {
-                                color: '#EB660C',
-                                weight: 1.5,
-                                fillOpacity: .3
-
-                            }).addTo(smallmap);
-                            this.minibounds = minicLayer.getBounds();
-                            smallmap.fitBounds(this.minibounds);
-
-                        } else {
-                            minicLayer = L.esri.featureLayer({
-                                url: config.ortMapServer + config.ortLayerAOI,
-                                where: "AOI_ID =" + this.ID + "",
-                                color: '#EB660C',
-                                weight: 1.5,
-                                fillOpacity: .3
-
-                            }).addTo(smallmap);
-
-
-                            minicLayer.on("load", function (evt) {
-
-                                var bounds = L.latLngBounds([]);
-                                minicLayer.eachFeature(function (layer) {
-                                    var layerBounds = layer.getBounds();
-                                    bounds.extend(layerBounds);
+                    AOI.isLoaded = true;
+                },
+                massageData: function (featureCollection) {
+                    angular.forEach(featureCollection, function (feature) {
+
+                        switch (feature.DATASET_NM) {
+                            case "Anchorage_Areas":
+                                AOI.TIAnchorage.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 0)
                                 });
-                                this.minibounds = bounds;
-                                smallmap.fitBounds(bounds);
-                                minicLayer.off('load');
-                            });
-                        }
-                        smallmap.invalidateSize();
-                        var test1 = false;
-                        if ((this.inPrintWindow) && (test1)) {
-                            leafletImage(smallmap, function (err, canvas) {
-                                var img = document.createElement('img');
-                                var dimensions = smallmap.getSize();
-                                img.width = dimensions.x;
-                                img.height = dimensions.y;
-                                img.src = canvas.toDataURL();
-                                document.getElementById('map3').innerHTML = '';
-                                document.getElementById('map3').appendChild(img);
-                            });
-                        }
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Pilot_Boarding_Areas":
+                                AOI.TIPilot.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "SATL_FishRevenue_AllYrs":
+                                AOI.ECFishRevenue.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    FishingRev_value_min: (feature.FishingRev_value_min || 0),
+                                    FishingRev_value_max: (feature.FishingRev_value_max || 0),
+                                    FishingRev_total: (feature.FishingRev_total || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "CBRAs":
+                                AOI.NRCBarrier.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "ArtificialReefs":
+                                AOI.NRCReefs.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "StonyCoralALL":
+                                AOI.NRCStonyCoral.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Coral_Suitability: (feature.Coral_Suitability || '')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "SoftCoralALL":
+                                AOI.NRCSoftCoral.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Coral_Suitability: (feature.Coral_Suitability || '')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "MPA_selected":
+                                AOI.NRCNearby.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Site_Name: (feature.Site_Name || 'Unknown'),
+                                    URL: (feature.URL || '')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "PrincipalPorts":
+                                AOI.TIPrincipalPorts.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    PortName: (feature.PortName || 'Unknown'),
+                                    Total: (feature.Total || 0),
+                                    Dist_Mi: (feature.Dist_Mi || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "vessel_traffic_atl_2011":
+                                AOI.TIVessel.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    all_2011_avg: (feature.all_2011_avg || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "RightWhales":
+                                AOI.TIRightWhale.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    PERC_COVER: (feature.PERC_COVER || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "ShippingLanes":
+                                AOI.TIShipping.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    THEMELAYER: (feature.THEMELAYER || 'Unknown'),
+                                    THEMELAYER_CNT: (feature.THEMELAYER_CNT || 'Unknown')
+                                });
+                                AOI.TIShippingTotal += feature.THEMELAYER_CNT;
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Places":
+                                AOI.CEPlaces.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'Unknown'),
+                                    ST: (feature.ST || 'Unknown'),
+                                    Dist_Mi: (feature.Dist_Mi || 0),
+                                    Census2010: ((feature.Census2010 === -1) ? ' ' : (feature.Census2010 || ' '))
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "CoastalStates":
+                            case "Coastal_Shoreline_Counties_2010":
+                                AOI.ECCountyGDP.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    cntyname: (feature.cntyname || feature.st_name),
+                                    MedHHInc: (feature.MedHHInc || 0),
+                                    TotalHouses: (feature.TotalHouses || 0),
+                                    Population: (feature.Population || 0),
+                                    PercentTotGDP: (feature.PercentTotGDP || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "ENOW_2013":
+                                AOI.ECEcon.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'Unknown'),
+                                    cntyname: (feature.cntyname || 'Unknown'),
+                                    st_name: (feature.st_name || 'Unknown'),
+                                    OceanSector: (feature.OceanSector || 'Unknown'),
+                                    Employment: (feature.Employment || 0),
+                                    Wages: (feature.Wages || 0),
+                                    GDP: (feature.GDP || 0),
 
-                    },
-                    loadStateChart: function () {
-                        if (AOI.highchartsNGState) AOI.highchartsNGState = null;
+                                    Emp_LivingResources: (feature.Emp_LivingResources || 0),
+                                    Emp_MarineConstruction: (feature.Emp_MarineConstruction || 0),
+                                    Emp_MarineTransp: (feature.Emp_MarineTransp || 0),
+                                    Emp_OffshoreMineralExt: (feature.Emp_OffshoreMineralExt || 0),
+                                    Emp_ShipAndBoatBuilding: (feature.Emp_ShipAndBoatBuilding || 0),
+                                    Emp_TourismAndRec: (feature.Emp_TourismAndRec || 0),
+                                    Wages_LivingResources: (feature.Wages_LivingResources || 0),
+                                    Wages_MarineConstruction: (feature.Wages_MarineConstruction || 0),
+                                    Wages_MarineTransp: (feature.Wages_MarineTransp || 0),
+                                    Wages_OffshoreMineralExt: (feature.Wages_OffshoreMineralExt || 0),
+                                    Wages_ShipAndBoatBuilding: (feature.Wages_ShipAndBoatBuilding || 0),
+                                    Wages_TourismAndRec: (feature.Wages_TourismAndRec || 0),
 
-                        AOI.highchartsNGState = {
-                            options: {
-                                credits: {
-                                    enabled: false
-                                },
-                                chart: {
-                                    plotBackgroundColor: '#f4f8fc',
-                                    plotBorderWidth: null,
-                                    plotShadow: false,
-                                    type: 'pie'
-                                },
-                                legend: {
-                                    layout: 'vertical',
-                                    align: 'right',
-                                    verticalAlign: 'top',
-                                    floating: true,
-                                    backgroundColor: '#f4f8fc'
-                                },
-                                tooltip: {
-                                    pointFormat: '<b>{point.percentage:.1f}%</b>'
-                                },
-                                plotOptions: {
-                                    pie: {
-                                        dataLabels: {
-                                            enabled: false
-                                        },
-                                        showInLegend: true
+                                    GDP_LivingResources: ((feature.GDP_LivingResources === -9999) ? 0 : (feature.GDP_LivingResources || 0)),
+                                    GDP_MarineConstruction: ((feature.GDP_MarineConstruction === -9999) ? 0 : (feature.GDP_MarineConstruction || 0)),
+                                    GDP_MarineTransp: ((feature.GDP_MarineTransp === -9999) ? 0 : (feature.GDP_MarineTransp || 0)),
+                                    GDP_OffshoreMineralExt: ((feature.GDP_OffshoreMineralExt === -9999) ? 0 : (feature.GDP_OffshoreMineralExt || 0)),
+                                    GDP_ShipAndBoatBuilding: ((feature.GDP_ShipAndBoatBuilding === -9999) ? 0 : (feature.GDP_ShipAndBoatBuilding || 0)),
+                                    GDP_TourismAndRec: ((feature.GDP_TourismAndRec === -9999) ? 0 : (feature.GDP_TourismAndRec || 0))
+                                });
+                                switch (feature.OceanSector) {
+                                    case "All Ocean Sectors":
+                                        AOI.ECEconEmploy[AOI.ECEconEmploy.length] = [(feature.cntyname || feature.st_name), (feature.Employment || 0)];
+                                        AOI.ECEconGDP[AOI.ECEconGDP.length] = [(feature.cntyname || feature.st_name), (feature.GDP || 0)];
+                                        AOI.ECEconWages[AOI.ECEconWages.length] = [(feature.cntyname || feature.st_name), (feature.Wages || 0)];
+                                        break;
+                                }
+                                AOI.addMetadata(feature);
+                                break;
+                            case "NMFS_HMS_Fish":
+                                AOI.NRCMigratoryFish.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    LIFE_STAGE: (feature.LIFE_STAGE || 'Unknown'),
+                                    SPECIES: (feature.SPECIES || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "NMFS_HMS_Sharks":
+                                AOI.NRCMigratorySharks.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    LIFE_STAGE: (feature.LIFE_STAGE || 'Unknown'),
+                                    SPECIES: (feature.SPECIES || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "NMFS_CHD_SouthAtl":
+                                AOI.NRCCriticalHab.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AREANAME: (feature.AREANAME || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "SERO_HAPC_PartK":
+                                AOI.NRCHabConcern.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AREA_NAME: (feature.AREA_NAME || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Danger_Zones_and_Restricted_Areas":
+                                AOI.TIDangerZones.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    boundaryType: (feature.boundaryType || 'Unknown'),
+                                    agencyOfUse: (feature.agencyOfUse || 'Unknown'),
+                                    PERC_COVER: (feature.PERC_COVER || 'Unknown'),
+                                    Style: 'c_' + (feature.agencyOfUse || 'Unknown').substr(-4, 4)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Coastal_Maintained_Channels":
+                                AOI.TICoastal.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "SubmarineCables":
+                                AOI.TISubmarine.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Owner: (feature.Owner || 'Unknown'),
+                                    STATUS: (feature.STATUS || 'Unknown'),
+                                    OwnerStatus: (feature.Owner || 'Unknown') + " - " + (feature.STATUS || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "FederalAndStateWaters":
+                                AOI.CEFederalAndState.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    jurisdiction: (feature.jurisdiction || 'Unknown'),
+                                    perc_jurisdiction: (feature.perc_jurisdiction || 'Unknown'),
+                                    Area_mi2: (feature.Area_mi2 || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                if (feature.TOTAL_CNT > 0) {
+                                    if ((feature.jurisdiction.substring(0, 3)) === "Fed") {
+                                        AOI.CEFederalTotal = parseInt(AOI.CEFederalTotal, 10) + parseInt(feature.Area_mi2, 10);
+                                    } else  AOI.CEStateTotal = parseInt(AOI.CEStateTotal, 10) + parseInt(feature.Area_mi2, 10);
+                                }
+                                break;
+                            case "CoastalCounties":
+                                AOI.CECoastalCounties.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    cntyname: (feature.cntyname || 'Unknown'),
+                                    st_abbr: (feature.st_abbr || 'Unknown'),
+                                    ctystate: (feature.st_abbr || 'Unknown'),
+                                    st_name: (feature.st_name || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Coastal_State_Legislative_Districts_House":
+                                AOI.CEHouse.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    stateName: (feature.stateName || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Coastal_State_Legislative_Districts_Senate":
+                                AOI.CESenate.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    stateName: (feature.stateName || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Coastal_Congressional_Districts_114th":
+                                AOI.CECongress.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    stateName: (feature.stateName || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "FederalGeoRegulations":
+                                AOI.CEFedGeoRegs.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    FederalGeoRegulationsName: (feature.FederalGeoRegulationsName || 'Unknown'),
+                                    FederalGeoRegulationsID: (feature.FederalGeoRegulationsID || 'Unknown'),
+                                    DescriptionURL: (feature.DescriptionURL || '')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "AOI_input":
+                                AOI.CEAreaOfPoly.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Area_mi2: (feature.Area_mi2 || 'Unknown'),
+                                    Area_km2: (feature.Area_km2 || 'Unknown'),
+                                    Area_nm2: (feature.Area_nm2 || 'Unknown')
+                                });
+                                break;
+                            case "crm_v1":
+                                AOI.CEElevation.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    depth_min_m: (feature.depth_min_m || 'Unknown'),
+                                    depth_max_m: (feature.depth_max_m || 'Unknown'),
+                                    depth_mean_m: (feature.depth_mean_m || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "CoastalEnergyFacilities":
+                                AOI.coastfac.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Name: (feature.Name || 'None'),
+                                    Type: (feature.Type || 'None'),
+                                    CAPACITY: (feature.CAPACITY || 'None'),
+                                    Dist_Mi: (feature.Dist_Mi || 'None')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "OG_ResourcePotential":
+                                AOI.OGresource.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    OCS_Play: (feature.OCS_Play || 'None'),
+                                    UTRR_Oil: (feature.UTRR_Oil || 'None'),
+                                    UTRR_Gas: (feature.UTRR_Gas || 'None'),
+                                    UTRR_BOE: (feature.UTRR_BOE || 'None')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "OG_Wells":
+                                AOI.OGWells.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    COMPANY_NA: (feature.COMPANY_NA || 'None'),
+                                    STATUS: (feature.STATUS || 'None')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "al_20160301":
+                                AOI.OGLease.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Lease_Numb: (feature.Lease_Numb || 'None'),
+                                    Lease_expt: (feature.Lease_expt || 'None')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "OilandGasPlanningAreas":
+                                AOI.OGPlanA.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    Region: (feature.Region || 'unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "SC_BeachProjects":
+                                AOI.beachNur.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    BEACH_AREA: (feature.BEACH_AREA || 'unknown'),
+                                    YEAR: (feature.YEAR || '0'),
+                                    SAND_VOL_C: (feature.SAND_VOL_C || '0'),
+                                    Dist_Mi: ((feature.Dist_Mi === ' ') ? '0' : feature.Dist_Mi )
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "us_oc_ms":
+                                AOI.currentpwr.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AVG_OCEAN_CURRENT: (feature.AVG_OCEAN_CURRENT || 0),
+                                    SUITABILITY_OCEAN_SPEED: (feature.SUITABILITY_OCEAN_SPEED || 'NO')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "usa_mc_wm":
+                                AOI.tidalpwr.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AVG_TIDAL_CURRENT: (feature.AVG_TIDAL_CURRENT || 0),
+                                    SUITABILITY_TIDAL_DEPTH: (feature.SUITABILITY_TIDAL_DEPTH || 'NO'),
+                                    SUITABILITY_TIDAL_AREA: (feature.SUITABILITY_TIDAL_AREA || 'NO'),
+                                    SUITABILITY_TIDAL_SPEED: (feature.SUITABILITY_TIDAL_SPEED || 'NO')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "OceanWaveResourcePotential":
+                                AOI.wavepwr.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    AVG_WAVE_POWER: (feature.AVG_WAVE_POWER || 0),
+                                    SUITABILITY_OCEAN_POWER: (feature.SUITABILITY_OCEAN_POWER || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "OceanDisposalSites":
+                                AOI.disp.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    PRIMARY_USE: (feature.primaryUse || 'Unknown')
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "MarineHydrokineticProjects":
+                                if (feature.TOTAL_CNT > 0) {
+                                    AOI.hydrok.push({
+                                        TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                        PRIMARY_USE: (feature.energyType ) + ' projects'
+                                    });
+                                }
+                                AOI.addMetadata(feature);
+                                break;
+                            case "ecstdb2014":
+                                if (feature.TOTAL_CNT > 0) {
+                                    AOI.surfsed.push({
+                                        TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                        PRIMARY_USE: ((feature.CLASSIFICA === ' ') ? 'Unknown' : feature.CLASSIFICA )
+                                    });
+                                }
+                                AOI.addMetadata(feature);
+                                break;
+                            case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
+                                AOI.mml.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "TribalLands":
+                                AOI.CETribalLands.push({
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    NAMELSAD: (feature.NAMELSAD || 'Unknown'),
+                                    Dist_Mi: (feature.Dist_Mi || 0)
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case  "BOEM_Wind_Planning_Areas":
+                                AOI.boem.push({
+                                    INFO: feature.INFO,
+                                    PROT_NUMBE: feature.PROT_NUMBE,
+                                    LINK1: feature.LINK1,
+                                    LINK2: feature.LINK2,
+                                    PERC_COVER: feature.PERC_COVER,
+                                    TOTAL_BLOC: feature.TOTAL_BLOC,
+                                    TOTAL_CNT: feature.TOTAL_CNT,
+                                    METADATA_URL: feature.METADATA_URL
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case "ActiveRenewableEnergyLeases":
+                                AOI.arel.push({
+                                    Lease_Numb: feature.Lease_Numb,
+                                    Company: feature.Company,
+                                    INFO: feature.INFO,
+                                    PROT_NUMBE: feature.PROT_NUMBE,
+                                    LINK1: feature.LINK1,
+                                    LINK2: feature.LINK2,
+                                    PERC_COVER: (feature.PERC_COVER || 0),
+                                    TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    METADATA_URL: feature.METADATA_URL
+                                });
+                                AOI.addMetadata(feature);
+                                break;
+                            case  "WindResourcePotential":
+                                AOI.wind.push({
+                                    WIND_CLASS: (feature.WIND_CLASS),
+                                    AVG_WGHT: (feature.AVG_WGHT || 0).toFixed(2),
+                                    PERC_COVER: (feature.PERC_COVER || 0),
+                                    HOUSES_SUM: (feature.HOUSES_SUM || 0).toLocaleString(),
+                                    CAPACITY: (feature.CAPACITY || 0).toLocaleString(),
+                                    TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    METADATA_URL: feature.METADATA_URL
+                                });
+                                AOI.addMetadata(feature);
+
+                                if (feature.TOTAL_CNT > 0) {
+                                    switch (feature.WIND_CLASS.substring(0, 3)) {
+                                        case "Sup":
+                                            AOI.windclass[0] = feature.PERC_COVER;
+                                            break;
+                                        case "Out":
+                                            AOI.windclass[1] = feature.PERC_COVER;
+                                            break;
+                                        case "Exc":
+                                            AOI.windclass[2] = feature.PERC_COVER;
+                                            break;
+                                        case "Goo":
+                                            AOI.windclass[3] = feature.PERC_COVER;
+                                            break;
+                                        case "Fai":
+                                            AOI.windclass[4] = feature.PERC_COVER;
+                                            break;
+                                        case "Uns":
+                                            AOI.windclass[5] = feature.PERC_COVER;
+                                            break;
                                     }
                                 }
-                            },
-                            series: [{
-                                data: [{
-                                    color: '#4a4a4a',
-                                    y: AOI.CEFederalTotal,
-                                    name: 'Federal'
-                                }, {
-                                    color: '#3284BC',
-                                    y: AOI.CEStateTotal,
-                                    name: 'State'
-                                }]
-                            }],
+                                break;
+                        }
+                    });
+
+                    var y = 35;
+                    var x = 35;
+                    var chartrow = 1;
+
+                    for (i = 0; i < AOI.ECEcon.length; i++) {
+
+                        if (i && (i % 3 === 0)) {
+                            y += 120;
+                            x = 35;
+                            chartrow++;
+                        } else if (i) x += 135;
+
+                        AOI.OceanJobContributionsSeries[i] = {
+                            center: [x, y],
+                            "name": AOI.ECEcon[i].Name,
+                            "showInLegend": (i === 0 ? true : false),
+                            "data": [
+                                ["Marine Construction", AOI.ECEcon[i].GDP_MarineConstruction],
+                                ["Living Resources", AOI.ECEcon[i].GDP_LivingResources],
+                                ["Marine Transportation", AOI.ECEcon[i].GDP_MarineTransp],
+                                ["Offshore Mineral Extraction", AOI.ECEcon[i].GDP_OffshoreMineralExt],
+                                ["Ship and Boat Building", AOI.ECEcon[i].GDP_ShipAndBoatBuilding],
+                                ["Tourism and Recreation", AOI.ECEcon[i].GDP_TourismAndRec]
+                            ],
                             title: {
-                                text: null
-                            },
-                            loading: false
+
+                                style: {color: '#4a4a4a'},
+                                align: 'center',
+                                format: '{name}',
+                                verticalAlign: 'top',
+                                y: -20
+                            }
                         }
 
-                    },
-                    loadOceanJobContributionsChart: function () {
+                    }
+                    AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
-                        if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
-                        AOI.OceanJobContributionsChart = {
-                            options: {
-                                credits: {
-                                    enabled: false
-                                },
-                                legend: {
-                                    enabled: true,
-                                    align: 'right',
-                                    layout: 'vertical',
-                                    verticalAlign: 'center',
-                                    itemStyle: {
-                                        fontSize: '10px'
-                                    }
-                                },
-                                tooltip: {
-                                    pointFormat: '<b>{point.percentage:.1f}%</b>'
-                                },
-                                chart: {
 
-                                    height: AOI.OceanJobContributionsChartHeight,
-                                    type: 'pie'
-                                },
-                                title: {
-                                    enabled: false,
-                                    text: null,
-                                    align: 'center'
-                                },
-                                exporting: {enabled: false},
-                                colors: ['#4572a7', '#aa4643', '#89a54e', '#71588f', '#4198af', '#db843d', '#93a9cf'],
-                                yAxis: {
+                    if (AOI.wavepwr.length > 0) {
+                        if (AOI.wavepwr[0].AVG_WAVE_POWER > 40) {
+                            AOI.wavepwr[0].COLOR = '#B0B497';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 30.0) {
+                            AOI.wavepwr[0].COLOR = '#B6BC9E';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 20.0) {
+                            AOI.wavepwr[0].COLOR = '#BBC1A4';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 15.0) {
+                            AOI.wavepwr[0].COLOR = '#C0C6A8';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 10.0) {
+                            AOI.wavepwr[0].COLOR = '#C9D0B1';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 8.0) {
+                            AOI.wavepwr[0].COLOR = '#D0D8B9';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 6) {
+                            AOI.wavepwr[0].COLOR = '#D5DDC0';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 4.0) {
+                            AOI.wavepwr[0].COLOR = '#DEE7C9';
 
-                                    title: {
-                                        enabled: true
-                                    }
-                                },
-                                xAxis: {
-                                    type: 'category',
-                                    title: {
-                                        enabled: true
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 2.0) {
+                            AOI.wavepwr[0].COLOR = '#E4EFD2';
+                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER < 2.01) {
+                            AOI.wavepwr[0].COLOR = '#EBF6D8';
+                        } else {
+                            AOI.wavepwr[0].COLOR = 'white';
+                        }
+                    }
+                    AOI.windclass[6] = (AOI.windclass.reduce(function (prev, cur) {
+                        return prev.toFixed(2) - cur.toFixed(2);
+                    }, 100));
+                    if (AOI.boem[0] == null) {
+                        AOI.boem[0] = {
+                            INFO: "NA",
+                            PROT_NUMBE: 0,
+                            LINK1: "NA",
+                            LINK2: "NA",
+                            PERC_COVER: 0,
+                            TOTAL_BLOC: 0,
+                            TOTAL_CNT: 0
+                        };
+                    }
+                    if (AOI.arel[0] == null) {
+                        AOI.arel[0] = {
+                            Lease_Numb: 0,
+                            Company: "NA",
+                            INFO: "NA",
+                            PROT_NUMBE: 0,
+                            LINK1: "NA",
+                            LINK2: "NA",
+                            PERC_COVER: 0,
+                            TOTAL_BLOC: 0,
+                            TOTAL_CNT: 0
+                        };
+                    }
+                    AOI.TIPrincipalPorts.sort(function (a, b) {
+                        return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
+                    });
+                    AOI.CEPlaces.sort(function (a, b) {
+                        return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
+                    });
+                    AOI.boem.sort(function (a, b) {
+                        return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
+                    });
+                    AOI.arel.sort(function (a, b) {
+                        return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
+                    });
+
+                    if (AOI.boem[0].TOTAL_CNT === 0) {
+                        AOI.boem[0].PERC_COVER = 0;
+                        AOI.boem[0].TOTAL_BLOC = 0;
+                    }
+                    if (AOI.arel[0] == null)AOI.arel[0].TOTAL_CNT = 0;
+                    if (AOI.arel[0].TOTAL_CNT === 0) {
+                        AOI.arel[0].PERC_COVER = 0;
+                        AOI.arel[0].TOTAL_BLOC = 0;
+                    }
+                    AOI.loadWindChart();
+                    AOI.loadStateChart();
+                    AOI.loadOceanJobEmployeesChart();
+                    AOI.loadOceanJobDollarsChart();
+                    AOI.loadOceanJobContributionsChart();
+                    //because? and until all direct DOM manipulation is removed from code, this $apply is useful to
+                    // clear some digest issue that appear as timing issues.
+                    if (AOI.ID !== -9999) {
+
+                        //$rootScope.$apply();
+                    }
+
+
+                },
+                addMetadata: function (feature) {
+                    if (feature.METADATA_URL != null) {
+                        AOI.metadata.push({
+                            REPORT_CAT: feature.REPORT_CAT,
+                            COMMON_NM: feature.COMMON_NM,
+                            METADATA_URL: feature.METADATA_URL,
+                            METADATA_OWNER: feature.METADATA_OWNER,
+                            METADATA_OWNER_ABV: feature.METADATA_OWNER_ABV,
+                            METADATA_SORT: feature.METADATA_SORT
+                        });
+                    }
+                },
+                unloadData: function () {
+
+                    if (AOI.isLoaded) {
+                        AOI.map.removeLayer(AOI.layer);
+                        AOI.map.removeLayer(AOI.oceanDisposalSites);
+                        AOI.map.removeLayer(AOI.HydrokineticLeases);
+                        AOI.map.removeLayer(AOI.windPlanningLayer);
+                        AOI.map.removeLayer(AOI.windLeaseLayer);
+                        AOI.map.removeLayer(AOI.windrpLayer);
+                        AOI.map.removeLayer(AOI.marineMineralsLeases);
+                        AOI.map.removeLayer(AOI.wavePower);
+                        AOI.map.removeLayer(AOI.tidalPower);
+                        AOI.map.removeLayer(AOI.currentPower);
+                        AOI.map.removeLayer(AOI.beachNourish);
+                        AOI.map.removeLayer(AOI.coastalEnergyFacilities);
+                        AOI.map.removeLayer(AOI.CEElevationLayer);
+                        AOI.map.removeLayer(AOI.TISubmarineLayer);
+                        AOI.map.removeLayer(AOI.TIDangerZonesLayer);
+                        AOI.map.removeLayer(AOI.CEPlaceLayer);
+                        AOI.map.removeLayer(AOI.CETribalLayer);
+                        AOI.map.removeLayer(AOI.TIVessels);
+                        AOI.map.removeLayer(AOI.TIPrincipalPortsLayer);
+                        AOI.map.removeLayer(AOI.NRCNearbyLayer);
+                        AOI.map.removeLayer(AOI.NRCReefsLayer);
+                        AOI.map.removeLayer(AOI.NRCSoftCoralLayer);
+                        AOI.map.removeLayer(AOI.NRCStoneyCoralLayer);
+                        AOI.map.removeLayer(AOI.NRCBarrierLayer);
+                        AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
+
+                        AOI.windLeaseLayerIsVisible = false;
+                        AOI.windrpLayerIsVisible = false;
+                        AOI.windPlanningLayerIsVisible = false;
+                        AOI.oceanDisposalSitesIsVisible = false;
+                        AOI.marineMineralsLeases = false;
+                        AOI.HydrokineticLeasesIsVisible = false;
+                        AOI.wavePowerIsVisable = false;
+                        AOI.tidalPowerIsVisable = false;
+                        AOI.currentPowerIsVisable = false;
+                        AOI.beachNourishIsVisable = false;
+                        AOI.coastalEnergyFacilitiesIsVisable = false;
+                        AOI.CEElevationIsVisable = false;
+                        AOI.TISubmarineIsVisable = false;
+                        AOI.TIDangerZonesIsVisable = false;
+                        AOI.CEPlaceLayerIsVisible = false;
+                        AOI.TIVesselsIsVisible = false;
+                        AOI.TIPrincipalPortsIsVisible = false;
+                        AOI.NRCNearbyLayerIsVisible = false;
+                        AOI.NRCReefsLayerIsVisible = false;
+                        AOI.NRCSoftCoralLayerIsVisible = false;
+                        AOI.NRCStoneyCoralLayerIsVisible = false;
+                        AOI.NRCBarrierLayerIsVisible = false;
+                        AOI.ECCoastalCountiesLayerIsVisible = false;
+
+
+                        AOI.wind.length = 0;
+                        AOI.boem.length = 0;
+                        AOI.metadata.length = 0;
+                        AOI.optLayer.length = 0;
+                        AOI.windclass.length = 0;
+                        AOI.disp.length = 0;
+                        AOI.mml.length = 0;
+                        AOI.hydrok.length = 0;
+                        AOI.CETribalLands.length = 0;
+                        AOI.surfsed.length = 0;
+                        AOI.wavepwr.length = 0;
+                        AOI.tidalpwr.length = 0;
+                        AOI.currentpwr.length = 0;
+                        AOI.beachNur.length = 0;
+                        AOI.OGPlanA.length = 0;
+                        AOI.OGLease.length = 0;
+                        AOI.OGWells.length = 0;
+                        AOI.OGresource.length = 0;
+                        AOI.coastfac.length = 0;
+                        AOI.CEElevation.length = 0;
+                        AOI.CEAreaOfPoly.length = 0;
+                        AOI.CEFedGeoRegs.length = 0;
+                        AOI.CECongress.length = 0;
+                        AOI.CEHouse.length = 0;
+                        AOI.CESenate.length = 0;
+                        AOI.CECoastalCounties.length = 0;
+                        AOI.CEFederalAndState.length = 0;
+                        AOI.CEFederalTotal = 0;
+                        AOI.CEStateTotal = 0;
+                        AOI.TISubmarine.length = 0;
+                        AOI.TICoastal.length = 0;
+                        AOI.TIDangerZones.length = 0;
+                        AOI.NRCHabConcern.length = 0;
+                        AOI.NRCCriticalHab.length = 0;
+                        AOI.NRCMigratoryFish.length = 0;
+                        AOI.NRCMigratorySharks.length = 0;
+                        AOI.ECEcon.length = 0;
+                        AOI.ECEconEmploy.length = 0;
+                        AOI.ECEconGDP.length = 0;
+                        AOI.ECEconWages.length = 0;
+                        AOI.ECStateGDP.length = 0;
+                        AOI.ECCountyGDP.length = 0;
+                        AOI.OceanJobContributionsSeries.length = 0;
+                        AOI.drawAreaJobId = {};
+                        AOI.Shared = false;
+                        AOI.CEPlaces.length = 0;
+                        AOI.TIShipping.length = 0;
+                        AOI.TIShippingTotal = 0;
+                        AOI.TIRightWhale.length = 0;
+                        AOI.TIVessel.length = 0;
+                        AOI.TIPrincipalPorts.length = 0;
+                        AOI.NRCNearby.length = 0;
+                        AOI.NRCReefs.length = 0;
+                        AOI.NRCSoftCoral.length = 0;
+                        AOI.NRCStonyCoral.length = 0;
+                        AOI.NRCBarrier.length = 0;
+                        AOI.ECCoastalCounties.length = 0;
+                        AOI.ECFishRevenue.length = 0;
+                        AOI.TIAnchorage.length = 0;
+                        AOI.TIPilot.length = 0;
+
+                        AOI.hide();
+
+                    }
+                    AOI.isLoaded = false;
+                },
+                isLoaded: false,
+                ECCoastalCountiesLayerIsVisible: false,
+                toggleECCoastalCountiesLayer: function () {
+
+                    if (!AOI.ECCoastalCountiesLayerIsVisible) {
+                        AOI.ECCoastalCountiesLayer.addTo(AOI.map);
+                        AOI.ECCoastalCountiesLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
+                        AOI.ECCoastalCountiesLayerIsVisible = false;
+                    }
+                },
+                NRCBarrierLayerIsVisible: false,
+                toggleNRCBarrierLayer: function () {
+
+                    if (!AOI.NRCBarrierLayerIsVisible) {
+                        AOI.NRCBarrierLayer.addTo(AOI.map);
+                        AOI.NRCBarrierLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.NRCBarrierLayer);
+                        AOI.NRCBarrierLayerIsVisible = false;
+                    }
+                },
+                NRCStoneyCoralLayerIsVisible: false,
+                toggleNRCStoneyCoralLayer: function () {
+
+                    if (!AOI.NRCStoneyCoralLayerIsVisible) {
+                        AOI.NRCStoneyCoralLayer.addTo(AOI.map);
+                        AOI.NRCStoneyCoralLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.NRCStoneyCoralLayer);
+                        AOI.NRCStoneyCoralLayerIsVisible = false;
+                    }
+                },
+                NRCSoftCoralLayerIsVisible: false,
+                toggleNRCSoftCoralLayer: function () {
+
+                    if (!AOI.NRCSoftCoralLayerIsVisible) {
+                        AOI.NRCSoftCoralLayer.addTo(AOI.map);
+                        AOI.NRCSoftCoralLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.NRCSoftCoralLayer);
+                        AOI.NRCSoftCoralLayerIsVisible = false;
+                    }
+                },
+                NRCReefsLayerIsVisible: false,
+                toggleNRCReefsLayer: function () {
+
+                    if (!this.NRCReefsLayerIsVisible) {
+                        this.NRCReefsLayer.addTo(AOI.map);
+                        this.NRCReefsLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(this.NRCReefsLayer);
+                        this.NRCReefsLayerIsVisible = false;
+                    }
+                },
+                NRCNearbyLayerIsVisible: false,
+                toggleNRCNearby: function () {
+
+                    if (!AOI.NRCNearbyLayerIsVisible) {
+                        AOI.NRCNearbyLayer.addTo(AOI.map);
+                        AOI.NRCNearbyLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.NRCNearbyLayer);
+                        AOI.NRCNearbyLayerIsVisible = false;
+                    }
+                },
+
+                TIPrincipalPortsIsVisible: false,
+                toggleTIPrincipalPorts: function () {
+
+
+                    if (!AOI.TIPrincipalPortsIsVisible) {
+                        AOI.TIPrincipalPortsLayer.addTo(AOI.map);
+                        AOI.TIPrincipalPortsIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.TIPrincipalPortsLayer);
+                        AOI.TIPrincipalPortsIsVisible = false;
+                    }
+                },
+                TIVesselsIsVisible: false,
+                toggleTIVessels: function () {
+
+
+                    if (!AOI.TIVesselsIsVisible) {
+                        AOI.TIVessels.addTo(AOI.map);
+                        AOI.TIVesselsIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.TIVessels);
+                        AOI.TIVesselsIsVisible = false;
+                    }
+                },
+                CEPlaceLayerIsVisible: false,
+                toggleCEPlaceLayer: function () {
+
+                    if (!AOI.CEPlaceLayerIsVisible) {
+                        AOI.CEPlaceLayer.addTo(AOI.map);
+                        AOI.CETribalLayer.addTo(AOI.map);
+                        AOI.CEPlaceLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.CEPlaceLayer);
+                        AOI.map.removeLayer(AOI.CETribalLayer);
+                        AOI.CEPlaceLayerIsVisible = false;
+                    }
+                },
+                windLeaseLayerIsVisible: false,
+                toggleWindLeaseLayer: function () {
+
+                    if (!AOI.windLeaseLayerIsVisible) {
+                        AOI.windLeaseLayer.addTo(AOI.map);
+                        AOI.windLeaseLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.windLeaseLayer);
+                        AOI.windLeaseLayerIsVisible = false;
+                    }
+                },
+                windPlanningLayerIsVisible: false,
+                toggleWindPlanningLayer: function () {
+                    if (!AOI.windPlanningLayerIsVisible) {
+                        AOI.windPlanningLayer.addTo(AOI.map);
+                        AOI.windPlanningLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.windPlanningLayer);
+                        AOI.windPlanningLayerIsVisible = false;
+                    }
+                },
+                oceanDisposalSitesIsVisible: false,
+                toggleOceanDisposalSites: function () {
+
+                    if (!AOI.oceanDisposalSitesIsVisible) {
+                        AOI.oceanDisposalSites.addTo(AOI.map);
+                        AOI.oceanDisposalSitesIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.oceanDisposalSites);
+                        AOI.oceanDisposalSitesIsVisible = false;
+                    }
+                },
+                HydrokineticLeasesIsVisible: false,
+                toggleHydrokineticLeases: function () {
+
+                    if (!AOI.HydrokineticLeasesIsVisible) {
+                        AOI.HydrokineticLeases.addTo(AOI.map);
+                        AOI.HydrokineticLeasesIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.HydrokineticLeases);
+                        AOI.HydrokineticLeasesIsVisible = false;
+                    }
+                },
+
+                marineMineralsLeasesIsVisable: false,
+                toggleMarineMineralsLeases: function () {
+
+                    if (!AOI.marineMineralsLeasesIsVisable) {
+                        AOI.marineMineralsLeases.addTo(AOI.map);
+                        AOI.marineMineralsLeasesIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.marineMineralsLeases);
+                        AOI.marineMineralsLeasesIsVisable = false;
+                    }
+                },
+                wavePowerIsVisable: false,
+                togglewavePower: function () {
+
+                    if (!AOI.wavePowerIsVisable) {
+                        AOI.wavePower.addTo(AOI.map);
+                        AOI.wavePowerIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.wavePower);
+                        AOI.wavePowerIsVisable = false;
+                    }
+                },
+                tidalPowerIsVisable: false,
+                toggletidalPower: function () {
+
+                    if (!AOI.tidalPowerIsVisable) {
+                        AOI.tidalPower.addTo(AOI.map);
+                        AOI.tidalPowerIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.tidalPower);
+                        AOI.tidalPowerIsVisable = false;
+                    }
+                },
+                currentPowerIsVisable: false,
+                togglecurrentPower: function () {
+
+                    if (!AOI.currentPowerIsVisable) {
+                        AOI.currentPower.addTo(AOI.map);
+                        AOI.currentPowerIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.currentPower);
+                        AOI.currentPowerIsVisable = false;
+                    }
+                },
+                beachNourishIsVisable: false,
+                togglebeachNourish: function () {
+
+                    if (!AOI.beachNourishIsVisable) {
+                        AOI.beachNourish.addTo(AOI.map);
+                        AOI.beachNourishIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.beachNourish);
+                        AOI.beachNourishIsVisable = false;
+                    }
+                },
+                coastalEnergyFacilitiesIsVisable: false,
+                togglecoastalEnergyFacilities: function () {
+
+                    if (!AOI.coastalEnergyFacilitiesIsVisable) {
+                        AOI.coastalEnergyFacilities.addTo(AOI.map);
+                        AOI.coastalEnergyFacilitiesIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.coastalEnergyFacilities);
+                        AOI.coastalEnergyFacilitiesIsVisable = false;
+                    }
+                },
+
+                windrpLayerIsVisible: false,
+                toggleWindrpLayer: function () {
+
+                    if (!AOI.windrpLayerIsVisible) {
+                        AOI.windrpLayer.addTo(AOI.map);
+                        AOI.windrpLayerIsVisible = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.windrpLayer);
+                        AOI.windrpLayerIsVisible = false;
+                    }
+                },
+                CEElevationIsVisable: false,
+                toggleCEElevation: function () {
+
+                    if (!AOI.CEElevationIsVisable) {
+                        AOI.CEElevationLayer.addTo(AOI.map);
+                        AOI.CEElevationIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.CEElevationLayer);
+                        AOI.CEElevationIsVisable = false;
+                    }
+                },
+                TISubmarineIsVisable: false,
+                toggleTISubmarine: function () {
+
+                    if (!AOI.TISubmarineIsVisable) {
+                        AOI.TISubmarineLayer.addTo(AOI.map);
+                        AOI.TISubmarineIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.TISubmarineLayer);
+                        AOI.TISubmarineIsVisable = false;
+                    }
+                },
+                TIDangerZonesIsVisable: false,
+                toggleTIDangerZones: function () {
+
+                    if (!AOI.TIDangerZonesIsVisable) {
+                        AOI.TIDangerZonesLayer.addTo(AOI.map);
+                        AOI.TIDangerZonesIsVisable = true;
+                    } else {
+                        AOI.map.removeLayer(AOI.TIDangerZonesLayer);
+                        AOI.TIDangerZonesIsVisable = false;
+                    }
+                },
+                toggleFull: false,
+                toggleFullSlider: function (pageID) {
+
+
+                    AOI.toggleFull = !AOI.toggleFull;
+                    AOI.doFullSlider(pageID);
+                },
+                doFullSlider: function (pageID) {
+
+
+                    if (AOI.toggleFull) {
+
+                        // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
+                        document.getElementById("slide1").style.width = '100%';
+                        document.getElementById("togglefull").style.marginLeft = '0px';
+                        document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
+                        document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
+                        document.getElementById("togglefull").style.transform = "rotate(180deg)";
+
+                        var elems = document.getElementsByClassName('AOItabClass2');
+                        for (var i = 0; i < elems.length; i++) {
+                            elems[i].style.display = 'inline-block';
+                        }
+
+
+                        if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
+
+
+                            AOI.loadSmallMap(false);
+
+                        }
+
+                    } else {
+
+                        document.getElementById("togglefull").style.marginLeft = "-25px";
+
+                        document.getElementById("slide1").style.width = '50%';
+                        var elems = document.getElementsByClassName('AOItabClass2');
+                        for (var i = 0; i < elems.length; i++) {
+                            elems[i].style.display = 'none';
+                        }
+
+                        document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
+                        // Code for IE9
+                        document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
+                        document.getElementById("togglefull").style.transform = "rotate(0deg)";
+
+                    }
+
+
+                },
+                loadSmallMap: function (useCanvas) {
+
+                    if (smallmap) {
+                        smallmap.remove();
+
+                    }
+                    if (AOI.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
+                    else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
+                    L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
+                    L.esri.basemapLayer('OceansLabels').addTo(smallmap);
+                    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                        maxZoom: 12,
+                        useCors: true
+                    });
+
+                    var minicLayer;
+                    if (AOI.ID === -9999) {
+                        minicLayer = L.geoJson(AOI.drawLayerShape, {
+                            color: '#EB660C',
+                            weight: 1.5,
+                            fillOpacity: .3
+
+                        }).addTo(smallmap);
+                        AOI.minibounds = minicLayer.getBounds();
+                        smallmap.fitBounds(AOI.minibounds);
+
+                    } else {
+                        minicLayer = L.esri.featureLayer({
+                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                            where: "AOI_ID =" + AOI.ID + "",
+                            color: '#EB660C',
+                            weight: 1.5,
+                            fillOpacity: .3
+
+                        }).addTo(smallmap);
+
+
+                        minicLayer.on("load", function (evt) {
+                            var bounds = L.latLngBounds([]);
+                            minicLayer.eachFeature(function (layer) {
+                                var layerBounds = layer.getBounds();
+                                bounds.extend(layerBounds);
+                            });
+                            AOI.minibounds = bounds;
+                            smallmap.fitBounds(bounds);
+                            minicLayer.off('load');
+                        });
+                    }
+                    smallmap.invalidateSize();
+                    var test1 = false;
+                    if ((AOI.inPrintWindow) && (test1)) {
+                        leafletImage(smallmap, function (err, canvas) {
+                            var img = document.createElement('img');
+                            var dimensions = smallmap.getSize();
+                            img.width = dimensions.x;
+                            img.height = dimensions.y;
+                            img.src = canvas.toDataURL();
+                            document.getElementById('map3').innerHTML = '';
+                            document.getElementById('map3').appendChild(img);
+                        });
+                    }
+
+                },
+                loadStateChart: function () {
+                    if (AOI.highchartsNGState) AOI.highchartsNGState = null;
+
+                    AOI.highchartsNGState = {
+                        options: {
+                            credits: {
+                                enabled: false
+                            },
+                            chart: {
+                                plotBackgroundColor: '#f4f8fc',
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'top',
+                                floating: true,
+                                backgroundColor: '#f4f8fc'
+                            },
+                            tooltip: {
+                                pointFormat: '<b>{point.percentage:.1f}%</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    dataLabels: {
+                                        enabled: false
                                     },
-                                    labels: {
-                                        enabled: true
-                                    }
+                                    showInLegend: true
+                                }
+                            }
+                        },
+                        series: [{
+                            data: [{
+                                color: '#4a4a4a',
+                                y: AOI.CEFederalTotal,
+                                name: 'Federal'
+                            }, {
+                                color: '#3284BC',
+                                y: AOI.CEStateTotal,
+                                name: 'State'
+                            }]
+                        }],
+                        title: {
+                            text: null
+                        },
+                        loading: false
+                    }
+
+                },
+                loadOceanJobContributionsChart: function () {
+
+                    if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
+                    AOI.OceanJobContributionsChart = {
+                        options: {
+                            credits: {
+                                enabled: false
+                            },
+                            legend: {
+                                enabled: true,
+                                align: 'right',
+                                layout: 'vertical',
+                                verticalAlign: 'center',
+                                itemStyle: {
+                                    fontSize: '10px'
+                                }
+                            },
+                            tooltip: {
+                                pointFormat: '<b>{point.percentage:.1f}%</b>'
+                            },
+                            chart: {
+
+                                height: AOI.OceanJobContributionsChartHeight,
+                                type: 'pie'
+                            },
+                            title: {
+                                enabled: false,
+                                text: null,
+                                align: 'center'
+                            },
+                            exporting: {enabled: false},
+                            colors: ['#4572a7', '#aa4643', '#89a54e', '#71588f', '#4198af', '#db843d', '#93a9cf'],
+                            yAxis: {
+
+                                title: {
+                                    enabled: true
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                title: {
+                                    enabled: true
                                 },
-                                plotOptions: {
+                                labels: {
+                                    enabled: true
+                                }
+                            },
+                            plotOptions: {
 
-                                    pie: {
-                                        allowPointSelect: false,
-                                        cursor: 'pointer',
-                                        size: 100,
+                                pie: {
+                                    allowPointSelect: false,
+                                    cursor: 'pointer',
+                                    size: 100,
 
-                                        dataLabels: {
-                                            enabled: false
-                                        },
-                                        point: {
-                                            events: {
-                                                legendItemClick: function (e) {
-                                                    e.preventDefault();
-                                                }
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                    point: {
+                                        events: {
+                                            legendItemClick: function (e) {
+                                                e.preventDefault();
                                             }
                                         }
                                     }
                                 }
-                            },
-                            loading: false,
-                            series: AOI.OceanJobContributionsSeries
-                        }
-
-                        ;
-
-                    },
-                    loadOceanJobDollarsChart: function () {
-
-                        if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null
-                        AOI.OceanJobDollarsChart = {
-                            options: {
-                                credits: {
-                                    enabled: false
-                                },
-                                legend: {
-                                    enabled: true,
-
-                                    layout: 'horizontal',
-                                    align: 'right',
-                                    verticalAlign: 'top',
-                                    floating: true,
-                                    itemStyle: {
-
-                                        fontSize: '10px',
-                                        lineHeight: '10px'
-                                    }
-                                },
-                                tooltip: {
-                                    pointFormat: '<b>${point.y:,.2f}</b>'
-                                },
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    enabled: false,
-                                    text: null,
-                                    align: 'left'
-                                },
-                                exporting: {enabled: false},
-                                colors: ['#ffc000', '#92d050', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
-                                yAxis: {
-                                    title: {
-                                        enabled: false
-                                    }
-                                },
-                                xAxis: {
-                                    type: 'category',
-                                    title: {
-                                        enabled: false
-                                    },
-                                    labels: {
-                                        enabled: true
-                                    }
-
-                                }
-                            },
-                            loading: false,
-                            series: [{
-                                "name": 'Wages',
-                                "data": this.ECEconWages
-                            }, {
-                                "name": 'Goods & Services',
-                                "data": this.ECEconGDP
                             }
-                            ]
+                        },
+                        loading: false,
+                        series: AOI.OceanJobContributionsSeries
+                    };
 
-                        };
-                    },
-                    loadOceanJobEmployeesChart: function () {
+                },
+                loadOceanJobDollarsChart: function () {
 
-                        if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null
-                        AOI.OceanJobEmployeesChart = {
-                            options: {
-                                credits: {
-                                    enabled: false
-                                },
-                                legend: {
-                                    enabled: false
-                                },
-                                tooltip: {
-                                    pointFormat: '<b>{point.y:,.0f}</b>'
-                                },
-                                chart: {
-                                    type: 'column'
-                                },
+
+                    if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null;
+                    AOI.OceanJobDollarsChart = {
+                        options: {
+                            credits: {
+                                enabled: false
+                            },
+                            legend: {
+                                enabled: true,
+
+                                layout: 'horizontal',
+                                align: 'right',
+                                verticalAlign: 'top',
+                                floating: true,
+                                itemStyle: {
+
+                                    fontSize: '10px',
+                                    lineHeight: '10px'
+                                }
+                            },
+                            tooltip: {
+                                pointFormat: '<b>${point.y:,.2f}</b>'
+                            },
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                enabled: false,
+                                text: null,
+                                align: 'left'
+                            },
+                            exporting: {enabled: false},
+                            colors: ['#ffc000', '#92d050', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                            yAxis: {
                                 title: {
-                                    text: "Employees",
-                                    align: 'left'
+                                    enabled: false
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                title: {
+                                    enabled: false
                                 },
-                                exporting: {enabled: false},
-                                colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
-                                yAxis: {
-
-                                    title: {
-                                        enabled: false
-                                    }
-                                },
-                                xAxis: {
-                                    type: 'category',
-                                    title: {
-                                        enabled: false
-                                    },
-                                    labels: {
-                                        enabled: true
-                                    }
+                                labels: {
+                                    enabled: true
                                 }
 
-                            },
-                            loading: false,
-                            series: [{
-                                "name": 'Employees',
-                                "data": this.ECEconEmploy
-                            }]
-
-                        };
-
-
-                    },
-                    loadWindChart: function () {
-
-                        if (AOI.highchartsNG) AOI.highchartsNG = null
-                        AOI.highchartsNG = {
-                            options: {
-                                credits: {
-                                    enabled: false
-                                },
-                                chart: {
-                                    spacing: 0,
-                                    margin: 0,
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: null
-                                },
-                                exporting: {enabled: false},
-                                colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
-                                xAxis: {
-                                    title: {
-                                        enabled: false
-                                    },
-                                    labels: {
-                                        enabled: false
-                                    },
-                                    tickLength: 0
-                                },
-                                yAxis: {
-                                    title: {
-                                        enabled: false
-                                    },
-                                    labels: {
-                                        enabled: false
-                                    },
-                                    TickLength: 0
-                                },
-                                plotOptions: {
-                                    series: {
-                                        pointWidth: 190
-                                    },
-                                    column: {
-                                        stacking: 'percent'
-                                    }
-                                }
-
-                            },
-                            loading: false,
-                            series: [{
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[0]]
-                            }, {
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[1]]
-                            }, {
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[2]]
-                            }, {
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[3]]
-                            }, {
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[4]]
-                            }, {
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[5]]
-                            }, {
-                                showInLegend: false,
-                                name: '',
-                                data: [this.windclass[6]]
                             }
-                            ]
-
-                        };
-
-
-                    },
-                    reloadAbort:function(){
-
-                        setTimeout(function(){
-
-                            $window.location.reload();
-
-                        },100);
-
-
-                    },
-                    ShowURL: function () {
-                        var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
-                        if (AOI.ID === -9999) {
-                            shareURL = shareURL +
-                                '&TI=' + AOI.drawAreaJobId['TI'] +
-                                '&EC=' + AOI.drawAreaJobId['EC'] +
-                                '&CE=' + AOI.drawAreaJobId['CE'] +
-                                '&NRC=' + AOI.drawAreaJobId['NRC'] +
-                                '&EM=' + AOI.drawAreaJobId['EM']
+                        },
+                        loading: false,
+                        series: [{
+                            "name": 'Wages',
+                            "data": AOI.ECEconWages
+                        }, {
+                            "name": 'Goods & Services',
+                            "data": AOI.ECEconGDP
                         }
-                        return (shareURL);
+                        ]
+
+                    };
+                },
+                loadOceanJobEmployeesChart: function () {
+
+
+                    if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null;
+                    AOI.OceanJobEmployeesChart = {
+                        options: {
+                            credits: {
+                                enabled: false
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: '<b>{point.y:,.0f}</b>'
+                            },
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: "Employees",
+                                align: 'left'
+                            },
+                            exporting: {enabled: false},
+                            colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                            yAxis: {
+
+                                title: {
+                                    enabled: false
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                title: {
+                                    enabled: false
+                                },
+                                labels: {
+                                    enabled: true
+                                }
+                            }
+
+                        },
+                        loading: false,
+                        series: [{
+                            "name": 'Employees',
+                            "data": AOI.ECEconEmploy
+                        }]
+
+                    };
+
+
+                },
+                loadWindChart: function () {
+
+
+                    if (AOI.highchartsNG) AOI.highchartsNG = null;
+                    AOI.highchartsNG = {
+                        options: {
+                            credits: {
+                                enabled: false
+                            },
+                            chart: {
+                                spacing: 0,
+                                margin: 0,
+                                type: 'column'
+                            },
+                            title: {
+                                text: null
+                            },
+                            exporting: {enabled: false},
+                            colors: ['#0E3708', '#5C9227', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                            xAxis: {
+                                title: {
+                                    enabled: false
+                                },
+                                labels: {
+                                    enabled: false
+                                },
+                                tickLength: 0
+                            },
+                            yAxis: {
+                                title: {
+                                    enabled: false
+                                },
+                                labels: {
+                                    enabled: false
+                                },
+                                TickLength: 0
+                            },
+                            plotOptions: {
+                                series: {
+                                    pointWidth: 190
+                                },
+                                column: {
+                                    stacking: 'percent'
+                                }
+                            }
+
+                        },
+                        loading: false,
+                        series: [{
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[0]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[1]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[2]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[3]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[4]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[5]]
+                        }, {
+                            showInLegend: false,
+                            name: '',
+                            data: [AOI.windclass[6]]
+                        }
+                        ]
+
+                    };
+
+
+                },
+                reloadAbort: function () {
+
+                    setTimeout(function () {
+
+                        $window.location.reload();
+
+                    }, 100);
+
+
+                },
+                ShowURL: function () {
+                    var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
+                    if (AOI.ID === -9999) {
+                        shareURL = shareURL +
+                            '&TI=' + AOI.drawAreaJobId.TI +
+                            '&EC=' + AOI.drawAreaJobId.EC +
+                            '&CE=' + AOI.drawAreaJobId.CE +
+                            '&NRC=' + AOI.drawAreaJobId.NRC +
+                            '&EM=' + AOI.drawAreaJobId.EM
                     }
-                };
+                    return (shareURL);
+                }
+            };
 
-                return AOI;
-            }]
-        }
-    })
-;
+            return AOI;
+        }]);
 
 ;
 'use strict';
 
+function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
+                       myQueryService, AOIConfig) {
+    //this one loads once on start up
+    var vm = this;
+
+    vm.AOI = AOI;
+
+    vm.baseMapControlOn = false;
+
+    vm.AOI.inPrintWindow = false;
+
+    vm.box = [];
+    var len = 2000;
+    for (var i = 0; i < len; i++) {
+        vm.box.push({
+            myid: i,
+            isActive: false,
+            level: 0,
+            future: true
+        });
+    }
+    vm.drawOrSubmitCommand = "DRAW";
+
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+
+        },
+        lang: {
+            decimalPoint: '.',
+            thousandsSep: ',',
+            numericSymbols: ["k", "M", "B", "T", "P", "E"]
+        }
+    });
+
+    if ($state.includes('draw')) {
+        //vm.checked = false; // This will be binded using the ps-open attribute
+        vm.paneoff();
+    } else {
+        vm.checked = true;
+    }
+
+    vm.showSubmitModal = function () {
+        ModalService.showModal({
+            templateUrl: "modalDraw.html",
+            controller: "submitModalController"
+        }).then(function (modal) {
+            modal.close.then(function (result) {
+                vm.customResult = "All good!";
+            });
+        });
+    };
+
+    vm.startSpin = function () {
+        usSpinnerService.spin('spinner-1');
+    };
+    vm.stopSpin = function () {
+        usSpinnerService.stop('spinner-1');
+    };
+
+    vm.drawIt = function () {
+
+        switch (vm.drawOrSubmitCommand.substring(0, 4)) {
+
+            case "DRAW":
+
+                if (vm.drawtoolOn) {
+                    if (vm.drawlocked) {
+                        vm.drawOff();
+                    } else {
+                        vm.drawOn();
+                    }
+                }
+                break;
+            case "Subm":
+                //allPromises = [];
+
+                vm.showSubmitModal();
+
+                vm.drawOrSubmitCommand = "Working";
+
+                vm.startSpin();
+
+                AOI.getReport().then(function () {
+                    vm.stopSpin();
+                    vm.drawtoolOn = false;
+                    vm.searchControlEnabled = false;
+                    vm.drawOrSubmitCommand = "DRAW";
+                    vm.baseMapControlOn = false;
+
+                    $state.go('CEview');
+                    vm.paneon();
+                });
+
+                break;
+            case "Work":
+                vm.showSubmitModal();
+                break;
+            case "Erro":
+                vm.drawOrSubmitCommand = "Submit";
+                break;
+            case "Comp":
+                vm.completeDraw();
+                break;
+        }
+    };
+
+    vm.toggle = function () { //toggles slider pane but does nothing about the AOI
+        vm.checked = !vm.checked;
+    };
+
+    vm.t_menu_box = function (id, levl) {
+        vm.box[id].level = levl;
+
+        vm.box[id].isActive = !vm.box[id].isActive;
+        for (i = 0; i < len; i++) {
+            if ((i != id) && (levl <= vm.box[i].level)) {
+                vm.box[i].isActive = false;
+            }
+        }
+
+    };
+
+    vm.startOver = function () {
+
+
+        AOI.reloadAbort();
+
+        vm.cancelEVERYTHING();
+        vm.drawOrSubmitCommand = "DRAW";
+        vm.reset();
+    };
+    vm.startMenu = function () {
+        vm.reset();
+    };
+    vm.reset = function () { //unloads AOI but leaves slider pane on
+
+
+        vm.AOIoff();
+        vm.paneon();
+        AOI.unloadData();
+        vm.stopSpin();
+
+        vm.resetMap();
+
+        for (i = 0; i < len; i++) {
+            vm.box[i].isActive = false;
+        }
+
+    };
+
+    vm.off = function () { //unloads AOI and turns off slider pane
+        vm.AOIoff();
+        vm.paneoff();
+        AOI.unloadData();
+        vm.drawtoolOn = true;
+    };
+
+    vm.on = function (AOI, AOI_id) {//turns on AOI and slider pane
+        vm.AOIon();
+        vm.paneon();
+    };
+
+    vm.AOIoff = function () {
+
+        toggle = false;
+    };
+
+    vm.AOIon = function () {
+        vm.checkifAOI = true;
+    };
+
+    vm.paneoff = function () {
+        vm.checked = false;
+        AOI.toggleFull = false;
+    };
+
+    vm.paneon = function () {
+        vm.checked = true;
+        //document.getElementById("slide1").style.width = '50%';
+        AOI.toggleFull = false;
+    };
+
+    vm.aoismenu = [];
+    vm.aoistates = [];
+
+
+    var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerAOI);
+
+    queryService.query("KNOWN_AREA='Special Interest Areas'").then(function (featureCollection) {
+        vm.aoismenu = [];
+        angular.forEach(featureCollection.features, function (feature, i) {
+            vm.aoismenu.push({
+                AOI_NAME: feature.properties.AOI_NAME,
+                COMMON_NM: feature.properties.COMMON_NM,
+                REPORT_TYPE: feature.properties.REPORT_TYPE,
+                AOI_ID: feature.properties.AOI_ID,
+                DATASET_NM: feature.properties.DATASET_NM,
+                DESC_: feature.properties.DESC_
+            });
+        });
+
+        vm.aoismenu.sort(function (a, b) {
+            return a.AOI_NAME.localeCompare(b.AOI_NAME);
+        });
+    }).catch(function (error) {
+        // todo: what to do on error?
+        console.log(error);
+    });
+
+    queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
+        angular.forEach(featureCollection.features, function (feature, i) {
+            vm.aoistates[i] = {
+                AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
+                COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
+                REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
+                AOI_ID: featureCollection.features[i].properties.AOI_ID,
+                DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
+                DESC_: featureCollection.features[i].properties.DESC_
+            };
+        });
+
+        vm.aoistates.sort(function (a, b) {
+            return a.AOI_NAME.localeCompare(b.AOI_NAME);
+        });
+    }).catch(function (error) {
+        // todo: what to do on error?
+        console.log(error);
+    });
+
+    if ($location.search().AOI) {
+        AOI.Shared = true;
+        if ($location.search().AOI !== '-9999') {
+            AOI.loadData($location.search().AOI, '');
+        } else {
+            AOI.drawAreaJobId.CE = $location.search().CE;
+            AOI.drawAreaJobId.EM = $location.search().EM;
+            AOI.drawAreaJobId.EC = $location.search().EC;
+            AOI.drawAreaJobId.NRC = $location.search().NRC;
+            AOI.drawAreaJobId.TI = $location.search().TI;
+            AOI.ID = -9999;
+            AOI.getSavedReport();
+        }
+    }
+}
+
+// functions defined in directive but placed here so nested controllers could inherit.
+PageslideCtrl.prototype.mout = function (id) {
+};
+PageslideCtrl.prototype.paneon = function (id) {
+};
+
+function AOICtrl(AOI, webService) {
+    var vm = this;
+
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.congressIsActive = true;
+    vm.senateIsActive = false;
+    vm.houseIsActive = false;
+    vm.congressMenu = "-";
+    vm.senateMenu = "+";
+    vm.houseMenu = "+";
+
+    webService.getData('CE_config.json').then(function (result) {
+        vm.CEConfig = result;
+    });
+    webService.getData('narratives.json').then(function (result) {
+        AOI.narratives = result;
+    });
+
+    vm.congressActivate = function () {
+        vm.congressIsActive = true;
+        vm.senateIsActive = false;
+        vm.houseIsActive = false;
+        vm.congressMenu = "-";
+        vm.senateMenu = "+";
+        vm.houseMenu = "+";
+    };
+    vm.houseActivate = function () {
+        vm.congressIsActive = false;
+        vm.senateIsActive = false;
+        vm.houseIsActive = true;
+        vm.congressMenu = "+";
+        vm.senateMenu = "+";
+        vm.houseMenu = "-";
+    };
+    vm.senateActivate = function () {
+        vm.congressIsActive = false;
+        vm.senateIsActive = true;
+        vm.houseIsActive = false;
+        vm.congressMenu = "+";
+        vm.senateMenu = "-";
+        vm.houseMenu = "+";
+    };
+
+    vm.childMouseOut(vm.AOI.ID);
+
+    vm.paneon();
+
+}
+
+AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
+AOICtrl.prototype.childMouseOut = function (id) {
+    this.mout(id);
+};
+AOICtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function NaturalResourceCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "NaturalResourcesCtrl";
+    webService.getData('NRC_config.json').then(function (result) {
+        vm.NRCConfig = result;
+    });
+
+    vm.childPaneOn();
+}
+
+NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
+NaturalResourceCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function TransportationAndInfrastructureCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "TransportationAndInfrastructureCtrl";
+    webService.getData('TI_config.json').then(function (result) {
+        vm.TIConfig = result;
+    });
+
+
+    vm.childPaneOn();
+
+}
+TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
+TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function EnergyAndMineralsCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "EnergyAndMineralsCtrl";
+    webService.getData('EM_config.json').then(function (result) {
+        vm.EMConfig = result;
+    });
+
+
+    vm.childPaneOn();
+}
+
+EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
+EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+function EconCtrl(AOI, webService) {
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = false;
+    vm.name = "EconCtrl";
+    webService.getData('EC_config.json').then(function (result) {
+        vm.ECConfig = result;
+    });
+
+
+    vm.childPaneOn();
+
+}
+
+EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
+EconCtrl.prototype.childPaneOn = function () {
+    this.paneon();
+};
+
+
+function PrintCtrl($scope, AOI, $timeout, webService  ) {
+    //what is going on?
+    var vm = this;
+    vm.AOI = AOI;
+    vm.AOI.inPrintWindow = true;
+    vm.name = "PrintCtrl";
+    vm.congressIsActive = true;
+    vm.senateIsActive = true;
+    vm.houseIsActive = true;
+    vm.congressMenu = "-";
+    vm.senateMenu = "-";
+    vm.houseMenu = "-";
+    webService.getData('CE_config.json').then(function (result) {
+        vm.CEConfig = result;
+    });
+    webService.getData('EM_config.json').then(function (result) {
+        vm.EMConfig = result;
+    });
+    webService.getData('TI_config.json').then(function (result) {
+        vm.TIConfig = result;
+    });
+    webService.getData('NRC_config.json').then(function (result) {
+        vm.NRCConfig = result;
+    });
+    webService.getData('EC_config.json').then(function (result) {
+        vm.ECConfig = result;
+    });
+
+
+    //$scope.$on('$viewContentLoaded', function () {
+    //    // document is ready, place  code here
+    //    $timeout(function () {
+    //        vm.AOI.loadSmallMap(false);
+    //        vm.saveAsBinary();
+    //        $timeout(function () {
+    //            vm.updatePrint();
+    //        }, 3000);
+    //    }, 1500);
+    //
+    //
+    //});
+
+
+    vm.saveAsBinary = function () {
+
+        var svg = document.getElementById('container')
+            .children[0].innerHTML;
+        var canvas = document.createElement("canvas");
+        canvg(canvas, svg, {});
+
+        var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
+
+
+        $('#binaryImage').attr('src', img);
+
+
+    }
+
+}
+PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
+
+function SearchCtrl(AOI) {
+    var vm = this;
+
+    vm.childChecked(false);
+    AOI.toggleFull = false;
+    //vm.childOff();
+    AOI.inPrintWindow = false;
+
+    //vm.childSearchControlOn = true;
+
+    if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
+}
+
+SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
+//SearchCtrl.prototype.childOff = function () {
+//    this.off();
+//};
+SearchCtrl.prototype.childChecked = function (value) {
+    this.checked = value;
+    return this.checked;
+};
+SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
+    return this.drawOrSubmitCommand;
+};
+SearchCtrl.prototype.childStartSpin = function () {
+    this.startSpin();
+};
 
 angular.module('myApp.controllers', ["pageslide-directive"])
-
-
     .controller('ModalController', function ($scope, metaurl, close) {
-
         $scope.metadataurl = metaurl;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
-
-
     })
     .controller('submitModalController', function ($scope, close) {
-
         close(false, 6000);//close after 10 seconds anyway.
-
     })
 
-    .controller('printCtrl', ['AOI', '$scope', '$timeout', '$document', 'webService', function (AOI, $scope, $timeout, $document, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = true;
-        $scope.congressIsActive = true;
-        $scope.senateIsActive = true;
-        $scope.houseIsActive = true;
-        $scope.congressMenu = "-";
-        $scope.senateMenu = "-";
-        $scope.houseMenu = "-";
-        webService.getData('CE_config.json').then(function (result) {
-            $scope.CEConfig = result;
-        });
-        webService.getData('EM_config.json').then(function (result) {
-            $scope.EMConfig = result;
-        });
-        webService.getData('TI_config.json').then(function (result) {
-            $scope.TIConfig = result;
-        });
-        webService.getData('NRC_config.json').then(function (result) {
-            $scope.NRCConfig = result;
-        });
-        webService.getData('EC_config.json').then(function (result) {
-            $scope.ECConfig = result;
-        });
+    .controller('PrintCtrl', ['$scope','AOI', '$timeout','webService', PrintCtrl])
 
 
-        $scope.$on('$viewContentLoaded', function () {
-            // document is ready, place  code here
-            $timeout(function () {
-                AOI.loadSmallMap(false);
-                $scope.saveAsBinary();
-                $timeout(function () {
-                    $scope.updatePrint();
-                }, 3000);
-            }, 1500);
+    .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
+    .controller('SearchCtrl', ['AOI', SearchCtrl])
 
 
-        });
+    .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
 
 
-        $scope.saveAsBinary = function () {
+    .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
 
-            var svg = document.getElementById('container')
-                .children[0].innerHTML;
-            var canvas = document.createElement("canvas");
-            canvg(canvas, svg, {});
+    .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
 
-            var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
+    .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
 
 
-            $('#binaryImage').attr('src', img);
-
-
-        }
-
-    }])
-
-    .controller('AOICtrl', ['AOI', '$scope', 'webService', function (AOI, $scope, webService) {
-
-
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.congressIsActive = true;
-        $scope.senateIsActive = false;
-        $scope.houseIsActive = false;
-        $scope.congressMenu = "-";
-        $scope.senateMenu = "+";
-        $scope.houseMenu = "+";
-
-        webService.getData('CE_config.json').then(function (result) {
-            $scope.CEConfig = result;
-        });
-        webService.getData('narratives.json').then(function (result) {
-            AOI.narratives = result;
-        });
-
-        $scope.congressActivate = function () {
-            $scope.congressIsActive = true;
-            $scope.senateIsActive = false;
-            $scope.houseIsActive = false;
-            $scope.congressMenu = "-";
-            $scope.senateMenu = "+";
-            $scope.houseMenu = "+";
-        };
-        $scope.houseActivate = function () {
-            $scope.congressIsActive = false;
-            $scope.senateIsActive = false;
-            $scope.houseIsActive = true;
-            $scope.congressMenu = "+";
-            $scope.senateMenu = "+";
-            $scope.houseMenu = "-";
-        };
-        $scope.senateActivate = function () {
-            $scope.congressIsActive = false;
-            $scope.senateIsActive = true;
-            $scope.houseIsActive = false;
-            $scope.congressMenu = "+";
-            $scope.senateMenu = "-";
-            $scope.houseMenu = "+";
-        };
-
-        $scope.mout($scope.AOI.ID);
-
-        $scope.paneon();
-
-    }])
-    .controller('SearchCtrl', ['AOI', '$scope', function (AOI, $scope) {
-
-        document.getElementById("bigmap").style.width = '100%';
-        $scope.off();
-        map.invalidateSize();
-        AOI.inPrintWindow = false;
-
-        if ($scope.drawOrSubmitCommand === "Working") $scope.startSpin();
-        var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
-
-        searchControl = L.esri.Geocoding.geosearch({
-            expanded: true,
-            collapseAfterResult: false,
-            useMapBounds: true,
-            searchBounds: L.latLngBounds([[24, -84], [39, -74]]),
-            providers: [
-                arcgisOnline,
-
-                new L.esri.Geocoding.FeatureLayerProvider({
-                    url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
-                    searchFields: ['AOI_NAME'],
-                    label: 'Known Areas',
-                    bufferRadius: 5000,
-                    formatSuggestion: function (feature) {
-                        return feature.properties.AOI_NAME;
-                    }
-                })
-            ]
-        }).addTo(map);
-
-        searchControl.on('results', function (response) {
-
-        });
-
-
-    }])
-
-
-    .controller('EnergyAndMineralsCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "EnergyAndMineralsCtrl";
-        webService.getData('EM_config.json').then(function (result) {
-            $scope.EMConfig = result;
-        });
-
-
-        $scope.paneon();
-    }])
-
-    .controller('TransportationAndInfrastructureCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "TransportationAndInfrastructureCtrl";
-        webService.getData('TI_config.json').then(function (result) {
-            $scope.TIConfig = result;
-        });
-
-
-        $scope.paneon();
-
-    }])
-    .controller('NaturalResourcesCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "NaturalResourcesCtrl";
-        webService.getData('NRC_config.json').then(function (result) {
-            $scope.NRCConfig = result;
-        });
-
-        $scope.paneon();
-    }])
-
-    .controller('EconCtrl', ['$scope', 'AOI', 'webService', function ($scope, AOI, webService) {
-        $scope.AOI = AOI;
-        AOI.inPrintWindow = false;
-        $scope.name = "EconCtrl";
-        webService.getData('EC_config.json').then(function (result) {
-            $scope.ECConfig = result;
-        });
-
-
-        $scope.paneon();
-    }])
-
-    .controller('pageslideCtrl', ['$scope', 'AOI', 'ModalService', '$state', 'usSpinnerService', '$location', '$stateParams', '$q',
-        function ($scope, AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q) { //this one loads once on start up
-
-            $scope.AOI = AOI;
-            $scope.baseMapControlOn = false;
-
-
-            AOI.inPrintWindow = false;
-            var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
-                position: 'topleft',
-                collapsed: false
-            });
-
-
-            $scope.box = [];
-            var len = 2000;
-            for (var i = 0; i < len; i++) {
-                $scope.box.push({
-                    myid: i,
-                    isActive: false,
-                    level: 0,
-                    future: true
-                });
-            }
-            $scope.drawenabled = false;
-            $scope.drawlocked = false;
-            $scope.zoomlevel = map.getZoom();
-            $scope.drawOrSubmitCommand = "DRAW";
-
-            Highcharts.setOptions({
-                global: {
-                    useUTC: false
-
-                },
-                lang: {
-                    decimalPoint: '.',
-                    thousandsSep: ',',
-                    numericSymbols: ["k", "M", "B", "T", "P", "E"]
-                }
-            });
-
-            map.on('zoomend', function () {
-                $scope.zoomlevel = map.getZoom();
-
-
-                if ($scope.drawtoolOn) {
-                    $scope.drawenabled = $scope.zoomLevelGood();
-                    $scope.$apply();
-                }
-
-            });
-
-            $scope.zoomLevelGood = function () {
-                $scope.zoomlevel = map.getZoom();
-                if (($scope.zoomlevel <= 12) && ($scope.zoomlevel >= 10 )) {
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-
-
-            $scope.checked = true; // This will be binded using the ps-open attribute
-
-            $scope.drawOff = function () {
-                map.setMinZoom(1);
-                map.setMaxZoom(12);
-                map.dragging.enable(); // panning
-                map.touchZoom.enable(); // 2 finger zooms from touchscreens
-                map.doubleClickZoom.enable();
-                map.boxZoom.enable(); // shift mouse drag zooming.
-                //map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                map.dragging.enable();
-                searchControl.enable();
-                $scope.drawlocked = false;
-
-                map.pm.disableDraw('Poly');
-
-            };
-            $scope.drawOn = function () {
-                map.setMinZoom(map.getZoom()); //lock map view at current zoom level
-                map.setMaxZoom(map.getZoom());
-                map.dragging.disable(); //no panning
-                map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                map.doubleClickZoom.disable();
-                map.boxZoom.disable(); //no shift mouse drag zooming.
-                //map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                searchControl.disable()
-                $scope.drawlocked = true;
-                $scope.drawOrSubmitCommand = "Drawing";
-                if ($scope.polylayer)  map.removeLayer($scope.polylayer);
-                map.pm.enableDraw('Poly');
-            };
-
-            $scope.showSubmitModal = function () {
-
-                ModalService.showModal({
-                    templateUrl: "modalDraw.html",
-                    controller: "submitModalController"
-                }).then(function (modal) {
-                    modal.close.then(function (result) {
-                        $scope.customResult = "All good!";
-                    });
-                });
-
-            };
-
-            $scope.startSpin = function () {
-                usSpinnerService.spin('spinner-1');
-            };
-            $scope.stopSpin = function () {
-                usSpinnerService.stop('spinner-1');
-            };
-            var EMGPService = L.esri.GP.service({
-                url: AOI.config.ortEnergyGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var CEGPService = L.esri.GP.service({
-                url: AOI.config.ortCommonGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var TIGPService = L.esri.GP.service({
-                url: AOI.config.ortTranspoGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var NRCGPService = L.esri.GP.service({
-                url: AOI.config.ortNaturalGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-            var ECGPService = L.esri.GP.service({
-                url: AOI.config.ortEconGPService,
-                useCors: false,
-                async: true,
-                path: 'submitJob',
-                asyncInterval: 1
-            });
-
-            $scope.baseMapSwitch = function () {
-
-                if ($scope.baseMapControlOn) {
-                    map.removeControl(baseMapControl);
-                    $scope.baseMapControlOn = false;
-
-                } else {
-                    baseMapControl.addTo(map);
-                    $scope.baseMapControlOn = true;
-                }
-            };
-
-
-            var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-            var allPromises;
-            $scope.drawIt = function () {
-                //var EMGPdeferred, CEGPdeferred, TIGPdeferred, NRCGPdeferred, ECGPdeferred;
-
-
-                switch ($scope.drawOrSubmitCommand.substring(0, 4)) {
-
-                    case "DRAW":
-
-                        if ($scope.drawenabled) {
-                            if ($scope.drawlocked) {
-                                $scope.drawOff();
-                            } else {
-                                $scope.drawOn();
-                            }
-                        }
-                        break;
-                    case "Subm":
-                        var drawPromises = [];
-                        EMGPdeferred = null, CEGPdeferred = null, TIGPdeferred = null, NRCGPdeferred = null, ECGPdeferred = null;
-                        EMGPdeferred = $q.defer(), CEGPdeferred = $q.defer(), TIGPdeferred = $q.defer(), NRCGPdeferred = $q.defer(), ECGPdeferred = $q.defer();
-                        drawPromises = [EMGPdeferred.promise, CEGPdeferred.promise, TIGPdeferred.promise, NRCGPdeferred.promise, ECGPdeferred.promise];
-                        $scope.showSubmitModal();
-
-                        AOI.drawLayerShape = $scope.polylayer.toGeoJSON();
-
-                        $scope.drawOrSubmitCommand = "Working";
-                        var EMGPTask = EMGPService.createTask();
-                        var CEGPTask = CEGPService.createTask();
-                        var TIGPTask = TIGPService.createTask();
-                        var NRCGPTask = NRCGPService.createTask();
-                        var ECGPTask = ECGPService.createTask();
-
-                        EMGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                        EMGPTask.setOutputParam("Output_Report");
-                        CEGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                        CEGPTask.setOutputParam("Output_Report");
-                        TIGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                        TIGPTask.setOutputParam("Output_Report");
-                        NRCGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                        NRCGPTask.setOutputParam("Output_Report");
-                        ECGPTask.setParam("Report_Boundary", $scope.polylayer.toGeoJSON());
-                        ECGPTask.setOutputParam("Output_Report");
-
-                        $scope.startSpin();
-
-
-                        EMGPTask.run(function (error, EMgeojson, EMresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                $scope.$apply();
-                                EMGPdeferred.resolve();
-                            }
-                            else if (EMgeojson) {
-                                EMGPdeferred.resolve(EMgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['EM'] = EMgeojson.jobId;
-                            }
-                        });
-
-                        CEGPTask.run(function (error, CEgeojson, CEresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-
-                                $scope.$apply();
-                                CEGPdeferred.resolve();
-                            }
-                            else if (CEgeojson) {
-                                CEGPdeferred.resolve(CEgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['CE'] = CEgeojson.jobId;
-
-                            }
-
-                        });
-                        TIGPTask.run(function (error, TIgeojson, TIresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                TIGPdeferred.resolve();
-                                $scope.$apply();
-                            }
-                            else if (TIgeojson) {
-                                TIGPdeferred.resolve(TIgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['TI'] = TIgeojson.jobId;
-                            }
-
-                        });
-                        NRCGPTask.run(function (error, NRCgeojson, NRCresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                NRCGPdeferred.resolve();
-                                $scope.$apply();
-                            }
-                            else if (NRCgeojson) {
-                                NRCGPdeferred.resolve(NRCgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['NRC'] = NRCgeojson.jobId;
-                            }
-
-                        });
-                        ECGPTask.run(function (error, ECgeojson, ECresponse) {
-
-                            if (error) {
-                                $scope.drawOrSubmitCommand = "Error " + error;
-
-                                ECGPdeferred.resolve();
-
-                                $scope.$apply();
-                            }
-                            else if (ECgeojson) {
-                                ECGPdeferred.resolve(ECgeojson.Output_Report);
-
-                                AOI.drawAreaJobId['EC'] = ECgeojson.jobId;
-
-                            }
-
-                        });
-                        allPromises = $q.all(drawPromises);
-
-                        allPromises.then(function (results) {
-                            AOI.featureCollection = {
-                                fields: null,
-                                features: null
-                            };
-
-                            if (results[0] || results[1] || results[2] || results[3] || results[4]) {
-
-                                if (results[0]) AOI.featureCollection = {
-                                    fields: results[0].fields,
-                                    features: results[0].features
-                                };
-                                if (results[1]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[1].features);
-                                if (results[2])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[2].features);
-                                if (results[3]) AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[3].features);
-                                if (results[4])  AOI.featureCollection.features.push.apply(AOI.featureCollection.features, results[4].features);
-
-                                $scope.stopSpin();
-                                $scope.completeDraw();
-
-
-                            }
-
-                        }).catch(function (result) {
-
-                            $scope.stopSpin();
-                        }).finally(function () {
-
-
-                        });
-
-                        break;
-                    case "Work":
-                        $scope.showSubmitModal();
-                        break;
-                    case "Erro":
-                        $scope.drawOrSubmitCommand = "Submit";
-                        break;
-                    case "Comp":
-                        $scope.completeDraw();
-                        break;
-                }
-            };
-
-            $scope.cancelEVERYTHING = function () {
-                if (EMGPdeferred) {
-                    EMGPdeferred.reject("canceled");
-
-                    allPromises = null;
-                }
-                if (CEGPdeferred)CEGPdeferred.reject("canceled");
-                if (TIGPdeferred)TIGPdeferred.reject("canceled");
-                if (NRCGPdeferred) NRCGPdeferred.reject("canceled");
-                if (ECGPdeferred) ECGPdeferred.reject("canceled");
-
-
-            };
-
-            $scope.completeDraw = function () {
-                $scope.drawOff();
-                map.removeLayer($scope.polylayer);
-                map.removeControl(searchControl);
-                $scope.drawtoolOn = false;
-                $scope.drawOrSubmitCommand = "DRAW";
-                if ($scope.baseMapControlOn) {
-                    map.removeControl(baseMapControl);
-                    $scope.baseMapControlOn = false;
-                }
-                $state.go('CEview');
-                $scope.paneon();
-                document.getElementById("bigmap").style.width = '50%';
-                map.invalidateSize();
-                AOI.unloadData();
-                AOI.loadData(AOI.featureCollection.features[0].attributes.AOI_ID, "My Report");
-                AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
-            };
-
-            map.on('pm:create', function (e) {
-                $scope.polylayer = e.layer;
-                $scope.drawOrSubmitCommand = "Submit";
-                $scope.$apply();
-            });
-
-            $scope.toggle = function () { //toggles slider pane but does nothing about the AOI
-                $scope.checked = !$scope.checked;
-            };
-
-            $scope.t_menu_box = function (id, levl) {
-                $scope.box[id].level = levl;
-
-                $scope.box[id].isActive = !$scope.box[id].isActive;
-                for (i = 0; i < len; i++) {
-                    if ((i != id) && (levl <= $scope.box[i].level)) {
-                        $scope.box[i].isActive = false;
-                    }
-                }
-
-            };
-
-            $scope.startOver = function () {
-
-
-                AOI.reloadAbort();
-
-                $scope.cancelEVERYTHING();
-                $scope.drawOrSubmitCommand = "DRAW";
-                $scope.reset();
-            };
-            $scope.startMenu = function () {
-
-                $scope.reset();
-            };
-            $scope.reset = function () { //unloads AOI but leaves slider pane on
-
-
-                $scope.AOIoff();
-                $scope.paneon();
-                AOI.unloadData();
-                $scope.stopSpin();
-                if ($scope.baseMapControlOn) {
-                    map.removeControl(baseMapControl);
-                    $scope.baseMapControlOn = false;
-                }
-
-                for (i = 0; i < len; i++) {
-                    $scope.box[i].isActive = false;
-                }
-                if ($scope.polylayer)  map.removeLayer($scope.polylayer);
-
-                if ($scope.drawtoolOn) {
-                    $scope.drawOff();
-                    document.getElementById("bigmap").style.width = '50%';
-                    map.removeControl(searchControl);
-                    $scope.drawtoolOn = false;
-
-
-                    map.invalidateSize();
-                }
-                map.setView([33.51, -78.3], 6);
-            };
-
-            $scope.off = function () { //unloads AOI and turns off slider pane
-                $scope.AOIoff();
-                $scope.paneoff();
-                AOI.unloadData();
-
-
-                $scope.drawenabled = $scope.zoomLevelGood();
-
-                $scope.drawtoolOn = true;
-
-            };
-
-            $scope.on = function (AOI, AOI_id) {//turns on AOI and slider pane
-                $scope.AOIon();
-                $scope.paneon();
-            };
-
-            $scope.mover = function (AOI_id) {//turns on poly on mouse over in menu
-
-                if (!mouseLayer) {
-                    mouseLayer = L.esri.featureLayer({
-                        url: AOI.config.ortMapServer + AOI.config.ortLayerAOI,
-                        where: "AOI_ID =" + AOI_id + "",
-                        color: '#EB660C', weight: 1.5, fillOpacity: .3,
-                        simplifyFactor: 2.0,
-                    }).addTo(map);
-
-                }
-
-
-            };
-            $scope.mout = function (AOI_id) {//turns on poly on mouse over in menu
-
-                if (mouseLayer) {
-                    map.removeLayer(mouseLayer);
-                    mouseLayer = null;
-
-                }
-            };
-
-            $scope.AOIoff = function () {
-
-                toggle = false;
-            };
-
-            $scope.AOIon = function () {
-                $scope.checkifAOI = true;
-            };
-
-            $scope.paneoff = function () {
-                $scope.checked = false;
-                AOI.toggleFull = false;
-            };
-
-            $scope.paneon = function () {
-                $scope.checked = true;
-                document.getElementById("slide1").style.width = '50%';
-                AOI.toggleFull = false;
-            };
-
-            $scope.aoismenu = [];
-            $scope.aoistates = [];
-
-
-            var query = L.esri.query({
-                url: AOI.config.ortMapServer + AOI.config.ortLayerAOI
-
-            });
-
-            query.returnGeometry(false).where("KNOWN_AREA='Special Interest Areas'").run(function (error, featureCollection, response) {
-
-                var ba = 0;
-
-                for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-
-                    $scope.aoismenu[ba] = {
-                        AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
-                        COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                        REPORT_TYPE: featureCollection.features[i].properties.REPORT_TYPE,
-                        AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                        DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                        DESC_: featureCollection.features[i].properties.DESC_
-                    };
-                    ba++;
-
-                }
-
-                $scope.aoismenu.sort(function (a, b) {
-
-                    return a.AOI_NAME.localeCompare(b.AOI_NAME);
-                });
-            });
-
-
-            query.returnGeometry(false).where("KNOWN_AREA='Other Areas by State'").run(function (error, featureCollection, response) {
-                    var ba = 0;
-                    for (var i = 0, j = featureCollection.features.length; i < j; i++) {
-                        $scope.aoistates[ba] = {
-                            AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
-                            COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                            REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
-                            AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                            DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                            DESC_: featureCollection.features[i].properties.DESC_
-                        };
-                        ba++;
-                    }
-
-                    $scope.aoistates.sort(function (a, b) {
-                        return a.AOI_NAME.localeCompare(b.AOI_NAME);
-                    });
-
-                }
-            );
-
-
-            if ($location.search().AOI) {
-                AOI.Shared = true;
-                if ($location.search().AOI !== '-9999') {
-                    query.returnGeometry(false).where("AOI_ID=" + $location.search().AOI).run(function (error, featureCollection, response) {
-                            AOI.name = featureCollection.features[0].properties.AOI_NAME;
-                        }
-                    );
-                    AOI.loadData($location.search().AOI, AOI.name);
-
-
-                } else {
-                    AOI.drawAreaJobId['CE'] = $location.search().CE;
-                    AOI.drawAreaJobId['EM'] = $location.search().EM;
-                    AOI.drawAreaJobId['EC'] = $location.search().EC;
-                    AOI.drawAreaJobId['NRC'] = $location.search().NRC;
-                    AOI.drawAreaJobId['TI'] = $location.search().TI;
-                    AOI.name = "My Report";
-                    AOI.ID = -9999;
-
-                    var promise1 = $q.defer(), promise2 = $q.defer(), promise3 = $q.defer(), promise4 = $q.defer(), promise5 = $q.defer(), promise6 = $q.defer();
-                    var promises = [promise1.promise, promise2.promise, promise3.promise, promise4.promise, promise5.promise, promise6.promise];
-
-                    L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/inputs/Report_Boundary', {}, function (error, response) {
-                        if (error) {
-
-                        } else {
-
-                            AOI.drawLayerShape = {
-                                type: "Feature",
-                                geometry: {
-                                    type: "Polygon",
-                                    coordinates: response.value.features[0].geometry.rings,
-
-                                }
-
-                            };
-
-                            promise1.resolve();
-                        }
-                    });
-
-                    L.esri.get(AOI.config.ortCommonGPService + '/jobs/' + AOI.drawAreaJobId['CE'] + '/results/Output_Report', {}, function (error, response) {
-                        if (error) {
-
-                        } else {
-                            AOI.featureCollection = {fields: response.value.fields, features: response.value.features};
-                            promise2.resolve();
-                        }
-                        L.esri.get(AOI.config.ortEnergyGPService + '/jobs/' + AOI.drawAreaJobId['EM'] + '/results/Output_Report', {}, function (error, response) {
-                            if (error) {
-                                ;
-                            } else {
-                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                                promise3.resolve();
-                            }
-                        });
-                        L.esri.get(AOI.config.ortNaturalGPService + '/jobs/' + AOI.drawAreaJobId['NRC'] + '/results/Output_Report', {}, function (error, response) {
-                            if (error) {
-
-                            } else {
-                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                                promise4.resolve();
-                            }
-                        });
-                        L.esri.get(AOI.config.ortTranspoGPService + '/jobs/' + AOI.drawAreaJobId['TI'] + '/results/Output_Report', {}, function (error, response) {
-                            if (error) {
-
-                            } else {
-                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                                promise5.resolve();
-                            }
-                        });
-                        L.esri.get(AOI.config.ortEconGPService + '/jobs/' + AOI.drawAreaJobId['EC'] + '/results/Output_Report', {}, function (error, response) {
-                            if (error) {
-
-                            } else {
-                                AOI.featureCollection.features.push.apply(AOI.featureCollection.features, response.value.features);
-                                promise6.resolve();
-                            }
-                        });
-
-                    });
-                    $q.all(promises).then(function () {
-                        AOI.loadData(AOI.ID, AOI.name);
-                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
-                    });
-
-
-                }
-            }
-        }
-    ])
-;
+    .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
+        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', PageslideCtrl]);
 
 
 angular.element(document).ready(function () {
@@ -26737,12 +25793,8 @@ angular.module('myApp.directives', [])
         return function (scope, elm, attrs) {
             elm.text(version);
         };
-    }
-    ])
-
+    }])
     .directive("ngPrint", ['$state', printDirective])
-
-
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -26752,7 +25804,7 @@ angular.module('myApp.directives', [])
                 message: '=',
                 metadataUrl: '@',
                 vardata: '@',
-                alttext:'@'
+                alttext: '@'
             },
             template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{vardata}}<div ng-if="!vardata" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
@@ -26778,7 +25830,6 @@ angular.module('myApp.directives', [])
             }
         }
     })
-
     .directive('renewableEnergy', function () {
         return {
             restrict: 'E',
@@ -26789,210 +25840,234 @@ angular.module('myApp.directives', [])
             }
         }
     })
+    .directive('ortMap', [function () {
+        return {
+            restrict: 'E',
+            scope: {
+                drawEnabled: '=',
+                searchControlEnabled: '=',
+                mouseOver: '=',
+                mouseOut: '=',
+                polyLayerEnabled: '=',
+                resetMap: '=',
+                drawButtonText: '=',
+                drawIt: '=',
+                drawOn: '=',
+                drawOff: '=',
+                map: '='
+            },
+            replace: true,
+            templateUrl: 'partials/ortMap.html',
+            controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', function ($scope, $element, L, AOI, AOIConfig) {
+                function clearMouseLayer () {
+                    if (mouseLayer) {
+                        $scope.map.removeLayer(mouseLayer);
+                        mouseLayer = null;
+                    }
+                }
+
+                $scope.map = L.map('map', {
+                    zoomControl: false,
+                    maxZoom: 12
+                });
+                // create panes???
+                angular.forEach(AOIConfig.optionalLayers,function(value, key){
+                    $scope.map.createPane(key + 'Pane');
+                });
+                $scope.map.setView([33.51, -78.3], 6);
+                $scope.map.createPane('AOIfeature');
+
+                var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+                        maxZoom: 12
+                    }),
+                    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                        maxZoom: 12
+                    }),
+                    esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+                        maxZoom: 12
+                    }),
+                    esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
+                        maxZoom: 12
+                    });
+
+                esriOceans.addTo($scope.map);
+
+                var baseMaps = {
+                    "Grey": esriGrey,
+                    "Oceans": esriOceans,
+                    "Streets": esriStreets,
+                    "NatGeo World": esriNatGeo
+                };
+
+                var nauticalchart = L.esri.imageMapLayer({
+                    url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
+                    useCors: false,
+                    opacity: .5
+                });
+
+                var mapOverlay = {
+                    "Nautical Chart": nauticalchart
+                };
+
+                var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
+                    position: 'topleft',
+                    collapsed: false
+                });
+
+                var searchControl = L.esri.Geocoding.geosearch({
+                    expanded: true,
+                    collapseAfterResult: false,
+                    useMapBounds: true,
+                    searchBounds: L.latLngBounds([[24, -84], [39, -74]]),
+                    providers: [
+                        L.esri.Geocoding.arcgisOnlineProvider(),
+                        new L.esri.Geocoding.FeatureLayerProvider({
+                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                            searchFields: ['AOI_NAME'],
+                            label: 'Known Areas',
+                            bufferRadius: 5000,
+                            formatSuggestion: function (feature) {
+                                return feature.properties.AOI_NAME;
+                            }
+                        })
+                    ]
+                });
+
+                $scope.zoomLevel = $scope.map.getZoom();
+                $scope.basemapControlEnabled = false;
+
+                var polylayer;
+
+                $scope.map.on('pm:create', function (e) {
+                    polylayer = e.layer;
+                    AOI.drawLayerShape = polylayer.toGeoJSON();
+                    $scope.drawButtonText = "Submit";
+                    $scope.$apply();
+                });
+
+                $scope.drawAvailable = false;
+
+                $scope.drawOn = function () {
+                    $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                    $scope.map.setMaxZoom($scope.map.getZoom());
+                    $scope.map.dragging.disable(); //no panning
+                    $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                    $scope.map.doubleClickZoom.disable();
+                    $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                    //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                    if (searchControl) searchControl.disable();
+                    $scope.drawLocked = true;
+                    $scope.drawButtonText = "Drawing";
+                    $scope.polyLayerEnabled = false;
+                    $scope.map.pm.enableDraw('Poly');
+
+                    //$element.css('width', '100%');
+                    //$scope.map.invalidateSize();
+                };
+
+                $scope.drawOff = function () {
+                    $scope.map.setMinZoom(1);
+                    $scope.map.setMaxZoom(12);
+                    $scope.map.dragging.enable(); // panning
+                    $scope.map.touchZoom.enable(); // 2 finger zooms from touchscreens
+                    $scope.map.doubleClickZoom.enable();
+                    $scope.map.boxZoom.enable(); // shift mouse drag zooming.
+                    //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                    $scope.map.dragging.enable();
+                    if (searchControl) searchControl.enable();
+                    $scope.drawLocked = false;
+                    $scope.map.pm.disableDraw('Poly');
+                };
+
+                $scope.$watch('drawEnabled', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        if (newValue) {
+                            clearMouseLayer();
+                            searchControl.addTo($scope.map);
+                            $element.css('width', '100%');
+                            $element.find('#map').css('width', '100%');
+                            $scope.map.invalidateSize();
+                        } else {
+                            $scope.map.removeControl(searchControl);
+                            $element.css('width', '50%');
+                            $element.find('#map').css('width', '50%');
+                            $scope.map.invalidateSize();
+                            $scope.drawOff();
+                            if (polylayer) {
+                                $scope.map.fitBounds(polylayer.getBounds());
+                                $scope.map.removeLayer(polylayer);
+                            }
+                        }
+                    }
+                });
+
+
+                $scope.$watch('basemapControlEnabled', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        if (newValue) baseMapControl.addTo($scope.map);
+                        else $scope.map.removeControl(baseMapControl);
+                    }
+                });
+
+                $scope.removeLayer = function (layer) {
+                    $scope.map.removeLayer(layer);
+                };
+
+                $scope.map.on('zoomend', function (e) {
+                    if ($scope.drawEnabled) {
+                        var zoomlevel = $scope.map.getZoom();
+                        if ((zoomlevel <= 12) && (zoomlevel >= 10 ) && !$scope.drawAvailable) {
+                            $scope.drawAvailable = true;
+                            $scope.$apply();
+                        } else if ((zoomlevel > 12) && (zoomlevel < 10) && $scope.drawAvailable) {
+                            $scope.drawAvailable = false;
+                            $scope.$apply();
+                        }
+                    }
+                });
+
+                $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        if (newValue) searchControl.addTo($scope.map);
+                        else $scope.map.removeControl(searchControl);
+                    }
+                });
+
+                var mouseLayer;
+
+                $scope.mouseOver = function (AOI_id) {
+                    mouseLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                        where: "AOI_ID =" + AOI_id + "",
+                        color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                        simplifyFactor: 2.0
+                    }).addTo($scope.map);
+                };
+
+                $scope.mouseOut = function () {
+                    clearMouseLayer();
+                };
+
+                $scope.resetMap = function () {
+                    $scope.baseMapControlEnabled = false;
+                    $scope.searchControlEnabled = false;
+                    $scope.drawEnabled = false;
+                    $scope.polyLayerEnabled = false;
+                    $scope.map.setView([33.51, -78.3], 6);
+                    clearMouseLayer();
+                };
+            }]
+        }
+    }]);
 
 
 ;
 'use strict';
 
-
-var ortLayerOptional = [];
-
-
-ortLayerOptional[0] =
-{
-    num: '19',
-    displayName: 'Wind Resource Potential'
-};
-ortLayerOptional[1] =
-{
-    num: '18',
-    displayName: 'Active Renewable Energy Leases'
-};
-ortLayerOptional[2] =
-{
-    num: '22',
-    displayName: 'BOEM_Wind_Planning_Areas'
-};
-ortLayerOptional[3] =
-{
-    num: '23',
-    displayName: 'OceanDisposalSites'
-};
-ortLayerOptional[4] =
-{
-    num: '21',
-    displayName: 'Marine Minerals Leases',
-    layerName: 'Sand_n_GravelLeaseAreas'
-};
-ortLayerOptional[5] =
-{
-    num: null,
-    displayName: 'Sediment Resources'
-};
-ortLayerOptional[6] =
-{
-    num: '3',
-    displayName: 'Hydrokinetic Leases',
-    layerName: 'MarineHydrokineticProjects'
-};
-ortLayerOptional[7] =
-{
-    num: null,
-    displayName: 'Surficial Sediment Classification'
-};
-ortLayerOptional[8] =
-{
-    num: 20,
-    displayName: 'Wave Power',
-    layerName: 'Ocean Wave Resource Potential'
-};
-ortLayerOptional[9] =
-{
-    num: 32,
-    displayName: 'Tidal Power',
-    layerName: 'usa_mc_wm'
-};
-ortLayerOptional[10] =
-{
-    num: 31,
-    displayName: 'Current Power',
-    layerName: 'us_oc_ms'
-};
-ortLayerOptional[11] =
-{
-    num: 6,
-    displayName: 'Beach Nourishment',
-    layerName: 'SC_BeachProjects'
-};
-ortLayerOptional[12] =
-{
-    num: null,
-    displayName: 'Oil and Gas Planing Area'
-};
-ortLayerOptional[13] =
-{
-    num: null,
-    displayName: 'Oil and Gas Active Lease'
-};
-ortLayerOptional[14] =
-{
-    num: null,
-    displayName: 'Oil and Gas Wells'
-};
-ortLayerOptional[15] =
-{
-    num: null,
-    displayName: 'Oil and Gas Resource potential'
-};
-ortLayerOptional[16] =
-{
-    num: 1,
-    displayName: 'Coastal Energy Facilities'
-};
-
-
-ortLayerOptional[26] =
-{
-    num: 5,
-    displayName: 'bathymetric_Contours'
-};
-ortLayerOptional[27] =
-{
-    num: null,
-    displayName: 'smallmap'
-};
-ortLayerOptional[28] =
-{
-    num: null,
-    displayName: 'smallmapprint'
-};
-ortLayerOptional[29] =
-{
-    num: null,
-    displayName: 'Area of Polygon'
-};
-ortLayerOptional[30] =
-{
-    num: null,
-    displayName: 'FederalGeoRegulations'
-};
-ortLayerOptional[31] =
-{
-    num: null,
-    displayName: 'PoliticalBoundaries'
-};
-ortLayerOptional[32] =
-{
-    num: 53,
-    displayName: 'CoastalCounties'
-}
-ortLayerOptional[33] =
-{
-    num: null,
-    displayName: 'FederalAndStateWaters'
-}
-ortLayerOptional[34] =
-{
-    num: 34,
-    displayName: 'SubmarineCables'
-}
-ortLayerOptional[35] =
-{
-    num: 37,
-    displayName: 'DangerZones'
-}
-ortLayerOptional[36] =
-{
-    num: 0,
-    displayName: 'Places'
-}
-ortLayerOptional[37] =
-{
-    num: 9,
-    displayName: 'tribal Lands'
-}
-
-ortLayerOptional[38] =
-{
-    num: 42,
-    displayName: 'vessel count'
-}
-ortLayerOptional[39] =
-{
-    num: 33,
-    displayName: 'Principle Ports'
-}
-ortLayerOptional[40] =
-{
-    num: 49,
-    displayName: 'Nearby Protected Areas',
-    layerName: 'MPA_selected'
-
-}
-ortLayerOptional[41] =
-{
-    num: 43,
-    displayName: 'Artificial Reefs',
-    layerName: 'ArtificialReefs'
-
-}
-ortLayerOptional[42] =
-{
-    num: 50,
-    displayName: 'Soft Coral'
-}
-ortLayerOptional[43] =
-{
-    num: 51,
-    displayName: 'Stoney Coral'
-
-}
-ortLayerOptional[44] =
-{
-    num: 44,
-    displayName: 'Coastal Barrier'
-
-}
 var toggle = false;
 
 var mouseLayer, searchControl;
@@ -27069,66 +26144,9 @@ addLoadEvent(preloader);
 
 }(Highcharts));
 
-
 var marker;
-
-
-var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-        maxZoom: 12
-    }),
-    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-        maxZoom: 12
-    }),
-    esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-        maxZoom: 12
-    }),
-    esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
-        maxZoom: 12
-    })
-    ;
-
-
-var nauticalchart = L.esri.imageMapLayer({
-    url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-    useCors: false,
-    opacity:.5
-});
-
-
-var map = L.map('bigmap', {
-    zoomControl: false,
-    maxZoom: 12
-
-});
 var smallmap;
-var baseMaps = {
-    "Grey": esriGrey,
-    "Oceans": esriOceans,
-    "Streets": esriStreets,
-    "NatGeo World": esriNatGeo
-};
-var mapOverlay = {
-    "Nautical Chart": nauticalchart
-};
 
-var baselayer = esriOceans.addTo(map);
-
-
-//for (var i = 0; i < ortLayerOptional.length; i++) {
-//    map.createPane('optionalfeature' + i);
-//}
-//;
-
-ortLayerOptional.forEach(function (obj, index) {
-    map.createPane('optionalfeature' + index);
-});
-
-map.setView([33.51, -78.3], 6);
-map.createPane('AOIfeature');
 
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
@@ -27154,10 +26172,10 @@ $http.get("gis_config.json").then(function (result) {
             'ngAria'
 
         ])
-        .config(['$stateProvider', '$urlRouterProvider', 'AOIProvider', function ($stateProvider, $urlRouterProvider, AOIProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
 
-            AOIProvider.config({
+            AOIConfigProvider.set({
                 ortMapServer: result.data['ortMapServer'].data,
                 ortLayerData: result.data['ortLayerData'].data,
                 ortLayerAOI: result.data['ortLayerAOI'].data,
@@ -27165,45 +26183,70 @@ $http.get("gis_config.json").then(function (result) {
                 ortCommonGPService: result.data['ortCommonGPService'].data,
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,
-                ortEconGPService: result.data['ortEconGPService'].data
+                ortEconGPService: result.data['ortEconGPService'].data,
+                optionalLayers: {
+                    windrpLayer: result.data['optionalLayerPanes'].windrpLayer.num,
+                    windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
+                    windPlanningLayer: result.data['optionalLayerPanes'].windPlanningLayer.num,
+                    oceanDisposalSites: result.data['optionalLayerPanes'].oceanDisposalSites.num,
+                    marineMineralsLeases: result.data['optionalLayerPanes'].marineMineralsLeases.num,
+                    HydrokineticLeases: result.data['optionalLayerPanes'].HydrokineticLeases.num,
+                    wavePower: result.data['optionalLayerPanes'].wavePower.num,
+                    tidalPower: result.data['optionalLayerPanes'].tidalPower.num,
+                    currentPower: result.data['optionalLayerPanes'].currentPower.num,
+                    beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
+                    coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
+                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                    TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
+                    CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
+                    CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
+                    TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
+                    TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                    NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
+                    NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
+                    NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
+                    NRCBarrierLayer: result.data['optionalLayerPanes'].NRCBarrierLayer.num
+                }
             });
-
 
             $stateProvider
 
                 .state('otherwise', {
                     url: '/main',
-                    templateUrl: 'partials/splash.html',
+                    templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
 
                     templateUrl: 'partials/CommonElements.html',
-                    controller: 'AOICtrl'
+                    controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
                     url: '/AOI?AOIdetail',
                     templateUrl: 'partials/CommonElements.html',
-                    controller: 'AOICtrl'
+                    controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {
 
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
-                    controller: 'NaturalResourcesCtrl'
+                    controller: 'NaturalResourcesCtrl as NRCvm'
                 })
                 .state('TIview', {
 
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
-                    controller: 'TransportationAndInfrastructureCtrl'
+                    controller: 'TransportationAndInfrastructureCtrl as TIvm'
                 })
                 .state('EMview', {
 
                     templateUrl: 'partials/EnergyAndMinerals.html',
-                    controller: 'EnergyAndMineralsCtrl'
+                    controller: 'EnergyAndMineralsCtrl as EMvm'
                 })
                 .state('ECview', {
 
                     templateUrl: 'partials/EconomicsAndCommerce.html',
-                    controller: 'EconCtrl'
+                    controller: 'EconCtrl as ECvm'
                 })
                 .state('meta', {
 
@@ -27221,12 +26264,12 @@ $http.get("gis_config.json").then(function (result) {
                 .state('draw', {
                     url: '/draw',
                     templateUrl: 'partials/draw.html',
-                    controller: 'SearchCtrl'
+                    controller: 'SearchCtrl as Searchvm'
                 })
                 .state('print', {
 
                     templateUrl: 'partials/printPreview.html',
-                    controller: 'printCtrl'
+                    controller: 'PrintCtrl as Printvm'
                 })
             ;
         }])

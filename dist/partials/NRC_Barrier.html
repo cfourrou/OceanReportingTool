@@ -1,7 +1,5 @@
 <div class="infographic-box-small" tabindex="0">
     <div>
-
-
         <div class="infographicTitle">
             <div class="floatitleft w45">Coastal Barrier Resource Areas</div>
             <!-- iButton start-->
@@ -34,9 +32,9 @@
 
             </div>
             <!-- iButton end-->
-            <div class="inlinesliderbutton" ng-hide="AOI.toggleFull===true">
-                <div ng-class="AOI.NRCBarrierLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="AOI.toggleNRCBarrierLayer()" ng-include="'img/switch_off.svg'"></div>
+            <div class="inlinesliderbutton" ng-hide="NRCvm.AOI.toggleFull===true">
+                <div ng-class="NRCvm.AOI.NRCBarrierLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="NRCvm.AOI.toggleNRCBarrierLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
         </div>
 
@@ -49,8 +47,8 @@
                 </div>
                 <div>
                     <div class="floatitleft padbottom10 padLeft15 ">
-                        <div class="floatitleft" ng-hide="AOI.NRCBarrier[0].TOTAL_CNT>=1">0 &nbsp;</div>
-                        {{AOI.NRCBarrier[0].TOTAL_CNT}} Barrier Units within 8nm
+                        <div class="floatitleft" ng-hide="NRCvm.AOI.NRCBarrier[0].TOTAL_CNT>=1">0 &nbsp;</div>
+                        {{NRCvm.AOI.NRCBarrier[0].TOTAL_CNT}} Barrier Units within 8nm
 
                     </div>
 
