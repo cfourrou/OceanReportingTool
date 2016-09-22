@@ -1,7 +1,7 @@
 'use strict';
 
 function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                       myQueryService, AOIConfig) {
+                       myQueryService, AOIConfig, $rootScope) {
     //this one loads once on start up
     var vm = this;
 
@@ -12,10 +12,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     vm.AOI.inPrintWindow = false;
 
     vm.box = [];
-
-    for (var i = 0; i < 2000; i++) {
-        //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-        //different catagories of menu levels are given ranges of index numbers
+    var len = 2000;
+    for (var i = 0; i < len; i++) {
         vm.box.push({
             myid: i,
             isActive: false,
@@ -37,12 +35,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
-    if ($state.includes('draw')) {
-        //vm.checked = false; // This will be binded using the ps-open attribute
-        vm.paneoff();
-    } else {
-        vm.checked = true;
-    }
+    vm.checked = true;
 
     vm.showSubmitModal = function () {
         ModalService.showModal({
@@ -150,9 +143,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.resetMap();
 
-        angular.forEach(vm.box, function (myBox) {
-            myBox.isActive = false;
-        })
+        for (i = 0; i < len; i++) {
+            vm.box[i].isActive = false;
+        }
 
     };
 
@@ -249,6 +242,12 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
+
+    $rootScope.$on('$stateChangeSuccess', function (e, toState) {
+        if (toState.name === 'draw') {
+            vm.off();
+        }
+    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -377,9 +376,7 @@ function EconCtrl(AOI, webService) {
         vm.ECConfig = result;
     });
 
-
     vm.childPaneOn();
-
 }
 
 EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
@@ -388,7 +385,7 @@ EconCtrl.prototype.childPaneOn = function () {
 };
 
 
-function PrintCtrl($rootScope, AOI, $timeout, webService) {
+function PrintCtrl($rootScope, AOI, $timeout, webService  ) {
     //what is going on?
     var vm = this;
     vm.AOI = AOI;
@@ -415,61 +412,17 @@ function PrintCtrl($rootScope, AOI, $timeout, webService) {
     webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
-
-
-    $rootScope.$on('$viewContentLoaded', function () {
-        // document is ready, place  code here
-        $timeout(function () {
-            vm.AOI.loadSmallMap(false);
-            //vm.saveAsBinary();
-            //  $timeout(function () {
-            //vm.updatePrint();
-            //}, 3000);
-        }, 1500);
-
-
-    });
-
-
-    //vm.saveAsBinary = function () {
-    //
-    //    var svg = document.getElementById('container')
-    //        .children[0].innerHTML;
-    //    var canvas = document.createElement("canvas");
-    //    canvg(canvas, svg, {});
-    //
-    //    var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-    //
-    //
-    //    $('#binaryImage').attr('src', img);
-    //
-    //
-    //}
-
 }
+
 PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
 
 function SearchCtrl(AOI) {
     var vm = this;
-
-    vm.childChecked(false);
-    AOI.toggleFull = false;
-    //vm.childOff();
     AOI.inPrintWindow = false;
-
-    //vm.childSearchControlOn = true;
-
     if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
 }
 
 SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
-//SearchCtrl.prototype.childOff = function () {
-//    this.off();
-//};
-SearchCtrl.prototype.childChecked = function (value) {
-    this.checked = value;
-    return this.checked;
-};
 SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
     return this.drawOrSubmitCommand;
 };
@@ -488,25 +441,17 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope','AOI', '$timeout','webService', PrintCtrl])
 
 
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
-
-
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
-
-
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
-
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
-
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-
-
     .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', PageslideCtrl]);
+        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
 
 
 angular.element(document).ready(function () {

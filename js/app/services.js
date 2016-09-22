@@ -192,55 +192,55 @@ angular.module('myApp.services', [])
                 TIAnchorage: [],
                 map: {},
 
-                display: function (AOI_ID) {
-
-                    AOI.ID = parseInt(AOI_ID);
-                    if (AOI.ID === -9999) {
-                        AOI.layer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3,
-                            pane: 'AOIfeature'
-                        }).addTo(AOI.map);
-                        AOI.map.fitBounds(AOI.layer.getBounds(), {
-                            padding: [1, 1]
-                        });
-                    } else {
-                        AOI.layer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            color: '#EB660C', weight: 1.5, fillOpacity: .3,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            pane: 'AOIfeature'
-                        }).addTo(AOI.map);
-                    }
-
-                    AOI.layer.on("load", function (evt) {
-                        // create a new empty Leaflet bounds object
-
-                        var mbounds = L.latLngBounds([]);
-                        // loop through the features returned by the server
-
-                        AOI.layer.eachFeature(function (layer) {
-                            // get the bounds of an individual feature
-                            var layerBounds = layer.getBounds();
-                            // extend the bounds of the collection to fit the bounds of the new feature
-                            mbounds.extend(layerBounds);
-                        });
-
-                        try {
-                            AOI.map.fitBounds(mbounds);
-
-                            AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                display: function () {
+                    AOI.map.isLoaded.then(function () {
+                        if (AOI.ID === -9999) {
+                            AOI.layer = L.geoJson(AOI.drawLayerShape, {
+                                color: '#EB660C',
+                                weight: 1.5,
+                                fillOpacity: .3,
+                                pane: 'AOIfeature'
+                            }).addTo(AOI.map);
+                            AOI.map.fitBounds(AOI.layer.getBounds(), {
+                                padding: [1, 1]
+                            });
+                        } else {
+                            AOI.layer = L.esri.featureLayer({
+                                url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                                where: "AOI_ID =" + AOI.ID + "",
+                                pane: 'AOIfeature'
+                            }).addTo(AOI.map);
                         }
-                        catch (err) {
-                            //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                            //so for now we will zoom out on error and allow this event to fire again.
 
-                            AOI.map.setView([33.51, -78.3], 6); //it should try again.
-                        }
+                        AOI.layer.on("load", function (evt) {
+                            // create a new empty Leaflet bounds object
+
+                            var mbounds = L.latLngBounds([]);
+                            // loop through the features returned by the server
+
+                            AOI.layer.eachFeature(function (layer) {
+                                // get the bounds of an individual feature
+                                var layerBounds = layer.getBounds();
+                                // extend the bounds of the collection to fit the bounds of the new feature
+                                mbounds.extend(layerBounds);
+                            });
+
+                            try {
+                                AOI.map.fitBounds(mbounds);
+
+                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                            }
+                            catch (err) {
+                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                //so for now we will zoom out on error and allow this event to fire again.
+
+                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                            }
+                        });
+
+                        AOI.isVisible = true;
                     });
-
-                    AOI.isVisible = true;
 
                 },
                 hide: function () {
@@ -344,11 +344,8 @@ angular.module('myApp.services', [])
                         AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
                 },
-                loadData: function (AOI_ID, name) {
-                    AOI.display(AOI_ID);
-
-                    AOI.name = name;
-
+                loadData: function (id, name) {
+                    AOI.ID = id;
                     AOI.windrpLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windrpLayer,
                         pane: 'windrpLayerPane',
@@ -639,7 +636,10 @@ angular.module('myApp.services', [])
                             });
                             newarray.push(newobject);
                         });
+
                         AOI.massageData(newarray);
+                        AOI.display();
+                        AOI.name = name;
 
                     } else {
                         var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerData);
@@ -657,8 +657,12 @@ angular.module('myApp.services', [])
                             //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
                             AOI.massageData(newarray);
+                            AOI.display();
+                            //AOI.name = name;
+
                         });
                     }
+
                     AOI.isLoaded = true;
                 },
                 massageData: function (featureCollection) {
@@ -1167,9 +1171,7 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                    })
-
-
+                    }
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
@@ -1656,14 +1658,10 @@ angular.module('myApp.services', [])
                 },
                 toggleFull: false,
                 toggleFullSlider: function (pageID) {
-
-
                     AOI.toggleFull = !AOI.toggleFull;
                     AOI.doFullSlider(pageID);
                 },
                 doFullSlider: function (pageID) {
-
-
                     if (AOI.toggleFull) {
 
                         // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
@@ -1674,14 +1672,8 @@ angular.module('myApp.services', [])
                         document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'inline-block';
-                        })
-
-                        if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
-
-                            AOI.loadSmallMap(false);
-
+                        for (var i = 0; i < elems.length; i++) {
+                            elems[i].style.display = 'inline-block';
                         }
 
                     } else {
@@ -1690,9 +1682,9 @@ angular.module('myApp.services', [])
 
                         document.getElementById("slide1").style.width = '50%';
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'none';
-                        })
+                        for (var i = 0; i < elems.length; i++) {
+                            elems[i].style.display = 'none';
+                        }
 
                         document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                         // Code for IE9
@@ -1701,70 +1693,6 @@ angular.module('myApp.services', [])
 
                     }
 
-
-                },
-                loadSmallMap: function (useCanvas) {
-
-                    if (smallmap) {
-                        smallmap.remove();
-
-                    }
-                    if (AOI.inPrintWindow) smallmap = L.map('smallmap', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
-                    else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
-                    L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                        maxZoom: 12,
-                        useCors: true
-                    });
-
-                    var minicLayer;
-                    if (AOI.ID === -9999) {
-                        minicLayer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-
-                        }).addTo(smallmap);
-                        AOI.minibounds = minicLayer.getBounds();
-                        smallmap.fitBounds(AOI.minibounds);
-
-                    } else {
-                        minicLayer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-
-                        }).addTo(smallmap);
-
-
-                        minicLayer.on("load", function (evt) {
-                            var bounds = L.latLngBounds([]);
-                            minicLayer.eachFeature(function (layer) {
-                                var layerBounds = layer.getBounds();
-                                bounds.extend(layerBounds);
-                            });
-                            AOI.minibounds = bounds;
-                            smallmap.fitBounds(bounds);
-                            minicLayer.off('load');
-                        });
-                    }
-                    smallmap.invalidateSize();
-                    var test1 = false;
-                    if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage(smallmap, function (err, canvas) {
-                            var img = document.createElement('img');
-                            var dimensions = smallmap.getSize();
-                            img.width = dimensions.x;
-                            img.height = dimensions.y;
-                            img.src = canvas.toDataURL();
-                            document.getElementById('smallmap').innerHTML = '';
-                            document.getElementById('smallmap').appendChild(img);
-                        });
-                    }
 
                 },
                 loadStateChart: function () {
