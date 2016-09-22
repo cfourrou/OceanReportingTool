@@ -4,7 +4,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                        myQueryService, AOIConfig, $rootScope) {
     //this one loads once on start up
     var vm = this;
-
     vm.AOI = AOI;
 
     vm.baseMapControlOn = false;
@@ -88,7 +87,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                     vm.baseMapControlOn = false;
 
                     $state.go('CEview');
-                    vm.paneon();
+                    vm.paneOn();
                 });
 
                 break;
@@ -135,7 +134,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
 
         vm.AOIoff();
-        vm.paneon();
+        vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
 
@@ -156,7 +155,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.on = function (AOI, AOI_id) {//turns on AOI and slider pane
         vm.AOIon();
-        vm.paneon();
+        vm.paneOn();
     };
 
     vm.AOIoff = function () {
@@ -173,7 +172,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         AOI.toggleFull = false;
     };
 
-    vm.paneon = function () {
+    vm.paneOn = function () {
         vm.checked = true;
         //document.getElementById("slide1").style.width = '50%';
         AOI.toggleFull = false;
@@ -251,7 +250,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 // functions defined in directive but placed here so nested controllers could inherit.
 PageslideCtrl.prototype.mout = function (id) {
 };
-PageslideCtrl.prototype.paneon = function (id) {
+PageslideCtrl.prototype.paneOn = function (id) {
 };
 
 function AOICtrl(AOI, webService) {
@@ -300,7 +299,7 @@ function AOICtrl(AOI, webService) {
 
     vm.childMouseOut(vm.AOI.ID);
 
-    vm.paneon();
+    vm.paneOn();
 
 }
 
@@ -309,7 +308,7 @@ AOICtrl.prototype.childMouseOut = function (id) {
     this.mout(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function NaturalResourceCtrl(AOI, webService) {
@@ -326,7 +325,7 @@ function NaturalResourceCtrl(AOI, webService) {
 
 NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
 NaturalResourceCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function TransportationAndInfrastructureCtrl(AOI, webService) {
@@ -344,7 +343,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
 }
 TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
 TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function EnergyAndMineralsCtrl(AOI, webService) {
@@ -362,7 +361,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
 
 EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
 EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function EconCtrl(AOI, webService) {
@@ -379,7 +378,7 @@ function EconCtrl(AOI, webService) {
 
 EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
 EconCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 
@@ -435,13 +434,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             close(result, 500); // close, but give 500ms for to animate
         };
     })
-    .controller('submitModalController', function ($scope, close) {
+
+    .controller('submitModalController', function (close) {
         close(false, 6000);//close after 10 seconds anyway.
     })
 
     .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
-
-
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])

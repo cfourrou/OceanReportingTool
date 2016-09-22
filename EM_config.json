@@ -1,7 +1,7 @@
 [
   { "filename":"partials/EM_WindPlanningAreas.html", "priority":11 },
   { "filename":"partials/EM_WindResourcePotential.html", "priority":1},
-  { "filename":"partials/smallmap.html", "priority":2},
+  { "filename":"partials/smallMap.html", "priority":2},
   { "filename":"partials/EM_BeachNourishment.html", "priority":3},
   { "filename":"partials/EM_RenewableEnergyLeases.html", "priority":5},
   { "filename":"partials/EM_MarineMineralsLeases.html", "priority":12 },

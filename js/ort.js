@@ -25149,7 +25149,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                        myQueryService, AOIConfig, $rootScope) {
     //this one loads once on start up
     var vm = this;
-
     vm.AOI = AOI;
 
     vm.baseMapControlOn = false;
@@ -25233,7 +25232,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                     vm.baseMapControlOn = false;
 
                     $state.go('CEview');
-                    vm.paneon();
+                    vm.paneOn();
                 });
 
                 break;
@@ -25280,7 +25279,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
 
         vm.AOIoff();
-        vm.paneon();
+        vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
 
@@ -25301,7 +25300,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.on = function (AOI, AOI_id) {//turns on AOI and slider pane
         vm.AOIon();
-        vm.paneon();
+        vm.paneOn();
     };
 
     vm.AOIoff = function () {
@@ -25318,7 +25317,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         AOI.toggleFull = false;
     };
 
-    vm.paneon = function () {
+    vm.paneOn = function () {
         vm.checked = true;
         //document.getElementById("slide1").style.width = '50%';
         AOI.toggleFull = false;
@@ -25396,7 +25395,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 // functions defined in directive but placed here so nested controllers could inherit.
 PageslideCtrl.prototype.mout = function (id) {
 };
-PageslideCtrl.prototype.paneon = function (id) {
+PageslideCtrl.prototype.paneOn = function (id) {
 };
 
 function AOICtrl(AOI, webService) {
@@ -25445,7 +25444,7 @@ function AOICtrl(AOI, webService) {
 
     vm.childMouseOut(vm.AOI.ID);
 
-    vm.paneon();
+    vm.paneOn();
 
 }
 
@@ -25454,7 +25453,7 @@ AOICtrl.prototype.childMouseOut = function (id) {
     this.mout(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function NaturalResourceCtrl(AOI, webService) {
@@ -25471,7 +25470,7 @@ function NaturalResourceCtrl(AOI, webService) {
 
 NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
 NaturalResourceCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function TransportationAndInfrastructureCtrl(AOI, webService) {
@@ -25489,7 +25488,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
 }
 TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
 TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function EnergyAndMineralsCtrl(AOI, webService) {
@@ -25507,7 +25506,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
 
 EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
 EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function EconCtrl(AOI, webService) {
@@ -25524,7 +25523,7 @@ function EconCtrl(AOI, webService) {
 
 EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
 EconCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 
@@ -25580,13 +25579,12 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             close(result, 500); // close, but give 500ms for to animate
         };
     })
-    .controller('submitModalController', function ($scope, close) {
+
+    .controller('submitModalController', function (close) {
         close(false, 6000);//close after 10 seconds anyway.
     })
 
     .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
-
-
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
@@ -25656,10 +25654,10 @@ angular.module('myApp.directives', [])
                 modalImg: '@',
                 message: '=',
                 metadataUrl: '@',
-                vardata: '@',
+                varData: '@',
                 alttext: '@'
             },
-            template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{vardata}}<div ng-if="!vardata" ng-include="" src="modalImg" ></div></a>',
+            template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{varData}}<div ng-if="!varData" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {
@@ -25668,7 +25666,7 @@ angular.module('myApp.directives', [])
                         controller: "ModalController",
                         inputs: {
                             metaurl: $scope.metadataUrl,
-                            myvarData: $scope.vardata
+                            myvarData: $scope.varData
 
                         }
 
@@ -25680,16 +25678,6 @@ angular.module('myApp.directives', [])
                     });
                 };
 
-            }
-        }
-    })
-    .directive('renewableEnergy', function () {
-        return {
-            restrict: 'E',
-            scope: true,
-            templateUrl: 'partials/EM_RenewableEnergyLeases.html',
-            controller: function ($scope, AOI) {
-                $scope.AOI = AOI;
             }
         }
     })
@@ -25763,14 +25751,14 @@ angular.module('myApp.directives', [])
                         "NatGeo World": esriNatGeo
                     };
 
-                    var nauticalchart = L.esri.imageMapLayer({
+                    var nauticalChart = L.esri.imageMapLayer({
                         url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
                         useCors: false,
                         opacity: .5
                     });
 
                     var mapOverlay = {
-                        "Nautical Chart": nauticalchart
+                        "Nautical Chart": nauticalChart
                     };
 
                     var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
@@ -25800,11 +25788,11 @@ angular.module('myApp.directives', [])
                     $scope.zoomLevel = $scope.map.getZoom();
                     $scope.basemapControlEnabled = false;
 
-                    var polylayer;
+                    var polyLayer;
 
                     $scope.map.on('pm:create', function (e) {
-                        polylayer = e.layer;
-                        AOI.drawLayerShape = polylayer.toGeoJSON();
+                        polyLayer = e.layer;
+                        AOI.drawLayerShape = polyLayer.toGeoJSON();
                         $scope.drawButtonText = "Submit";
                         $scope.$apply();
                     });
@@ -25857,9 +25845,9 @@ angular.module('myApp.directives', [])
                                 $element.find('#map').css('width', '50%');
                                 $scope.map.invalidateSize();
                                 $scope.drawOff();
-                                if (polylayer) {
-                                    $scope.map.fitBounds(polylayer.getBounds());
-                                    $scope.map.removeLayer(polylayer);
+                                if (polyLayer) {
+                                    $scope.map.fitBounds(polyLayer.getBounds());
+                                    $scope.map.removeLayer(polyLayer);
                                 }
                             }
                         }
@@ -25879,11 +25867,11 @@ angular.module('myApp.directives', [])
 
                     $scope.map.on('zoomend', function (e) {
                         if ($scope.drawEnabled) {
-                            var zoomlevel = $scope.map.getZoom();
-                            if ((zoomlevel <= 12) && (zoomlevel >= 10 ) && !$scope.drawAvailable) {
+                            var zoomLevel = $scope.map.getZoom();
+                            if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
                                 $scope.drawAvailable = true;
                                 $scope.$apply();
-                            } else if ((zoomlevel > 12) && (zoomlevel < 10) && $scope.drawAvailable) {
+                            } else if ((zoomLevel > 12) && (zoomLevel < 10) && $scope.drawAvailable) {
                                 $scope.drawAvailable = false;
                                 $scope.$apply();
                             }
@@ -25933,11 +25921,11 @@ angular.module('myApp.directives', [])
                 templateUrl: 'partials/smallOrtMap.html',
                 controller: ['$scope', 'L', 'AOI', 'AOIConfig', function ($scope, L, AOI, AOIConfig) {
                     $scope.AOI = AOI;
-                    if ($scope.AOI.smallmap) $scope.AOI.smallmap.remove();
-                    $scope.AOI.smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
-                    //else $scope.AOI.smallmap = L.map('$scope.AOI.smallmap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallmap);
-                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallmap);
+                    if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
+                    $scope.AOI.smallMap = L.map('smallMap').setView([45.526, -122.667], 1);
+                    //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
+                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
+                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
                     var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
                         attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
                         maxZoom: 12,
@@ -25950,9 +25938,9 @@ angular.module('myApp.directives', [])
                             color: '#EB660C',
                             weight: 1.5,
                             fillOpacity: .3
-                        }).addTo($scope.AOI.smallmap);
+                        }).addTo($scope.AOI.smallMap);
                         var minibounds = minicLayer.getBounds();
-                        $scope.AOI.smallmap.fitBounds(minibounds);
+                        $scope.AOI.smallMap.fitBounds(minibounds);
 
                     } else {
                         minicLayer = L.esri.featureLayer({
@@ -25961,7 +25949,7 @@ angular.module('myApp.directives', [])
                             color: '#EB660C',
                             weight: 1.5,
                             fillOpacity: .3
-                        }).addTo($scope.AOI.smallmap);
+                        }).addTo($scope.AOI.smallMap);
 
 
                         minicLayer.on("load", function (evt) {
@@ -25971,16 +25959,16 @@ angular.module('myApp.directives', [])
                                 bounds.extend(layerBounds);
                             });
                             //AOI.minibounds = bounds;
-                            $scope.AOI.smallmap.fitBounds(bounds);
+                            $scope.AOI.smallMap.fitBounds(bounds);
                             minicLayer.off('load');
                         });
                     }
-                    $scope.AOI.smallmap.invalidateSize();
+                    $scope.AOI.smallMap.invalidateSize();
                     var test1 = false;
                     if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage($scope.AOI.smallmap, function (err, canvas) {
+                        leafletImage($scope.AOI.smallMap, function (err, canvas) {
                             var img = document.createElement('img');
-                            var dimensions = $scope.AOI.smallmap.getSize();
+                            var dimensions = $scope.AOI.smallMap.getSize();
                             img.width = dimensions.x;
                             img.height = dimensions.y;
                             img.src = canvas.toDataURL();
@@ -26074,7 +26062,7 @@ addLoadEvent(preloader);
 }(Highcharts));
 
 var marker;
-var smallmap;
+var smallMap;
 
 
 var initInjector = angular.injector(["ng"]);

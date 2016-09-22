@@ -23291,55 +23291,55 @@ angular.module('myApp.services', [])
                 TIAnchorage: [],
                 map: {},
 
-                display: function (AOI_ID) {
-
-                    AOI.ID = parseInt(AOI_ID);
-                    if (AOI.ID === -9999) {
-                        AOI.layer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3,
-                            pane: 'AOIfeature'
-                        }).addTo(AOI.map);
-                        AOI.map.fitBounds(AOI.layer.getBounds(), {
-                            padding: [1, 1]
-                        });
-                    } else {
-                        AOI.layer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            color: '#EB660C', weight: 1.5, fillOpacity: .3,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            pane: 'AOIfeature'
-                        }).addTo(AOI.map);
-                    }
-
-                    AOI.layer.on("load", function (evt) {
-                        // create a new empty Leaflet bounds object
-
-                        var mbounds = L.latLngBounds([]);
-                        // loop through the features returned by the server
-
-                        AOI.layer.eachFeature(function (layer) {
-                            // get the bounds of an individual feature
-                            var layerBounds = layer.getBounds();
-                            // extend the bounds of the collection to fit the bounds of the new feature
-                            mbounds.extend(layerBounds);
-                        });
-
-                        try {
-                            AOI.map.fitBounds(mbounds);
-
-                            AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                display: function () {
+                    AOI.map.isLoaded.then(function () {
+                        if (AOI.ID === -9999) {
+                            AOI.layer = L.geoJson(AOI.drawLayerShape, {
+                                color: '#EB660C',
+                                weight: 1.5,
+                                fillOpacity: .3,
+                                pane: 'AOIfeature'
+                            }).addTo(AOI.map);
+                            AOI.map.fitBounds(AOI.layer.getBounds(), {
+                                padding: [1, 1]
+                            });
+                        } else {
+                            AOI.layer = L.esri.featureLayer({
+                                url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                                where: "AOI_ID =" + AOI.ID + "",
+                                pane: 'AOIfeature'
+                            }).addTo(AOI.map);
                         }
-                        catch (err) {
-                            //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                            //so for now we will zoom out on error and allow this event to fire again.
 
-                            AOI.map.setView([33.51, -78.3], 6); //it should try again.
-                        }
+                        AOI.layer.on("load", function (evt) {
+                            // create a new empty Leaflet bounds object
+
+                            var mbounds = L.latLngBounds([]);
+                            // loop through the features returned by the server
+
+                            AOI.layer.eachFeature(function (layer) {
+                                // get the bounds of an individual feature
+                                var layerBounds = layer.getBounds();
+                                // extend the bounds of the collection to fit the bounds of the new feature
+                                mbounds.extend(layerBounds);
+                            });
+
+                            try {
+                                AOI.map.fitBounds(mbounds);
+
+                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                            }
+                            catch (err) {
+                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                //so for now we will zoom out on error and allow this event to fire again.
+
+                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                            }
+                        });
+
+                        AOI.isVisible = true;
                     });
-
-                    AOI.isVisible = true;
 
                 },
                 hide: function () {
@@ -23443,11 +23443,8 @@ angular.module('myApp.services', [])
                         AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
                 },
-                loadData: function (AOI_ID, name) {
-                    AOI.display(AOI_ID);
-
-                    AOI.name = name;
-
+                loadData: function (id, name) {
+                    AOI.ID = id;
                     AOI.windrpLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windrpLayer,
                         pane: 'windrpLayerPane',
@@ -23738,7 +23735,10 @@ angular.module('myApp.services', [])
                             });
                             newarray.push(newobject);
                         });
+
                         AOI.massageData(newarray);
+                        AOI.display();
+                        AOI.name = name;
 
                     } else {
                         var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerData);
@@ -23756,8 +23756,12 @@ angular.module('myApp.services', [])
                             //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
                             AOI.massageData(newarray);
+                            AOI.display();
+                            //AOI.name = name;
+
                         });
                     }
+
                     AOI.isLoaded = true;
                 },
                 massageData: function (featureCollection) {
@@ -24236,26 +24240,25 @@ angular.module('myApp.services', [])
                     var y = 35;
                     var x = 35;
                     var chartrow = 1;
+                    angular.forEach(AOI.ECEcon, function (myECEcon, index) {
 
-                    for (i = 0; i < AOI.ECEcon.length; i++) {
-
-                        if (i && (i % 3 === 0)) {
+                        if (index && (index % 3 === 0)) {
                             y += 120;
                             x = 35;
                             chartrow++;
-                        } else if (i) x += 135;
+                        } else if (index) x += 135;
 
-                        AOI.OceanJobContributionsSeries[i] = {
+                        AOI.OceanJobContributionsSeries[index] = {
                             center: [x, y],
-                            "name": AOI.ECEcon[i].Name,
-                            "showInLegend": (i === 0 ? true : false),
+                            "name": myECEcon.Name,
+                            "showInLegend": (index === 0 ? true : false),
                             "data": [
-                                ["Marine Construction", AOI.ECEcon[i].GDP_MarineConstruction],
-                                ["Living Resources", AOI.ECEcon[i].GDP_LivingResources],
-                                ["Marine Transportation", AOI.ECEcon[i].GDP_MarineTransp],
-                                ["Offshore Mineral Extraction", AOI.ECEcon[i].GDP_OffshoreMineralExt],
-                                ["Ship and Boat Building", AOI.ECEcon[i].GDP_ShipAndBoatBuilding],
-                                ["Tourism and Recreation", AOI.ECEcon[i].GDP_TourismAndRec]
+                                ["Marine Construction", myECEcon.GDP_MarineConstruction],
+                                ["Living Resources", myECEcon.GDP_LivingResources],
+                                ["Marine Transportation", myECEcon.GDP_MarineTransp],
+                                ["Offshore Mineral Extraction", myECEcon.GDP_OffshoreMineralExt],
+                                ["Ship and Boat Building", myECEcon.GDP_ShipAndBoatBuilding],
+                                ["Tourism and Recreation", myECEcon.GDP_TourismAndRec]
                             ],
                             title: {
 
@@ -24267,7 +24270,8 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                    }
+                    })
+
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
@@ -24754,14 +24758,10 @@ angular.module('myApp.services', [])
                 },
                 toggleFull: false,
                 toggleFullSlider: function (pageID) {
-
-
                     AOI.toggleFull = !AOI.toggleFull;
                     AOI.doFullSlider(pageID);
                 },
                 doFullSlider: function (pageID) {
-
-
                     if (AOI.toggleFull) {
 
                         // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
@@ -24772,17 +24772,9 @@ angular.module('myApp.services', [])
                         document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'inline-block';
-                        }
-
-
-                        if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
-
-
-                            AOI.loadSmallMap(false);
-
-                        }
+                        angular.forEach(elems, function (myElement) {
+                            myElement.style.display = 'inline-block';
+                        })
 
                     } else {
 
@@ -24790,9 +24782,9 @@ angular.module('myApp.services', [])
 
                         document.getElementById("slide1").style.width = '50%';
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'none';
-                        }
+                        angular.forEach(elems, function (myElement) {
+                            myElement.style.display = 'none';
+                        })
 
                         document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                         // Code for IE9
@@ -24801,70 +24793,6 @@ angular.module('myApp.services', [])
 
                     }
 
-
-                },
-                loadSmallMap: function (useCanvas) {
-
-                    if (smallmap) {
-                        smallmap.remove();
-
-                    }
-                    if (AOI.inPrintWindow) smallmap = L.map('map3', {preferCanvas: useCanvas}).setView([45.526, -122.667], 1);
-                    else smallmap = L.map('smallmap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans', {useCors: true}).addTo(smallmap);
-                    L.esri.basemapLayer('OceansLabels').addTo(smallmap);
-                    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                        maxZoom: 12,
-                        useCors: true
-                    });
-
-                    var minicLayer;
-                    if (AOI.ID === -9999) {
-                        minicLayer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-
-                        }).addTo(smallmap);
-                        AOI.minibounds = minicLayer.getBounds();
-                        smallmap.fitBounds(AOI.minibounds);
-
-                    } else {
-                        minicLayer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-
-                        }).addTo(smallmap);
-
-
-                        minicLayer.on("load", function (evt) {
-                            var bounds = L.latLngBounds([]);
-                            minicLayer.eachFeature(function (layer) {
-                                var layerBounds = layer.getBounds();
-                                bounds.extend(layerBounds);
-                            });
-                            AOI.minibounds = bounds;
-                            smallmap.fitBounds(bounds);
-                            minicLayer.off('load');
-                        });
-                    }
-                    smallmap.invalidateSize();
-                    var test1 = false;
-                    if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage(smallmap, function (err, canvas) {
-                            var img = document.createElement('img');
-                            var dimensions = smallmap.getSize();
-                            img.width = dimensions.x;
-                            img.height = dimensions.y;
-                            img.src = canvas.toDataURL();
-                            document.getElementById('map3').innerHTML = '';
-                            document.getElementById('map3').appendChild(img);
-                        });
-                    }
 
                 },
                 loadStateChart: function () {
@@ -25116,7 +25044,7 @@ angular.module('myApp.services', [])
                             chart: {
                                 spacing: 0,
                                 margin: 0,
-                                type: 'column'
+                                type: 'column',
                             },
                             title: {
                                 text: null
@@ -25218,10 +25146,9 @@ angular.module('myApp.services', [])
 'use strict';
 
 function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                       myQueryService, AOIConfig) {
+                       myQueryService, AOIConfig, $rootScope) {
     //this one loads once on start up
     var vm = this;
-
     vm.AOI = AOI;
 
     vm.baseMapControlOn = false;
@@ -25229,8 +25156,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     vm.AOI.inPrintWindow = false;
 
     vm.box = [];
-    var len = 2000;
-    for (var i = 0; i < len; i++) {
+    //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
+    //different catagories of menu levels are given ranges of index numbers
+
+    for (var i = 0; i < 2000; i++) {
         vm.box.push({
             myid: i,
             isActive: false,
@@ -25252,12 +25181,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
-    if ($state.includes('draw')) {
-        //vm.checked = false; // This will be binded using the ps-open attribute
-        vm.paneoff();
-    } else {
-        vm.checked = true;
-    }
+    vm.checked = true;
 
     vm.showSubmitModal = function () {
         ModalService.showModal({
@@ -25308,7 +25232,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                     vm.baseMapControlOn = false;
 
                     $state.go('CEview');
-                    vm.paneon();
+                    vm.paneOn();
                 });
 
                 break;
@@ -25328,16 +25252,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.checked = !vm.checked;
     };
 
-    vm.t_menu_box = function (id, levl) {
-        vm.box[id].level = levl;
 
+    vm.tMenuBox = function (id, menuIndentLevel) {
+        vm.box[id].level = menuIndentLevel;
         vm.box[id].isActive = !vm.box[id].isActive;
-        for (i = 0; i < len; i++) {
-            if ((i != id) && (levl <= vm.box[i].level)) {
-                vm.box[i].isActive = false;
+        angular.forEach(vm.box, function (myBox, index) {
+            if ((index != id) && (menuIndentLevel <= myBox.level)) {
+                myBox.isActive = false;
             }
-        }
-
+        })
     };
 
     vm.startOver = function () {
@@ -25356,15 +25279,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
 
         vm.AOIoff();
-        vm.paneon();
+        vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
 
         vm.resetMap();
 
-        for (i = 0; i < len; i++) {
-            vm.box[i].isActive = false;
-        }
+        angular.forEach(vm.box, function (myBox) {
+            myBox.isActive = false;
+        })
 
     };
 
@@ -25377,7 +25300,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.on = function (AOI, AOI_id) {//turns on AOI and slider pane
         vm.AOIon();
-        vm.paneon();
+        vm.paneOn();
     };
 
     vm.AOIoff = function () {
@@ -25394,7 +25317,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         AOI.toggleFull = false;
     };
 
-    vm.paneon = function () {
+    vm.paneOn = function () {
         vm.checked = true;
         //document.getElementById("slide1").style.width = '50%';
         AOI.toggleFull = false;
@@ -25461,12 +25384,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
+
+    $rootScope.$on('$stateChangeSuccess', function (e, toState) {
+        if (toState.name === 'draw') {
+            vm.off();
+        }
+    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
 PageslideCtrl.prototype.mout = function (id) {
 };
-PageslideCtrl.prototype.paneon = function (id) {
+PageslideCtrl.prototype.paneOn = function (id) {
 };
 
 function AOICtrl(AOI, webService) {
@@ -25515,7 +25444,7 @@ function AOICtrl(AOI, webService) {
 
     vm.childMouseOut(vm.AOI.ID);
 
-    vm.paneon();
+    vm.paneOn();
 
 }
 
@@ -25524,7 +25453,7 @@ AOICtrl.prototype.childMouseOut = function (id) {
     this.mout(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function NaturalResourceCtrl(AOI, webService) {
@@ -25541,7 +25470,7 @@ function NaturalResourceCtrl(AOI, webService) {
 
 NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
 NaturalResourceCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function TransportationAndInfrastructureCtrl(AOI, webService) {
@@ -25559,7 +25488,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
 }
 TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
 TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function EnergyAndMineralsCtrl(AOI, webService) {
@@ -25577,7 +25506,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
 
 EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
 EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 function EconCtrl(AOI, webService) {
@@ -25589,18 +25518,16 @@ function EconCtrl(AOI, webService) {
         vm.ECConfig = result;
     });
 
-
     vm.childPaneOn();
-
 }
 
 EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
 EconCtrl.prototype.childPaneOn = function () {
-    this.paneon();
+    this.paneOn();
 };
 
 
-function PrintCtrl($scope, AOI, $timeout, webService  ) {
+function PrintCtrl($rootScope, AOI, $timeout, webService) {
     //what is going on?
     var vm = this;
     vm.AOI = AOI;
@@ -25627,61 +25554,17 @@ function PrintCtrl($scope, AOI, $timeout, webService  ) {
     webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
-
-
-    //$scope.$on('$viewContentLoaded', function () {
-    //    // document is ready, place  code here
-    //    $timeout(function () {
-    //        vm.AOI.loadSmallMap(false);
-    //        vm.saveAsBinary();
-    //        $timeout(function () {
-    //            vm.updatePrint();
-    //        }, 3000);
-    //    }, 1500);
-    //
-    //
-    //});
-
-
-    vm.saveAsBinary = function () {
-
-        var svg = document.getElementById('container')
-            .children[0].innerHTML;
-        var canvas = document.createElement("canvas");
-        canvg(canvas, svg, {});
-
-        var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-
-
-        $('#binaryImage').attr('src', img);
-
-
-    }
-
 }
+
 PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
 
 function SearchCtrl(AOI) {
     var vm = this;
-
-    vm.childChecked(false);
-    AOI.toggleFull = false;
-    //vm.childOff();
     AOI.inPrintWindow = false;
-
-    //vm.childSearchControlOn = true;
-
     if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
 }
 
 SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
-//SearchCtrl.prototype.childOff = function () {
-//    this.off();
-//};
-SearchCtrl.prototype.childChecked = function (value) {
-    this.checked = value;
-    return this.checked;
-};
 SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
     return this.drawOrSubmitCommand;
 };
@@ -25696,29 +25579,20 @@ angular.module('myApp.controllers', ["pageslide-directive"])
             close(result, 500); // close, but give 500ms for to animate
         };
     })
-    .controller('submitModalController', function ($scope, close) {
+
+    .controller('submitModalController', function (close) {
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('PrintCtrl', ['$scope','AOI', '$timeout','webService', PrintCtrl])
-
-
+    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
-
-
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
-
-
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
-
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
-
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-
-
     .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', PageslideCtrl]);
+        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
 
 
 angular.element(document).ready(function () {
@@ -25747,38 +25621,16 @@ angular.module('myApp.filters', [])
 /* Directives */
 
 
-function printDirective($state) {
-    var printSection = document.getElementById("printSection");
-
-    function printElement(elem) {
-        var domClone = elem.cloneNode(true);
-        if (!printSection) {
-            printSection = document.createElement("div");
-            printSection.id = "printSection";
-            document.body.appendChild(printSection);
-        } else {
-            printSection.innerHTML = "";
-        }
-        printSection.appendChild(domClone);
-    }
-
-    function link($scope, element, attrs) {
-        element.on("click", function () {
-            var elemToPrint = document.getElementById(attrs.printElementId);
-            if (elemToPrint) {
-                printElement(elemToPrint);
-                window.print();
-                $state.go('CEview');
-            }
-        });
-        $scope.updatePrint = function () {
-            var elemToPrint = document.getElementById(attrs.printElementId);
-            if (elemToPrint) {
-                printElement(elemToPrint);
-                window.print();
-                $state.go('CEview');
-            }
-        }
+function printDirective($state,$timeout) {
+    function link(scope, element, attrs) {
+        $timeout(function () {
+            var printElement = element[0].cloneNode(true);
+            printElement.id = 'printSection';
+            document.body.appendChild(printElement);
+            window.print();
+            printElement.innerHTML = "";
+            $state.go('CEview');
+        },5300)
     }
 
     return {
@@ -25787,14 +25639,13 @@ function printDirective($state) {
     };
 }
 
-
 angular.module('myApp.directives', [])
     .directive('appVersion', ['version', function (version) {
         return function (scope, elm, attrs) {
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$state', printDirective])
+    .directive("ngPrint", ['$state','$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -25803,10 +25654,10 @@ angular.module('myApp.directives', [])
                 modalImg: '@',
                 message: '=',
                 metadataUrl: '@',
-                vardata: '@',
+                varData: '@',
                 alttext: '@'
             },
-            template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{vardata}}<div ng-if="!vardata" ng-include="" src="modalImg" ></div></a>',
+            template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{varData}}<div ng-if="!varData" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
 
                 $scope.show = function (modalTemplate) {
@@ -25815,7 +25666,7 @@ angular.module('myApp.directives', [])
                         controller: "ModalController",
                         inputs: {
                             metaurl: $scope.metadataUrl,
-                            myvarData: $scope.vardata
+                            myvarData: $scope.varData
 
                         }
 
@@ -25827,16 +25678,6 @@ angular.module('myApp.directives', [])
                     });
                 };
 
-            }
-        }
-    })
-    .directive('renewableEnergy', function () {
-        return {
-            restrict: 'E',
-            scope: true,
-            templateUrl: 'partials/EM_RenewableEnergyLeases.html',
-            controller: function ($scope, AOI) {
-                $scope.AOI = AOI;
             }
         }
     })
@@ -25858,211 +25699,287 @@ angular.module('myApp.directives', [])
             },
             replace: true,
             templateUrl: 'partials/ortMap.html',
-            controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', function ($scope, $element, L, AOI, AOIConfig) {
-                function clearMouseLayer () {
-                    if (mouseLayer) {
-                        $scope.map.removeLayer(mouseLayer);
-                        mouseLayer = null;
+            controller: ['$scope', '$element', 'L', 'AOI', 'AOIConfig', '$q',
+                function ($scope, $element, L, AOI, AOIConfig, $q) {
+                    function clearMouseLayer() {
+                        if (mouseLayer) {
+                            $scope.map.removeLayer(mouseLayer);
+                            mouseLayer = null;
+                        }
                     }
-                }
 
-                $scope.map = L.map('map', {
-                    zoomControl: false,
-                    maxZoom: 12
-                });
-                // create panes???
-                angular.forEach(AOIConfig.optionalLayers,function(value, key){
-                    $scope.map.createPane(key + 'Pane');
-                });
-                $scope.map.setView([33.51, -78.3], 6);
-                $scope.map.createPane('AOIfeature');
-
-                var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-                        maxZoom: 12
-                    }),
-                    esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                        maxZoom: 12
-                    }),
-                    esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-                        maxZoom: 12
-                    }),
-                    esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
+                    $scope.map = L.map('map', {
+                        zoomControl: false,
                         maxZoom: 12
                     });
+                    var deferred = $q.defer();
+                    $scope.map.isLoaded = deferred.promise;
 
-                esriOceans.addTo($scope.map);
-
-                var baseMaps = {
-                    "Grey": esriGrey,
-                    "Oceans": esriOceans,
-                    "Streets": esriStreets,
-                    "NatGeo World": esriNatGeo
-                };
-
-                var nauticalchart = L.esri.imageMapLayer({
-                    url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-                    useCors: false,
-                    opacity: .5
-                });
-
-                var mapOverlay = {
-                    "Nautical Chart": nauticalchart
-                };
-
-                var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
-                    position: 'topleft',
-                    collapsed: false
-                });
-
-                var searchControl = L.esri.Geocoding.geosearch({
-                    expanded: true,
-                    collapseAfterResult: false,
-                    useMapBounds: true,
-                    searchBounds: L.latLngBounds([[24, -84], [39, -74]]),
-                    providers: [
-                        L.esri.Geocoding.arcgisOnlineProvider(),
-                        new L.esri.Geocoding.FeatureLayerProvider({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            searchFields: ['AOI_NAME'],
-                            label: 'Known Areas',
-                            bufferRadius: 5000,
-                            formatSuggestion: function (feature) {
-                                return feature.properties.AOI_NAME;
-                            }
-                        })
-                    ]
-                });
-
-                $scope.zoomLevel = $scope.map.getZoom();
-                $scope.basemapControlEnabled = false;
-
-                var polylayer;
-
-                $scope.map.on('pm:create', function (e) {
-                    polylayer = e.layer;
-                    AOI.drawLayerShape = polylayer.toGeoJSON();
-                    $scope.drawButtonText = "Submit";
-                    $scope.$apply();
-                });
-
-                $scope.drawAvailable = false;
-
-                $scope.drawOn = function () {
-                    $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
-                    $scope.map.setMaxZoom($scope.map.getZoom());
-                    $scope.map.dragging.disable(); //no panning
-                    $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                    $scope.map.doubleClickZoom.disable();
-                    $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
-                    //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                    if (searchControl) searchControl.disable();
-                    $scope.drawLocked = true;
-                    $scope.drawButtonText = "Drawing";
-                    $scope.polyLayerEnabled = false;
-                    $scope.map.pm.enableDraw('Poly');
-
-                    //$element.css('width', '100%');
-                    //$scope.map.invalidateSize();
-                };
-
-                $scope.drawOff = function () {
-                    $scope.map.setMinZoom(1);
-                    $scope.map.setMaxZoom(12);
-                    $scope.map.dragging.enable(); // panning
-                    $scope.map.touchZoom.enable(); // 2 finger zooms from touchscreens
-                    $scope.map.doubleClickZoom.enable();
-                    $scope.map.boxZoom.enable(); // shift mouse drag zooming.
-                    //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                    $scope.map.dragging.enable();
-                    if (searchControl) searchControl.enable();
-                    $scope.drawLocked = false;
-                    $scope.map.pm.disableDraw('Poly');
-                };
-
-                $scope.$watch('drawEnabled', function (newValue, oldValue) {
-                    if (newValue !== oldValue) {
-                        if (newValue) {
-                            clearMouseLayer();
-                            searchControl.addTo($scope.map);
-                            $element.css('width', '100%');
-                            $element.find('#map').css('width', '100%');
-                            $scope.map.invalidateSize();
-                        } else {
-                            $scope.map.removeControl(searchControl);
-                            $element.css('width', '50%');
-                            $element.find('#map').css('width', '50%');
-                            $scope.map.invalidateSize();
-                            $scope.drawOff();
-                            if (polylayer) {
-                                $scope.map.fitBounds(polylayer.getBounds());
-                                $scope.map.removeLayer(polylayer);
-                            }
-                        }
-                    }
-                });
-
-
-                $scope.$watch('basemapControlEnabled', function (newValue, oldValue) {
-                    if (newValue !== oldValue) {
-                        if (newValue) baseMapControl.addTo($scope.map);
-                        else $scope.map.removeControl(baseMapControl);
-                    }
-                });
-
-                $scope.removeLayer = function (layer) {
-                    $scope.map.removeLayer(layer);
-                };
-
-                $scope.map.on('zoomend', function (e) {
-                    if ($scope.drawEnabled) {
-                        var zoomlevel = $scope.map.getZoom();
-                        if ((zoomlevel <= 12) && (zoomlevel >= 10 ) && !$scope.drawAvailable) {
-                            $scope.drawAvailable = true;
-                            $scope.$apply();
-                        } else if ((zoomlevel > 12) && (zoomlevel < 10) && $scope.drawAvailable) {
-                            $scope.drawAvailable = false;
-                            $scope.$apply();
-                        }
-                    }
-                });
-
-                $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
-                    if (newValue !== oldValue) {
-                        if (newValue) searchControl.addTo($scope.map);
-                        else $scope.map.removeControl(searchControl);
-                    }
-                });
-
-                var mouseLayer;
-
-                $scope.mouseOver = function (AOI_id) {
-                    mouseLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                        where: "AOI_ID =" + AOI_id + "",
-                        color: '#EB660C', weight: 1.5, fillOpacity: .3,
-                        simplifyFactor: 2.0
-                    }).addTo($scope.map);
-                };
-
-                $scope.mouseOut = function () {
-                    clearMouseLayer();
-                };
-
-                $scope.resetMap = function () {
-                    $scope.baseMapControlEnabled = false;
-                    $scope.searchControlEnabled = false;
-                    $scope.drawEnabled = false;
-                    $scope.polyLayerEnabled = false;
+                    $scope.map.on('load', function (e) {
+                        deferred.resolve();
+                    });
+                    // create panes???
+                    angular.forEach(AOIConfig.optionalLayers, function (value, key) {
+                        $scope.map.createPane(key + 'Pane');
+                    });
                     $scope.map.setView([33.51, -78.3], 6);
-                    clearMouseLayer();
-                };
-            }]
+                    $scope.map.createPane('AOIfeature');
+
+                    var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+                            maxZoom: 12
+                        }),
+                        esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                            maxZoom: 12
+                        }),
+                        esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+                            maxZoom: 12
+                        }),
+                        esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
+                            maxZoom: 12
+                        });
+
+                    esriOceans.addTo($scope.map);
+
+                    var baseMaps = {
+                        "Grey": esriGrey,
+                        "Oceans": esriOceans,
+                        "Streets": esriStreets,
+                        "NatGeo World": esriNatGeo
+                    };
+
+                    var nauticalChart = L.esri.imageMapLayer({
+                        url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
+                        useCors: false,
+                        opacity: .5
+                    });
+
+                    var mapOverlay = {
+                        "Nautical Chart": nauticalChart
+                    };
+
+                    var baseMapControl = L.control.layers(baseMaps, mapOverlay, {
+                        position: 'topleft',
+                        collapsed: false
+                    });
+
+                    var searchControl = L.esri.Geocoding.geosearch({
+                        expanded: true,
+                        collapseAfterResult: false,
+                        useMapBounds: true,
+                        searchBounds: L.latLngBounds([[24, -84], [39, -74]]),
+                        providers: [
+                            L.esri.Geocoding.arcgisOnlineProvider(),
+                            new L.esri.Geocoding.FeatureLayerProvider({
+                                url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                                searchFields: ['AOI_NAME'],
+                                label: 'Known Areas',
+                                bufferRadius: 5000,
+                                formatSuggestion: function (feature) {
+                                    return feature.properties.AOI_NAME;
+                                }
+                            })
+                        ]
+                    });
+
+                    $scope.zoomLevel = $scope.map.getZoom();
+                    $scope.basemapControlEnabled = false;
+
+                    var polyLayer;
+
+                    $scope.map.on('pm:create', function (e) {
+                        polyLayer = e.layer;
+                        AOI.drawLayerShape = polyLayer.toGeoJSON();
+                        $scope.drawButtonText = "Submit";
+                        $scope.$apply();
+                    });
+
+                    $scope.drawAvailable = false;
+
+                    $scope.drawOn = function () {
+                        $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                        $scope.map.setMaxZoom($scope.map.getZoom());
+                        $scope.map.dragging.disable(); //no panning
+                        $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                        $scope.map.doubleClickZoom.disable();
+                        $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                        if (searchControl) searchControl.disable();
+                        $scope.drawLocked = true;
+                        $scope.drawButtonText = "Drawing";
+                        $scope.polyLayerEnabled = false;
+                        $scope.map.pm.enableDraw('Poly');
+
+                        //$element.css('width', '100%');
+                        //$scope.map.invalidateSize();
+                    };
+
+                    $scope.drawOff = function () {
+                        $scope.map.setMinZoom(1);
+                        $scope.map.setMaxZoom(12);
+                        $scope.map.dragging.enable(); // panning
+                        $scope.map.touchZoom.enable(); // 2 finger zooms from touchscreens
+                        $scope.map.doubleClickZoom.enable();
+                        $scope.map.boxZoom.enable(); // shift mouse drag zooming.
+                        //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                        $scope.map.dragging.enable();
+                        if (searchControl) searchControl.enable();
+                        $scope.drawLocked = false;
+                        $scope.map.pm.disableDraw('Poly');
+                    };
+
+                    $scope.$watch('drawEnabled', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            if (newValue) {
+                                clearMouseLayer();
+                                searchControl.addTo($scope.map);
+                                $element.css('width', '100%');
+                                $element.find('#map').css('width', '100%');
+                                $scope.map.invalidateSize();
+                            } else {
+                                $scope.map.removeControl(searchControl);
+                                $element.css('width', '50%');
+                                $element.find('#map').css('width', '50%');
+                                $scope.map.invalidateSize();
+                                $scope.drawOff();
+                                if (polyLayer) {
+                                    $scope.map.fitBounds(polyLayer.getBounds());
+                                    $scope.map.removeLayer(polyLayer);
+                                }
+                            }
+                        }
+                    });
+
+
+                    $scope.$watch('basemapControlEnabled', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            if (newValue) baseMapControl.addTo($scope.map);
+                            else $scope.map.removeControl(baseMapControl);
+                        }
+                    });
+
+                    $scope.removeLayer = function (layer) {
+                        $scope.map.removeLayer(layer);
+                    };
+
+                    $scope.map.on('zoomend', function (e) {
+                        if ($scope.drawEnabled) {
+                            var zoomLevel = $scope.map.getZoom();
+                            if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
+                                $scope.drawAvailable = true;
+                                $scope.$apply();
+                            } else if ((zoomLevel > 12) && (zoomLevel < 10) && $scope.drawAvailable) {
+                                $scope.drawAvailable = false;
+                                $scope.$apply();
+                            }
+                        }
+                    });
+
+                    $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            if (newValue) searchControl.addTo($scope.map);
+                            else $scope.map.removeControl(searchControl);
+                        }
+                    });
+
+                    var mouseLayer;
+
+                    $scope.mouseOver = function (AOI_id) {
+                        mouseLayer = L.esri.featureLayer({
+                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                            where: "AOI_ID =" + AOI_id + "",
+                            color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                            simplifyFactor: 2.0
+                        }).addTo($scope.map);
+                    };
+
+                    $scope.mouseOut = function () {
+                        clearMouseLayer();
+                    };
+
+                    $scope.resetMap = function () {
+                        $scope.baseMapControlEnabled = false;
+                        $scope.searchControlEnabled = false;
+                        $scope.drawEnabled = false;
+                        $scope.polyLayerEnabled = false;
+                        $scope.map.setView([33.51, -78.3], 6);
+                        clearMouseLayer();
+                    };
+                }
+            ]
         }
-    }]);
+    }])
+    .directive('smallOrtMap', function () {
+            return {
+                restrict: 'E',
+                scope: {
+                    useCanvas: '='
+                },
+                templateUrl: 'partials/smallOrtMap.html',
+                controller: ['$scope', 'L', 'AOI', 'AOIConfig', function ($scope, L, AOI, AOIConfig) {
+                    $scope.AOI = AOI;
+                    if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
+                    $scope.AOI.smallMap = L.map('smallMap').setView([45.526, -122.667], 1);
+                    //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
+                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
+                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
+                    var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                        maxZoom: 12,
+                        useCors: true
+                    });
+
+                    var minicLayer;
+                    if (AOI.ID === -9999) {
+                        minicLayer = L.geoJson(AOI.drawLayerShape, {
+                            color: '#EB660C',
+                            weight: 1.5,
+                            fillOpacity: .3
+                        }).addTo($scope.AOI.smallMap);
+                        var minibounds = minicLayer.getBounds();
+                        $scope.AOI.smallMap.fitBounds(minibounds);
+
+                    } else {
+                        minicLayer = L.esri.featureLayer({
+                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                            where: "AOI_ID =" + AOI.ID + "",
+                            color: '#EB660C',
+                            weight: 1.5,
+                            fillOpacity: .3
+                        }).addTo($scope.AOI.smallMap);
+
+
+                        minicLayer.on("load", function (evt) {
+                            var bounds = L.latLngBounds([]);
+                            minicLayer.eachFeature(function (layer) {
+                                var layerBounds = layer.getBounds();
+                                bounds.extend(layerBounds);
+                            });
+                            //AOI.minibounds = bounds;
+                            $scope.AOI.smallMap.fitBounds(bounds);
+                            minicLayer.off('load');
+                        });
+                    }
+                    $scope.AOI.smallMap.invalidateSize();
+                    var test1 = false;
+                    if ((AOI.inPrintWindow) && (test1)) {
+                        leafletImage($scope.AOI.smallMap, function (err, canvas) {
+                            var img = document.createElement('img');
+                            var dimensions = $scope.AOI.smallMap.getSize();
+                            img.width = dimensions.x;
+                            img.height = dimensions.y;
+                            img.src = canvas.toDataURL();
+                            document.getElementById('map3').innerHTML = '';
+                            document.getElementById('map3').appendChild(img);
+                        });
+                    }
+                }]
+            }
+        }
+    );
 
 
 ;
@@ -26145,7 +26062,7 @@ addLoadEvent(preloader);
 }(Highcharts));
 
 var marker;
-var smallmap;
+var smallMap;
 
 
 var initInjector = angular.injector(["ng"]);

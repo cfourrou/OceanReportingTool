@@ -77,7 +77,7 @@ addLoadEvent(preloader);
 }(Highcharts));
 
 var marker;
-var smallmap;
+var smallMap;
 
 
 var initInjector = angular.injector(["ng"]);
