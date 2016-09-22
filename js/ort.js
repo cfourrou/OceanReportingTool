@@ -24272,7 +24272,6 @@ angular.module('myApp.services', [])
 
                     })
 
-
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
@@ -24773,20 +24772,9 @@ angular.module('myApp.services', [])
                         document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
                         var elems = document.getElementsByClassName('AOItabClass2');
-<<<<<<< HEAD
                         angular.forEach(elems, function (myElement) {
                             myElement.style.display = 'inline-block';
                         })
-
-                        if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
-
-                            AOI.loadSmallMap(false);
-
-=======
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'inline-block';
->>>>>>> origin/ortMap-directive-bug-fixes
-                        }
 
                     } else {
 
@@ -25169,10 +25157,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     vm.AOI.inPrintWindow = false;
 
     vm.box = [];
+    //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
+    //different catagories of menu levels are given ranges of index numbers
 
     for (var i = 0; i < 2000; i++) {
-        //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-        //different catagories of menu levels are given ranges of index numbers
         vm.box.push({
             myid: i,
             isActive: false,
@@ -25265,19 +25253,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.checked = !vm.checked;
     };
 
+
     vm.tMenuBox = function (id, menuIndentLevel) {
         vm.box[id].level = menuIndentLevel;
-
         vm.box[id].isActive = !vm.box[id].isActive;
-
-
         angular.forEach(vm.box, function (myBox, index) {
             if ((index != id) && (menuIndentLevel <= myBox.level)) {
                 myBox.isActive = false;
             }
         })
-
-
     };
 
     vm.startOver = function () {
@@ -25571,40 +25555,6 @@ function PrintCtrl($rootScope, AOI, $timeout, webService) {
     webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
-<<<<<<< HEAD
-
-
-    $rootScope.$on('$viewContentLoaded', function () {
-        // document is ready, place  code here
-        $timeout(function () {
-            vm.AOI.loadSmallMap(false);
-            //vm.saveAsBinary();
-            //  $timeout(function () {
-            //vm.updatePrint();
-            //}, 3000);
-        }, 1500);
-
-
-    });
-
-
-    //vm.saveAsBinary = function () {
-    //
-    //    var svg = document.getElementById('container')
-    //        .children[0].innerHTML;
-    //    var canvas = document.createElement("canvas");
-    //    canvg(canvas, svg, {});
-    //
-    //    var img = canvas.toDataURL("image/png"); //img is data:image/png;base64
-    //
-    //
-    //    $('#binaryImage').attr('src', img);
-    //
-    //
-    //}
-
-=======
->>>>>>> origin/ortMap-directive-bug-fixes
 }
 
 PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);

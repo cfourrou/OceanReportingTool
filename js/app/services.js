@@ -1171,7 +1171,8 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                    }
+                    })
+
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
@@ -1672,9 +1673,9 @@ angular.module('myApp.services', [])
                         document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'inline-block';
-                        }
+                        angular.forEach(elems, function (myElement) {
+                            myElement.style.display = 'inline-block';
+                        })
 
                     } else {
 
@@ -1682,9 +1683,9 @@ angular.module('myApp.services', [])
 
                         document.getElementById("slide1").style.width = '50%';
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'none';
-                        }
+                        angular.forEach(elems, function (myElement) {
+                            myElement.style.display = 'none';
+                        })
 
                         document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                         // Code for IE9
