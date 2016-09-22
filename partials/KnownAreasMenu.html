@@ -5,7 +5,7 @@
         <hr width="50%" align="left">
 
         <!--Special Interest areas menu below -->
-        <div class="menuBoxlight" ng-click="vm.t_menu_box(1000,0)">
+        <div class="menuBoxlight" ng-click="vm.tMenuBox(1000,0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                  ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[1000].isActive]"><img
                     class="pluscloseIcon" src="img/plus_close.svg"></div>
@@ -16,7 +16,7 @@
         <div ng-repeat="aoix in vm.aoismenu | unique: 'REPORT_TYPE' | orderBy : 'REPORT_TYPE'">
             <div class="menuboxofboxes" ng-show="vm.box[1000].isActive">
 
-                <div class="menuBoxlight" ng-click="vm.t_menu_box($index,1)">
+                <div class="menuBoxlight" ng-click="vm.tMenuBox($index,1)">
                     <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                          ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[{{$index}}].isActive]">
                         <img class="pluscloseIcon" src="img/plus_close.svg"></div>
@@ -38,7 +38,7 @@
 
 
         <!--State menu below -->
-        <div class="menuBoxlight" ng-click="vm.t_menu_box(1001,0)">
+        <div class="menuBoxlight" ng-click="vm.tMenuBox(1001,0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                  ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[1001].isActive]"><img
                     class="pluscloseIcon" src="img/plus_close.svg"></div>
@@ -47,7 +47,7 @@
         <div ng-repeat="statex in vm.aoistates | unique: 'COMMON_NM' | orderBy : 'COMMON_NM'">
             <div class="menuboxofboxes" ng-show="vm.box[1001].isActive">
 
-                <div class="menuBoxlight" ng-click="vm.t_menu_box($index,1)">
+                <div class="menuBoxlight" ng-click="vm.tMenuBox($index,1)">
                     <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                          ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[{{$index}}].isActive]"><img
                             class="pluscloseIcon" src="img/plus_close.svg"></div>
@@ -61,7 +61,7 @@
                             {{statel.AOI_NAME}} ({{statel.DESC_}})
                         </div>
                     </div>
-                    <div class="menuBoxlight" ng-click="vm.t_menu_box($index+100,2)">
+                    <div class="menuBoxlight" ng-click="vm.tMenuBox($index+100,2)">
                         <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
                              ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[{{$index+100}}].isActive]"><img
                                 class="pluscloseIcon" src="img/plus_close.svg"></div>

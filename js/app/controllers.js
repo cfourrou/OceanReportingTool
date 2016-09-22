@@ -12,8 +12,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     vm.AOI.inPrintWindow = false;
 
     vm.box = [];
-    var len = 2000;
-    for (var i = 0; i < len; i++) {
+
+    for (var i = 0; i < 2000; i++) {
+        //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
+        //different catagories of menu levels are given ranges of index numbers
         vm.box.push({
             myid: i,
             isActive: false,
@@ -111,15 +113,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.checked = !vm.checked;
     };
 
-    vm.t_menu_box = function (id, levl) {
-        vm.box[id].level = levl;
+    vm.tMenuBox = function (id, menuIndentLevel) {
+        vm.box[id].level = menuIndentLevel;
 
         vm.box[id].isActive = !vm.box[id].isActive;
-        for (i = 0; i < len; i++) {
-            if ((i != id) && (levl <= vm.box[i].level)) {
-                vm.box[i].isActive = false;
+
+
+        angular.forEach(vm.box, function (myBox, index) {
+            if ((index != id) && (menuIndentLevel <= myBox.level)) {
+                myBox.isActive = false;
             }
-        }
+        })
+
 
     };
 
@@ -145,9 +150,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.resetMap();
 
-        for (i = 0; i < len; i++) {
-            vm.box[i].isActive = false;
-        }
+        angular.forEach(vm.box, function (myBox) {
+            myBox.isActive = false;
+        })
 
     };
 
@@ -383,7 +388,7 @@ EconCtrl.prototype.childPaneOn = function () {
 };
 
 
-function PrintCtrl($rootScope, AOI, $timeout, webService  ) {
+function PrintCtrl($rootScope, AOI, $timeout, webService) {
     //what is going on?
     var vm = this;
     vm.AOI = AOI;
@@ -417,8 +422,8 @@ function PrintCtrl($rootScope, AOI, $timeout, webService  ) {
         $timeout(function () {
             vm.AOI.loadSmallMap(false);
             //vm.saveAsBinary();
-          //  $timeout(function () {
-                //vm.updatePrint();
+            //  $timeout(function () {
+            //vm.updatePrint();
             //}, 3000);
         }, 1500);
 
@@ -483,7 +488,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('PrintCtrl', ['$rootScope','AOI', '$timeout','webService', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
 
 
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])

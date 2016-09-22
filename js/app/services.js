@@ -1137,26 +1137,25 @@ angular.module('myApp.services', [])
                     var y = 35;
                     var x = 35;
                     var chartrow = 1;
+                    angular.forEach(AOI.ECEcon, function (myECEcon, index) {
 
-                    for (i = 0; i < AOI.ECEcon.length; i++) {
-
-                        if (i && (i % 3 === 0)) {
+                        if (index && (index % 3 === 0)) {
                             y += 120;
                             x = 35;
                             chartrow++;
-                        } else if (i) x += 135;
+                        } else if (index) x += 135;
 
-                        AOI.OceanJobContributionsSeries[i] = {
+                        AOI.OceanJobContributionsSeries[index] = {
                             center: [x, y],
-                            "name": AOI.ECEcon[i].Name,
-                            "showInLegend": (i === 0 ? true : false),
+                            "name": myECEcon.Name,
+                            "showInLegend": (index === 0 ? true : false),
                             "data": [
-                                ["Marine Construction", AOI.ECEcon[i].GDP_MarineConstruction],
-                                ["Living Resources", AOI.ECEcon[i].GDP_LivingResources],
-                                ["Marine Transportation", AOI.ECEcon[i].GDP_MarineTransp],
-                                ["Offshore Mineral Extraction", AOI.ECEcon[i].GDP_OffshoreMineralExt],
-                                ["Ship and Boat Building", AOI.ECEcon[i].GDP_ShipAndBoatBuilding],
-                                ["Tourism and Recreation", AOI.ECEcon[i].GDP_TourismAndRec]
+                                ["Marine Construction", myECEcon.GDP_MarineConstruction],
+                                ["Living Resources", myECEcon.GDP_LivingResources],
+                                ["Marine Transportation", myECEcon.GDP_MarineTransp],
+                                ["Offshore Mineral Extraction", myECEcon.GDP_OffshoreMineralExt],
+                                ["Ship and Boat Building", myECEcon.GDP_ShipAndBoatBuilding],
+                                ["Tourism and Recreation", myECEcon.GDP_TourismAndRec]
                             ],
                             title: {
 
@@ -1168,7 +1167,9 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                    }
+                    })
+
+
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
@@ -1673,13 +1674,11 @@ angular.module('myApp.services', [])
                         document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'inline-block';
-                        }
-
+                        angular.forEach(elems, function (myElement) {
+                            myElement.style.display = 'inline-block';
+                        })
 
                         if (pageID === "EM" || pageID === "CE" || pageID === "TI" || pageID === "NRC" || pageID === "EC") {
-
 
                             AOI.loadSmallMap(false);
 
@@ -1691,9 +1690,9 @@ angular.module('myApp.services', [])
 
                         document.getElementById("slide1").style.width = '50%';
                         var elems = document.getElementsByClassName('AOItabClass2');
-                        for (var i = 0; i < elems.length; i++) {
-                            elems[i].style.display = 'none';
-                        }
+                        angular.forEach(elems, function (myElement) {
+                            myElement.style.display = 'none';
+                        })
 
                         document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
                         // Code for IE9
