@@ -389,8 +389,7 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
-    var allPromises = [AOI.reloadAllCharts()];
-    vm.readyToPrint = $q.all(allPromises);
+
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -398,20 +397,31 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     vm.congressMenu = "-";
     vm.senateMenu = "-";
     vm.houseMenu = "-";
-    webService.getData('CE_config.json').then(function (result) {
+    var printDeferred = $q.defer();
+    vm.readyToPrint = printDeferred.promise;
+    var chartPromise = AOI.reloadAllCharts();
+    var allPromises = [];
+
+    allPromises.push(webService.getData('CE_config.json').then(function (result) {
         vm.CEConfig = result;
-    });
-    webService.getData('EM_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('EM_config.json').then(function (result) {
         vm.EMConfig = result;
-    });
-    webService.getData('TI_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('TI_config.json').then(function (result) {
         vm.TIConfig = result;
-    });
-    webService.getData('NRC_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
-    });
-    webService.getData('EC_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
+    }));
+
+    $q.all(allPromises).then(function () {
+        $q.all([chartPromise, vm.mapPromise]).then(function () {
+            printDeferred.resolve();
+        });
     });
 }
 

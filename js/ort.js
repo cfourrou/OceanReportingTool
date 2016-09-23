@@ -25582,8 +25582,7 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
-    var allPromises = [AOI.reloadAllCharts()];
-    vm.readyToPrint = $q.all(allPromises);
+
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -25591,20 +25590,31 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     vm.congressMenu = "-";
     vm.senateMenu = "-";
     vm.houseMenu = "-";
-    webService.getData('CE_config.json').then(function (result) {
+    var printDeferred = $q.defer();
+    vm.readyToPrint = printDeferred.promise;
+    var chartPromise = AOI.reloadAllCharts();
+    var allPromises = [];
+
+    allPromises.push(webService.getData('CE_config.json').then(function (result) {
         vm.CEConfig = result;
-    });
-    webService.getData('EM_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('EM_config.json').then(function (result) {
         vm.EMConfig = result;
-    });
-    webService.getData('TI_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('TI_config.json').then(function (result) {
         vm.TIConfig = result;
-    });
-    webService.getData('NRC_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
-    });
-    webService.getData('EC_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
+    }));
+
+    $q.all(allPromises).then(function () {
+        $q.all([chartPromise, vm.mapPromise]).then(function () {
+            printDeferred.resolve();
+        });
     });
 }
 
@@ -25684,7 +25694,7 @@ function printDirective($state, $timeout) {
                 printElement.innerHTML = "";
                 $state.go('CEview');
             });
-        }, 5300)
+        })
     }
 
     return {
@@ -25973,33 +25983,46 @@ angular.module('myApp.directives', [])
         return {
             restrict: 'E',
             scope: {
-                useCanvas: '=',
-                mapPromise: '='
+                mapPromise: '=',
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
                 $scope.AOI = AOI;
+                var mapDeferred = $q.defer(), basemapDefered = $q.defer(),
+                    basemapLabelsDefered = $q.defer();
+                var allPromises = [
+                    mapDeferred.promise, basemapDefered.promise, basemapLabelsDefered.promise
+                ];
+
                 if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
-                $scope.AOI.smallMap = L.map('smallMap');
-
-                var deferred = $q.defer();
-                $scope.mapPromise = deferred.promise;
-
-                $scope.AOI.smallMap.on('load', function (e) {
-                    deferred.resolve();
-                    deferred = $q.defer();
-                    console.log('ready map');
-                });
-
+                $scope.AOI.smallMap = L.map('smallMap', {zoomAnimation: false, fadeAnimation: false});
                 $scope.AOI.smallMap.setView([45.526, -122.667], 1);
-                //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
-                L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
-                L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
-                var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                    maxZoom: 12,
-                    useCors: true
+
+                $scope.mapPromise = $q.all(allPromises);
+
+                $scope.AOI.smallMap.on('zoomend', function (e) {
+                    mapDeferred.resolve();
+                    mapDeferred = $q.defer();
                 });
+
+                var basemap = L.esri.basemapLayer('Oceans');
+                basemap.on("load", function () {
+                    basemapDefered.resolve();
+                    basemapDefered = $q.defer();
+                });
+                basemap.addTo($scope.AOI.smallMap);
+
+                var basemapLabels = L.esri.basemapLayer('OceansLabels');
+                basemapLabels.on("load", function () {
+                    basemapLabelsDefered.resolve();
+                    basemapLabelsDefered = $q.defer();
+                });
+                basemapLabels.addTo($scope.AOI.smallMap);
+                //var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                //    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                //    maxZoom: 12,
+                //    useCors: true
+                //});
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
@@ -26027,7 +26050,6 @@ angular.module('myApp.directives', [])
                             var layerBounds = layer.getBounds();
                             bounds.extend(layerBounds);
                         });
-                        //AOI.minibounds = bounds;
                         $scope.AOI.smallMap.fitBounds(bounds);
                         minicLayer.off('load');
                     });

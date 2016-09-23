@@ -6,15 +6,13 @@
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            $timeout(function () {
-                var printElement = element[0].cloneNode(true);
-                printElement.id = 'printSection';
-                document.body.appendChild(printElement);
-                window.print();
-                printElement.innerHTML = "";
-                $state.go('CEview');
-            });
-        }, 5300)
+            var printElement = element[0].cloneNode(true);
+            printElement.id = 'printSection';
+            document.body.appendChild(printElement);
+            window.print();
+            printElement.innerHTML = "";
+            $state.go('CEview');
+        });
     }
 
     return {
@@ -303,33 +301,46 @@ angular.module('myApp.directives', [])
         return {
             restrict: 'E',
             scope: {
-                useCanvas: '=',
-                mapPromise: '='
+                mapPromise: '=',
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
                 $scope.AOI = AOI;
+                var mapDeferred = $q.defer(), basemapDefered = $q.defer(),
+                    basemapLabelsDefered = $q.defer();
+                var allPromises = [
+                    mapDeferred.promise, basemapDefered.promise, basemapLabelsDefered.promise
+                ];
+
                 if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
-                $scope.AOI.smallMap = L.map('smallMap');
-
-                var deferred = $q.defer();
-                $scope.mapPromise = deferred.promise;
-
-                $scope.AOI.smallMap.on('load', function (e) {
-                    deferred.resolve();
-                    deferred = $q.defer();
-                    console.log('ready map');
-                });
-
+                $scope.AOI.smallMap = L.map('smallMap', {zoomAnimation: false, fadeAnimation: false});
                 $scope.AOI.smallMap.setView([45.526, -122.667], 1);
-                //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
-                L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
-                L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
-                var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                    maxZoom: 12,
-                    useCors: true
+
+                $scope.mapPromise = $q.all(allPromises);
+
+                $scope.AOI.smallMap.on('zoomend', function (e) {
+                    mapDeferred.resolve();
+                    mapDeferred = $q.defer();
                 });
+
+                var basemap = L.esri.basemapLayer('Oceans');
+                basemap.on("load", function () {
+                    basemapDefered.resolve();
+                    basemapDefered = $q.defer();
+                });
+                basemap.addTo($scope.AOI.smallMap);
+
+                var basemapLabels = L.esri.basemapLayer('OceansLabels');
+                basemapLabels.on("load", function () {
+                    basemapLabelsDefered.resolve();
+                    basemapLabelsDefered = $q.defer();
+                });
+                basemapLabels.addTo($scope.AOI.smallMap);
+                //var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                //    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                //    maxZoom: 12,
+                //    useCors: true
+                //});
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
@@ -357,7 +368,6 @@ angular.module('myApp.directives', [])
                             var layerBounds = layer.getBounds();
                             bounds.extend(layerBounds);
                         });
-                        //AOI.minibounds = bounds;
                         $scope.AOI.smallMap.fitBounds(bounds);
                         minicLayer.off('load');
                     });
