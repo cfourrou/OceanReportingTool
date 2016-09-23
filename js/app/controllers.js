@@ -169,16 +169,16 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         AOI.toggleFull = false;
     };
 
-    vm.aoismenu = [];
-    vm.aoistates = [];
+    vm.specialInterestAreasMenu = [];
+    vm.statesMenu = [];
 
 
     var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerAOI);
 
     queryService.query("KNOWN_AREA='Special Interest Areas'").then(function (featureCollection) {
-        vm.aoismenu = [];
+        vm.specialInterestAreasMenu = [];
         angular.forEach(featureCollection.features, function (feature, i) {
-            vm.aoismenu.push({
+            vm.specialInterestAreasMenu.push({
                 AOI_NAME: feature.properties.AOI_NAME,
                 COMMON_NM: feature.properties.COMMON_NM,
                 REPORT_TYPE: feature.properties.REPORT_TYPE,
@@ -188,7 +188,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             });
         });
 
-        vm.aoismenu.sort(function (a, b) {
+        vm.specialInterestAreasMenu.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
@@ -198,7 +198,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
         angular.forEach(featureCollection.features, function (feature, i) {
-            vm.aoistates[i] = {
+            vm.statesMenu[i] = {
                 AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
                 COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
                 REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
@@ -208,7 +208,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             };
         });
 
-        vm.aoistates.sort(function (a, b) {
+        vm.statesMenu.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {

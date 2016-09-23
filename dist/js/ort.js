@@ -25203,18 +25203,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.AOI.inPrintWindow = false;
 
-    //vm.box = [];
-    ////'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-    ////different catagories of menu levels are given ranges of index numbers
-    //
-    //for (var i = 0; i < 2000; i++) {
-    //    vm.box.push({
-    //        myid: i,
-    //        isActive: false,
-    //        level: 0,
-    //        future: true
-    //    });
-    //}
     vm.drawOrSubmitCommand = "DRAW";
 
     Highcharts.setOptions({
@@ -25300,16 +25288,19 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.checked = !vm.checked;
     };
 
-
-    //vm.tMenuBox = function (id, menuIndentLevel) {
-    //    vm.box[id].level = menuIndentLevel;
-    //    vm.box[id].isActive = !vm.box[id].isActive;
-    //    angular.forEach(vm.box, function (myBox, index) {
-    //        if ((index != id) && (menuIndentLevel <= myBox.level)) {
-    //            myBox.isActive = false;
-    //        }
-    //    })
-    //};
+    vm.menu = {};
+    vm.toggleMenu = function (menuItem, menuIndentLevel) {
+        if (vm.menu[menuItem] === undefined) {
+            vm.menu[menuItem] = {}
+        }
+        vm.menu[menuItem].level = menuIndentLevel;
+        vm.menu[menuItem].isActive = !vm.menu[menuItem].isActive;
+        angular.forEach(vm.menu, function (value, key) {
+            if ((key != menuItem) && (menuIndentLevel <= value.level)) {
+                vm.menu[key].isActive = false;
+            }
+        })
+    };
 
     vm.startOver = function () {
 
@@ -25371,27 +25362,26 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         AOI.toggleFull = false;
     };
 
-    vm.aoismenu = [];
-    vm.aoistates = [];
+    vm.specialInterestAreasMenu = [];
+    vm.statesMenu = [];
 
 
     var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerAOI);
 
     queryService.query("KNOWN_AREA='Special Interest Areas'").then(function (featureCollection) {
-        vm.aoismenu = [];
+        vm.specialInterestAreasMenu = [];
         angular.forEach(featureCollection.features, function (feature, i) {
-            vm.aoismenu.push({
+            vm.specialInterestAreasMenu.push({
                 AOI_NAME: feature.properties.AOI_NAME,
                 COMMON_NM: feature.properties.COMMON_NM,
                 REPORT_TYPE: feature.properties.REPORT_TYPE,
                 AOI_ID: feature.properties.AOI_ID,
                 DATASET_NM: feature.properties.DATASET_NM,
-                DESC_: feature.properties.DESC_,
-                isActive: false
+                DESC_: feature.properties.DESC_
             });
         });
 
-        vm.aoismenu.sort(function (a, b) {
+        vm.specialInterestAreasMenu.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
@@ -25401,18 +25391,17 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
         angular.forEach(featureCollection.features, function (feature, i) {
-            vm.aoistates[i] = {
+            vm.statesMenu[i] = {
                 AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
                 COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
                 REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                 AOI_ID: featureCollection.features[i].properties.AOI_ID,
                 DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_,
-                isActive: false
+                DESC_: featureCollection.features[i].properties.DESC_
             };
         });
 
-        vm.aoistates.sort(function (a, b) {
+        vm.statesMenu.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
@@ -25443,7 +25432,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
-PageslideCtrl.prototype.mouseOff = function (id) {
+PageslideCtrl.prototype.mout = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
@@ -25500,7 +25489,7 @@ function AOICtrl(AOI, webService) {
 
 AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
 AOICtrl.prototype.childMouseOut = function (id) {
-    this.mouseOff(id);
+    this.mout(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
     this.paneOn();
@@ -25582,8 +25571,7 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
-    var allPromises = [AOI.reloadAllCharts()];
-    vm.readyToPrint = $q.all(allPromises);
+
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -25591,20 +25579,31 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     vm.congressMenu = "-";
     vm.senateMenu = "-";
     vm.houseMenu = "-";
-    webService.getData('CE_config.json').then(function (result) {
+    var printDeferred = $q.defer();
+    vm.readyToPrint = printDeferred.promise;
+    var chartPromise = AOI.reloadAllCharts();
+    var allPromises = [];
+
+    allPromises.push(webService.getData('CE_config.json').then(function (result) {
         vm.CEConfig = result;
-    });
-    webService.getData('EM_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('EM_config.json').then(function (result) {
         vm.EMConfig = result;
-    });
-    webService.getData('TI_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('TI_config.json').then(function (result) {
         vm.TIConfig = result;
-    });
-    webService.getData('NRC_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
-    });
-    webService.getData('EC_config.json').then(function (result) {
+    }));
+    allPromises.push(webService.getData('EC_config.json').then(function (result) {
         vm.ECConfig = result;
+    }));
+
+    $q.all(allPromises).then(function () {
+        $q.all([chartPromise, vm.mapPromise]).then(function () {
+            printDeferred.resolve();
+        });
     });
 }
 
@@ -25676,15 +25675,13 @@ angular.module('myApp.filters', [])
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            $timeout(function () {
-                var printElement = element[0].cloneNode(true);
-                printElement.id = 'printSection';
-                document.body.appendChild(printElement);
-                window.print();
-                printElement.innerHTML = "";
-                $state.go('CEview');
-            });
-        }, 5300)
+            var printElement = element[0].cloneNode(true);
+            printElement.id = 'printSection';
+            document.body.appendChild(printElement);
+            window.print();
+            printElement.innerHTML = "";
+            $state.go('CEview');
+        });
     }
 
     return {
@@ -25782,21 +25779,21 @@ angular.module('myApp.directives', [])
                     $scope.map.setView([33.51, -78.3], 6);
                     $scope.map.createPane('AOIfeature');
 
-                    var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-                            maxZoom: 12
+                    var esriNatGeo = L.tileLayer(AOIConfig.baseMapLayers.esriNatGeo.url, {
+                            attribution: AOIConfig.baseMapLayers.esriNatGeo.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriNatGeo.maxZoom
                         }),
-                        esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                            maxZoom: 12
+                        esriOceans = L.tileLayer(AOIConfig.baseMapLayers.esriOceans.url, {
+                            attribution: AOIConfig.baseMapLayers.esriOceans.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriOceans.maxZoom
                         }),
-                        esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-                            maxZoom: 12
+                        esriStreets = L.tileLayer(AOIConfig.baseMapLayers.esriStreets.url, {
+                            attribution: AOIConfig.baseMapLayers.esriStreets.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriStreets.maxZoom
                         }),
-                        esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
-                            maxZoom: 12
+                        esriGrey = L.tileLayer(AOIConfig.baseMapLayers.esriGrey.url, {
+                            attribution: AOIConfig.baseMapLayers.esriGrey.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriGrey.maxZoom
                         });
 
                     esriOceans.addTo($scope.map);
@@ -25809,9 +25806,9 @@ angular.module('myApp.directives', [])
                     };
 
                     var nauticalChart = L.esri.imageMapLayer({
-                        url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-                        useCors: false,
-                        opacity: .5
+                        url: AOIConfig.nauticalChart.url,
+                        useCors: AOIConfig.nauticalChart.useCors,
+                        opacity: AOIConfig.nauticalChart.opacity
                     });
 
                     var mapOverlay = {
@@ -25973,33 +25970,46 @@ angular.module('myApp.directives', [])
         return {
             restrict: 'E',
             scope: {
-                useCanvas: '=',
-                mapPromise: '='
+                mapPromise: '=',
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
                 $scope.AOI = AOI;
+                var mapDeferred = $q.defer(), basemapDefered = $q.defer(),
+                    basemapLabelsDefered = $q.defer();
+                var allPromises = [
+                    mapDeferred.promise, basemapDefered.promise, basemapLabelsDefered.promise
+                ];
+
                 if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
-                $scope.AOI.smallMap = L.map('smallMap');
-
-                var deferred = $q.defer();
-                $scope.mapPromise = deferred.promise;
-
-                $scope.AOI.smallMap.on('load', function (e) {
-                    deferred.resolve();
-                    deferred = $q.defer();
-                    console.log('ready map');
-                });
-
+                $scope.AOI.smallMap = L.map('smallMap', {zoomAnimation: false, fadeAnimation: false});
                 $scope.AOI.smallMap.setView([45.526, -122.667], 1);
-                //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
-                L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
-                L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
-                var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                    maxZoom: 12,
-                    useCors: true
+
+                $scope.mapPromise = $q.all(allPromises);
+
+                $scope.AOI.smallMap.on('zoomend', function (e) {
+                    mapDeferred.resolve();
+                    mapDeferred = $q.defer();
                 });
+
+                var basemap = L.esri.basemapLayer('Oceans');
+                basemap.on("load", function () {
+                    basemapDefered.resolve();
+                    basemapDefered = $q.defer();
+                });
+                basemap.addTo($scope.AOI.smallMap);
+
+                var basemapLabels = L.esri.basemapLayer('OceansLabels');
+                basemapLabels.on("load", function () {
+                    basemapLabelsDefered.resolve();
+                    basemapLabelsDefered = $q.defer();
+                });
+                basemapLabels.addTo($scope.AOI.smallMap);
+                //var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                //    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                //    maxZoom: 12,
+                //    useCors: true
+                //});
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
@@ -26027,7 +26037,6 @@ angular.module('myApp.directives', [])
                             var layerBounds = layer.getBounds();
                             bounds.extend(layerBounds);
                         });
-                        //AOI.minibounds = bounds;
                         $scope.AOI.smallMap.fitBounds(bounds);
                         minicLayer.off('load');
                     });
@@ -26160,7 +26169,6 @@ $http.get("gis_config.json").then(function (result) {
         ])
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
-
             AOIConfigProvider.set({
                 ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
                 ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
@@ -26170,6 +26178,33 @@ $http.get("gis_config.json").then(function (result) {
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,//ORT Natural Resources GeoProcessing Service URL
                 ortEconGPService: result.data['ortEconGPService'].data, //ORT Economics GeoProcessing Service URL
+                nauticalChart: {
+                    url: result.data['nauticalChart'].url,
+                    useCors: result.data['nauticalChart'].useCors,
+                    opacity: result.data['nauticalChart'].opacity
+                },
+                baseMapLayers: {
+                    esriNatGeo: {
+                        url: result.data['baseMapLayers'].esriNatGeo.url,
+                        attribution: result.data['baseMapLayers'].esriNatGeo.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriNatGeo.maxZoom
+                    },
+                    esriOceans: {
+                        url: result.data['baseMapLayers'].esriOceans.url,
+                        attribution: result.data['baseMapLayers'].esriOceans.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriOceans.maxZoom
+                    },
+                    esriStreets: {
+                        url: result.data['baseMapLayers'].esriStreets.url,
+                        attribution: result.data['baseMapLayers'].esriStreets.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriStreets.maxZoom
+                    },
+                    esriGrey: {
+                        url: result.data['baseMapLayers'].esriGrey.url,
+                        attribution: result.data['baseMapLayers'].esriGrey.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriGrey.maxZoom
+                    }
+                },
                 optionalLayers: {
                     windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
                     windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,

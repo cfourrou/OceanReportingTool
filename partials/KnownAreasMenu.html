@@ -13,7 +13,7 @@
         </div>
 
 
-        <div ng-repeat="aoix in vm.aoismenu | unique: 'REPORT_TYPE' | orderBy : 'REPORT_TYPE'">
+        <div ng-repeat="aoix in vm.specialInterestAreasMenu | unique: 'REPORT_TYPE' | orderBy : 'REPORT_TYPE'">
             <div class="menuboxofboxes" ng-show="vm.menu.special.isActive">
                 <div class="menuBoxlight" ng-click="vm.toggleMenu(aoix.REPORT_TYPE, 1)">
                     <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="menuboxofboxes" ng-show="vm.menu[aoix.REPORT_TYPE].isActive">
-                    <div ng-repeat="aoil in vm.aoismenu | filter: {REPORT_TYPE: aoix.REPORT_TYPE} | orderBy : 'AOI_NAME'">
+                    <div ng-repeat="aoil in vm.specialInterestAreasMenu | filter: {REPORT_TYPE: aoix.REPORT_TYPE} | orderBy : 'AOI_NAME'">
                         <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="vm.mouseOn(aoil.AOI_ID)"
                              ng-mouseout="vm.mouseOff()" ng-click="vm.mouseOff(); vm.AOI.loadData(aoil.AOI_ID,aoil.AOI_NAME)">
                             {{aoil.AOI_NAME}}
@@ -41,7 +41,7 @@
                     class="pluscloseIcon" src="img/plus_close.svg"></div>
             <div>Other Areas by State</div>
         </div>
-        <div ng-repeat="statex in vm.aoistates | unique: 'COMMON_NM' | orderBy : 'COMMON_NM'">
+        <div ng-repeat="statex in vm.statesMenu | unique: 'COMMON_NM' | orderBy : 'COMMON_NM'">
             <div class="menuboxofboxes" ng-show="vm.menu.state.isActive">
 
                 <div class="menuBoxlight" ng-click="vm.toggleMenu(statex.COMMON_NM, 1)">
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="menuboxofboxes" ng-show="vm.menu[statex.COMMON_NM].isActive">
-                    <div ng-repeat="statel in vm.aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
+                    <div ng-repeat="statel in vm.statesMenu | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
                         <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="vm.mouseOn(statel.AOI_ID)"
                              ng-mouseout="vm.mouseOff(statel.AOI_ID)" ng-click="vm.mouseOff(); vm.AOI.loadData(statel.AOI_ID,statel.AOI_NAME)">
                             {{statel.AOI_NAME}} ({{statel.DESC_}})
@@ -65,7 +65,7 @@
                         <div>Waters offshore of {{statex.COMMON_NM}} Counties</div>
                     </div>
                     <div class="menuboxofboxes" ng-show="vm.menu[statex.COMMON_NM+'sub'].isActive">
-                        <div ng-repeat="statey in vm.aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
+                        <div ng-repeat="statey in vm.statesMenu | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
                             <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="vm.mouseOn(statey.AOI_ID)"
                                  ng-mouseout="vm.mouseOff(statey.AOI_ID)"
                                  ng-click="vm.mouseOff(); vm.AOI.loadData(statey.AOI_ID,statey.AOI_NAME)">

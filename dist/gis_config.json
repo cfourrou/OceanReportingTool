@@ -23,6 +23,33 @@
   "ortEconGPService": {
     "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"
   },
+  "nauticalChart": {
+    "url": "//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer",
+    "useCors": false,
+    "opacity": ".5"
+  },
+  "baseMapLayers": {
+    "esriNatGeo": {
+      "url": "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC",
+      "maxZoom": "12"
+    },
+    "esriOceans": {
+      "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",
+      "maxZoom": "12"
+    },
+    "esriStreets": {
+      "url": "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
+      "maxZoom": "12"
+    },
+    "esriGrey": {
+      "url": "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community",
+      "maxZoom": "12"
+    }
+  },
   "optionalLayerPanes": {
     "windResourcePotentialLayer": {
       "num": "19",
