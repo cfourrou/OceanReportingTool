@@ -24270,7 +24270,7 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                    })
+                    });
 
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
@@ -24350,18 +24350,12 @@ angular.module('myApp.services', [])
                         AOI.arel[0].PERC_COVER = 0;
                         AOI.arel[0].TOTAL_BLOC = 0;
                     }
+
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
                     AOI.loadOceanJobDollarsChart();
                     AOI.loadOceanJobContributionsChart();
-                    //because? and until all direct DOM manipulation is removed from code, this $apply is useful to
-                    // clear some digest issue that appear as timing issues.
-                    if (AOI.ID !== -9999) {
-
-                        //$rootScope.$apply();
-                    }
-
 
                 },
                 addMetadata: function (feature) {
@@ -24492,6 +24486,9 @@ angular.module('myApp.services', [])
                         AOI.TIPilot.length = 0;
 
                         AOI.hide();
+
+                        chartsDeferred = $q.defer();
+                        AOI.chartsLoaded = chartsDeferred.promise;
 
                     }
                     AOI.isLoaded = false;
@@ -24796,6 +24793,7 @@ angular.module('myApp.services', [])
 
                 },
                 loadStateChart: function () {
+                    var loadDeferred = $q.defer();
                     if (AOI.highchartsNGState) AOI.highchartsNGState = null;
 
                     AOI.highchartsNGState = {
@@ -24807,7 +24805,13 @@ angular.module('myApp.services', [])
                                 plotBackgroundColor: '#f4f8fc',
                                 plotBorderWidth: null,
                                 plotShadow: false,
-                                type: 'pie'
+                                type: 'pie',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             legend: {
                                 layout: 'vertical',
@@ -24824,7 +24828,8 @@ angular.module('myApp.services', [])
                                     dataLabels: {
                                         enabled: false
                                     },
-                                    showInLegend: true
+                                    showInLegend: true,
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
                         },
@@ -24844,10 +24849,10 @@ angular.module('myApp.services', [])
                         },
                         loading: false
                     }
-
+                    return loadDeferred.promise;
                 },
                 loadOceanJobContributionsChart: function () {
-
+                    var loadDeferred = $q.defer();
                     if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
                     AOI.OceanJobContributionsChart = {
                         options: {
@@ -24867,9 +24872,14 @@ angular.module('myApp.services', [])
                                 pointFormat: '<b>{point.percentage:.1f}%</b>'
                             },
                             chart: {
-
                                 height: AOI.OceanJobContributionsChartHeight,
-                                type: 'pie'
+                                type: 'pie',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 enabled: false,
@@ -24909,18 +24919,18 @@ angular.module('myApp.services', [])
                                                 e.preventDefault();
                                             }
                                         }
-                                    }
+                                    },
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
                         },
                         loading: false,
                         series: AOI.OceanJobContributionsSeries
                     };
-
+                    return loadDeferred.promise;
                 },
                 loadOceanJobDollarsChart: function () {
-
-
+                    var loadDeferred = $q.defer();
                     if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null;
                     AOI.OceanJobDollarsChart = {
                         options: {
@@ -24944,7 +24954,13 @@ angular.module('myApp.services', [])
                                 pointFormat: '<b>${point.y:,.2f}</b>'
                             },
                             chart: {
-                                type: 'column'
+                                type: 'column',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 enabled: false,
@@ -24967,6 +24983,11 @@ angular.module('myApp.services', [])
                                     enabled: true
                                 }
 
+                            },
+                            plotOptions: {
+                                column: {
+                                    animation: !AOI.inPrintWindow
+                                }
                             }
                         },
                         loading: false,
@@ -24980,10 +25001,10 @@ angular.module('myApp.services', [])
                         ]
 
                     };
+                    return loadDeferred.promise;
                 },
                 loadOceanJobEmployeesChart: function () {
-
-
+                    var loadDeferred = $q.defer();
                     if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null;
                     AOI.OceanJobEmployeesChart = {
                         options: {
@@ -24997,7 +25018,13 @@ angular.module('myApp.services', [])
                                 pointFormat: '<b>{point.y:,.0f}</b>'
                             },
                             chart: {
-                                type: 'column'
+                                type: 'column',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: "Employees",
@@ -25019,6 +25046,11 @@ angular.module('myApp.services', [])
                                 labels: {
                                     enabled: true
                                 }
+                            },
+                            plotOptions: {
+                                column: {
+                                    animation: !AOI.inPrintWindow
+                                }
                             }
 
                         },
@@ -25030,11 +25062,10 @@ angular.module('myApp.services', [])
 
                     };
 
-
+                    return loadDeferred.promise;
                 },
                 loadWindChart: function () {
-
-
+                    var loadDeferred = $q.defer();
                     if (AOI.highchartsNG) AOI.highchartsNG = null;
                     AOI.highchartsNG = {
                         options: {
@@ -25045,6 +25076,12 @@ angular.module('myApp.services', [])
                                 spacing: 0,
                                 margin: 0,
                                 type: 'column',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: null
@@ -25074,7 +25111,8 @@ angular.module('myApp.services', [])
                                     pointWidth: 190
                                 },
                                 column: {
-                                    stacking: 'percent'
+                                    stacking: 'percent',
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
 
@@ -25113,7 +25151,7 @@ angular.module('myApp.services', [])
 
                     };
 
-
+                    return loadDeferred.promise;
                 },
                 reloadAbort: function () {
 
@@ -25124,6 +25162,16 @@ angular.module('myApp.services', [])
                     }, 100);
 
 
+                },
+                reloadAllCharts: function () {
+                    var allPromises = [];
+                    allPromises.push(AOI.loadWindChart());
+                    allPromises.push(AOI.loadStateChart());
+                    allPromises.push(AOI.loadOceanJobEmployeesChart());
+                    allPromises.push(AOI.loadOceanJobDollarsChart());
+                    allPromises.push(AOI.loadOceanJobContributionsChart());
+
+                    return $q.all(allPromises);
                 },
                 ShowURL: function () {
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
@@ -25527,11 +25575,13 @@ EconCtrl.prototype.childPaneOn = function () {
 };
 
 
-function PrintCtrl($rootScope, AOI, $timeout, webService) {
+function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     //what is going on?
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
+    var allPromises = [AOI.reloadAllCharts()];
+    vm.readyToPrint = $q.all(allPromises);
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -25584,7 +25634,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
@@ -25621,21 +25671,26 @@ angular.module('myApp.filters', [])
 /* Directives */
 
 
-function printDirective($state,$timeout) {
+function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
-        $timeout(function () {
-            var printElement = element[0].cloneNode(true);
-            printElement.id = 'printSection';
-            document.body.appendChild(printElement);
-            window.print();
-            printElement.innerHTML = "";
-            $state.go('CEview');
-        },5300)
+        scope.loadPromise.then(function () {
+            $timeout(function () {
+                var printElement = element[0].cloneNode(true);
+                printElement.id = 'printSection';
+                document.body.appendChild(printElement);
+                window.print();
+                printElement.innerHTML = "";
+                $state.go('CEview');
+            });
+        }, 5300)
     }
 
     return {
         link: link,
-        restrict: "A"
+        restrict: "A",
+        scope: {
+            loadPromise: '='
+        }
     };
 }
 
@@ -25645,7 +25700,7 @@ angular.module('myApp.directives', [])
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$state','$timeout', printDirective])
+    .directive("ngPrint", ['$state', '$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -25913,73 +25968,84 @@ angular.module('myApp.directives', [])
         }
     }])
     .directive('smallOrtMap', function () {
-            return {
-                restrict: 'E',
-                scope: {
-                    useCanvas: '='
-                },
-                templateUrl: 'partials/smallOrtMap.html',
-                controller: ['$scope', 'L', 'AOI', 'AOIConfig', function ($scope, L, AOI, AOIConfig) {
-                    $scope.AOI = AOI;
-                    if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
-                    $scope.AOI.smallMap = L.map('smallMap').setView([45.526, -122.667], 1);
-                    //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
-                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
-                    var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                        maxZoom: 12,
-                        useCors: true
+        return {
+            restrict: 'E',
+            scope: {
+                useCanvas: '=',
+                mapPromise: '='
+            },
+            templateUrl: 'partials/smallOrtMap.html',
+            controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
+                $scope.AOI = AOI;
+                if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
+                $scope.AOI.smallMap = L.map('smallMap');
+
+                var deferred = $q.defer();
+                $scope.mapPromise = deferred.promise;
+
+                $scope.AOI.smallMap.on('load', function (e) {
+                    deferred.resolve();
+                    deferred = $q.defer();
+                    console.log('ready map');
+                });
+
+                $scope.AOI.smallMap.setView([45.526, -122.667], 1);
+                //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
+                L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
+                L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
+                var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                    maxZoom: 12,
+                    useCors: true
+                });
+
+                var minicLayer;
+                if (AOI.ID === -9999) {
+                    minicLayer = L.geoJson(AOI.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+                    var minibounds = minicLayer.getBounds();
+                    $scope.AOI.smallMap.fitBounds(minibounds);
+
+                } else {
+                    minicLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                        where: "AOI_ID =" + AOI.ID + "",
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+
+
+                    minicLayer.on("load", function (evt) {
+                        var bounds = L.latLngBounds([]);
+                        minicLayer.eachFeature(function (layer) {
+                            var layerBounds = layer.getBounds();
+                            bounds.extend(layerBounds);
+                        });
+                        //AOI.minibounds = bounds;
+                        $scope.AOI.smallMap.fitBounds(bounds);
+                        minicLayer.off('load');
                     });
-
-                    var minicLayer;
-                    if (AOI.ID === -9999) {
-                        minicLayer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-                        }).addTo($scope.AOI.smallMap);
-                        var minibounds = minicLayer.getBounds();
-                        $scope.AOI.smallMap.fitBounds(minibounds);
-
-                    } else {
-                        minicLayer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-                        }).addTo($scope.AOI.smallMap);
-
-
-                        minicLayer.on("load", function (evt) {
-                            var bounds = L.latLngBounds([]);
-                            minicLayer.eachFeature(function (layer) {
-                                var layerBounds = layer.getBounds();
-                                bounds.extend(layerBounds);
-                            });
-                            //AOI.minibounds = bounds;
-                            $scope.AOI.smallMap.fitBounds(bounds);
-                            minicLayer.off('load');
-                        });
-                    }
-                    $scope.AOI.smallMap.invalidateSize();
-                    var test1 = false;
-                    if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                            var img = document.createElement('img');
-                            var dimensions = $scope.AOI.smallMap.getSize();
-                            img.width = dimensions.x;
-                            img.height = dimensions.y;
-                            img.src = canvas.toDataURL();
-                            document.getElementById('map3').innerHTML = '';
-                            document.getElementById('map3').appendChild(img);
-                        });
-                    }
-                }]
-            }
+                }
+                $scope.AOI.smallMap.invalidateSize();
+                var test1 = false;
+                if ((AOI.inPrintWindow) && (test1)) {
+                    leafletImage($scope.AOI.smallMap, function (err, canvas) {
+                        var img = document.createElement('img');
+                        var dimensions = $scope.AOI.smallMap.getSize();
+                        img.width = dimensions.x;
+                        img.height = dimensions.y;
+                        img.src = canvas.toDataURL();
+                        document.getElementById('map3').innerHTML = '';
+                        document.getElementById('map3').appendChild(img);
+                    });
+                }
+            }]
         }
-    );
+    });
 
 
 ;

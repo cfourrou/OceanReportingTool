@@ -3,21 +3,26 @@
 /* Directives */
 
 
-function printDirective($state,$timeout) {
+function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
-        $timeout(function () {
-            var printElement = element[0].cloneNode(true);
-            printElement.id = 'printSection';
-            document.body.appendChild(printElement);
-            window.print();
-            printElement.innerHTML = "";
-            $state.go('CEview');
-        },5300)
+        scope.loadPromise.then(function () {
+            $timeout(function () {
+                var printElement = element[0].cloneNode(true);
+                printElement.id = 'printSection';
+                document.body.appendChild(printElement);
+                window.print();
+                printElement.innerHTML = "";
+                $state.go('CEview');
+            });
+        }, 5300)
     }
 
     return {
         link: link,
-        restrict: "A"
+        restrict: "A",
+        scope: {
+            loadPromise: '='
+        }
     };
 }
 
@@ -27,7 +32,7 @@ angular.module('myApp.directives', [])
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$state','$timeout', printDirective])
+    .directive("ngPrint", ['$state', '$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -295,72 +300,83 @@ angular.module('myApp.directives', [])
         }
     }])
     .directive('smallOrtMap', function () {
-            return {
-                restrict: 'E',
-                scope: {
-                    useCanvas: '='
-                },
-                templateUrl: 'partials/smallOrtMap.html',
-                controller: ['$scope', 'L', 'AOI', 'AOIConfig', function ($scope, L, AOI, AOIConfig) {
-                    $scope.AOI = AOI;
-                    if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
-                    $scope.AOI.smallMap = L.map('smallMap').setView([45.526, -122.667], 1);
-                    //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
-                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
-                    var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                        maxZoom: 12,
-                        useCors: true
+        return {
+            restrict: 'E',
+            scope: {
+                useCanvas: '=',
+                mapPromise: '='
+            },
+            templateUrl: 'partials/smallOrtMap.html',
+            controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
+                $scope.AOI = AOI;
+                if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
+                $scope.AOI.smallMap = L.map('smallMap');
+
+                var deferred = $q.defer();
+                $scope.mapPromise = deferred.promise;
+
+                $scope.AOI.smallMap.on('load', function (e) {
+                    deferred.resolve();
+                    deferred = $q.defer();
+                    console.log('ready map');
+                });
+
+                $scope.AOI.smallMap.setView([45.526, -122.667], 1);
+                //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
+                L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
+                L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
+                var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                    maxZoom: 12,
+                    useCors: true
+                });
+
+                var minicLayer;
+                if (AOI.ID === -9999) {
+                    minicLayer = L.geoJson(AOI.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+                    var minibounds = minicLayer.getBounds();
+                    $scope.AOI.smallMap.fitBounds(minibounds);
+
+                } else {
+                    minicLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                        where: "AOI_ID =" + AOI.ID + "",
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+
+
+                    minicLayer.on("load", function (evt) {
+                        var bounds = L.latLngBounds([]);
+                        minicLayer.eachFeature(function (layer) {
+                            var layerBounds = layer.getBounds();
+                            bounds.extend(layerBounds);
+                        });
+                        //AOI.minibounds = bounds;
+                        $scope.AOI.smallMap.fitBounds(bounds);
+                        minicLayer.off('load');
                     });
-
-                    var minicLayer;
-                    if (AOI.ID === -9999) {
-                        minicLayer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-                        }).addTo($scope.AOI.smallMap);
-                        var minibounds = minicLayer.getBounds();
-                        $scope.AOI.smallMap.fitBounds(minibounds);
-
-                    } else {
-                        minicLayer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-                        }).addTo($scope.AOI.smallMap);
-
-
-                        minicLayer.on("load", function (evt) {
-                            var bounds = L.latLngBounds([]);
-                            minicLayer.eachFeature(function (layer) {
-                                var layerBounds = layer.getBounds();
-                                bounds.extend(layerBounds);
-                            });
-                            //AOI.minibounds = bounds;
-                            $scope.AOI.smallMap.fitBounds(bounds);
-                            minicLayer.off('load');
-                        });
-                    }
-                    $scope.AOI.smallMap.invalidateSize();
-                    var test1 = false;
-                    if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                            var img = document.createElement('img');
-                            var dimensions = $scope.AOI.smallMap.getSize();
-                            img.width = dimensions.x;
-                            img.height = dimensions.y;
-                            img.src = canvas.toDataURL();
-                            document.getElementById('map3').innerHTML = '';
-                            document.getElementById('map3').appendChild(img);
-                        });
-                    }
-                }]
-            }
+                }
+                $scope.AOI.smallMap.invalidateSize();
+                var test1 = false;
+                if ((AOI.inPrintWindow) && (test1)) {
+                    leafletImage($scope.AOI.smallMap, function (err, canvas) {
+                        var img = document.createElement('img');
+                        var dimensions = $scope.AOI.smallMap.getSize();
+                        img.width = dimensions.x;
+                        img.height = dimensions.y;
+                        img.src = canvas.toDataURL();
+                        document.getElementById('map3').innerHTML = '';
+                        document.getElementById('map3').appendChild(img);
+                    });
+                }
+            }]
         }
-    );
+    });
 
 

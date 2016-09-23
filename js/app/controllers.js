@@ -382,11 +382,13 @@ EconCtrl.prototype.childPaneOn = function () {
 };
 
 
-function PrintCtrl($rootScope, AOI, $timeout, webService) {
+function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     //what is going on?
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
+    var allPromises = [AOI.reloadAllCharts()];
+    vm.readyToPrint = $q.all(allPromises);
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -439,7 +441,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
