@@ -10,18 +10,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.AOI.inPrintWindow = false;
 
-    vm.box = [];
-    //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-    //different catagories of menu levels are given ranges of index numbers
-
-    for (var i = 0; i < 2000; i++) {
-        vm.box.push({
-            myid: i,
-            isActive: false,
-            level: 0,
-            future: true
-        });
-    }
     vm.drawOrSubmitCommand = "DRAW";
 
     Highcharts.setOptions({
@@ -107,13 +95,16 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.checked = !vm.checked;
     };
 
-
-    vm.tMenuBox = function (id, menuIndentLevel) {
-        vm.box[id].level = menuIndentLevel;
-        vm.box[id].isActive = !vm.box[id].isActive;
-        angular.forEach(vm.box, function (myBox, index) {
-            if ((index != id) && (menuIndentLevel <= myBox.level)) {
-                myBox.isActive = false;
+    vm.menu = {};
+    vm.toggleMenu = function (menuItem, menuIndentLevel) {
+        if (vm.menu[menuItem] === undefined) {
+            vm.menu[menuItem] = {}
+        }
+        vm.menu[menuItem].level = menuIndentLevel;
+        vm.menu[menuItem].isActive = !vm.menu[menuItem].isActive;
+        angular.forEach(vm.menu, function (value, key) {
+            if ((key != menuItem) && (menuIndentLevel <= value.level)) {
+                vm.menu[key].isActive = false;
             }
         })
     };
@@ -140,9 +131,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.resetMap();
 
-        angular.forEach(vm.box, function (myBox) {
-            myBox.isActive = false;
-        })
+        //angular.forEach(vm.box, function (myBox) {
+        //    myBox.isActive = false;
+        //})
 
     };
 

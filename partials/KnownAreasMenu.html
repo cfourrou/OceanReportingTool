@@ -5,69 +5,66 @@
         <hr width="50%" align="left">
 
         <!--Special Interest areas menu below -->
-        <div class="menuBoxlight" ng-click="vm.tMenuBox(1000,0)">
+        <div class="menuBoxlight" ng-click="vm.toggleMenu('special', 0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
-                 ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[1000].isActive]"><img
+                 ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.menu.special.isActive]"><img
                     class="pluscloseIcon" src="img/plus_close.svg"></div>
             <div>Special Interest Areas</div>
         </div>
 
 
         <div ng-repeat="aoix in vm.aoismenu | unique: 'REPORT_TYPE' | orderBy : 'REPORT_TYPE'">
-            <div class="menuboxofboxes" ng-show="vm.box[1000].isActive">
-
-                <div class="menuBoxlight" ng-click="vm.tMenuBox($index,1)">
+            <div class="menuboxofboxes" ng-show="vm.menu.special.isActive">
+                <div class="menuBoxlight" ng-click="vm.toggleMenu(aoix.REPORT_TYPE, 1)">
                     <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
-                         ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[{{$index}}].isActive]">
+                         ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.menu[aoix.REPORT_TYPE].isActive]">
                         <img class="pluscloseIcon" src="img/plus_close.svg"></div>
                     <div>{{aoix.REPORT_TYPE}}</div>
                 </div>
 
-                <div class="menuboxofboxes" ng-show="vm.box[{{$index}}].isActive">
+                <div class="menuboxofboxes" ng-show="vm.menu[aoix.REPORT_TYPE].isActive">
                     <div ng-repeat="aoil in vm.aoismenu | filter: {REPORT_TYPE: aoix.REPORT_TYPE} | orderBy : 'AOI_NAME'">
                         <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="vm.mover(aoil.AOI_ID)"
-                             ng-mouseout="vm.mout(aoil.AOI_ID)" ng-click="vm.AOI.loadData(aoil.AOI_ID,aoil.AOI_NAME)">
+                             ng-mouseout="vm.mout()" ng-click="vm.mout(); vm.AOI.loadData(aoil.AOI_ID,aoil.AOI_NAME)">
                             {{aoil.AOI_NAME}}
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
 
 
         <!--State menu below -->
-        <div class="menuBoxlight" ng-click="vm.tMenuBox(1001,0)">
+        <div class="menuBoxlight" ng-click="vm.toggleMenu('state', 0)">
             <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
-                 ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[1001].isActive]"><img
+                 ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.menu.state.isActive]"><img
                     class="pluscloseIcon" src="img/plus_close.svg"></div>
             <div>Other Areas by State</div>
         </div>
         <div ng-repeat="statex in vm.aoistates | unique: 'COMMON_NM' | orderBy : 'COMMON_NM'">
-            <div class="menuboxofboxes" ng-show="vm.box[1001].isActive">
+            <div class="menuboxofboxes" ng-show="vm.menu.state.isActive">
 
-                <div class="menuBoxlight" ng-click="vm.tMenuBox($index,1)">
+                <div class="menuBoxlight" ng-click="vm.toggleMenu(statex.COMMON_NM, 1)">
                     <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
-                         ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[{{$index}}].isActive]"><img
+                         ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.menu[statex.COMMON_NM].isActive]"><img
                             class="pluscloseIcon" src="img/plus_close.svg"></div>
                     <div>{{statex.COMMON_NM}}</div>
                 </div>
 
-                <div class="menuboxofboxes" ng-show="vm.box[{{$index}}].isActive">
+                <div class="menuboxofboxes" ng-show="vm.menu[statex.COMMON_NM].isActive">
                     <div ng-repeat="statel in vm.aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'FederalAndStateWaters'}| orderBy : 'AOI_NAME'">
                         <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="vm.mover(statel.AOI_ID)"
                              ng-mouseout="vm.mout(statel.AOI_ID)" ng-click="vm.AOI.loadData(statel.AOI_ID,statel.AOI_NAME)">
                             {{statel.AOI_NAME}} ({{statel.DESC_}})
                         </div>
                     </div>
-                    <div class="menuBoxlight" ng-click="vm.tMenuBox($index+100,2)">
+                    <div class="menuBoxlight" ng-click="vm.toggleMenu(statex.COMMON_NM+'sub', 2)">
                         <div class="areasicon" ng-animate="{enter: 'rotate', leave: 'rotateCounterwise'}"
-                             ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.box[{{$index+100}}].isActive]"><img
+                             ng-class="{true: 'rotate', false: 'rotateCounterwise'}[vm.menu[statex.COMMON_NM+'sub'].isActive]"><img
                                 class="pluscloseIcon" src="img/plus_close.svg"></div>
                         <div>Waters offshore of {{statex.COMMON_NM}} Counties</div>
                     </div>
-                    <div class="menuboxofboxes" ng-show="vm.box[{{$index+100}}].isActive">
+                    <div class="menuboxofboxes" ng-show="vm.menu[statex.COMMON_NM+'sub'].isActive">
                         <div ng-repeat="statey in vm.aoistates | filter: { COMMON_NM: statex.COMMON_NM,DATASET_NM:'Waters_County'}| orderBy : 'AOI_NAME'">
                             <div role="button" class="menuBoxdark" ui-sref="CEview" ng-mouseover="vm.mover(statey.AOI_ID)"
                                  ng-mouseout="vm.mout(statey.AOI_ID)"
