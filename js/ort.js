@@ -23315,18 +23315,18 @@ angular.module('myApp.services', [])
                         AOI.layer.on("load", function (evt) {
                             // create a new empty Leaflet bounds object
 
-                            var mbounds = L.latLngBounds([]);
+                            var myBounds = L.latLngBounds([]);
                             // loop through the features returned by the server
 
                             AOI.layer.eachFeature(function (layer) {
                                 // get the bounds of an individual feature
                                 var layerBounds = layer.getBounds();
                                 // extend the bounds of the collection to fit the bounds of the new feature
-                                mbounds.extend(layerBounds);
+                                myBounds.extend(layerBounds);
                             });
 
                             try {
-                                AOI.map.fitBounds(mbounds);
+                                AOI.map.fitBounds(myBounds);
 
                                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
                             }
@@ -23352,15 +23352,15 @@ angular.module('myApp.services', [])
                 },
                 zoomTo: function () {
 
-                    var mbounds = L.latLngBounds([]);
+                    var myBounds = L.latLngBounds([]);
                     // loop through the features returned by the server
                     AOI.layer.eachFeature(function (layer) {
                         // get the bounds of an individual feature
                         var layerBounds = layer.getBounds();
                         // extend the bounds of the collection to fit the bounds of the new feature
-                        mbounds.extend(layerBounds);
+                        myBounds.extend(layerBounds);
                     });
-                    AOI.map.fitBounds(mbounds);
+                    AOI.map.fitBounds(myBounds);
 
 
                 },
@@ -23445,9 +23445,9 @@ angular.module('myApp.services', [])
                 },
                 loadData: function (id, name) {
                     AOI.ID = id;
-                    AOI.windrpLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windrpLayer,
-                        pane: 'windrpLayerPane',
+                    AOI.windResourcePotentialLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windResourcePotentialLayer,
+                        pane: 'windResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.Speed_90 >= 8.8) {
                                 return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -23727,16 +23727,16 @@ angular.module('myApp.services', [])
                     if (AOI.ID === -9999) {
                         var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
 
-                        var newarray = [];
+                        var tempFeatureArray = [];
                         angular.forEach(featureCollection.features, function (feature) {
-                            var newobject = {};
+                            var tempFeatureObject = {};
                             angular.forEach(featureCollection.fields, function (field) {
-                                newobject[field.name] = feature.attributes[field.name];
+                                tempFeatureObject[field.name] = feature.attributes[field.name];
                             });
-                            newarray.push(newobject);
+                            tempFeatureArray.push(tempFeatureObject);
                         });
 
-                        AOI.massageData(newarray);
+                        AOI.massageData(tempFeatureArray);
                         AOI.display();
                         AOI.name = name;
 
@@ -23745,17 +23745,17 @@ angular.module('myApp.services', [])
                         queryService.query("AOI_ID =" + AOI.ID + "").then(function (featureCollection) {
                             AOI.name = featureCollection.features[0].properties.AOI_NAME;
 
-                            var newarray = [];
+                            var tempFeatureArray = [];
                             angular.forEach(featureCollection.features, function (feature) {
-                                var newobject = {};
+                                var tempFeatureObject = {};
                                 angular.forEach(featureCollection.fields, function (field) {
-                                    newobject[field.name] = feature.properties[field.name];
+                                    tempFeatureObject[field.name] = feature.properties[field.name];
                                 });
-                                newarray.push(newobject);
+                                tempFeatureArray.push(tempFeatureObject);
                             });
                             //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                            AOI.massageData(newarray);
+                            AOI.massageData(tempFeatureArray);
                             AOI.display();
                             //AOI.name = name;
 
@@ -24378,7 +24378,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.HydrokineticLeases);
                         AOI.map.removeLayer(AOI.windPlanningLayer);
                         AOI.map.removeLayer(AOI.windLeaseLayer);
-                        AOI.map.removeLayer(AOI.windrpLayer);
+                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
                         AOI.map.removeLayer(AOI.marineMineralsLeases);
                         AOI.map.removeLayer(AOI.wavePower);
                         AOI.map.removeLayer(AOI.tidalPower);
@@ -24400,7 +24400,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
 
                         AOI.windLeaseLayerIsVisible = false;
-                        AOI.windrpLayerIsVisible = false;
+                        AOI.windResourcePotentialLayerIsVisible = false;
                         AOI.windPlanningLayerIsVisible = false;
                         AOI.oceanDisposalSitesIsVisible = false;
                         AOI.marineMineralsLeases = false;
@@ -24709,15 +24709,15 @@ angular.module('myApp.services', [])
                     }
                 },
 
-                windrpLayerIsVisible: false,
+                windResourcePotentialLayerIsVisible: false,
                 toggleWindrpLayer: function () {
 
-                    if (!AOI.windrpLayerIsVisible) {
-                        AOI.windrpLayer.addTo(AOI.map);
-                        AOI.windrpLayerIsVisible = true;
+                    if (!AOI.windResourcePotentialLayerIsVisible) {
+                        AOI.windResourcePotentialLayer.addTo(AOI.map);
+                        AOI.windResourcePotentialLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.windrpLayer);
-                        AOI.windrpLayerIsVisible = false;
+                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
+                        AOI.windResourcePotentialLayerIsVisible = false;
                     }
                 },
                 CEElevationIsVisable: false,
@@ -25203,18 +25203,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.AOI.inPrintWindow = false;
 
-    vm.box = [];
-    //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-    //different catagories of menu levels are given ranges of index numbers
-
-    for (var i = 0; i < 2000; i++) {
-        vm.box.push({
-            myid: i,
-            isActive: false,
-            level: 0,
-            future: true
-        });
-    }
+    //vm.box = [];
+    ////'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
+    ////different catagories of menu levels are given ranges of index numbers
+    //
+    //for (var i = 0; i < 2000; i++) {
+    //    vm.box.push({
+    //        myid: i,
+    //        isActive: false,
+    //        level: 0,
+    //        future: true
+    //    });
+    //}
     vm.drawOrSubmitCommand = "DRAW";
 
     Highcharts.setOptions({
@@ -25301,15 +25301,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
 
-    vm.tMenuBox = function (id, menuIndentLevel) {
-        vm.box[id].level = menuIndentLevel;
-        vm.box[id].isActive = !vm.box[id].isActive;
-        angular.forEach(vm.box, function (myBox, index) {
-            if ((index != id) && (menuIndentLevel <= myBox.level)) {
-                myBox.isActive = false;
-            }
-        })
-    };
+    //vm.tMenuBox = function (id, menuIndentLevel) {
+    //    vm.box[id].level = menuIndentLevel;
+    //    vm.box[id].isActive = !vm.box[id].isActive;
+    //    angular.forEach(vm.box, function (myBox, index) {
+    //        if ((index != id) && (menuIndentLevel <= myBox.level)) {
+    //            myBox.isActive = false;
+    //        }
+    //    })
+    //};
 
     vm.startOver = function () {
 
@@ -25333,9 +25333,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.resetMap();
 
-        angular.forEach(vm.box, function (myBox) {
-            myBox.isActive = false;
-        })
+        //angular.forEach(vm.box, function (myBox) {
+        //    myBox.isActive = false;
+        //})
 
     };
 
@@ -25386,7 +25386,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: feature.properties.REPORT_TYPE,
                 AOI_ID: feature.properties.AOI_ID,
                 DATASET_NM: feature.properties.DATASET_NM,
-                DESC_: feature.properties.DESC_
+                DESC_: feature.properties.DESC_,
+                isActive: false
             });
         });
 
@@ -25406,7 +25407,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                 AOI_ID: featureCollection.features[i].properties.AOI_ID,
                 DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_
+                DESC_: featureCollection.features[i].properties.DESC_,
+                isActive: false
             };
         });
 
@@ -25441,7 +25443,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
-PageslideCtrl.prototype.mout = function (id) {
+PageslideCtrl.prototype.mouseOff = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
@@ -25498,7 +25500,7 @@ function AOICtrl(AOI, webService) {
 
 AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
 AOICtrl.prototype.childMouseOut = function (id) {
-    this.mout(id);
+    this.mouseOff(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
     this.paneOn();
@@ -26053,24 +26055,25 @@ angular.module('myApp.directives', [])
 
 var toggle = false;
 
-var mouseLayer, searchControl;
+//var mouseLayer, searchControl;
 
 
 function preloader() {
     if (document.images) {
         var img1 = new Image();
-
+        var img2 = new Image();
         img1.src = "img/wind_cc.svg";
+        img2.src = "img/BOEM_logo.svg";
     }
 }
 function addLoadEvent(func) {
-    var oldonload = window.onload;
+    var oldOnLoad = window.onload;
     if (typeof window.onload != 'function') {
         window.onload = func;
     } else {
         window.onload = function () {
-            if (oldonload) {
-                oldonload();
+            if (oldOnLoad) {
+                oldOnLoad();
             }
             func();
         }
@@ -26159,16 +26162,16 @@ $http.get("gis_config.json").then(function (result) {
             $urlRouterProvider.otherwise('/main');
 
             AOIConfigProvider.set({
-                ortMapServer: result.data['ortMapServer'].data,
-                ortLayerData: result.data['ortLayerData'].data,
-                ortLayerAOI: result.data['ortLayerAOI'].data,
-                ortEnergyGPService: result.data['ortEnergyGPService'].data,
-                ortCommonGPService: result.data['ortCommonGPService'].data,
-                ortTranspoGPService: result.data['ortTranspoGPService'].data,
-                ortNaturalGPService: result.data['ortNaturalGPService'].data,
-                ortEconGPService: result.data['ortEconGPService'].data,
+                ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
+                ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
+                ortLayerAOI: result.data['ortLayerAOI'].data,//Ocean Reporting Tool map Layer for this Area Of Interest
+                ortEnergyGPService: result.data['ortEnergyGPService'].data, //ORT Energy GeoProcessing Service URL
+                ortCommonGPService: result.data['ortCommonGPService'].data, //ORT Common Elements or General Information GeoProcessing Service URL
+                ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL
+                ortNaturalGPService: result.data['ortNaturalGPService'].data,//ORT Natural Resources GeoProcessing Service URL
+                ortEconGPService: result.data['ortEconGPService'].data, //ORT Economics GeoProcessing Service URL
                 optionalLayers: {
-                    windrpLayer: result.data['optionalLayerPanes'].windrpLayer.num,
+                    windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
                     windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
                     windPlanningLayer: result.data['optionalLayerPanes'].windPlanningLayer.num,
                     oceanDisposalSites: result.data['optionalLayerPanes'].oceanDisposalSites.num,
@@ -26179,15 +26182,15 @@ $http.get("gis_config.json").then(function (result) {
                     currentPower: result.data['optionalLayerPanes'].currentPower.num,
                     beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
                     coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,
-                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
-                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,//Common Elements Elevation Layer
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//Economics and Commerce Coastal Counties Layer
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//Transportation and Infrastructure Submarine Layer
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
                     CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
                     CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
                     TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
                     TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//Natural Resources and Conservation NearbyLayer
                     NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
                     NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
                     NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,

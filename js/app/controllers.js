@@ -10,18 +10,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.AOI.inPrintWindow = false;
 
-    vm.box = [];
-    //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-    //different catagories of menu levels are given ranges of index numbers
-
-    for (var i = 0; i < 2000; i++) {
-        vm.box.push({
-            myid: i,
-            isActive: false,
-            level: 0,
-            future: true
-        });
-    }
+    //vm.box = [];
+    ////'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
+    ////different catagories of menu levels are given ranges of index numbers
+    //
+    //for (var i = 0; i < 2000; i++) {
+    //    vm.box.push({
+    //        myid: i,
+    //        isActive: false,
+    //        level: 0,
+    //        future: true
+    //    });
+    //}
     vm.drawOrSubmitCommand = "DRAW";
 
     Highcharts.setOptions({
@@ -108,15 +108,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
 
-    vm.tMenuBox = function (id, menuIndentLevel) {
-        vm.box[id].level = menuIndentLevel;
-        vm.box[id].isActive = !vm.box[id].isActive;
-        angular.forEach(vm.box, function (myBox, index) {
-            if ((index != id) && (menuIndentLevel <= myBox.level)) {
-                myBox.isActive = false;
-            }
-        })
-    };
+    //vm.tMenuBox = function (id, menuIndentLevel) {
+    //    vm.box[id].level = menuIndentLevel;
+    //    vm.box[id].isActive = !vm.box[id].isActive;
+    //    angular.forEach(vm.box, function (myBox, index) {
+    //        if ((index != id) && (menuIndentLevel <= myBox.level)) {
+    //            myBox.isActive = false;
+    //        }
+    //    })
+    //};
 
     vm.startOver = function () {
 
@@ -140,9 +140,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.resetMap();
 
-        angular.forEach(vm.box, function (myBox) {
-            myBox.isActive = false;
-        })
+        //angular.forEach(vm.box, function (myBox) {
+        //    myBox.isActive = false;
+        //})
 
     };
 
@@ -193,7 +193,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: feature.properties.REPORT_TYPE,
                 AOI_ID: feature.properties.AOI_ID,
                 DATASET_NM: feature.properties.DATASET_NM,
-                DESC_: feature.properties.DESC_
+                DESC_: feature.properties.DESC_,
+                isActive: false
             });
         });
 
@@ -213,7 +214,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                 AOI_ID: featureCollection.features[i].properties.AOI_ID,
                 DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_
+                DESC_: featureCollection.features[i].properties.DESC_,
+                isActive: false
             };
         });
 
@@ -248,7 +250,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
-PageslideCtrl.prototype.mout = function (id) {
+PageslideCtrl.prototype.mouseOff = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
@@ -305,7 +307,7 @@ function AOICtrl(AOI, webService) {
 
 AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
 AOICtrl.prototype.childMouseOut = function (id) {
-    this.mout(id);
+    this.mouseOff(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
     this.paneOn();

@@ -216,18 +216,18 @@ angular.module('myApp.services', [])
                         AOI.layer.on("load", function (evt) {
                             // create a new empty Leaflet bounds object
 
-                            var mbounds = L.latLngBounds([]);
+                            var myBounds = L.latLngBounds([]);
                             // loop through the features returned by the server
 
                             AOI.layer.eachFeature(function (layer) {
                                 // get the bounds of an individual feature
                                 var layerBounds = layer.getBounds();
                                 // extend the bounds of the collection to fit the bounds of the new feature
-                                mbounds.extend(layerBounds);
+                                myBounds.extend(layerBounds);
                             });
 
                             try {
-                                AOI.map.fitBounds(mbounds);
+                                AOI.map.fitBounds(myBounds);
 
                                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
                             }
@@ -253,15 +253,15 @@ angular.module('myApp.services', [])
                 },
                 zoomTo: function () {
 
-                    var mbounds = L.latLngBounds([]);
+                    var myBounds = L.latLngBounds([]);
                     // loop through the features returned by the server
                     AOI.layer.eachFeature(function (layer) {
                         // get the bounds of an individual feature
                         var layerBounds = layer.getBounds();
                         // extend the bounds of the collection to fit the bounds of the new feature
-                        mbounds.extend(layerBounds);
+                        myBounds.extend(layerBounds);
                     });
-                    AOI.map.fitBounds(mbounds);
+                    AOI.map.fitBounds(myBounds);
 
 
                 },
@@ -346,9 +346,9 @@ angular.module('myApp.services', [])
                 },
                 loadData: function (id, name) {
                     AOI.ID = id;
-                    AOI.windrpLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windrpLayer,
-                        pane: 'windrpLayerPane',
+                    AOI.windResourcePotentialLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windResourcePotentialLayer,
+                        pane: 'windResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.Speed_90 >= 8.8) {
                                 return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -628,16 +628,16 @@ angular.module('myApp.services', [])
                     if (AOI.ID === -9999) {
                         var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
 
-                        var newarray = [];
+                        var tempFeatureArray = [];
                         angular.forEach(featureCollection.features, function (feature) {
-                            var newobject = {};
+                            var tempFeatureObject = {};
                             angular.forEach(featureCollection.fields, function (field) {
-                                newobject[field.name] = feature.attributes[field.name];
+                                tempFeatureObject[field.name] = feature.attributes[field.name];
                             });
-                            newarray.push(newobject);
+                            tempFeatureArray.push(tempFeatureObject);
                         });
 
-                        AOI.massageData(newarray);
+                        AOI.massageData(tempFeatureArray);
                         AOI.display();
                         AOI.name = name;
 
@@ -646,17 +646,17 @@ angular.module('myApp.services', [])
                         queryService.query("AOI_ID =" + AOI.ID + "").then(function (featureCollection) {
                             AOI.name = featureCollection.features[0].properties.AOI_NAME;
 
-                            var newarray = [];
+                            var tempFeatureArray = [];
                             angular.forEach(featureCollection.features, function (feature) {
-                                var newobject = {};
+                                var tempFeatureObject = {};
                                 angular.forEach(featureCollection.fields, function (field) {
-                                    newobject[field.name] = feature.properties[field.name];
+                                    tempFeatureObject[field.name] = feature.properties[field.name];
                                 });
-                                newarray.push(newobject);
+                                tempFeatureArray.push(tempFeatureObject);
                             });
                             //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                            AOI.massageData(newarray);
+                            AOI.massageData(tempFeatureArray);
                             AOI.display();
                             //AOI.name = name;
 
@@ -1279,7 +1279,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.HydrokineticLeases);
                         AOI.map.removeLayer(AOI.windPlanningLayer);
                         AOI.map.removeLayer(AOI.windLeaseLayer);
-                        AOI.map.removeLayer(AOI.windrpLayer);
+                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
                         AOI.map.removeLayer(AOI.marineMineralsLeases);
                         AOI.map.removeLayer(AOI.wavePower);
                         AOI.map.removeLayer(AOI.tidalPower);
@@ -1301,7 +1301,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
 
                         AOI.windLeaseLayerIsVisible = false;
-                        AOI.windrpLayerIsVisible = false;
+                        AOI.windResourcePotentialLayerIsVisible = false;
                         AOI.windPlanningLayerIsVisible = false;
                         AOI.oceanDisposalSitesIsVisible = false;
                         AOI.marineMineralsLeases = false;
@@ -1610,15 +1610,15 @@ angular.module('myApp.services', [])
                     }
                 },
 
-                windrpLayerIsVisible: false,
+                windResourcePotentialLayerIsVisible: false,
                 toggleWindrpLayer: function () {
 
-                    if (!AOI.windrpLayerIsVisible) {
-                        AOI.windrpLayer.addTo(AOI.map);
-                        AOI.windrpLayerIsVisible = true;
+                    if (!AOI.windResourcePotentialLayerIsVisible) {
+                        AOI.windResourcePotentialLayer.addTo(AOI.map);
+                        AOI.windResourcePotentialLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.windrpLayer);
-                        AOI.windrpLayerIsVisible = false;
+                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
+                        AOI.windResourcePotentialLayerIsVisible = false;
                     }
                 },
                 CEElevationIsVisable: false,

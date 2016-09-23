@@ -15,14 +15,12 @@
 
     <div id="sliderData" class="h100">
 
-            <div class="overflowauto" ng-print >
+            <div class="overflowauto" ng-print load-promise="Printvm.readyToPrint">
                 <div>{{Printvm.AOI.name.toUpperCase()}}</div>
                 <div id="AOItab" class="AOItabClassPrint"> Common Elements
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
                 <span ng-init="AOIvm=Printvm"><div ng-repeat="x in Printvm.CEConfig | orderBy: 'priority'">
-
-                    <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
-
+                    <div ng-show="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
                 </div></span>
                 </div>
 
@@ -31,9 +29,7 @@
                 <div id="AOItab" class="AOItabClass"> Energy and Minerals
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
                 <span ng-init="EMvm=Printvm"><div ng-repeat="x in Printvm.EMConfig | orderBy: 'priority'">
-
-                    <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
-
+                    <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
                 </div></span>
 
                 </div>
@@ -43,7 +39,7 @@
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
                 <span ng-init="NRCvm=Printvm"><div ng-repeat="x in Printvm.NRCConfig | orderBy: 'priority'">
 
-                    <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
+                    <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
 
                 </div></span>
 
@@ -55,7 +51,7 @@
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
                 <span ng-init="TIvm=Printvm"><div ng-repeat="x in Printvm.TIConfig | orderBy: 'priority'">
 
-                    <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
+                    <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
 
                 </div></span>
 
@@ -66,7 +62,7 @@
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
                <span ng-init="ECvm=Printvm"> <div ng-repeat="x in Printvm.ECConfig | orderBy: 'priority'">
 
-                   <div ng-if="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
+                   <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
 
                </div></span>
 

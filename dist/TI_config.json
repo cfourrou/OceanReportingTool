@@ -1,7 +1,7 @@
 [
-    { "filename":"partials/TI_SubmarineCables.html", "priority":46 },
-    { "filename":"partials/smallMap.html", "priority":47},
-    { "filename":"partials/TI_CoastalMaintainedChannels.html", "priority":48},
+    {"filename":"partials/TI_SubmarineCables.html", "priority":46 },
+    {"filename":"partials/smallMap.html", "priority":47},
+    {"filename":"partials/TI_CoastalMaintainedChannels.html", "priority":48},
     {"filename":"partials/TI_DangerZones.html","priority":51},
     {"filename":"partials/TI_ShippingLanes.html","priority":49},
     {"filename":"partials/TI_VesselCount.html","priority":50},

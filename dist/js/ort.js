@@ -23315,18 +23315,18 @@ angular.module('myApp.services', [])
                         AOI.layer.on("load", function (evt) {
                             // create a new empty Leaflet bounds object
 
-                            var mbounds = L.latLngBounds([]);
+                            var myBounds = L.latLngBounds([]);
                             // loop through the features returned by the server
 
                             AOI.layer.eachFeature(function (layer) {
                                 // get the bounds of an individual feature
                                 var layerBounds = layer.getBounds();
                                 // extend the bounds of the collection to fit the bounds of the new feature
-                                mbounds.extend(layerBounds);
+                                myBounds.extend(layerBounds);
                             });
 
                             try {
-                                AOI.map.fitBounds(mbounds);
+                                AOI.map.fitBounds(myBounds);
 
                                 AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
                             }
@@ -23352,15 +23352,15 @@ angular.module('myApp.services', [])
                 },
                 zoomTo: function () {
 
-                    var mbounds = L.latLngBounds([]);
+                    var myBounds = L.latLngBounds([]);
                     // loop through the features returned by the server
                     AOI.layer.eachFeature(function (layer) {
                         // get the bounds of an individual feature
                         var layerBounds = layer.getBounds();
                         // extend the bounds of the collection to fit the bounds of the new feature
-                        mbounds.extend(layerBounds);
+                        myBounds.extend(layerBounds);
                     });
-                    AOI.map.fitBounds(mbounds);
+                    AOI.map.fitBounds(myBounds);
 
 
                 },
@@ -23445,9 +23445,9 @@ angular.module('myApp.services', [])
                 },
                 loadData: function (id, name) {
                     AOI.ID = id;
-                    AOI.windrpLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windrpLayer,
-                        pane: 'windrpLayerPane',
+                    AOI.windResourcePotentialLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windResourcePotentialLayer,
+                        pane: 'windResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.Speed_90 >= 8.8) {
                                 return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -23727,16 +23727,16 @@ angular.module('myApp.services', [])
                     if (AOI.ID === -9999) {
                         var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
 
-                        var newarray = [];
+                        var tempFeatureArray = [];
                         angular.forEach(featureCollection.features, function (feature) {
-                            var newobject = {};
+                            var tempFeatureObject = {};
                             angular.forEach(featureCollection.fields, function (field) {
-                                newobject[field.name] = feature.attributes[field.name];
+                                tempFeatureObject[field.name] = feature.attributes[field.name];
                             });
-                            newarray.push(newobject);
+                            tempFeatureArray.push(tempFeatureObject);
                         });
 
-                        AOI.massageData(newarray);
+                        AOI.massageData(tempFeatureArray);
                         AOI.display();
                         AOI.name = name;
 
@@ -23745,17 +23745,17 @@ angular.module('myApp.services', [])
                         queryService.query("AOI_ID =" + AOI.ID + "").then(function (featureCollection) {
                             AOI.name = featureCollection.features[0].properties.AOI_NAME;
 
-                            var newarray = [];
+                            var tempFeatureArray = [];
                             angular.forEach(featureCollection.features, function (feature) {
-                                var newobject = {};
+                                var tempFeatureObject = {};
                                 angular.forEach(featureCollection.fields, function (field) {
-                                    newobject[field.name] = feature.properties[field.name];
+                                    tempFeatureObject[field.name] = feature.properties[field.name];
                                 });
-                                newarray.push(newobject);
+                                tempFeatureArray.push(tempFeatureObject);
                             });
                             //the idea here is , since the two arrays that can make it to .massageData are organized differently, we need to parse them into a known structure.
 
-                            AOI.massageData(newarray);
+                            AOI.massageData(tempFeatureArray);
                             AOI.display();
                             //AOI.name = name;
 
@@ -24270,7 +24270,7 @@ angular.module('myApp.services', [])
                             }
                         }
 
-                    })
+                    });
 
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
@@ -24350,18 +24350,12 @@ angular.module('myApp.services', [])
                         AOI.arel[0].PERC_COVER = 0;
                         AOI.arel[0].TOTAL_BLOC = 0;
                     }
+
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
                     AOI.loadOceanJobDollarsChart();
                     AOI.loadOceanJobContributionsChart();
-                    //because? and until all direct DOM manipulation is removed from code, this $apply is useful to
-                    // clear some digest issue that appear as timing issues.
-                    if (AOI.ID !== -9999) {
-
-                        //$rootScope.$apply();
-                    }
-
 
                 },
                 addMetadata: function (feature) {
@@ -24384,7 +24378,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.HydrokineticLeases);
                         AOI.map.removeLayer(AOI.windPlanningLayer);
                         AOI.map.removeLayer(AOI.windLeaseLayer);
-                        AOI.map.removeLayer(AOI.windrpLayer);
+                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
                         AOI.map.removeLayer(AOI.marineMineralsLeases);
                         AOI.map.removeLayer(AOI.wavePower);
                         AOI.map.removeLayer(AOI.tidalPower);
@@ -24406,7 +24400,7 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
 
                         AOI.windLeaseLayerIsVisible = false;
-                        AOI.windrpLayerIsVisible = false;
+                        AOI.windResourcePotentialLayerIsVisible = false;
                         AOI.windPlanningLayerIsVisible = false;
                         AOI.oceanDisposalSitesIsVisible = false;
                         AOI.marineMineralsLeases = false;
@@ -24492,6 +24486,9 @@ angular.module('myApp.services', [])
                         AOI.TIPilot.length = 0;
 
                         AOI.hide();
+
+                        chartsDeferred = $q.defer();
+                        AOI.chartsLoaded = chartsDeferred.promise;
 
                     }
                     AOI.isLoaded = false;
@@ -24712,15 +24709,15 @@ angular.module('myApp.services', [])
                     }
                 },
 
-                windrpLayerIsVisible: false,
+                windResourcePotentialLayerIsVisible: false,
                 toggleWindrpLayer: function () {
 
-                    if (!AOI.windrpLayerIsVisible) {
-                        AOI.windrpLayer.addTo(AOI.map);
-                        AOI.windrpLayerIsVisible = true;
+                    if (!AOI.windResourcePotentialLayerIsVisible) {
+                        AOI.windResourcePotentialLayer.addTo(AOI.map);
+                        AOI.windResourcePotentialLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.windrpLayer);
-                        AOI.windrpLayerIsVisible = false;
+                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
+                        AOI.windResourcePotentialLayerIsVisible = false;
                     }
                 },
                 CEElevationIsVisable: false,
@@ -24796,6 +24793,7 @@ angular.module('myApp.services', [])
 
                 },
                 loadStateChart: function () {
+                    var loadDeferred = $q.defer();
                     if (AOI.highchartsNGState) AOI.highchartsNGState = null;
 
                     AOI.highchartsNGState = {
@@ -24807,7 +24805,13 @@ angular.module('myApp.services', [])
                                 plotBackgroundColor: '#f4f8fc',
                                 plotBorderWidth: null,
                                 plotShadow: false,
-                                type: 'pie'
+                                type: 'pie',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             legend: {
                                 layout: 'vertical',
@@ -24824,7 +24828,8 @@ angular.module('myApp.services', [])
                                     dataLabels: {
                                         enabled: false
                                     },
-                                    showInLegend: true
+                                    showInLegend: true,
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
                         },
@@ -24844,10 +24849,10 @@ angular.module('myApp.services', [])
                         },
                         loading: false
                     }
-
+                    return loadDeferred.promise;
                 },
                 loadOceanJobContributionsChart: function () {
-
+                    var loadDeferred = $q.defer();
                     if (AOI.OceanJobContributionsChart) AOI.OceanJobContributionsChart = null;
                     AOI.OceanJobContributionsChart = {
                         options: {
@@ -24867,9 +24872,14 @@ angular.module('myApp.services', [])
                                 pointFormat: '<b>{point.percentage:.1f}%</b>'
                             },
                             chart: {
-
                                 height: AOI.OceanJobContributionsChartHeight,
-                                type: 'pie'
+                                type: 'pie',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 enabled: false,
@@ -24909,18 +24919,18 @@ angular.module('myApp.services', [])
                                                 e.preventDefault();
                                             }
                                         }
-                                    }
+                                    },
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
                         },
                         loading: false,
                         series: AOI.OceanJobContributionsSeries
                     };
-
+                    return loadDeferred.promise;
                 },
                 loadOceanJobDollarsChart: function () {
-
-
+                    var loadDeferred = $q.defer();
                     if (AOI.OceanJobDollarsChart) AOI.OceanJobDollarsChart = null;
                     AOI.OceanJobDollarsChart = {
                         options: {
@@ -24944,7 +24954,13 @@ angular.module('myApp.services', [])
                                 pointFormat: '<b>${point.y:,.2f}</b>'
                             },
                             chart: {
-                                type: 'column'
+                                type: 'column',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 enabled: false,
@@ -24967,6 +24983,11 @@ angular.module('myApp.services', [])
                                     enabled: true
                                 }
 
+                            },
+                            plotOptions: {
+                                column: {
+                                    animation: !AOI.inPrintWindow
+                                }
                             }
                         },
                         loading: false,
@@ -24980,10 +25001,10 @@ angular.module('myApp.services', [])
                         ]
 
                     };
+                    return loadDeferred.promise;
                 },
                 loadOceanJobEmployeesChart: function () {
-
-
+                    var loadDeferred = $q.defer();
                     if (AOI.OceanJobEmployeesChart) AOI.OceanJobEmployeesChart = null;
                     AOI.OceanJobEmployeesChart = {
                         options: {
@@ -24997,7 +25018,13 @@ angular.module('myApp.services', [])
                                 pointFormat: '<b>{point.y:,.0f}</b>'
                             },
                             chart: {
-                                type: 'column'
+                                type: 'column',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: "Employees",
@@ -25019,6 +25046,11 @@ angular.module('myApp.services', [])
                                 labels: {
                                     enabled: true
                                 }
+                            },
+                            plotOptions: {
+                                column: {
+                                    animation: !AOI.inPrintWindow
+                                }
                             }
 
                         },
@@ -25030,11 +25062,10 @@ angular.module('myApp.services', [])
 
                     };
 
-
+                    return loadDeferred.promise;
                 },
                 loadWindChart: function () {
-
-
+                    var loadDeferred = $q.defer();
                     if (AOI.highchartsNG) AOI.highchartsNG = null;
                     AOI.highchartsNG = {
                         options: {
@@ -25045,6 +25076,12 @@ angular.module('myApp.services', [])
                                 spacing: 0,
                                 margin: 0,
                                 type: 'column',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: null
@@ -25074,7 +25111,8 @@ angular.module('myApp.services', [])
                                     pointWidth: 190
                                 },
                                 column: {
-                                    stacking: 'percent'
+                                    stacking: 'percent',
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
 
@@ -25113,7 +25151,7 @@ angular.module('myApp.services', [])
 
                     };
 
-
+                    return loadDeferred.promise;
                 },
                 reloadAbort: function () {
 
@@ -25124,6 +25162,16 @@ angular.module('myApp.services', [])
                     }, 100);
 
 
+                },
+                reloadAllCharts: function () {
+                    var allPromises = [];
+                    allPromises.push(AOI.loadWindChart());
+                    allPromises.push(AOI.loadStateChart());
+                    allPromises.push(AOI.loadOceanJobEmployeesChart());
+                    allPromises.push(AOI.loadOceanJobDollarsChart());
+                    allPromises.push(AOI.loadOceanJobContributionsChart());
+
+                    return $q.all(allPromises);
                 },
                 ShowURL: function () {
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
@@ -25155,18 +25203,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.AOI.inPrintWindow = false;
 
-    vm.box = [];
-    //'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-    //different catagories of menu levels are given ranges of index numbers
-
-    for (var i = 0; i < 2000; i++) {
-        vm.box.push({
-            myid: i,
-            isActive: false,
-            level: 0,
-            future: true
-        });
-    }
+    //vm.box = [];
+    ////'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
+    ////different catagories of menu levels are given ranges of index numbers
+    //
+    //for (var i = 0; i < 2000; i++) {
+    //    vm.box.push({
+    //        myid: i,
+    //        isActive: false,
+    //        level: 0,
+    //        future: true
+    //    });
+    //}
     vm.drawOrSubmitCommand = "DRAW";
 
     Highcharts.setOptions({
@@ -25253,15 +25301,15 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
 
-    vm.tMenuBox = function (id, menuIndentLevel) {
-        vm.box[id].level = menuIndentLevel;
-        vm.box[id].isActive = !vm.box[id].isActive;
-        angular.forEach(vm.box, function (myBox, index) {
-            if ((index != id) && (menuIndentLevel <= myBox.level)) {
-                myBox.isActive = false;
-            }
-        })
-    };
+    //vm.tMenuBox = function (id, menuIndentLevel) {
+    //    vm.box[id].level = menuIndentLevel;
+    //    vm.box[id].isActive = !vm.box[id].isActive;
+    //    angular.forEach(vm.box, function (myBox, index) {
+    //        if ((index != id) && (menuIndentLevel <= myBox.level)) {
+    //            myBox.isActive = false;
+    //        }
+    //    })
+    //};
 
     vm.startOver = function () {
 
@@ -25285,9 +25333,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.resetMap();
 
-        angular.forEach(vm.box, function (myBox) {
-            myBox.isActive = false;
-        })
+        //angular.forEach(vm.box, function (myBox) {
+        //    myBox.isActive = false;
+        //})
 
     };
 
@@ -25338,7 +25386,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: feature.properties.REPORT_TYPE,
                 AOI_ID: feature.properties.AOI_ID,
                 DATASET_NM: feature.properties.DATASET_NM,
-                DESC_: feature.properties.DESC_
+                DESC_: feature.properties.DESC_,
+                isActive: false
             });
         });
 
@@ -25358,7 +25407,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                 AOI_ID: featureCollection.features[i].properties.AOI_ID,
                 DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_
+                DESC_: featureCollection.features[i].properties.DESC_,
+                isActive: false
             };
         });
 
@@ -25393,7 +25443,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
-PageslideCtrl.prototype.mout = function (id) {
+PageslideCtrl.prototype.mouseOff = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
@@ -25450,7 +25500,7 @@ function AOICtrl(AOI, webService) {
 
 AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
 AOICtrl.prototype.childMouseOut = function (id) {
-    this.mout(id);
+    this.mouseOff(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
     this.paneOn();
@@ -25527,11 +25577,13 @@ EconCtrl.prototype.childPaneOn = function () {
 };
 
 
-function PrintCtrl($rootScope, AOI, $timeout, webService) {
+function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     //what is going on?
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
+    var allPromises = [AOI.reloadAllCharts()];
+    vm.readyToPrint = $q.all(allPromises);
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -25584,7 +25636,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         close(false, 6000);//close after 10 seconds anyway.
     })
 
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
@@ -25621,21 +25673,26 @@ angular.module('myApp.filters', [])
 /* Directives */
 
 
-function printDirective($state,$timeout) {
+function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
-        $timeout(function () {
-            var printElement = element[0].cloneNode(true);
-            printElement.id = 'printSection';
-            document.body.appendChild(printElement);
-            window.print();
-            printElement.innerHTML = "";
-            $state.go('CEview');
-        },5300)
+        scope.loadPromise.then(function () {
+            $timeout(function () {
+                var printElement = element[0].cloneNode(true);
+                printElement.id = 'printSection';
+                document.body.appendChild(printElement);
+                window.print();
+                printElement.innerHTML = "";
+                $state.go('CEview');
+            });
+        }, 5300)
     }
 
     return {
         link: link,
-        restrict: "A"
+        restrict: "A",
+        scope: {
+            loadPromise: '='
+        }
     };
 }
 
@@ -25645,7 +25702,7 @@ angular.module('myApp.directives', [])
             elm.text(version);
         };
     }])
-    .directive("ngPrint", ['$state','$timeout', printDirective])
+    .directive("ngPrint", ['$state', '$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -25913,73 +25970,84 @@ angular.module('myApp.directives', [])
         }
     }])
     .directive('smallOrtMap', function () {
-            return {
-                restrict: 'E',
-                scope: {
-                    useCanvas: '='
-                },
-                templateUrl: 'partials/smallOrtMap.html',
-                controller: ['$scope', 'L', 'AOI', 'AOIConfig', function ($scope, L, AOI, AOIConfig) {
-                    $scope.AOI = AOI;
-                    if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
-                    $scope.AOI.smallMap = L.map('smallMap').setView([45.526, -122.667], 1);
-                    //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
-                    L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
-                    L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
-                    var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                        maxZoom: 12,
-                        useCors: true
+        return {
+            restrict: 'E',
+            scope: {
+                useCanvas: '=',
+                mapPromise: '='
+            },
+            templateUrl: 'partials/smallOrtMap.html',
+            controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
+                $scope.AOI = AOI;
+                if ($scope.AOI.smallMap) $scope.AOI.smallMap.remove();
+                $scope.AOI.smallMap = L.map('smallMap');
+
+                var deferred = $q.defer();
+                $scope.mapPromise = deferred.promise;
+
+                $scope.AOI.smallMap.on('load', function (e) {
+                    deferred.resolve();
+                    deferred = $q.defer();
+                    console.log('ready map');
+                });
+
+                $scope.AOI.smallMap.setView([45.526, -122.667], 1);
+                //else $scope.AOI.smallMap = L.map('$scope.AOI.smallMap').setView([45.526, -122.667], 1);
+                L.esri.basemapLayer('Oceans').addTo($scope.AOI.smallMap);
+                L.esri.basemapLayer('OceansLabels').addTo($scope.AOI.smallMap);
+                var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+                    maxZoom: 12,
+                    useCors: true
+                });
+
+                var minicLayer;
+                if (AOI.ID === -9999) {
+                    minicLayer = L.geoJson(AOI.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+                    var minibounds = minicLayer.getBounds();
+                    $scope.AOI.smallMap.fitBounds(minibounds);
+
+                } else {
+                    minicLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
+                        where: "AOI_ID =" + AOI.ID + "",
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+
+
+                    minicLayer.on("load", function (evt) {
+                        var bounds = L.latLngBounds([]);
+                        minicLayer.eachFeature(function (layer) {
+                            var layerBounds = layer.getBounds();
+                            bounds.extend(layerBounds);
+                        });
+                        //AOI.minibounds = bounds;
+                        $scope.AOI.smallMap.fitBounds(bounds);
+                        minicLayer.off('load');
                     });
-
-                    var minicLayer;
-                    if (AOI.ID === -9999) {
-                        minicLayer = L.geoJson(AOI.drawLayerShape, {
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-                        }).addTo($scope.AOI.smallMap);
-                        var minibounds = minicLayer.getBounds();
-                        $scope.AOI.smallMap.fitBounds(minibounds);
-
-                    } else {
-                        minicLayer = L.esri.featureLayer({
-                            url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                            where: "AOI_ID =" + AOI.ID + "",
-                            color: '#EB660C',
-                            weight: 1.5,
-                            fillOpacity: .3
-                        }).addTo($scope.AOI.smallMap);
-
-
-                        minicLayer.on("load", function (evt) {
-                            var bounds = L.latLngBounds([]);
-                            minicLayer.eachFeature(function (layer) {
-                                var layerBounds = layer.getBounds();
-                                bounds.extend(layerBounds);
-                            });
-                            //AOI.minibounds = bounds;
-                            $scope.AOI.smallMap.fitBounds(bounds);
-                            minicLayer.off('load');
-                        });
-                    }
-                    $scope.AOI.smallMap.invalidateSize();
-                    var test1 = false;
-                    if ((AOI.inPrintWindow) && (test1)) {
-                        leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                            var img = document.createElement('img');
-                            var dimensions = $scope.AOI.smallMap.getSize();
-                            img.width = dimensions.x;
-                            img.height = dimensions.y;
-                            img.src = canvas.toDataURL();
-                            document.getElementById('map3').innerHTML = '';
-                            document.getElementById('map3').appendChild(img);
-                        });
-                    }
-                }]
-            }
+                }
+                $scope.AOI.smallMap.invalidateSize();
+                var test1 = false;
+                if ((AOI.inPrintWindow) && (test1)) {
+                    leafletImage($scope.AOI.smallMap, function (err, canvas) {
+                        var img = document.createElement('img');
+                        var dimensions = $scope.AOI.smallMap.getSize();
+                        img.width = dimensions.x;
+                        img.height = dimensions.y;
+                        img.src = canvas.toDataURL();
+                        document.getElementById('map3').innerHTML = '';
+                        document.getElementById('map3').appendChild(img);
+                    });
+                }
+            }]
         }
-    );
+    });
 
 
 ;
@@ -25987,24 +26055,25 @@ angular.module('myApp.directives', [])
 
 var toggle = false;
 
-var mouseLayer, searchControl;
+//var mouseLayer, searchControl;
 
 
 function preloader() {
     if (document.images) {
         var img1 = new Image();
-
+        var img2 = new Image();
         img1.src = "img/wind_cc.svg";
+        img2.src = "img/BOEM_logo.svg";
     }
 }
 function addLoadEvent(func) {
-    var oldonload = window.onload;
+    var oldOnLoad = window.onload;
     if (typeof window.onload != 'function') {
         window.onload = func;
     } else {
         window.onload = function () {
-            if (oldonload) {
-                oldonload();
+            if (oldOnLoad) {
+                oldOnLoad();
             }
             func();
         }
@@ -26093,16 +26162,16 @@ $http.get("gis_config.json").then(function (result) {
             $urlRouterProvider.otherwise('/main');
 
             AOIConfigProvider.set({
-                ortMapServer: result.data['ortMapServer'].data,
-                ortLayerData: result.data['ortLayerData'].data,
-                ortLayerAOI: result.data['ortLayerAOI'].data,
-                ortEnergyGPService: result.data['ortEnergyGPService'].data,
-                ortCommonGPService: result.data['ortCommonGPService'].data,
-                ortTranspoGPService: result.data['ortTranspoGPService'].data,
-                ortNaturalGPService: result.data['ortNaturalGPService'].data,
-                ortEconGPService: result.data['ortEconGPService'].data,
+                ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
+                ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
+                ortLayerAOI: result.data['ortLayerAOI'].data,//Ocean Reporting Tool map Layer for this Area Of Interest
+                ortEnergyGPService: result.data['ortEnergyGPService'].data, //ORT Energy GeoProcessing Service URL
+                ortCommonGPService: result.data['ortCommonGPService'].data, //ORT Common Elements or General Information GeoProcessing Service URL
+                ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL
+                ortNaturalGPService: result.data['ortNaturalGPService'].data,//ORT Natural Resources GeoProcessing Service URL
+                ortEconGPService: result.data['ortEconGPService'].data, //ORT Economics GeoProcessing Service URL
                 optionalLayers: {
-                    windrpLayer: result.data['optionalLayerPanes'].windrpLayer.num,
+                    windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
                     windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
                     windPlanningLayer: result.data['optionalLayerPanes'].windPlanningLayer.num,
                     oceanDisposalSites: result.data['optionalLayerPanes'].oceanDisposalSites.num,
@@ -26113,15 +26182,15 @@ $http.get("gis_config.json").then(function (result) {
                     currentPower: result.data['optionalLayerPanes'].currentPower.num,
                     beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
                     coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,
-                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
-                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,//Common Elements Elevation Layer
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//Economics and Commerce Coastal Counties Layer
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//Transportation and Infrastructure Submarine Layer
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
                     CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
                     CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
                     TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
                     TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//Natural Resources and Conservation NearbyLayer
                     NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
                     NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
                     NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,

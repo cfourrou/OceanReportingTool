@@ -24,7 +24,7 @@
     "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"
   },
   "optionalLayerPanes": {
-    "windrpLayer": {
+    "windResourcePotentialLayer": {
       "num": "19",
       "displayName": "Wind Resource Potential"
     },

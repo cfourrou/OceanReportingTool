@@ -2,24 +2,25 @@
 
 var toggle = false;
 
-var mouseLayer, searchControl;
+//var mouseLayer, searchControl;
 
 
 function preloader() {
     if (document.images) {
         var img1 = new Image();
-
+        var img2 = new Image();
         img1.src = "img/wind_cc.svg";
+        img2.src = "img/BOEM_logo.svg";
     }
 }
 function addLoadEvent(func) {
-    var oldonload = window.onload;
+    var oldOnLoad = window.onload;
     if (typeof window.onload != 'function') {
         window.onload = func;
     } else {
         window.onload = function () {
-            if (oldonload) {
-                oldonload();
+            if (oldOnLoad) {
+                oldOnLoad();
             }
             func();
         }
@@ -108,16 +109,16 @@ $http.get("gis_config.json").then(function (result) {
             $urlRouterProvider.otherwise('/main');
 
             AOIConfigProvider.set({
-                ortMapServer: result.data['ortMapServer'].data,
-                ortLayerData: result.data['ortLayerData'].data,
-                ortLayerAOI: result.data['ortLayerAOI'].data,
-                ortEnergyGPService: result.data['ortEnergyGPService'].data,
-                ortCommonGPService: result.data['ortCommonGPService'].data,
-                ortTranspoGPService: result.data['ortTranspoGPService'].data,
-                ortNaturalGPService: result.data['ortNaturalGPService'].data,
-                ortEconGPService: result.data['ortEconGPService'].data,
+                ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
+                ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
+                ortLayerAOI: result.data['ortLayerAOI'].data,//Ocean Reporting Tool map Layer for this Area Of Interest
+                ortEnergyGPService: result.data['ortEnergyGPService'].data, //ORT Energy GeoProcessing Service URL
+                ortCommonGPService: result.data['ortCommonGPService'].data, //ORT Common Elements or General Information GeoProcessing Service URL
+                ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL
+                ortNaturalGPService: result.data['ortNaturalGPService'].data,//ORT Natural Resources GeoProcessing Service URL
+                ortEconGPService: result.data['ortEconGPService'].data, //ORT Economics GeoProcessing Service URL
                 optionalLayers: {
-                    windrpLayer: result.data['optionalLayerPanes'].windrpLayer.num,
+                    windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
                     windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
                     windPlanningLayer: result.data['optionalLayerPanes'].windPlanningLayer.num,
                     oceanDisposalSites: result.data['optionalLayerPanes'].oceanDisposalSites.num,
@@ -128,15 +129,15 @@ $http.get("gis_config.json").then(function (result) {
                     currentPower: result.data['optionalLayerPanes'].currentPower.num,
                     beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
                     coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,
-                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,
-                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,
+                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,//Common Elements Elevation Layer
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//Economics and Commerce Coastal Counties Layer
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//Transportation and Infrastructure Submarine Layer
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
                     CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
                     CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
                     TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
                     TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//Natural Resources and Conservation NearbyLayer
                     NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
                     NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
                     NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
