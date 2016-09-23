@@ -110,21 +110,21 @@ angular.module('myApp.directives', [])
                     $scope.map.setView([33.51, -78.3], 6);
                     $scope.map.createPane('AOIfeature');
 
-                    var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-                            maxZoom: 12
+                    var esriNatGeo = L.tileLayer(AOIConfig.baseMapLayers.esriNatGeo.url, {
+                            attribution: AOIConfig.baseMapLayers.esriNatGeo.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriNatGeo.maxZoom
                         }),
-                        esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                            maxZoom: 12
+                        esriOceans = L.tileLayer(AOIConfig.baseMapLayers.esriOceans.url, {
+                            attribution: AOIConfig.baseMapLayers.esriOceans.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriOceans.maxZoom
                         }),
-                        esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-                            maxZoom: 12
+                        esriStreets = L.tileLayer(AOIConfig.baseMapLayers.esriStreets.url, {
+                            attribution: AOIConfig.baseMapLayers.esriStreets.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriStreets.maxZoom
                         }),
-                        esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
-                            maxZoom: 12
+                        esriGrey = L.tileLayer(AOIConfig.baseMapLayers.esriGrey.url, {
+                            attribution: AOIConfig.baseMapLayers.esriGrey.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriGrey.maxZoom
                         });
 
                     esriOceans.addTo($scope.map);
@@ -137,9 +137,9 @@ angular.module('myApp.directives', [])
                     };
 
                     var nauticalChart = L.esri.imageMapLayer({
-                        url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-                        useCors: false,
-                        opacity: .5
+                        url: AOIConfig.nauticalChart.url,
+                        useCors: AOIConfig.nauticalChart.useCors,
+                        opacity: AOIConfig.nauticalChart.opacity
                     });
 
                     var mapOverlay = {

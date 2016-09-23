@@ -107,7 +107,6 @@ $http.get("gis_config.json").then(function (result) {
         ])
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
-
             AOIConfigProvider.set({
                 ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
                 ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
@@ -117,6 +116,33 @@ $http.get("gis_config.json").then(function (result) {
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,//ORT Natural Resources GeoProcessing Service URL
                 ortEconGPService: result.data['ortEconGPService'].data, //ORT Economics GeoProcessing Service URL
+                nauticalChart: {
+                    url: result.data['nauticalChart'].url,
+                    useCors: result.data['nauticalChart'].useCors,
+                    opacity: result.data['nauticalChart'].opacity
+                },
+                baseMapLayers: {
+                    esriNatGeo: {
+                        url: result.data['baseMapLayers'].esriNatGeo.url,
+                        attribution: result.data['baseMapLayers'].esriNatGeo.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriNatGeo.maxZoom
+                    },
+                    esriOceans: {
+                        url: result.data['baseMapLayers'].esriOceans.url,
+                        attribution: result.data['baseMapLayers'].esriOceans.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriOceans.maxZoom
+                    },
+                    esriStreets: {
+                        url: result.data['baseMapLayers'].esriStreets.url,
+                        attribution: result.data['baseMapLayers'].esriStreets.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriStreets.maxZoom
+                    },
+                    esriGrey: {
+                        url: result.data['baseMapLayers'].esriGrey.url,
+                        attribution: result.data['baseMapLayers'].esriGrey.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriGrey.maxZoom
+                    }
+                },
                 optionalLayers: {
                     windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
                     windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,

@@ -25203,18 +25203,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.AOI.inPrintWindow = false;
 
-    //vm.box = [];
-    ////'box' is used by the known areas menu to construct a multilevel but unknown number of levels and items
-    ////different catagories of menu levels are given ranges of index numbers
-    //
-    //for (var i = 0; i < 2000; i++) {
-    //    vm.box.push({
-    //        myid: i,
-    //        isActive: false,
-    //        level: 0,
-    //        future: true
-    //    });
-    //}
     vm.drawOrSubmitCommand = "DRAW";
 
     Highcharts.setOptions({
@@ -25300,16 +25288,19 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.checked = !vm.checked;
     };
 
-
-    //vm.tMenuBox = function (id, menuIndentLevel) {
-    //    vm.box[id].level = menuIndentLevel;
-    //    vm.box[id].isActive = !vm.box[id].isActive;
-    //    angular.forEach(vm.box, function (myBox, index) {
-    //        if ((index != id) && (menuIndentLevel <= myBox.level)) {
-    //            myBox.isActive = false;
-    //        }
-    //    })
-    //};
+    vm.menu = {};
+    vm.toggleMenu = function (menuItem, menuIndentLevel) {
+        if (vm.menu[menuItem] === undefined) {
+            vm.menu[menuItem] = {}
+        }
+        vm.menu[menuItem].level = menuIndentLevel;
+        vm.menu[menuItem].isActive = !vm.menu[menuItem].isActive;
+        angular.forEach(vm.menu, function (value, key) {
+            if ((key != menuItem) && (menuIndentLevel <= value.level)) {
+                vm.menu[key].isActive = false;
+            }
+        })
+    };
 
     vm.startOver = function () {
 
@@ -25386,8 +25377,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: feature.properties.REPORT_TYPE,
                 AOI_ID: feature.properties.AOI_ID,
                 DATASET_NM: feature.properties.DATASET_NM,
-                DESC_: feature.properties.DESC_,
-                isActive: false
+                DESC_: feature.properties.DESC_
             });
         });
 
@@ -25407,8 +25397,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                 REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
                 AOI_ID: featureCollection.features[i].properties.AOI_ID,
                 DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_,
-                isActive: false
+                DESC_: featureCollection.features[i].properties.DESC_
             };
         });
 
@@ -25443,7 +25432,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
-PageslideCtrl.prototype.mouseOff = function (id) {
+PageslideCtrl.prototype.mout = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
@@ -25500,7 +25489,7 @@ function AOICtrl(AOI, webService) {
 
 AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
 AOICtrl.prototype.childMouseOut = function (id) {
-    this.mouseOff(id);
+    this.mout(id);
 };
 AOICtrl.prototype.childPaneOn = function () {
     this.paneOn();
@@ -25686,15 +25675,13 @@ angular.module('myApp.filters', [])
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            $timeout(function () {
-                var printElement = element[0].cloneNode(true);
-                printElement.id = 'printSection';
-                document.body.appendChild(printElement);
-                window.print();
-                printElement.innerHTML = "";
-                $state.go('CEview');
-            });
-        })
+            var printElement = element[0].cloneNode(true);
+            printElement.id = 'printSection';
+            document.body.appendChild(printElement);
+            window.print();
+            printElement.innerHTML = "";
+            $state.go('CEview');
+        });
     }
 
     return {
@@ -25792,21 +25779,21 @@ angular.module('myApp.directives', [])
                     $scope.map.setView([33.51, -78.3], 6);
                     $scope.map.createPane('AOIfeature');
 
-                    var esriNatGeo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-                            maxZoom: 12
+                    var esriNatGeo = L.tileLayer(AOIConfig.baseMapLayers.esriNatGeo.url, {
+                            attribution: AOIConfig.baseMapLayers.esriNatGeo.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriNatGeo.maxZoom
                         }),
-                        esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                            maxZoom: 12
+                        esriOceans = L.tileLayer(AOIConfig.baseMapLayers.esriOceans.url, {
+                            attribution: AOIConfig.baseMapLayers.esriOceans.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriOceans.maxZoom
                         }),
-                        esriStreets = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
-                            maxZoom: 12
+                        esriStreets = L.tileLayer(AOIConfig.baseMapLayers.esriStreets.url, {
+                            attribution: AOIConfig.baseMapLayers.esriStreets.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriStreets.maxZoom
                         }),
-                        esriGrey = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                            attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, HERE, MapmyIndia, © OpenStreetMap contributors, and the GIS community',
-                            maxZoom: 12
+                        esriGrey = L.tileLayer(AOIConfig.baseMapLayers.esriGrey.url, {
+                            attribution: AOIConfig.baseMapLayers.esriGrey.attribution,
+                            maxZoom: AOIConfig.baseMapLayers.esriGrey.maxZoom
                         });
 
                     esriOceans.addTo($scope.map);
@@ -25819,9 +25806,9 @@ angular.module('myApp.directives', [])
                     };
 
                     var nauticalChart = L.esri.imageMapLayer({
-                        url: '//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer',
-                        useCors: false,
-                        opacity: .5
+                        url: AOIConfig.nauticalChart.url,
+                        useCors: AOIConfig.nauticalChart.useCors,
+                        opacity: AOIConfig.nauticalChart.opacity
                     });
 
                     var mapOverlay = {
@@ -26182,7 +26169,6 @@ $http.get("gis_config.json").then(function (result) {
         ])
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
-
             AOIConfigProvider.set({
                 ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
                 ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
@@ -26192,6 +26178,33 @@ $http.get("gis_config.json").then(function (result) {
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL
                 ortNaturalGPService: result.data['ortNaturalGPService'].data,//ORT Natural Resources GeoProcessing Service URL
                 ortEconGPService: result.data['ortEconGPService'].data, //ORT Economics GeoProcessing Service URL
+                nauticalChart: {
+                    url: result.data['nauticalChart'].url,
+                    useCors: result.data['nauticalChart'].useCors,
+                    opacity: result.data['nauticalChart'].opacity
+                },
+                baseMapLayers:{
+                    esriNatGeo: {
+                        url: result.data['baseMapLayers'].esriNatGeo.url,
+                        attribution: result.data['baseMapLayers'].esriNatGeo.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriNatGeo.maxZoom
+                    },
+                    esriOceans: {
+                        url: result.data['baseMapLayers'].esriOceans.url,
+                        attribution: result.data['baseMapLayers'].esriOceans.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriOceans.maxZoom
+                    },
+                    esriStreets: {
+                        url: result.data['baseMapLayers'].esriStreets.url,
+                        attribution: result.data['baseMapLayers'].esriStreets.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriStreets.maxZoom
+                    },
+                    esriGrey: {
+                        url: result.data['baseMapLayers'].esriGrey.url,
+                        attribution: result.data['baseMapLayers'].esriGrey.attribution,
+                        maxZoom: result.data['baseMapLayers'].esriGrey.maxZoom
+                    }
+                },
                 optionalLayers: {
                     windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
                     windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
