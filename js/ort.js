@@ -24304,7 +24304,7 @@ angular.module('myApp.services', [])
                     AOI.windclass[6] = (AOI.windclass.reduce(function (prev, cur) {
                         return prev.toFixed(2) - cur.toFixed(2);
                     }, 100));
-                    if (AOI.boem[0] == null) {
+                    if (AOI.boem[0] === null) {
                         AOI.boem[0] = {
                             INFO: "NA",
                             PROT_NUMBE: 0,
@@ -24315,7 +24315,7 @@ angular.module('myApp.services', [])
                             TOTAL_CNT: 0
                         };
                     }
-                    if (AOI.arel[0] == null) {
+                    if (AOI.arel[0] === null) {
                         AOI.arel[0] = {
                             Lease_Numb: 0,
                             Company: "NA",
@@ -24345,7 +24345,7 @@ angular.module('myApp.services', [])
                         AOI.boem[0].PERC_COVER = 0;
                         AOI.boem[0].TOTAL_BLOC = 0;
                     }
-                    if (AOI.arel[0] == null)AOI.arel[0].TOTAL_CNT = 0;
+                    if (AOI.arel[0] === null)AOI.arel[0].TOTAL_CNT = 0;
                     if (AOI.arel[0].TOTAL_CNT === 0) {
                         AOI.arel[0].PERC_COVER = 0;
                         AOI.arel[0].TOTAL_BLOC = 0;
@@ -24359,7 +24359,7 @@ angular.module('myApp.services', [])
 
                 },
                 addMetadata: function (feature) {
-                    if (feature.METADATA_URL != null) {
+                    if (feature.METADATA_URL !== null) {
                         AOI.metadata.push({
                             REPORT_CAT: feature.REPORT_CAT,
                             COMMON_NM: feature.COMMON_NM,
@@ -25296,7 +25296,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.menu[menuItem].level = menuIndentLevel;
         vm.menu[menuItem].isActive = !vm.menu[menuItem].isActive;
         angular.forEach(vm.menu, function (value, key) {
-            if ((key != menuItem) && (menuIndentLevel <= value.level)) {
+            if ((key !== menuItem) && (menuIndentLevel <= value.level)) {
                 vm.menu[key].isActive = false;
             }
         })
@@ -25654,7 +25654,7 @@ angular.element(document).ready(function () {
 
 angular.element(document).ready(function () {
     // if (console.assert)
-    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length == 12, 'Made all of them')
+    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
 });
 ;
 'use strict';
@@ -26077,7 +26077,7 @@ function preloader() {
 }
 function addLoadEvent(func) {
     var oldOnLoad = window.onload;
-    if (typeof window.onload != 'function') {
+    if (typeof window.onload !== 'function') {
         window.onload = func;
     } else {
         window.onload = function () {

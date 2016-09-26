@@ -29,7 +29,7 @@
                 <div id="AOItab" class="AOItabClass"> Energy and Minerals
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
                 <div ng-repeat="x in Printvm.EMConfig | orderBy: 'priority'" ng-init="EMvm=Printvm">
-                    <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
+                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
                 </div>
 
                 </div>
@@ -38,7 +38,7 @@
                 <div id="AOItab" class="AOItabClass"> Natural Resources and Conservation
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
                 <div ng-repeat="x in Printvm.NRCConfig | orderBy: 'priority'" ng-init="NRCvm=Printvm">
-                    <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
+                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
                 </div>
                 </div>
 
@@ -48,7 +48,7 @@
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
                <div ng-repeat="x in Printvm.TIConfig | orderBy: 'priority'" ng-init="TIvm=Printvm">
 
-                    <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
+                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
 
                 </div>
 
@@ -59,7 +59,7 @@
                     <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
                <div ng-repeat="x in Printvm.ECConfig | orderBy: 'priority'" ng-init="ECvm=Printvm">
 
-                   <div ng-if="x.priority && x.filename !='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
+                   <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge" ng-include="x.filename"></div>
 
                </div>
 

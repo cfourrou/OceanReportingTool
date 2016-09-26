@@ -103,7 +103,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.menu[menuItem].level = menuIndentLevel;
         vm.menu[menuItem].isActive = !vm.menu[menuItem].isActive;
         angular.forEach(vm.menu, function (value, key) {
-            if ((key != menuItem) && (menuIndentLevel <= value.level)) {
+            if ((key !== menuItem) && (menuIndentLevel <= value.level)) {
                 vm.menu[key].isActive = false;
             }
         })
@@ -461,5 +461,5 @@ angular.element(document).ready(function () {
 
 angular.element(document).ready(function () {
     // if (console.assert)
-    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length == 12, 'Made all of them')
+    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
 });
