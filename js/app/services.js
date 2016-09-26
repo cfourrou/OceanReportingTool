@@ -132,27 +132,27 @@ angular.module('myApp.services', [])
                 ID: null,
                 name: null,
                 added: false,
-                boem: [],
+                EMWindPlanningArea: [],
                 metadata: [],
-                arel: [],
-                wind: [],
-                disp: [],
-                mml: [],
-                hydrok: [],
-                optLayer: [],
+                EMActiveRenewableEnergyLeases: [],
+                EMWindResourcePotential: [],
+                EMOceanDisposalSites: [],
+                EMMarineMineralsLeases: [],
+                EMMarineHydrokineticProjects: [],
+                //optLayer: [],
                 CETribalLands: [],
-                surfsed: [],
-                wavepwr: [],
-                tidalpwr: [],
-                currentpwr: [],
-                beachNur: [],
+                EMSurficialSediment: [],
+                EMOceanWaveResourcePotential: [],
+                EMTidalPower: [],
+                EMCurrentPower: [],
+                EMBeachNourishmentProjects: [],
                 OGPlanA: [],
                 OGLease: [],
                 OGWells: [],
                 OGresource: [],
-                coastfac: [],
+                EMCoastalEnergyFacilities : [],
                 CEElevation: [],
-                windclass: [],
+                EMWindResourceClassification: [],
                 CEAreaOfPoly: [],
                 CEFedGeoRegs: [],
                 CECongress: [],
@@ -346,9 +346,9 @@ angular.module('myApp.services', [])
                 },
                 loadData: function (id, name) {
                     AOI.ID = id;
-                    AOI.windResourcePotentialLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windResourcePotentialLayer,
-                        pane: 'windResourcePotentialLayerPane',
+                    AOI.EMWindResourcePotentialLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMWindResourcePotentialLayer,
+                        pane: 'EMWindResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.Speed_90 >= 8.8) {
                                 return {color: '#0E3708', weight: 1, fillOpacity: .8};
@@ -368,17 +368,17 @@ angular.module('myApp.services', [])
                         }
                     });
 
-                    AOI.windLeaseLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windLeaseLayer,
-                        pane: 'windLeaseLayerPane',
+                    AOI.EMActiveRenewableEnergyLeasesLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMActiveRenewableEnergyLeasesLayer,
+                        pane: 'EMActiveRenewableEnergyLeasesLayerPane',
                         style: function (feature) {
 
                             return {color: 'white', weight: 1, fillOpacity: .5};
                         }
                     });
-                    AOI.windPlanningLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.windPlanningLayer,
-                        pane: 'windPlanningLayerPane',
+                    AOI.EMWindPlanningAreaLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMWindPlanningAreaLayer,
+                        pane: 'EMWindPlanningAreaLayerPane',
                         style: function (feature) {
 
                             return {color: 'Black', weight: 1, fillOpacity: .5};
@@ -452,10 +452,10 @@ angular.module('myApp.services', [])
                         opacity: .8
                     });
 
-                    AOI.currentPower = L.esri.dynamicMapLayer({
+                    AOI.EMCurrentPowerLayer = L.esri.dynamicMapLayer({
                         url: AOIConfig.ortMapServer,
-                        pane: 'currentPowerPane',
-                        layers: [AOIConfig.optionalLayers.currentPower],
+                        pane: 'EMCurrentPowerLayerPane',
+                        layers: [AOIConfig.optionalLayers.EMCurrentPowerLayer],
                         opacity: .8
                     });
 
@@ -484,7 +484,7 @@ angular.module('myApp.services', [])
 
                     AOI.CEElevationLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.CEElevationLayer,
-                        pane: 'CEElevationPane',
+                        pane: 'CEElevationLayerPane',
                         style: function (feature) {
                             return {color: '#3283BB', weight: 2, fillOpacity: 0};
                         }
@@ -954,7 +954,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "CoastalEnergyFacilities":
-                                AOI.coastfac.push({
+                                AOI.EMCoastalEnergyFacilities .push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     Name: (feature.Name || 'None'),
                                     Type: (feature.Type || 'None'),
@@ -997,7 +997,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "SC_BeachProjects":
-                                AOI.beachNur.push({
+                                AOI.EMBeachNourishmentProjects.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     BEACH_AREA: (feature.BEACH_AREA || 'unknown'),
                                     YEAR: (feature.YEAR || '0'),
@@ -1007,7 +1007,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "us_oc_ms":
-                                AOI.currentpwr.push({
+                                AOI.EMCurrentPower.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     AVG_OCEAN_CURRENT: (feature.AVG_OCEAN_CURRENT || 0),
                                     SUITABILITY_OCEAN_SPEED: (feature.SUITABILITY_OCEAN_SPEED || 'NO')
@@ -1015,7 +1015,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "usa_mc_wm":
-                                AOI.tidalpwr.push({
+                                AOI.EMTidalPower.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     AVG_TIDAL_CURRENT: (feature.AVG_TIDAL_CURRENT || 0),
                                     SUITABILITY_TIDAL_DEPTH: (feature.SUITABILITY_TIDAL_DEPTH || 'NO'),
@@ -1025,7 +1025,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "OceanWaveResourcePotential":
-                                AOI.wavepwr.push({
+                                AOI.EMOceanWaveResourcePotential.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     AVG_WAVE_POWER: (feature.AVG_WAVE_POWER || 0),
                                     SUITABILITY_OCEAN_POWER: (feature.SUITABILITY_OCEAN_POWER || 'Unknown')
@@ -1033,7 +1033,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "OceanDisposalSites":
-                                AOI.disp.push({
+                                AOI.EMOceanDisposalSites.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     PRIMARY_USE: (feature.primaryUse || 'Unknown')
                                 });
@@ -1041,7 +1041,7 @@ angular.module('myApp.services', [])
                                 break;
                             case "MarineHydrokineticProjects":
                                 if (feature.TOTAL_CNT > 0) {
-                                    AOI.hydrok.push({
+                                    AOI.EMMarineHydrokineticProjects.push({
                                         TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                         PRIMARY_USE: (feature.energyType ) + ' projects'
                                     });
@@ -1050,7 +1050,7 @@ angular.module('myApp.services', [])
                                 break;
                             case "ecstdb2014":
                                 if (feature.TOTAL_CNT > 0) {
-                                    AOI.surfsed.push({
+                                    AOI.EMSurficialSediment.push({
                                         TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                         PRIMARY_USE: ((feature.CLASSIFICA === ' ') ? 'Unknown' : feature.CLASSIFICA )
                                     });
@@ -1058,7 +1058,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
-                                AOI.mml.push({
+                                AOI.EMMarineMineralsLeases.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0)
                                 });
                                 AOI.addMetadata(feature);
@@ -1072,7 +1072,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case  "BOEM_Wind_Planning_Areas":
-                                AOI.boem.push({
+                                AOI.EMWindPlanningArea.push({
                                     INFO: feature.INFO,
                                     PROT_NUMBE: feature.PROT_NUMBE,
                                     LINK1: feature.LINK1,
@@ -1085,7 +1085,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "ActiveRenewableEnergyLeases":
-                                AOI.arel.push({
+                                AOI.EMActiveRenewableEnergyLeases.push({
                                     Lease_Numb: feature.Lease_Numb,
                                     Company: feature.Company,
                                     INFO: feature.INFO,
@@ -1100,7 +1100,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case  "WindResourcePotential":
-                                AOI.wind.push({
+                                AOI.EMWindResourcePotential.push({
                                     WIND_CLASS: (feature.WIND_CLASS),
                                     AVG_WGHT: (feature.AVG_WGHT || 0).toFixed(2),
                                     PERC_COVER: (feature.PERC_COVER || 0),
@@ -1113,24 +1113,24 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
 
                                 if (feature.TOTAL_CNT > 0) {
-                                    switch (feature.WIND_CLASS.substring(0, 3)) {
+                                    switch (feature.WIND_CLASS.substring(0, 3)) { //make sure the stacked bar chart has the best classification at top and worst at bottom
                                         case "Sup":
-                                            AOI.windclass[0] = feature.PERC_COVER;
+                                            AOI.EMWindResourceClassification[0] = feature.PERC_COVER;
                                             break;
                                         case "Out":
-                                            AOI.windclass[1] = feature.PERC_COVER;
+                                            AOI.EMWindResourceClassification[1] = feature.PERC_COVER;
                                             break;
                                         case "Exc":
-                                            AOI.windclass[2] = feature.PERC_COVER;
+                                            AOI.EMWindResourceClassification[2] = feature.PERC_COVER;
                                             break;
                                         case "Goo":
-                                            AOI.windclass[3] = feature.PERC_COVER;
+                                            AOI.EMWindResourceClassification[3] = feature.PERC_COVER;
                                             break;
                                         case "Fai":
-                                            AOI.windclass[4] = feature.PERC_COVER;
+                                            AOI.EMWindResourceClassification[4] = feature.PERC_COVER;
                                             break;
                                         case "Uns":
-                                            AOI.windclass[5] = feature.PERC_COVER;
+                                            AOI.EMWindResourceClassification[5] = feature.PERC_COVER;
                                             break;
                                     }
                                 }
@@ -1176,37 +1176,37 @@ angular.module('myApp.services', [])
                     AOI.OceanJobContributionsChartHeight = ((chartrow * 120) + 18);
 
 
-                    if (AOI.wavepwr.length > 0) {
-                        if (AOI.wavepwr[0].AVG_WAVE_POWER > 40) {
-                            AOI.wavepwr[0].COLOR = '#B0B497';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 30.0) {
-                            AOI.wavepwr[0].COLOR = '#B6BC9E';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 20.0) {
-                            AOI.wavepwr[0].COLOR = '#BBC1A4';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 15.0) {
-                            AOI.wavepwr[0].COLOR = '#C0C6A8';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 10.0) {
-                            AOI.wavepwr[0].COLOR = '#C9D0B1';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 8.0) {
-                            AOI.wavepwr[0].COLOR = '#D0D8B9';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 6) {
-                            AOI.wavepwr[0].COLOR = '#D5DDC0';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 4.0) {
-                            AOI.wavepwr[0].COLOR = '#DEE7C9';
+                    if (AOI.EMOceanWaveResourcePotential.length > 0) {
+                        if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 40) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#B0B497';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 30.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#B6BC9E';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 20.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#BBC1A4';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 15.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#C0C6A8';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 10.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#C9D0B1';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 8.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#D0D8B9';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 6) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#D5DDC0';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 4.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#DEE7C9';
 
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER > 2.0) {
-                            AOI.wavepwr[0].COLOR = '#E4EFD2';
-                        } else if (AOI.wavepwr[0].AVG_WAVE_POWER < 2.01) {
-                            AOI.wavepwr[0].COLOR = '#EBF6D8';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER > 2.0) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#E4EFD2';
+                        } else if (AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER < 2.01) {
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = '#EBF6D8';
                         } else {
-                            AOI.wavepwr[0].COLOR = 'white';
+                            AOI.EMOceanWaveResourcePotential[0].COLOR = 'white';
                         }
                     }
-                    AOI.windclass[6] = (AOI.windclass.reduce(function (prev, cur) {
+                    AOI.EMWindResourceClassification[6] = (AOI.EMWindResourceClassification.reduce(function (prev, cur) {
                         return prev.toFixed(2) - cur.toFixed(2);
                     }, 100));
-                    if (AOI.boem[0] === null) {
-                        AOI.boem[0] = {
+                    if (AOI.EMWindPlanningArea[0] === null) {
+                        AOI.EMWindPlanningArea[0] = {
                             INFO: "NA",
                             PROT_NUMBE: 0,
                             LINK1: "NA",
@@ -1216,8 +1216,8 @@ angular.module('myApp.services', [])
                             TOTAL_CNT: 0
                         };
                     }
-                    if (AOI.arel[0] === null) {
-                        AOI.arel[0] = {
+                    if (AOI.EMActiveRenewableEnergyLeases[0] === null) {
+                        AOI.EMActiveRenewableEnergyLeases[0] = {
                             Lease_Numb: 0,
                             Company: "NA",
                             INFO: "NA",
@@ -1235,22 +1235,22 @@ angular.module('myApp.services', [])
                     AOI.CEPlaces.sort(function (a, b) {
                         return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
                     });
-                    AOI.boem.sort(function (a, b) {
+                    AOI.EMWindPlanningArea.sort(function (a, b) {
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
-                    AOI.arel.sort(function (a, b) {
+                    AOI.EMActiveRenewableEnergyLeases.sort(function (a, b) {
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
 
-                    if (AOI.boem[0].TOTAL_CNT === 0) {
-                        AOI.boem[0].PERC_COVER = 0;
-                        AOI.boem[0].TOTAL_BLOC = 0;
-                    }
-                    if (AOI.arel[0] === null)AOI.arel[0].TOTAL_CNT = 0;
-                    if (AOI.arel[0].TOTAL_CNT === 0) {
-                        AOI.arel[0].PERC_COVER = 0;
-                        AOI.arel[0].TOTAL_BLOC = 0;
-                    }
+                    //if (AOI.boem[0].TOTAL_CNT == 0) {
+                    //    AOI.boem[0].PERC_COVER = 0;
+                    //    AOI.boem[0].TOTAL_BLOC = 0;
+                    //}
+                    //if (AOI.arel[0] === null)AOI.arel[0].TOTAL_CNT = 0;
+                    //if (AOI.arel[0].TOTAL_CNT == 0) {
+                    //    AOI.arel[0].PERC_COVER = 0;
+                    //    AOI.arel[0].TOTAL_BLOC = 0;
+                    //}
 
                     AOI.loadWindChart();
                     AOI.loadStateChart();
@@ -1278,12 +1278,12 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.oceanDisposalSites);
                         AOI.map.removeLayer(AOI.HydrokineticLeases);
                         AOI.map.removeLayer(AOI.windPlanningLayer);
-                        AOI.map.removeLayer(AOI.windLeaseLayer);
-                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
+                        AOI.map.removeLayer(AOI.EMActiveRenewableEnergyLeasesLayer);
+                        AOI.map.removeLayer(AOI.EMWindResourcePotentialLayer);
                         AOI.map.removeLayer(AOI.marineMineralsLeases);
                         AOI.map.removeLayer(AOI.wavePower);
                         AOI.map.removeLayer(AOI.tidalPower);
-                        AOI.map.removeLayer(AOI.currentPower);
+                        AOI.map.removeLayer(AOI.EMCurrentPowerLayer);
                         AOI.map.removeLayer(AOI.beachNourish);
                         AOI.map.removeLayer(AOI.coastalEnergyFacilities);
                         AOI.map.removeLayer(AOI.CEElevationLayer);
@@ -1300,15 +1300,15 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.NRCBarrierLayer);
                         AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
 
-                        AOI.windLeaseLayerIsVisible = false;
-                        AOI.windResourcePotentialLayerIsVisible = false;
-                        AOI.windPlanningLayerIsVisible = false;
+                        AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = false;
+                        AOI.EMWindResourcePotentialLayerIsVisible = false;
+                        AOI.EMWindPlanningAreaLayerIsVisible = false;
                         AOI.oceanDisposalSitesIsVisible = false;
                         AOI.marineMineralsLeases = false;
                         AOI.HydrokineticLeasesIsVisible = false;
                         AOI.wavePowerIsVisable = false;
                         AOI.tidalPowerIsVisable = false;
-                        AOI.currentPowerIsVisable = false;
+                        AOI.EMCurrentPowerIsVisable = false;
                         AOI.beachNourishIsVisable = false;
                         AOI.coastalEnergyFacilitiesIsVisable = false;
                         AOI.CEElevationIsVisable = false;
@@ -1325,25 +1325,25 @@ angular.module('myApp.services', [])
                         AOI.ECCoastalCountiesLayerIsVisible = false;
 
 
-                        AOI.wind.length = 0;
-                        AOI.boem.length = 0;
+                        AOI.EMWindResourcePotential.length = 0;
+                        AOI.EMWindPlanningArea.length = 0;
                         AOI.metadata.length = 0;
-                        AOI.optLayer.length = 0;
-                        AOI.windclass.length = 0;
-                        AOI.disp.length = 0;
-                        AOI.mml.length = 0;
-                        AOI.hydrok.length = 0;
+                        //AOI.optLayer.length = 0;
+                        AOI.EMWindResourceClassification.length = 0;
+                        AOI.EMOceanDisposalSites.length = 0;
+                        AOI.EMMarineMineralsLeases.length = 0;
+                        AOI.EMMarineHydrokineticProjects.length = 0;
                         AOI.CETribalLands.length = 0;
-                        AOI.surfsed.length = 0;
-                        AOI.wavepwr.length = 0;
-                        AOI.tidalpwr.length = 0;
-                        AOI.currentpwr.length = 0;
-                        AOI.beachNur.length = 0;
+                        AOI.EMSurficialSediment.length = 0;
+                        AOI.EMOceanWaveResourcePotential.length = 0;
+                        AOI.EMTidalPower.length = 0;
+                        AOI.EMCurrentPower.length = 0;
+                        AOI.EMBeachNourishmentProjects.length = 0;
                         AOI.OGPlanA.length = 0;
                         AOI.OGLease.length = 0;
                         AOI.OGWells.length = 0;
                         AOI.OGresource.length = 0;
-                        AOI.coastfac.length = 0;
+                        AOI.EMCoastalEnergyFacilities .length = 0;
                         AOI.CEElevation.length = 0;
                         AOI.CEAreaOfPoly.length = 0;
                         AOI.CEFedGeoRegs.length = 0;
@@ -1499,25 +1499,25 @@ angular.module('myApp.services', [])
                         AOI.CEPlaceLayerIsVisible = false;
                     }
                 },
-                windLeaseLayerIsVisible: false,
-                toggleWindLeaseLayer: function () {
+                EMActiveRenewableEnergyLeasesLayerIsVisible: false,
+                toggleEMActiveRenewableEnergyLeasesLayer: function () {
 
-                    if (!AOI.windLeaseLayerIsVisible) {
-                        AOI.windLeaseLayer.addTo(AOI.map);
-                        AOI.windLeaseLayerIsVisible = true;
+                    if (!AOI.EMActiveRenewableEnergyLeasesLayerIsVisible) {
+                        AOI.EMActiveRenewableEnergyLeasesLayer.addTo(AOI.map);
+                        AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.windLeaseLayer);
-                        AOI.windLeaseLayerIsVisible = false;
+                        AOI.map.removeLayer(AOI.EMActiveRenewableEnergyLeasesLayer);
+                        AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = false;
                     }
                 },
-                windPlanningLayerIsVisible: false,
-                toggleWindPlanningLayer: function () {
-                    if (!AOI.windPlanningLayerIsVisible) {
-                        AOI.windPlanningLayer.addTo(AOI.map);
-                        AOI.windPlanningLayerIsVisible = true;
+                EMWindPlanningAreaLayerIsVisible: false,
+                toggleEMWindPlanningAreaLayer: function () {
+                    if (!AOI.EMWindPlanningAreaLayerIsVisible) {
+                        AOI.EMWindPlanningAreaLayer.addTo(AOI.map);
+                        AOI.EMWindPlanningAreaLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.windPlanningLayer);
-                        AOI.windPlanningLayerIsVisible = false;
+                        AOI.map.removeLayer(AOI.EMWindPlanningAreaLayer);
+                        AOI.EMWindPlanningAreaLayerIsVisible = false;
                     }
                 },
                 oceanDisposalSitesIsVisible: false,
@@ -1576,15 +1576,15 @@ angular.module('myApp.services', [])
                         AOI.tidalPowerIsVisable = false;
                     }
                 },
-                currentPowerIsVisable: false,
-                togglecurrentPower: function () {
+                EMCurrentPowerIsVisable: false,
+                toggleEMCurrentPower: function () {
 
-                    if (!AOI.currentPowerIsVisable) {
-                        AOI.currentPower.addTo(AOI.map);
-                        AOI.currentPowerIsVisable = true;
+                    if (!AOI.EMCurrentPowerIsVisable) {
+                        AOI.EMCurrentPowerLayer.addTo(AOI.map);
+                        AOI.EMCurrentPowerIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.currentPower);
-                        AOI.currentPowerIsVisable = false;
+                        AOI.map.removeLayer(AOI.EMCurrentPowerLayer);
+                        AOI.EMCurrentPowerIsVisable = false;
                     }
                 },
                 beachNourishIsVisable: false,
@@ -1610,15 +1610,15 @@ angular.module('myApp.services', [])
                     }
                 },
 
-                windResourcePotentialLayerIsVisible: false,
-                toggleWindrpLayer: function () {
+                EMWindResourcePotentialLayerIsVisible: false,
+                toggleEMWindResourcePotentialLayer: function () {
 
-                    if (!AOI.windResourcePotentialLayerIsVisible) {
-                        AOI.windResourcePotentialLayer.addTo(AOI.map);
-                        AOI.windResourcePotentialLayerIsVisible = true;
+                    if (!AOI.EMWindResourcePotentialLayerIsVisible) {
+                        AOI.EMWindResourcePotentialLayer.addTo(AOI.map);
+                        AOI.EMWindResourcePotentialLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.windResourcePotentialLayer);
-                        AOI.windResourcePotentialLayerIsVisible = false;
+                        AOI.map.removeLayer(AOI.EMWindResourcePotentialLayer);
+                        AOI.EMWindResourcePotentialLayerIsVisible = false;
                     }
                 },
                 CEElevationIsVisable: false,
@@ -2022,31 +2022,31 @@ angular.module('myApp.services', [])
                         series: [{
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[0]]
+                            data: [AOI.EMWindResourceClassification[0]]
                         }, {
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[1]]
+                            data: [AOI.EMWindResourceClassification[1]]
                         }, {
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[2]]
+                            data: [AOI.EMWindResourceClassification[2]]
                         }, {
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[3]]
+                            data: [AOI.EMWindResourceClassification[3]]
                         }, {
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[4]]
+                            data: [AOI.EMWindResourceClassification[4]]
                         }, {
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[5]]
+                            data: [AOI.EMWindResourceClassification[5]]
                         }, {
                             showInLegend: false,
                             name: '',
-                            data: [AOI.windclass[6]]
+                            data: [AOI.EMWindResourceClassification[6]]
                         }
                         ]
 

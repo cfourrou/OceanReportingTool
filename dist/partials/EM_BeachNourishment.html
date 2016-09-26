@@ -44,7 +44,7 @@
 
             <div class="floatitleft GreyText10 padLeft15">
                 <table class="table_beachnourishment">
-                    <tr ng-repeat="beach in EMvm.AOI.beachNur | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
+                    <tr ng-repeat="beach in EMvm.AOI.EMBeachNourishmentProjects | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
 
 
                         <td ng-if="$odd" class="oddrow">
@@ -59,7 +59,7 @@
                         <td class="table_beachnourishmentchart">
 
                             <table>
-                                <tr ng-repeat="year in EMvm.AOI.beachNur | filter: {BEACH_AREA: beach.BEACH_AREA}:true | orderBy : 'YEAR'">
+                                <tr ng-repeat="year in EMvm.AOI.EMBeachNourishmentProjects | filter: {BEACH_AREA: beach.BEACH_AREA}:true | orderBy : 'YEAR'">
 
                                     <td class="table_beachnourishmentchartrow">
                                         <div ng-class="'a_'+year.YEAR" class="beachnourishchartbar"
@@ -87,7 +87,7 @@
             <div class="beachnourishchartyearbox">
 
             </div>
-            <div ng-repeat="yearx in EMvm.AOI.beachNur | unique: 'YEAR' | orderBy : 'YEAR'" class=" GreyText12 padLeft25">
+            <div ng-repeat="yearx in EMvm.AOI.EMBeachNourishmentProjects | unique: 'YEAR' | orderBy : 'YEAR'" class=" GreyText12 padLeft25">
                 <svg width="8" height="8">
                     <rect width="8" height="8" ng-class="'a_'+yearx.YEAR"/>
                 </svg>

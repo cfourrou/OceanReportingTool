@@ -10,7 +10,7 @@
 
         <div class="Leftbox60 floatitleft">
             <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
-                                                                                    ng-hide="(EMvm.AOI.tidalpwr[0].AVG_TIDAL_CURRENT>1)&& (EMvm.AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH==='YES')&&(EMvm.AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA==='YES')">&nbsp;NOT</span>
+                                                                                    ng-hide="(EMvm.AOI.EMTidalPower[0].AVG_TIDAL_CURRENT>1)&& (EMvm.AOI.EMTidalPower[0].SUITABILITY_TIDAL_DEPTH==='YES')&&(EMvm.AOI.EMTidalPower[0].SUITABILITY_TIDAL_AREA==='YES')">&nbsp;NOT</span>
 
             <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
             <!-- iButton start-->
@@ -48,14 +48,14 @@
             <div class="padbottom16 w100 GreyText14 padLeft15 floatitleft">Tidal Power
                 Generation
             </div>
-            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[EMvm.AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH==='YES']">
-                Depth is <span ng-hide="EMvm.AOI.tidalpwr[0].SUITABILITY_TIDAL_DEPTH==='YES'">NOT</span> >5 m
+            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[EMvm.AOI.EMTidalPower[0].SUITABILITY_TIDAL_DEPTH==='YES']">
+                Depth is <span ng-hide="EMvm.AOI.EMTidalPower[0].SUITABILITY_TIDAL_DEPTH==='YES'">NOT</span> >5 m
             </div>
-            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[EMvm.AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA==='YES']">
-                Area is <span ng-hide="EMvm.AOI.tidalpwr[0].SUITABILITY_TIDAL_AREA==='YES'">NOT</span> >0.5 km2
+            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[EMvm.AOI.EMTidalPower[0].SUITABILITY_TIDAL_AREA==='YES']">
+                Area is <span ng-hide="EMvm.AOI.EMTidalPower[0].SUITABILITY_TIDAL_AREA==='YES'">NOT</span> >0.5 km2
             </div>
-            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[EMvm.AOI.tidalpwr[0].AVG_TIDAL_CURRENT>1]">
-                Current Speed is <span ng-hide="EMvm.AOI.tidalpwr[0].AVG_TIDAL_CURRENT>1">NOT</span> >1 m/s
+            <div ng-class="{true: 'GreenText16  padLeft15', false: ' RedText16 padLeft15'}[EMvm.AOI.EMTidalPower[0].AVG_TIDAL_CURRENT>1]">
+                Current Speed is <span ng-hide="EMvm.AOI.EMTidalPower[0].AVG_TIDAL_CURRENT>1">NOT</span> >1 m/s
             </div>
             <div class="tpowerscale GreyText14 padLeft15"></div>
             <div class="powerscale2 GreyText14 padLeft15">
@@ -78,7 +78,7 @@
 
                 <div id="thebar" class="floatitleft tpowergraphbar"
 
-                     ng-style="{'width': (EMvm.AOI.tidalpwr[0].AVG_TIDAL_CURRENT*154) + 'px' };"></div>
+                     ng-style="{'width': (EMvm.AOI.EMTidalPower[0].AVG_TIDAL_CURRENT*154) + 'px' };"></div>
             </div>
             <div class="text-center GreyText10"> Tidal Current (m/s)</div>
         </div>

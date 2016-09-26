@@ -48,7 +48,7 @@
 
         <div class="infographicline3">
             <span class="boemline2a ">There are</span>
-            <span class="boemline2b ">{{EMvm.AOI.coastfac[0].TOTAL_CNT}}</span>
+            <span class="boemline2b ">{{EMvm.AOI.EMCoastalEnergyFacilities [0].TOTAL_CNT}}</span>
             <span class="boemline2a ">Coastal Energy Facilities</span>
 
         </div>
@@ -64,7 +64,7 @@
                     <th class="OGTableBorderShort">Capacity (MW)</th>
                     <th class="OGTableBorderShort">Distance (mi)</th>
                 </tr>
-                <tr class="GreychartBorder" ng-repeat="facs in EMvm.AOI.coastfac | orderBy : 'Dist_Mi'">
+                <tr class="GreychartBorder" ng-repeat="facs in EMvm.AOI.EMCoastalEnergyFacilities  | orderBy : 'Dist_Mi'">
                     <td class="GreychartBorder">
                         <div>{{facs.Name}}</div>
                     </td>

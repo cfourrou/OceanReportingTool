@@ -3,8 +3,8 @@
         <div id="line1a">Wind Resource Potential</div>
 
         <div id="slider_but0" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.windResourcePotentialLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleWindrpLayer()" ng-include="'img/switch_off.svg'"></div>
+            <div ng-class="EMvm.AOI.EMWindResourcePotentialLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleEMWindResourcePotentialLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
         <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
@@ -13,16 +13,16 @@
 
     <div id="line2">
         <div class="floatitleft w25"> Weighted Average:<br>
-            {{EMvm.AOI.wind[0].AVG_WGHT}} m/s
+            {{EMvm.AOI.EMWindResourcePotential[0].AVG_WGHT}} m/s
         </div>
         <div>
 
-            <!-- //metadata-url="{{wind[0].METADATA_URL}}" -->
+            <!-- //metadata-url="{{EMWindResourcePotential[0].METADATA_URL}}" -->
             <info-directive class="infobutton mainbutton floatitleft" modal-template="modal0.html"
                             alttext="Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy."
                             message="message"
                             modal-img="img/info.svg"
-                            metadata-url="{{EMvm.AOI.wind[0].CAPACITY}}"></info-directive>
+                            metadata-url="{{EMvm.AOI.EMWindResourcePotential[0].CAPACITY}}"></info-directive>
 
             <script type="text/ng-template" id="modal0.html">
                 <div id="custom-modal">
@@ -45,7 +45,7 @@
         </div>
         <div id="spacer">&nbsp;</div>
         <div class="floatitleft w38">Potential Houses Supported Annually:
-            {{EMvm.AOI.wind[0].HOUSES_SUM}}
+            {{EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM}}
         </div>
         <!-- iButton start-->
         <div>

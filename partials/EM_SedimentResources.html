@@ -58,10 +58,10 @@
             <!-- iButton end-->
 
         </div>
-        <div ng-repeat="count in disp | filter:query as filtered">
+        <div ng-repeat="count in EMOceanDisposalSites | filter:query as filtered">
         </div>
-        <div ng-repeat="dispx in disp | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in disp | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+        <div ng-repeat="dispx in EMOceanDisposalSites | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+            <div ng-repeat="count in EMOceanDisposalSites | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
             </div>
             <div id="boemline2">
                 <span class="boemline2b">{{filtered.length}}</span>

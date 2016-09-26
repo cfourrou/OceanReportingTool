@@ -10,7 +10,7 @@
 
         <div class="Leftbox60 floatitleft">
             <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
-                                                                                    ng-hide="EMvm.AOI.wavepwr[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
+                                                                                    ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
 
             <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
             <!-- iButton start-->
@@ -48,8 +48,8 @@
             <div class="padbottom16 w100 GreyText14 padLeft15 floatitleft">Wave Power
                 Generation
             </div>
-            <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.wavepwr[0].AVG_WAVE_POWER>10]">
-                Wave Power is <span ng-hide="EMvm.AOI.wavepwr[0].AVG_WAVE_POWER>10">NOT</span> >10 kW/m
+            <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10]">
+                Wave Power is <span ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">NOT</span> >10 kW/m
             </div>
             <div class="powerscale2 GreyText14 padLeft15"></div>
             <div class="wpowerscale2 GreyText14 padLeft15">
@@ -67,8 +67,8 @@
                 </div>
 
                 <div id="thebar" class="wpowergraphbar floatitleft "
-                     ng-style="{'width': (EMvm.AOI.wavepwr[0].AVG_WAVE_POWER*7) + 'px' };">
-                    <div class="w100 h100" ng-style="{'background-color':EMvm.AOI.wavepwr[0].COLOR}"></div>
+                     ng-style="{'width': (EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER*7) + 'px' };">
+                    <div class="w100 h100" ng-style="{'background-color':EMvm.AOI.EMOceanWaveResourcePotential[0].COLOR}"></div>
                 </div>
             </div>
             <div class="text-center GreyText10"> Wave Power kW/m</div>

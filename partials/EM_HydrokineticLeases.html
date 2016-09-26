@@ -44,10 +44,10 @@
 
 
         </div>
-        <div ng-repeat="count in EMvm.AOI.hydrok | filter:query as filtered">
+        <div ng-repeat="count in EMvm.AOI.EMMarineHydrokineticProjects | filter:query as filtered">
         </div>
-        <div ng-repeat="dispx in EMvm.AOI.hydrok | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in EMvm.AOI.hydrok | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+        <div ng-repeat="dispx in EMvm.AOI.EMMarineHydrokineticProjects | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+            <div ng-repeat="count in EMvm.AOI.EMMarineHydrokineticProjects | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
             </div>
             <div id="boemline2">
                 <span class="boemline2b">{{filtered.length}}</span>

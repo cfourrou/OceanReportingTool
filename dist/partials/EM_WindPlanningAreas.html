@@ -2,8 +2,8 @@
     <div id="wrbox1">
 
         <div id="slider_but2" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.windPlanningLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleWindPlanningLayer()" ng-include="'img/switch_off.svg'"></div>
+            <div ng-class="EMvm.AOI.EMWindPlanningAreaLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleEMWindPlanningAreaLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
         <div class="infographicline1">
             <div class="floatitleft">Wind Planning Areas</div>
@@ -39,22 +39,22 @@
         <!-- iButton end-->
         <div class="swatch"><img src="img/Wind_Planning_Areas.svg"></div>
         <div class="infographicline2">
-            <span class="boemline2b">{{EMvm.AOI.boem[0].TOTAL_CNT}}</span>
+            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT}}</span>
             <span class="boemline2a">BOEM Wind Planning Area</span>
         </div>
         <div id="boemline2">
             <span class="boemline2a">Covers</span>
-            <span class="boemline2b">{{EMvm.AOI.boem[0].PERC_COVER.toFixed(0)}}</span>
+            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].PERC_COVER>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].PERC_COVER.toFixed(0)}}</span>
             <span class="boemline2a">%, including</span>
-            <span class="boemline2b">{{EMvm.AOI.boem[0].TOTAL_BLOC}}</span>
+            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC}}</span>
             <span class="boemline2a">OCS blocks</span>
         </div>
 
         <div id="boemline2">
-            <div class="boemline2a">{{EMvm.AOI.boem[0].PROT_NUMBE}} {{EMvm.AOI.boem[0].INFO}}</div>
-            <div class="boemline2a"><a href={{EMvm.AOI.boem[0].LINK1}} target="_blank">Current Federal Register Notice</a>
+            <div class="boemline2a">{{EMvm.AOI.EMWindPlanningArea[0].PROT_NUMBE}} {{EMvm.AOI.EMWindPlanningArea[0].INFO}}</div>
+            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK1}} target="_blank">Current Federal Register Notice</a>
             </div>
-            <div class="boemline2a"><a href={{EMvm.AOI.boem[0].LINK2}} target="_blank">Current State Activities</a></div>
+            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}} target="_blank">Current State Activities</a></div>
         </div>
     </div>
 </div>

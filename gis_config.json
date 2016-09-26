@@ -51,15 +51,15 @@
     }
   },
   "optionalLayerPanes": {
-    "windResourcePotentialLayer": {
+    "EMWindResourcePotentialLayer": {
       "num": "19",
       "displayName": "Wind Resource Potential"
     },
-    "windLeaseLayer": {
+    "EMActiveRenewableEnergyLeasesLayer": {
       "num": "18",
       "displayName": "Active Renewable Energy Leases"
     },
-    "windPlanningLayer": {
+    "EMWindPlanningAreaLayer": {
       "num": "22",
       "displayName": "BOEM_Wind_Planning_Areas"
     },
@@ -87,7 +87,7 @@
       "displayName": "Tidal Power",
       "layerName": "usa_mc_wm"
     },
-    "currentPower": {
+    "EMCurrentPower": {
       "num": 31,
       "displayName": "Current Power",
       "layerName": "us_oc_ms"
@@ -101,7 +101,7 @@
       "num": 1,
       "displayName": "Coastal Energy Facilities"
     },
-    "CEElevation": {
+    "CEElevationLayer": {
       "num": 5,
       "displayName": "bathymetric_Contours"
     },

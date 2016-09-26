@@ -144,18 +144,18 @@ $http.get("gis_config.json").then(function (result) {
                     }
                 },
                 optionalLayers: {
-                    windResourcePotentialLayer: result.data['optionalLayerPanes'].windResourcePotentialLayer.num,
-                    windLeaseLayer: result.data['optionalLayerPanes'].windLeaseLayer.num,
-                    windPlanningLayer: result.data['optionalLayerPanes'].windPlanningLayer.num,
+                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer.num,
+                    EMActiveRenewableEnergyLeasesLayer: result.data['optionalLayerPanes'].EMActiveRenewableEnergyLeasesLayer.num,
+                    EMWindPlanningAreaLayer: result.data['optionalLayerPanes'].EMWindPlanningAreaLayer.num,
                     oceanDisposalSites: result.data['optionalLayerPanes'].oceanDisposalSites.num,
                     marineMineralsLeases: result.data['optionalLayerPanes'].marineMineralsLeases.num,
                     HydrokineticLeases: result.data['optionalLayerPanes'].HydrokineticLeases.num,
                     wavePower: result.data['optionalLayerPanes'].wavePower.num,
                     tidalPower: result.data['optionalLayerPanes'].tidalPower.num,
-                    currentPower: result.data['optionalLayerPanes'].currentPower.num,
+                    EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower.num,
                     beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
                     coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                    CEElevation: result.data['optionalLayerPanes'].CEElevation.num,//Common Elements Elevation Layer
+                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//Common Elements Elevation Layer
                     ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//Economics and Commerce Coastal Counties Layer
                     TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//Transportation and Infrastructure Submarine Layer
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
