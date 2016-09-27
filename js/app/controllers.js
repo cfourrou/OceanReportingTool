@@ -54,7 +54,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                     if (vm.drawlocked) {
                         vm.drawOff();
                     } else {
-                        vm.drawOn();
+                        vm.startDrawing();
                     }
                 }
                 break;
@@ -69,7 +69,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
                 AOI.getReport().then(function () {
                     vm.stopSpin();
-                    vm.drawtoolOn = false;
+                    vm.drawOff();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = "DRAW";
                     vm.baseMapControlOn = false;
@@ -121,7 +121,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
     vm.reset = function () { //unloads AOI but leaves slider pane on
-
         vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
@@ -129,10 +128,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
     vm.off = function () { //unloads AOI and turns off slider pane
-
         vm.paneOff();
         AOI.unloadData();
-        vm.drawtoolOn = true;
+        vm.drawOn();
     };
 
     vm.paneOff = function () {
