@@ -63,7 +63,7 @@
       "num": "22",
       "displayName": "BOEM_Wind_Planning_Areas"
     },
-    "oceanDisposalSites": {
+    "EMOceanDisposalSitesLayer": {
       "num": "23",
       "displayName": "OceanDisposalSites"
     },
@@ -72,7 +72,7 @@
       "displayName": "Marine Minerals Leases",
       "layerName": "Sand_n_GravelLeaseAreas"
     },
-    "HydrokineticLeases": {
+    "EMMarineHydrokineticProjectsLayer": {
       "num": "3",
       "displayName": "Hydrokinetic Leases",
       "layerName": "MarineHydrokineticProjects"

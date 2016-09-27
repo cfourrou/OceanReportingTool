@@ -384,9 +384,9 @@ angular.module('myApp.services', [])
                             return {color: 'Black', weight: 1, fillOpacity: .5};
                         }
                     });
-                    AOI.oceanDisposalSites = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.oceanDisposalSites,
-                        pane: 'oceanDisposalSitesPane',
+                    AOI.EMOceanDisposalSitesLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMOceanDisposalSitesLayer,
+                        pane: 'EMOceanDisposalSitesLayerPane',
                         style: function (feature) {
                             return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
                         }
@@ -400,9 +400,9 @@ angular.module('myApp.services', [])
                     });
 
 
-                    AOI.HydrokineticLeases = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.HydrokineticLeases,
-                        pane: 'HydrokineticLeasesPane',
+                    AOI.EMMarineHydrokineticProjectsLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMMarineHydrokineticProjectsLayer,
+                        pane: 'EMMarineHydrokineticProjectsLayerPane',
                         pointToLayer: function (feature, latlng) {
                             return L.marker(latlng, {
                                 icon: L.icon({
@@ -1275,9 +1275,9 @@ angular.module('myApp.services', [])
 
                     if (AOI.isLoaded) {
                         AOI.map.removeLayer(AOI.layer);
-                        AOI.map.removeLayer(AOI.oceanDisposalSites);
-                        AOI.map.removeLayer(AOI.HydrokineticLeases);
-                        AOI.map.removeLayer(AOI.windPlanningLayer);
+                        AOI.map.removeLayer(AOI.EMOceanDisposalSitesLayer);
+                        AOI.map.removeLayer(AOI.EMMarineHydrokineticProjectsLayer);
+                        AOI.map.removeLayer(AOI.EMWindPlanningAreaLayer);
                         AOI.map.removeLayer(AOI.EMActiveRenewableEnergyLeasesLayer);
                         AOI.map.removeLayer(AOI.EMWindResourcePotentialLayer);
                         AOI.map.removeLayer(AOI.marineMineralsLeases);
@@ -1303,9 +1303,9 @@ angular.module('myApp.services', [])
                         AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = false;
                         AOI.EMWindResourcePotentialLayerIsVisible = false;
                         AOI.EMWindPlanningAreaLayerIsVisible = false;
-                        AOI.oceanDisposalSitesIsVisible = false;
+                        AOI.EMOceanDisposalSitesLayerIsVisible = false;
                         AOI.marineMineralsLeases = false;
-                        AOI.HydrokineticLeasesIsVisible = false;
+                        AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
                         AOI.wavePowerIsVisable = false;
                         AOI.tidalPowerIsVisable = false;
                         AOI.EMCurrentPowerIsVisable = false;
@@ -1520,26 +1520,26 @@ angular.module('myApp.services', [])
                         AOI.EMWindPlanningAreaLayerIsVisible = false;
                     }
                 },
-                oceanDisposalSitesIsVisible: false,
-                toggleOceanDisposalSites: function () {
+                EMOceanDisposalSitesLayerIsVisible: false,
+                toggleEMOceanDisposalSitesLayer: function () {
 
-                    if (!AOI.oceanDisposalSitesIsVisible) {
-                        AOI.oceanDisposalSites.addTo(AOI.map);
-                        AOI.oceanDisposalSitesIsVisible = true;
+                    if (!AOI.EMOceanDisposalSitesLayerIsVisible) {
+                        AOI.EMOceanDisposalSitesLayer.addTo(AOI.map);
+                        AOI.EMOceanDisposalSitesLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.oceanDisposalSites);
-                        AOI.oceanDisposalSitesIsVisible = false;
+                        AOI.map.removeLayer(AOI.EMOceanDisposalSitesLayer);
+                        AOI.EMOceanDisposalSitesLayerIsVisible = false;
                     }
                 },
-                HydrokineticLeasesIsVisible: false,
-                toggleHydrokineticLeases: function () {
+                EMMarineHydrokineticProjectsLayerIsVisible: false,
+                toggleEMMarineHydrokineticProjectsLayer: function () {
 
-                    if (!AOI.HydrokineticLeasesIsVisible) {
-                        AOI.HydrokineticLeases.addTo(AOI.map);
-                        AOI.HydrokineticLeasesIsVisible = true;
+                    if (!AOI.EMMarineHydrokineticProjectsLayerIsVisible) {
+                        AOI.EMMarineHydrokineticProjectsLayer.addTo(AOI.map);
+                        AOI.EMMarineHydrokineticProjectsLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.HydrokineticLeases);
-                        AOI.HydrokineticLeasesIsVisible = false;
+                        AOI.map.removeLayer(AOI.EMMarineHydrokineticProjectsLayer);
+                        AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
                     }
                 },
 
