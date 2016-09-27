@@ -25233,7 +25233,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
                     if (vm.drawlocked) {
                         vm.drawOff();
                     } else {
-                        vm.drawOn();
+                        vm.startDrawing();
                     }
                 }
                 break;
@@ -25248,7 +25248,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
                 AOI.getReport().then(function () {
                     vm.stopSpin();
-                    vm.drawtoolOn = false;
+                    vm.drawOff();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = "DRAW";
                     vm.baseMapControlOn = false;
@@ -25300,7 +25300,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
     vm.reset = function () { //unloads AOI but leaves slider pane on
-
         vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
@@ -25308,10 +25307,9 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
     };
 
     vm.off = function () { //unloads AOI and turns off slider pane
-
         vm.paneOff();
         AOI.unloadData();
-        vm.drawtoolOn = true;
+        vm.drawOn();
     };
 
     vm.paneOff = function () {
@@ -25711,7 +25709,8 @@ angular.module('myApp.directives', [])
                 drawIt: '=',
                 drawOn: '=',
                 drawOff: '=',
-                map: '='
+                map: '=',
+                startDrawing: '='
             },
             replace: true,
             templateUrl: 'partials/ortMap.html',
@@ -25815,19 +25814,28 @@ angular.module('myApp.directives', [])
 
                     $scope.drawAvailable = false;
 
-                    $scope.drawOn = function () {
+                    $scope.startDrawing = function () {
                         $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
                         $scope.map.setMaxZoom($scope.map.getZoom());
                         $scope.map.dragging.disable(); //no panning
                         $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
                         $scope.map.doubleClickZoom.disable();
                         $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
-                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                        if (searchControl) searchControl.disable();
-                        $scope.drawLocked = true;
-                        $scope.drawButtonText = "Drawing";
+                        // $scope.drawLocked = true;
+                        //$scope.drawButtonText = "Drawing";
                         $scope.polyLayerEnabled = false;
                         $scope.map.pm.enableDraw('Poly');
+                        $scope.drawEnabled = true;
+                    };
+
+                    $scope.drawOn = function () {
+                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                        clearMouseLayer();
+                        searchControl.addTo($scope.map);
+                        $element.css('width', '100%');
+                        $element.find('#map').css('width', '100%');
+                        $scope.map.invalidateSize();
+                        $scope.drawEnabled = true;
 
                         //$element.css('width', '100%');
                         //$scope.map.invalidateSize();
@@ -25842,33 +25850,21 @@ angular.module('myApp.directives', [])
                         $scope.map.boxZoom.enable(); // shift mouse drag zooming.
                         //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
                         $scope.map.dragging.enable();
-                        if (searchControl) searchControl.enable();
+                        //if (searchControl) searchControl.enable();
                         $scope.drawLocked = false;
                         $scope.map.pm.disableDraw('Poly');
-                    };
-
-                    $scope.$watch('drawEnabled', function (newValue, oldValue) {
-                        if (newValue !== oldValue) {
-                            if (newValue) {
-                                clearMouseLayer();
-                                searchControl.addTo($scope.map);
-                                $element.css('width', '100%');
-                                $element.find('#map').css('width', '100%');
-                                $scope.map.invalidateSize();
-                            } else {
-                                $scope.map.removeControl(searchControl);
-                                $element.css('width', '50%');
-                                $element.find('#map').css('width', '50%');
-                                $scope.map.invalidateSize();
-                                $scope.drawOff();
-                                if (polyLayer) {
-                                    $scope.map.fitBounds(polyLayer.getBounds());
-                                    $scope.map.removeLayer(polyLayer);
-                                }
-                            }
+                        $scope.map.removeControl(searchControl);
+                        $element.css('width', '50%');
+                        $element.find('#map').css('width', '50%');
+                        $scope.map.invalidateSize();
+                        $scope.drawEnabled = false;
+                        $scope.drawAvailable = false;
+                        $scope.drawButtonText = 'DRAW';
+                        if (polyLayer) {
+                            $scope.map.removeLayer(polyLayer);
+                            polyLayer = null;
                         }
-                    });
-
+                    };
 
                     $scope.$watch('basemapControlEnabled', function (newValue, oldValue) {
                         if (newValue !== oldValue) {
@@ -25920,7 +25916,7 @@ angular.module('myApp.directives', [])
                     $scope.resetMap = function () {
                         $scope.baseMapControlEnabled = false;
                         $scope.searchControlEnabled = false;
-                        $scope.drawEnabled = false;
+                        $scope.drawOff();
                         $scope.polyLayerEnabled = false;
                         $scope.map.setView([33.51, -78.3], 6);
                         clearMouseLayer();
