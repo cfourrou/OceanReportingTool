@@ -23238,7 +23238,6 @@ angular.module('myApp.services', [])
                 EMOceanDisposalSites: [],
                 EMMarineMineralsLeases: [],
                 EMMarineHydrokineticProjects: [],
-                //optLayer: [],
                 CETribalLands: [],
                 EMSurficialSediment: [],
                 EMOceanWaveResourcePotential: [],
@@ -23249,7 +23248,7 @@ angular.module('myApp.services', [])
                 OGLease: [],
                 OGWells: [],
                 OGresource: [],
-                EMCoastalEnergyFacilities : [],
+                EMCoastalEnergyFacilities: [],
                 CEElevation: [],
                 EMWindResourceClassification: [],
                 CEAreaOfPoly: [],
@@ -23490,9 +23489,9 @@ angular.module('myApp.services', [])
                             return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
                         }
                     });
-                    AOI.marineMineralsLeases = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.marineMineralsLeases,
-                        pane: 'marineMineralsLeasesPane',
+                    AOI.EMMarineMineralsLeasesLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMMarineMineralsLeasesLayer,
+                        pane: 'EMMarineMineralsLeasesLayerPane',
                         style: function (feature) {
                             return {color: '#7300D9', weight: 2, fillOpacity: 0};
                         }
@@ -23514,9 +23513,9 @@ angular.module('myApp.services', [])
                         }
                     });
 
-                    AOI.wavePower = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.wavePower,
-                        pane: 'wavePowerPane',
+                    AOI.EMOceanWaveResourcePotentialLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMOceanWaveResourcePotentialLayer,
+                        pane: 'EMOceanWaveResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.ann_wef > 40) {
                                 return {color: '#B0B497', weight: 1, fillOpacity: .8};
@@ -23544,10 +23543,10 @@ angular.module('myApp.services', [])
                         }
                     });
 
-                    AOI.tidalPower = L.esri.dynamicMapLayer({
+                    AOI.EMTidalPowerLayer = L.esri.dynamicMapLayer({
                         url: AOIConfig.ortMapServer,
-                        pane: 'tidalPowerPane',
-                        layers: [AOIConfig.optionalLayers.tidalPower],
+                        pane: 'EMTidalPowerLayerPane',
+                        layers: [AOIConfig.optionalLayers.EMTidalPowerLayer],
                         opacity: .8
                     });
 
@@ -23558,17 +23557,17 @@ angular.module('myApp.services', [])
                         opacity: .8
                     });
 
-                    AOI.beachNourish = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.beachNourish,
-                        pane: 'beachNourishPane',
+                    AOI.EMBeachNourishmentProjectsLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMBeachNourishmentProjectsLayer,
+                        pane: 'EMBeachNourishmentProjectsLayerPane',
                         style: function (feature) {
                             return {color: '#8B572A', weight: 4, fillOpacity: 0};
                         }
                     });
 
-                    AOI.coastalEnergyFacilities = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.coastalEnergyFacilities,
-                        pane: 'coastalEnergyFacilitiesPane',
+                    AOI.EMCoastalEnergyFacilitiesLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMCoastalEnergyFacilitiesLayer,
+                        pane: 'EMCoastalEnergyFacilitiesLayerPane',
                         pointToLayer: function (feature, latlng) {
                             return L.marker(latlng, {
                                 icon: L.icon({
@@ -23682,9 +23681,9 @@ angular.module('myApp.services', [])
                         }
                     });
 
-                    AOI.TIVessels = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TIVessels,
-                        pane: 'TIVesselsPane',
+                    AOI.TIVesselLayer = L.esri.featureLayer({
+                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TIVesselLayer,
+                        pane: 'TIVesselLayerPane',
                         style: function (feature) {
                             if (feature.properties.all_2011 > 1500) {
                                 return {color: '#d4321e', weight: 1, fillOpacity: .8};
@@ -23757,8 +23756,6 @@ angular.module('myApp.services', [])
 
                             AOI.massageData(tempFeatureArray);
                             AOI.display();
-                            //AOI.name = name;
-
                         });
                     }
 
@@ -24053,7 +24050,7 @@ angular.module('myApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "CoastalEnergyFacilities":
-                                AOI.EMCoastalEnergyFacilities .push({
+                                AOI.EMCoastalEnergyFacilities.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     Name: (feature.Name || 'None'),
                                     Type: (feature.Type || 'None'),
@@ -24341,16 +24338,6 @@ angular.module('myApp.services', [])
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
 
-                    //if (AOI.boem[0].TOTAL_CNT == 0) {
-                    //    AOI.boem[0].PERC_COVER = 0;
-                    //    AOI.boem[0].TOTAL_BLOC = 0;
-                    //}
-                    //if (AOI.arel[0] === null)AOI.arel[0].TOTAL_CNT = 0;
-                    //if (AOI.arel[0].TOTAL_CNT == 0) {
-                    //    AOI.arel[0].PERC_COVER = 0;
-                    //    AOI.arel[0].TOTAL_BLOC = 0;
-                    //}
-
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
@@ -24379,18 +24366,18 @@ angular.module('myApp.services', [])
                         AOI.map.removeLayer(AOI.EMWindPlanningAreaLayer);
                         AOI.map.removeLayer(AOI.EMActiveRenewableEnergyLeasesLayer);
                         AOI.map.removeLayer(AOI.EMWindResourcePotentialLayer);
-                        AOI.map.removeLayer(AOI.marineMineralsLeases);
-                        AOI.map.removeLayer(AOI.wavePower);
-                        AOI.map.removeLayer(AOI.tidalPower);
+                        AOI.map.removeLayer(AOI.EMMarineMineralsLeasesLayer);
+                        AOI.map.removeLayer(AOI.EMOceanWaveResourcePotentialLayer);
+                        AOI.map.removeLayer(AOI.EMTidalPowerLayer);
                         AOI.map.removeLayer(AOI.EMCurrentPowerLayer);
-                        AOI.map.removeLayer(AOI.beachNourish);
-                        AOI.map.removeLayer(AOI.coastalEnergyFacilities);
+                        AOI.map.removeLayer(AOI.EMBeachNourishmentProjectsLayer);
+                        AOI.map.removeLayer(AOI.EMCoastalEnergyFacilitiesLayer);
                         AOI.map.removeLayer(AOI.CEElevationLayer);
                         AOI.map.removeLayer(AOI.TISubmarineLayer);
                         AOI.map.removeLayer(AOI.TIDangerZonesLayer);
                         AOI.map.removeLayer(AOI.CEPlaceLayer);
                         AOI.map.removeLayer(AOI.CETribalLayer);
-                        AOI.map.removeLayer(AOI.TIVessels);
+                        AOI.map.removeLayer(AOI.TIVesselLayer);
                         AOI.map.removeLayer(AOI.TIPrincipalPortsLayer);
                         AOI.map.removeLayer(AOI.NRCNearbyLayer);
                         AOI.map.removeLayer(AOI.NRCReefsLayer);
@@ -24403,18 +24390,18 @@ angular.module('myApp.services', [])
                         AOI.EMWindResourcePotentialLayerIsVisible = false;
                         AOI.EMWindPlanningAreaLayerIsVisible = false;
                         AOI.EMOceanDisposalSitesLayerIsVisible = false;
-                        AOI.marineMineralsLeases = false;
+                        AOI.EMMarineMineralsLeasesLayer = false;
                         AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
-                        AOI.wavePowerIsVisable = false;
-                        AOI.tidalPowerIsVisable = false;
+                        AOI.EMOceanWaveResourcePotentialLayerIsVisable = false;
+                        AOI.EMTidalPowerLayerIsVisable = false;
                         AOI.EMCurrentPowerIsVisable = false;
-                        AOI.beachNourishIsVisable = false;
-                        AOI.coastalEnergyFacilitiesIsVisable = false;
+                        AOI.EMBeachNourishmentProjectsLayerIsVisable = false;
+                        AOI.EMCoastalEnergyFacilitiesLayerIsVisable = false;
                         AOI.CEElevationIsVisable = false;
                         AOI.TISubmarineIsVisable = false;
                         AOI.TIDangerZonesIsVisable = false;
                         AOI.CEPlaceLayerIsVisible = false;
-                        AOI.TIVesselsIsVisible = false;
+                        AOI.TIVesselLayerIsVisible = false;
                         AOI.TIPrincipalPortsIsVisible = false;
                         AOI.NRCNearbyLayerIsVisible = false;
                         AOI.NRCReefsLayerIsVisible = false;
@@ -24427,7 +24414,6 @@ angular.module('myApp.services', [])
                         AOI.EMWindResourcePotential.length = 0;
                         AOI.EMWindPlanningArea.length = 0;
                         AOI.metadata.length = 0;
-                        //AOI.optLayer.length = 0;
                         AOI.EMWindResourceClassification.length = 0;
                         AOI.EMOceanDisposalSites.length = 0;
                         AOI.EMMarineMineralsLeases.length = 0;
@@ -24442,7 +24428,7 @@ angular.module('myApp.services', [])
                         AOI.OGLease.length = 0;
                         AOI.OGWells.length = 0;
                         AOI.OGresource.length = 0;
-                        AOI.EMCoastalEnergyFacilities .length = 0;
+                        AOI.EMCoastalEnergyFacilities.length = 0;
                         AOI.CEElevation.length = 0;
                         AOI.CEAreaOfPoly.length = 0;
                         AOI.CEFedGeoRegs.length = 0;
@@ -24573,16 +24559,16 @@ angular.module('myApp.services', [])
                         AOI.TIPrincipalPortsIsVisible = false;
                     }
                 },
-                TIVesselsIsVisible: false,
-                toggleTIVessels: function () {
+                TIVesselLayerIsVisible: false,
+                toggleTIVesselLayer: function () {
 
 
-                    if (!AOI.TIVesselsIsVisible) {
-                        AOI.TIVessels.addTo(AOI.map);
-                        AOI.TIVesselsIsVisible = true;
+                    if (!AOI.TIVesselLayerIsVisible) {
+                        AOI.TIVesselLayer.addTo(AOI.map);
+                        AOI.TIVesselLayerIsVisible = true;
                     } else {
-                        AOI.map.removeLayer(AOI.TIVessels);
-                        AOI.TIVesselsIsVisible = false;
+                        AOI.map.removeLayer(AOI.TIVesselLayer);
+                        AOI.TIVesselLayerIsVisible = false;
                     }
                 },
                 CEPlaceLayerIsVisible: false,
@@ -24642,37 +24628,37 @@ angular.module('myApp.services', [])
                     }
                 },
 
-                marineMineralsLeasesIsVisable: false,
-                toggleMarineMineralsLeases: function () {
+                EMMarineMineralsLeasesLayerIsVisable: false,
+                toggleEMMarineMineralsLeasesLayer: function () {
 
-                    if (!AOI.marineMineralsLeasesIsVisable) {
-                        AOI.marineMineralsLeases.addTo(AOI.map);
-                        AOI.marineMineralsLeasesIsVisable = true;
+                    if (!AOI.EMMarineMineralsLeasesLayerIsVisable) {
+                        AOI.EMMarineMineralsLeasesLayer.addTo(AOI.map);
+                        AOI.EMMarineMineralsLeasesLayerIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.marineMineralsLeases);
-                        AOI.marineMineralsLeasesIsVisable = false;
+                        AOI.map.removeLayer(AOI.EMMarineMineralsLeasesLayer);
+                        AOI.EMMarineMineralsLeasesLayerIsVisable = false;
                     }
                 },
-                wavePowerIsVisable: false,
-                togglewavePower: function () {
+                EMOceanWaveResourcePotentialLayerIsVisable: false,
+                toggleEMOceanWaveResourcePotentialLayer: function () {
 
-                    if (!AOI.wavePowerIsVisable) {
-                        AOI.wavePower.addTo(AOI.map);
-                        AOI.wavePowerIsVisable = true;
+                    if (!AOI.EMOceanWaveResourcePotentialLayerIsVisable) {
+                        AOI.EMOceanWaveResourcePotentialLayer.addTo(AOI.map);
+                        AOI.EMOceanWaveResourcePotentialLayerIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.wavePower);
-                        AOI.wavePowerIsVisable = false;
+                        AOI.map.removeLayer(AOI.EMOceanWaveResourcePotentialLayer);
+                        AOI.EMOceanWaveResourcePotentialLayerIsVisable = false;
                     }
                 },
-                tidalPowerIsVisable: false,
-                toggletidalPower: function () {
+                EMTidalPowerLayerIsVisable: false,
+                toggleEMTidalPowerLayer: function () {
 
-                    if (!AOI.tidalPowerIsVisable) {
-                        AOI.tidalPower.addTo(AOI.map);
-                        AOI.tidalPowerIsVisable = true;
+                    if (!AOI.EMTidalPowerLayerIsVisable) {
+                        AOI.EMTidalPowerLayer.addTo(AOI.map);
+                        AOI.EMTidalPowerLayerIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.tidalPower);
-                        AOI.tidalPowerIsVisable = false;
+                        AOI.map.removeLayer(AOI.EMTidalPowerLayer);
+                        AOI.EMTidalPowerLayerIsVisable = false;
                     }
                 },
                 EMCurrentPowerIsVisable: false,
@@ -24686,26 +24672,26 @@ angular.module('myApp.services', [])
                         AOI.EMCurrentPowerIsVisable = false;
                     }
                 },
-                beachNourishIsVisable: false,
-                togglebeachNourish: function () {
+                EMBeachNourishmentProjectsLayerIsVisable: false,
+                toggleEMBeachNourishmentProjectsLayer: function () {
 
-                    if (!AOI.beachNourishIsVisable) {
-                        AOI.beachNourish.addTo(AOI.map);
-                        AOI.beachNourishIsVisable = true;
+                    if (!AOI.EMBeachNourishmentProjectsLayerIsVisable) {
+                        AOI.EMBeachNourishmentProjectsLayer.addTo(AOI.map);
+                        AOI.EMBeachNourishmentProjectsLayerIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.beachNourish);
-                        AOI.beachNourishIsVisable = false;
+                        AOI.map.removeLayer(AOI.EMBeachNourishmentProjectsLayer);
+                        AOI.EMBeachNourishmentProjectsLayerIsVisable = false;
                     }
                 },
-                coastalEnergyFacilitiesIsVisable: false,
-                togglecoastalEnergyFacilities: function () {
+                EMCoastalEnergyFacilitiesLayerIsVisable: false,
+                toggleEMCoastalEnergyFacilitiesLayer: function () {
 
-                    if (!AOI.coastalEnergyFacilitiesIsVisable) {
-                        AOI.coastalEnergyFacilities.addTo(AOI.map);
-                        AOI.coastalEnergyFacilitiesIsVisable = true;
+                    if (!AOI.EMCoastalEnergyFacilitiesLayerIsVisable) {
+                        AOI.EMCoastalEnergyFacilitiesLayer.addTo(AOI.map);
+                        AOI.EMCoastalEnergyFacilitiesLayerIsVisable = true;
                     } else {
-                        AOI.map.removeLayer(AOI.coastalEnergyFacilities);
-                        AOI.coastalEnergyFacilitiesIsVisable = false;
+                        AOI.map.removeLayer(AOI.EMCoastalEnergyFacilitiesLayer);
+                        AOI.EMCoastalEnergyFacilitiesLayerIsVisable = false;
                     }
                 },
 
@@ -25304,61 +25290,37 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.startOver = function () {
 
-
-        AOI.reloadAbort();
-
-        vm.cancelEVERYTHING();
         vm.drawOrSubmitCommand = "DRAW";
         vm.reset();
+        AOI.reloadAbort();
+
     };
     vm.startMenu = function () {
         vm.reset();
     };
+
     vm.reset = function () { //unloads AOI but leaves slider pane on
 
-
-        vm.AOIoff();
         vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
-
         vm.resetMap();
-
-        //angular.forEach(vm.box, function (myBox) {
-        //    myBox.isActive = false;
-        //})
-
     };
 
     vm.off = function () { //unloads AOI and turns off slider pane
-        vm.AOIoff();
-        vm.paneoff();
+
+        vm.paneOff();
         AOI.unloadData();
         vm.drawtoolOn = true;
     };
 
-    vm.on = function (AOI, AOI_id) {//turns on AOI and slider pane
-        vm.AOIon();
-        vm.paneOn();
-    };
-
-    vm.AOIoff = function () {
-
-        toggle = false;
-    };
-
-    vm.AOIon = function () {
-        vm.checkifAOI = true;
-    };
-
-    vm.paneoff = function () {
+    vm.paneOff = function () {
         vm.checked = false;
         AOI.toggleFull = false;
     };
 
     vm.paneOn = function () {
         vm.checked = true;
-        //document.getElementById("slide1").style.width = '50%';
         AOI.toggleFull = false;
     };
 
@@ -25370,7 +25332,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     queryService.query("KNOWN_AREA='Special Interest Areas'").then(function (featureCollection) {
         vm.specialInterestAreasMenu = [];
-        angular.forEach(featureCollection.features, function (feature, i) {
+        angular.forEach(featureCollection.features, function (feature) {
             vm.specialInterestAreasMenu.push({
                 AOI_NAME: feature.properties.AOI_NAME,
                 COMMON_NM: feature.properties.COMMON_NM,
@@ -25386,7 +25348,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         });
     }).catch(function (error) {
         // todo: what to do on error?
-        console.log(error);
+        console.error(error);
     });
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
@@ -25406,7 +25368,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         });
     }).catch(function (error) {
         // todo: what to do on error?
-        console.log(error);
+        console.error(error);
     });
 
     if ($location.search().AOI) {
@@ -25567,7 +25529,7 @@ EconCtrl.prototype.childPaneOn = function () {
 
 
 function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
-    //what is going on?
+
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
@@ -25922,10 +25884,11 @@ angular.module('myApp.directives', [])
                     $scope.map.on('zoomend', function (e) {
                         if ($scope.drawEnabled) {
                             var zoomLevel = $scope.map.getZoom();
+                            console.log(zoomLevel +" " + $scope.drawAvailable);
                             if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
                                 $scope.drawAvailable = true;
                                 $scope.$apply();
-                            } else if ((zoomLevel > 12) && (zoomLevel < 10) && $scope.drawAvailable) {
+                            } else if ((zoomLevel > 12) ||  (zoomLevel < 10) && $scope.drawAvailable) {
                                 $scope.drawAvailable = false;
                                 $scope.$apply();
                             }
@@ -26005,11 +25968,6 @@ angular.module('myApp.directives', [])
                     basemapLabelsDefered = $q.defer();
                 });
                 basemapLabels.addTo($scope.AOI.smallMap);
-                //var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                //    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                //    maxZoom: 12,
-                //    useCors: true
-                //});
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
@@ -26062,11 +26020,6 @@ angular.module('myApp.directives', [])
 ;
 'use strict';
 
-var toggle = false;
-
-//var mouseLayer, searchControl;
-
-
 function preloader() {
     if (document.images) {
         var img1 = new Image();
@@ -26088,6 +26041,7 @@ function addLoadEvent(func) {
         }
     }
 }
+
 addLoadEvent(preloader);
 
 /**
@@ -26139,15 +26093,10 @@ addLoadEvent(preloader);
 
 }(Highcharts));
 
-var marker;
-var smallMap;
-
-
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
 
 $http.get("gis_config.json").then(function (result) {
-
 
 // Declare app level module which depends on filters, and services
     angular.module('myApp', [
@@ -26206,26 +26155,26 @@ $http.get("gis_config.json").then(function (result) {
                     }
                 },
                 optionalLayers: {
-                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer.num,
+                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer.num, //EM is for Energy and Minerals
                     EMActiveRenewableEnergyLeasesLayer: result.data['optionalLayerPanes'].EMActiveRenewableEnergyLeasesLayer.num,
                     EMWindPlanningAreaLayer: result.data['optionalLayerPanes'].EMWindPlanningAreaLayer.num,
                     EMOceanDisposalSitesLayer: result.data['optionalLayerPanes'].EMOceanDisposalSitesLayer.num,
-                    marineMineralsLeases: result.data['optionalLayerPanes'].marineMineralsLeases.num,
+                    EMMarineMineralsLeasesLayer: result.data['optionalLayerPanes'].EMMarineMineralsLeasesLayer.num,
                     EMMarineHydrokineticProjectsLayer: result.data['optionalLayerPanes'].EMMarineHydrokineticProjectsLayer.num,
-                    wavePower: result.data['optionalLayerPanes'].wavePower.num,
-                    tidalPower: result.data['optionalLayerPanes'].tidalPower.num,
+                    EMOceanWaveResourcePotentialLayer: result.data['optionalLayerPanes'].EMOceanWaveResourcePotentialLayer.num,
+                    EMTidalPowerLayer: result.data['optionalLayerPanes'].EMTidalPowerLayer.num,
                     EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower.num,
-                    beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
-                    coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//Common Elements Elevation Layer
-                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//Economics and Commerce Coastal Counties Layer
-                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//Transportation and Infrastructure Submarine Layer
+                    EMBeachNourishmentProjectsLayer: result.data['optionalLayerPanes'].EMBeachNourishmentProjectsLayer.num,
+                    EMCoastalEnergyFacilitiesLayer: result.data['optionalLayerPanes'].EMCoastalEnergyFacilitiesLayer.num,
+                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//EC is for Economics and Commerce
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//TI is for Transportation and Infrastructure
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
                     CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
                     CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
-                    TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
+                    TIVesselLayer: result.data['optionalLayerPanes'].TIVesselLayer.num,
                     TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//Natural Resources and Conservation NearbyLayer
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//NRC is for Natural Resources and Conservation
                     NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
                     NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
                     NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,

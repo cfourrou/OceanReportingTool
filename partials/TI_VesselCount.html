@@ -35,13 +35,13 @@
             </div>
             <!-- iButton end-->
             <div class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
-                <div ng-class="TIvm.AOI.TIVesselsIsVisible ? 'flip' : 'rotateCounterwise180'"
-                     ng-click="TIvm.AOI.toggleTIVessels()" ng-include="'img/switch_off.svg'"></div>
+                <div ng-class="TIvm.AOI.TIVesselLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="TIvm.AOI.toggleTIVesselLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
 
         </div>
         <div>
-            <div class="GreyText14 floatitleft padLeft15 w100" >
+            <div class="GreyText14 floatitleft padLeft15 w100">
 
                 <div class="VesselLine">
                     <div class="Vessel1"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg===0" class="ship"
@@ -51,7 +51,7 @@
                 <div class="VesselLine">
                     <div class="Vessel2"><img
                             ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=1) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=75))"
-                            class="ship" src="img/transportation-ship.svg" ></div>
+                            class="ship" src="img/transportation-ship.svg"></div>
                     <div class="VesselNum">1-75</div>
                 </div>
                 <div class="VesselLine">

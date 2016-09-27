@@ -111,61 +111,37 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.startOver = function () {
 
-
-        AOI.reloadAbort();
-
-        vm.cancelEVERYTHING();
         vm.drawOrSubmitCommand = "DRAW";
         vm.reset();
+        AOI.reloadAbort();
+
     };
     vm.startMenu = function () {
         vm.reset();
     };
+
     vm.reset = function () { //unloads AOI but leaves slider pane on
 
-
-        vm.AOIoff();
         vm.paneOn();
         AOI.unloadData();
         vm.stopSpin();
-
         vm.resetMap();
-
-        //angular.forEach(vm.box, function (myBox) {
-        //    myBox.isActive = false;
-        //})
-
     };
 
     vm.off = function () { //unloads AOI and turns off slider pane
-        vm.AOIoff();
-        vm.paneoff();
+
+        vm.paneOff();
         AOI.unloadData();
         vm.drawtoolOn = true;
     };
 
-    vm.on = function (AOI, AOI_id) {//turns on AOI and slider pane
-        vm.AOIon();
-        vm.paneOn();
-    };
-
-    vm.AOIoff = function () {
-
-        toggle = false;
-    };
-
-    vm.AOIon = function () {
-        vm.checkifAOI = true;
-    };
-
-    vm.paneoff = function () {
+    vm.paneOff = function () {
         vm.checked = false;
         AOI.toggleFull = false;
     };
 
     vm.paneOn = function () {
         vm.checked = true;
-        //document.getElementById("slide1").style.width = '50%';
         AOI.toggleFull = false;
     };
 
@@ -177,7 +153,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     queryService.query("KNOWN_AREA='Special Interest Areas'").then(function (featureCollection) {
         vm.specialInterestAreasMenu = [];
-        angular.forEach(featureCollection.features, function (feature, i) {
+        angular.forEach(featureCollection.features, function (feature) {
             vm.specialInterestAreasMenu.push({
                 AOI_NAME: feature.properties.AOI_NAME,
                 COMMON_NM: feature.properties.COMMON_NM,
@@ -193,7 +169,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         });
     }).catch(function (error) {
         // todo: what to do on error?
-        console.log(error);
+        console.error(error);
     });
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
@@ -213,7 +189,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         });
     }).catch(function (error) {
         // todo: what to do on error?
-        console.log(error);
+        console.error(error);
     });
 
     if ($location.search().AOI) {
@@ -374,7 +350,7 @@ EconCtrl.prototype.childPaneOn = function () {
 
 
 function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
-    //what is going on?
+
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;

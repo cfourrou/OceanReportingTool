@@ -1,10 +1,5 @@
 'use strict';
 
-var toggle = false;
-
-//var mouseLayer, searchControl;
-
-
 function preloader() {
     if (document.images) {
         var img1 = new Image();
@@ -26,6 +21,7 @@ function addLoadEvent(func) {
         }
     }
 }
+
 addLoadEvent(preloader);
 
 /**
@@ -77,15 +73,10 @@ addLoadEvent(preloader);
 
 }(Highcharts));
 
-var marker;
-var smallMap;
-
-
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
 
 $http.get("gis_config.json").then(function (result) {
-
 
 // Declare app level module which depends on filters, and services
     angular.module('myApp', [
@@ -144,26 +135,26 @@ $http.get("gis_config.json").then(function (result) {
                     }
                 },
                 optionalLayers: {
-                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer.num,
+                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer.num, //EM is for Energy and Minerals
                     EMActiveRenewableEnergyLeasesLayer: result.data['optionalLayerPanes'].EMActiveRenewableEnergyLeasesLayer.num,
                     EMWindPlanningAreaLayer: result.data['optionalLayerPanes'].EMWindPlanningAreaLayer.num,
                     EMOceanDisposalSitesLayer: result.data['optionalLayerPanes'].EMOceanDisposalSitesLayer.num,
-                    marineMineralsLeases: result.data['optionalLayerPanes'].marineMineralsLeases.num,
+                    EMMarineMineralsLeasesLayer: result.data['optionalLayerPanes'].EMMarineMineralsLeasesLayer.num,
                     EMMarineHydrokineticProjectsLayer: result.data['optionalLayerPanes'].EMMarineHydrokineticProjectsLayer.num,
-                    wavePower: result.data['optionalLayerPanes'].wavePower.num,
-                    tidalPower: result.data['optionalLayerPanes'].tidalPower.num,
+                    EMOceanWaveResourcePotentialLayer: result.data['optionalLayerPanes'].EMOceanWaveResourcePotentialLayer.num,
+                    EMTidalPowerLayer: result.data['optionalLayerPanes'].EMTidalPowerLayer.num,
                     EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower.num,
-                    beachNourish: result.data['optionalLayerPanes'].beachNourish.num,
-                    coastalEnergyFacilities: result.data['optionalLayerPanes'].coastalEnergyFacilities.num,
-                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//Common Elements Elevation Layer
-                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//Economics and Commerce Coastal Counties Layer
-                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//Transportation and Infrastructure Submarine Layer
+                    EMBeachNourishmentProjectsLayer: result.data['optionalLayerPanes'].EMBeachNourishmentProjectsLayer.num,
+                    EMCoastalEnergyFacilitiesLayer: result.data['optionalLayerPanes'].EMCoastalEnergyFacilitiesLayer.num,
+                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//EC is for Economics and Commerce
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//TI is for Transportation and Infrastructure
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
                     CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
                     CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
-                    TIVessels: result.data['optionalLayerPanes'].TIVessels.num,
+                    TIVesselLayer: result.data['optionalLayerPanes'].TIVesselLayer.num,
                     TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//Natural Resources and Conservation NearbyLayer
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//NRC is for Natural Resources and Conservation
                     NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
                     NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
                     NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,

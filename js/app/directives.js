@@ -253,10 +253,11 @@ angular.module('myApp.directives', [])
                     $scope.map.on('zoomend', function (e) {
                         if ($scope.drawEnabled) {
                             var zoomLevel = $scope.map.getZoom();
+                            console.log(zoomLevel +" " + $scope.drawAvailable);
                             if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
                                 $scope.drawAvailable = true;
                                 $scope.$apply();
-                            } else if ((zoomLevel > 12) && (zoomLevel < 10) && $scope.drawAvailable) {
+                            } else if ((zoomLevel > 12) ||  (zoomLevel < 10) && $scope.drawAvailable) {
                                 $scope.drawAvailable = false;
                                 $scope.$apply();
                             }
@@ -336,11 +337,6 @@ angular.module('myApp.directives', [])
                     basemapLabelsDefered = $q.defer();
                 });
                 basemapLabels.addTo($scope.AOI.smallMap);
-                //var esriOceans = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
-                //    attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-                //    maxZoom: 12,
-                //    useCors: true
-                //});
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
