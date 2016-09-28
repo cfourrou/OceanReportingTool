@@ -8,7 +8,7 @@ function printDirective($state, $timeout) {
         scope.loadPromise.then(function () {
             var printElement = element[0].cloneNode(true);
             printElement.id = 'printSection';
-            document.body.appendChild(printElement);
+            angular.element(document.body).append(printElement);
             window.print();
             printElement.innerHTML = "";
             $state.go('CEview');
@@ -369,18 +369,18 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
-                var test1 = false;
-                if ((AOI.inPrintWindow) && (test1)) {
-                    leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                        var img = document.createElement('img');
-                        var dimensions = $scope.AOI.smallMap.getSize();
-                        img.width = dimensions.x;
-                        img.height = dimensions.y;
-                        img.src = canvas.toDataURL();
-                        document.getElementById('map3').innerHTML = '';
-                        document.getElementById('map3').appendChild(img);
-                    });
-                }
+                //var test1 = false;
+                //if ((AOI.inPrintWindow) && (test1)) {
+                //    leafletImage($scope.AOI.smallMap, function (err, canvas) {
+                //        var img = document.createElement('img');
+                //        var dimensions = $scope.AOI.smallMap.getSize();
+                //        img.width = dimensions.x;
+                //        img.height = dimensions.y;
+                //        img.src = canvas.toDataURL();
+                //        document.getElementById('map3').innerHTML = '';
+                //        document.getElementById('map3').appendChild(img);
+                //    });
+                //}
             }]
         }
     });

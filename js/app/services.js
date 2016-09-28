@@ -123,6 +123,7 @@ angular.module('myApp.services', [])
     .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService', 'myGPService',
         function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService, myGPService) {
             var AOI = {
+                toggleFullStyle:[],
                 OceanJobContributionsSeries: [],
                 drawAreaJobId: {},
                 Shared: false,
@@ -1645,31 +1646,20 @@ angular.module('myApp.services', [])
                     if (AOI.toggleFull) {
 
                         // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-                        document.getElementById("slide1").style.width = '100%';
-                        document.getElementById("togglefull").style.marginLeft = '0px';
-                        document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-                        document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
-                        document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
-                        var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'inline-block';
-                        })
+                        AOI.sliderWidth = '100%';
+                        AOI.toggleFullStyle.MarginLeft = '0px';
+                        AOI.toggleFullStyle.WebkitTransform= "rotate(180deg)";
+                        AOI.toggleFullStyle.msTransform= "rotate(180deg)";
+                        AOI.toggleFullStyle.transform= "rotate(180deg)";
 
                     } else {
 
-                        document.getElementById("togglefull").style.marginLeft = "-25px";
-
-                        document.getElementById("slide1").style.width = '50%';
-                        var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'none';
-                        })
-
-                        document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
-                        // Code for IE9
-                        document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
-                        document.getElementById("togglefull").style.transform = "rotate(0deg)";
+                        AOI.toggleFullStyle.MarginLeft = '-25px';
+                        AOI.sliderWidth = '50%';
+                        AOI.toggleFullStyle.WebkitTransform= "rotate(0deg)";
+                        AOI.toggleFullStyle.msTransform= "rotate(0deg)";
+                        AOI.toggleFullStyle.transform= "rotate(0deg)";
 
                     }
 

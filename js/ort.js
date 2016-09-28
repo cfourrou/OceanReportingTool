@@ -23222,6 +23222,7 @@ angular.module('myApp.services', [])
     .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService', 'myGPService',
         function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService, myGPService) {
             var AOI = {
+                toggleFullStyle:[],
                 OceanJobContributionsSeries: [],
                 drawAreaJobId: {},
                 Shared: false,
@@ -23299,7 +23300,6 @@ angular.module('myApp.services', [])
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
-                            console.log("fitbounds in display");
                             AOI.map.fitBounds(AOI.layer.getBounds(), {
                                 padding: [1, 1]
                             });
@@ -24745,31 +24745,20 @@ angular.module('myApp.services', [])
                     if (AOI.toggleFull) {
 
                         // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-                        document.getElementById("slide1").style.width = '100%';
-                        document.getElementById("togglefull").style.marginLeft = '0px';
-                        document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-                        document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
-                        document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
-                        var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'inline-block';
-                        })
+                        AOI.sliderWidth = '100%';
+                        AOI.toggleFullStyle.MarginLeft = '0px';
+                        AOI.toggleFullStyle.WebkitTransform= "rotate(180deg)";
+                        AOI.toggleFullStyle.msTransform= "rotate(180deg)";
+                        AOI.toggleFullStyle.transform= "rotate(180deg)";
 
                     } else {
 
-                        document.getElementById("togglefull").style.marginLeft = "-25px";
-
-                        document.getElementById("slide1").style.width = '50%';
-                        var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'none';
-                        })
-
-                        document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
-                        // Code for IE9
-                        document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
-                        document.getElementById("togglefull").style.transform = "rotate(0deg)";
+                        AOI.toggleFullStyle.MarginLeft = '-25px';
+                        AOI.sliderWidth = '50%';
+                        AOI.toggleFullStyle.WebkitTransform= "rotate(0deg)";
+                        AOI.toggleFullStyle.msTransform= "rotate(0deg)";
+                        AOI.toggleFullStyle.transform= "rotate(0deg)";
 
                     }
 
@@ -25614,7 +25603,7 @@ function printDirective($state, $timeout) {
         scope.loadPromise.then(function () {
             var printElement = element[0].cloneNode(true);
             printElement.id = 'printSection';
-            document.body.appendChild(printElement);
+            angular.element(document.body).append(printElement);
             window.print();
             printElement.innerHTML = "";
             $state.go('CEview');
@@ -25857,7 +25846,7 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.map.on('zoomend', function (e) {
-                        //if ($scope.drawEnabled) {
+
                         var zoomLevel = $scope.map.getZoom();
 
                         if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
@@ -25867,7 +25856,7 @@ angular.module('myApp.directives', [])
                             $scope.drawAvailable = false;
                             $scope.$apply();
                         }
-                        //}
+
                     });
 
                     $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
@@ -25975,18 +25964,18 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
-                var test1 = false;
-                if ((AOI.inPrintWindow) && (test1)) {
-                    leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                        var img = document.createElement('img');
-                        var dimensions = $scope.AOI.smallMap.getSize();
-                        img.width = dimensions.x;
-                        img.height = dimensions.y;
-                        img.src = canvas.toDataURL();
-                        document.getElementById('map3').innerHTML = '';
-                        document.getElementById('map3').appendChild(img);
-                    });
-                }
+                //var test1 = false;
+                //if ((AOI.inPrintWindow) && (test1)) {
+                //    leafletImage($scope.AOI.smallMap, function (err, canvas) {
+                //        var img = document.createElement('img');
+                //        var dimensions = $scope.AOI.smallMap.getSize();
+                //        img.width = dimensions.x;
+                //        img.height = dimensions.y;
+                //        img.src = canvas.toDataURL();
+                //        document.getElementById('map3').innerHTML = '';
+                //        document.getElementById('map3').appendChild(img);
+                //    });
+                //}
             }]
         }
     });
