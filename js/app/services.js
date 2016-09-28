@@ -1374,10 +1374,6 @@ angular.module('myApp.services', [])
                         AOI.TIPilot.length = 0;
 
                         AOI.hide();
-
-                        chartsDeferred = $q.defer();
-                        AOI.chartsLoaded = chartsDeferred.promise;
-
                     }
                     AOI.isLoaded = false;
                 },
