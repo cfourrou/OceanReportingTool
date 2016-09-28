@@ -26,17 +26,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
     vm.checked = true;
 
-    vm.showSubmitModal = function () {
-        ModalService.showModal({
-            templateUrl: "modalDraw.html",
-            controller: "submitModalController"
-        }).then(function (modal) {
-            modal.close.then(function (result) {
-                vm.customResult = "All good!";
-            });
-        });
-    };
-
     vm.startSpin = function () {
         usSpinnerService.spin('spinner-1');
     };
@@ -61,26 +50,21 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             case "Subm":
                 //allPromises = [];
 
-                vm.showSubmitModal();
-
                 vm.drawOrSubmitCommand = "Working";
 
                 vm.startSpin();
+                vm.drawOff();
+                vm.paneOn();
 
                 AOI.getReport().then(function () {
                     vm.stopSpin();
-                    vm.drawOff();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = "DRAW";
                     vm.baseMapControlOn = false;
 
                     $state.go('CEview');
-                    vm.paneOn();
                 });
 
-                break;
-            case "Work":
-                vm.showSubmitModal();
                 break;
             case "Erro":
                 vm.drawOrSubmitCommand = "Submit";
@@ -410,10 +394,6 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
-    })
-
-    .controller('submitModalController', function (close) {
-        close(false, 6000);//close after 10 seconds anyway.
     })
 
     .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
