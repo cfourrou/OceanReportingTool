@@ -200,7 +200,6 @@ angular.module('myApp.services', [])
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
-                            console.log("fitbounds in display");
                             AOI.map.fitBounds(AOI.layer.getBounds(), {
                                 padding: [1, 1]
                             });

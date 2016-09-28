@@ -251,7 +251,7 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.map.on('zoomend', function (e) {
-                        //if ($scope.drawEnabled) {
+
                         var zoomLevel = $scope.map.getZoom();
 
                         if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
@@ -261,7 +261,7 @@ angular.module('myApp.directives', [])
                             $scope.drawAvailable = false;
                             $scope.$apply();
                         }
-                        //}
+
                     });
 
                     $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
