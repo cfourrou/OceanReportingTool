@@ -1,8 +1,8 @@
 <div class="infographic-box-medium" tabindex="0">
     <div id="wrbox1">
         <div id="slider_but16" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.coastalEnergyFacilitiesIsVisable ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.togglecoastalEnergyFacilities()" ng-include="'img/switch_off.svg'"></div>
+            <div ng-class="EMvm.AOI.EMCoastalEnergyFacilitiesLayerIsVisable ? 'flip' : 'rotateCounterwise180'"
+                 ng-click="EMvm.AOI.toggleEMCoastalEnergyFacilitiesLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
         <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
@@ -48,7 +48,7 @@
 
         <div class="infographicline3">
             <span class="boemline2a ">There are</span>
-            <span class="boemline2b ">{{EMvm.AOI.EMCoastalEnergyFacilities [0].TOTAL_CNT}}</span>
+            <span class="boemline2b ">{{EMvm.AOI.EMCoastalEnergyFacilities[0].TOTAL_CNT}}</span>
             <span class="boemline2a ">Coastal Energy Facilities</span>
 
         </div>
@@ -64,7 +64,8 @@
                     <th class="OGTableBorderShort">Capacity (MW)</th>
                     <th class="OGTableBorderShort">Distance (mi)</th>
                 </tr>
-                <tr class="GreychartBorder" ng-repeat="facs in EMvm.AOI.EMCoastalEnergyFacilities  | orderBy : 'Dist_Mi'">
+                <tr class="GreychartBorder"
+                    ng-repeat="facs in EMvm.AOI.EMCoastalEnergyFacilities  | orderBy : 'Dist_Mi'">
                     <td class="GreychartBorder">
                         <div>{{facs.Name}}</div>
                     </td>

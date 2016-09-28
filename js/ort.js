@@ -23299,6 +23299,7 @@ angular.module('myApp.services', [])
                                 fillOpacity: .3,
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
+                            console.log("fitbounds in display");
                             AOI.map.fitBounds(AOI.layer.getBounds(), {
                                 padding: [1, 1]
                             });
@@ -25821,9 +25822,10 @@ angular.module('myApp.directives', [])
                         $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
                         $scope.map.doubleClickZoom.disable();
                         $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
-                        // $scope.drawLocked = true;
-                        //$scope.drawButtonText = "Drawing";
+                        $scope.drawLocked = true;
+                        $scope.drawButtonText = "Drawing";
                         $scope.polyLayerEnabled = false;
+                        if (searchControl) searchControl.disable();
                         $scope.map.pm.enableDraw('Poly');
                         $scope.drawEnabled = true;
                     };
@@ -25880,7 +25882,7 @@ angular.module('myApp.directives', [])
                     $scope.map.on('zoomend', function (e) {
                         if ($scope.drawEnabled) {
                             var zoomLevel = $scope.map.getZoom();
-                            console.log(zoomLevel +" " + $scope.drawAvailable);
+
                             if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
                                 $scope.drawAvailable = true;
                                 $scope.$apply();

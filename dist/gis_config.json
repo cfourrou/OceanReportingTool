@@ -63,26 +63,26 @@
       "num": "22",
       "displayName": "BOEM_Wind_Planning_Areas"
     },
-    "oceanDisposalSites": {
+    "EMOceanDisposalSitesLayer": {
       "num": "23",
       "displayName": "OceanDisposalSites"
     },
-    "marineMineralsLeases": {
+    "EMMarineMineralsLeasesLayer": {
       "num": "21",
       "displayName": "Marine Minerals Leases",
       "layerName": "Sand_n_GravelLeaseAreas"
     },
-    "HydrokineticLeases": {
+    "EMMarineHydrokineticProjectsLayer": {
       "num": "3",
       "displayName": "Hydrokinetic Leases",
       "layerName": "MarineHydrokineticProjects"
     },
-    "wavePower": {
+    "EMOceanWaveResourcePotentialLayer": {
       "num": 20,
       "displayName": "Wave Power",
       "layerName": "Ocean Wave Resource Potential"
     },
-    "tidalPower": {
+    "EMTidalPowerLayer": {
       "num": 32,
       "displayName": "Tidal Power",
       "layerName": "usa_mc_wm"
@@ -92,12 +92,12 @@
       "displayName": "Current Power",
       "layerName": "us_oc_ms"
     },
-    "beachNourish": {
+    "EMBeachNourishmentProjectsLayer": {
       "num": 6,
       "displayName": "Beach Nourishment",
       "layerName": "SC_BeachProjects"
     },
-    "coastalEnergyFacilities": {
+    "EMCoastalEnergyFacilitiesLayer": {
       "num": 1,
       "displayName": "Coastal Energy Facilities"
     },
@@ -125,7 +125,7 @@
       "num": 9,
       "displayName": "tribal Lands"
     },
-    "TIVessels": {
+    "TIVesselLayer": {
       "num": 42,
       "displayName": "vessel count"
     },
