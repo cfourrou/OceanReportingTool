@@ -172,6 +172,7 @@ angular.module('myApp.directives', [])
                     });
 
                     $scope.zoomLevel = $scope.map.getZoom();
+
                     $scope.basemapControlEnabled = false;
 
                     var polyLayer;
@@ -250,17 +251,17 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.map.on('zoomend', function (e) {
-                        if ($scope.drawEnabled) {
-                            var zoomLevel = $scope.map.getZoom();
+                        //if ($scope.drawEnabled) {
+                        var zoomLevel = $scope.map.getZoom();
 
-                            if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
-                                $scope.drawAvailable = true;
-                                $scope.$apply();
-                            } else if ((zoomLevel > 12) ||  (zoomLevel < 10) && $scope.drawAvailable) {
-                                $scope.drawAvailable = false;
-                                $scope.$apply();
-                            }
+                        if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
+                            $scope.drawAvailable = true;
+                            $scope.$apply();
+                        } else if ((zoomLevel > 12) || (zoomLevel < 10) && $scope.drawAvailable) {
+                            $scope.drawAvailable = false;
+                            $scope.$apply();
                         }
+                        //}
                     });
 
                     $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
