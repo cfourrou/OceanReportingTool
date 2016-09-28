@@ -193,6 +193,7 @@ angular.module('myApp.directives', [])
                         $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
                         $scope.map.doubleClickZoom.disable();
                         $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
                         $scope.drawLocked = true;
                         $scope.drawButtonText = "Drawing";
                         $scope.polyLayerEnabled = false;
@@ -202,7 +203,7 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.drawOn = function () {
-                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+
                         clearMouseLayer();
                         searchControl.addTo($scope.map);
                         $element.css('width', '100%');
@@ -256,10 +257,10 @@ angular.module('myApp.directives', [])
 
                         if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
                             $scope.drawAvailable = true;
-                            $scope.$apply();
+                            if ($scope.drawEnabled) $scope.$apply();
                         } else if ((zoomLevel > 12) || (zoomLevel < 10) && $scope.drawAvailable) {
                             $scope.drawAvailable = false;
-                            $scope.$apply();
+                            if ($scope.drawEnabled) $scope.$apply();
                         }
 
                     });

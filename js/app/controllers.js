@@ -407,13 +407,13 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
 
 
-angular.element(document).ready(function () {
-
-    c = angular.element(document.querySelector('#controller-demo')).scope();
-});
-
-
-angular.element(document).ready(function () {
-    // if (console.assert)
-    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
-});
+//angular.element(document).ready(function () {
+//
+//    c = angular.element(document.querySelector('#controller-demo')).scope();
+//});
+//
+//
+//angular.element(document).ready(function () {
+//    // if (console.assert)
+//    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
+//});
