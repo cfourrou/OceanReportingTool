@@ -39,29 +39,36 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
             case "DRAW":
 
-                if (vm.drawtoolOn) {
-                    if (vm.drawlocked) {
-                        vm.drawOff();
-                    } else {
-                        vm.startDrawing();
-                    }
-                }
+
+                vm.startDrawing();
+
+                //if (vm.drawtoolOn) {
+                //    if (vm.drawLocked) {
+                //        vm.drawOff();
+                //
+                //    } else {
+                //        vm.startDrawing();
+                //    }
+                //}
                 break;
             case "Subm":
                 //allPromises = [];
 
                 vm.drawOrSubmitCommand = "Working";
 
-                vm.startSpin();
-                vm.drawOff();
+
+                //vm.drawOff();
                 vm.paneOn();
+                //map to 50%
+                vm.mapHalfScreen();
+                vm.startSpin();
 
                 AOI.getReport().then(function () {
                     vm.stopSpin();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = "DRAW";
                     vm.baseMapControlOn = false;
-
+                    vm.drawOff();
                     $state.go('CEview');
                 });
 
@@ -72,6 +79,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             case "Comp":
                 vm.completeDraw();
                 break;
+
         }
     };
 
@@ -111,8 +119,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.resetMap();
     };
 
-    vm.off = function () { //unloads AOI and turns off slider pane
-        vm.paneOff();
+    vm.drawMenu = function () { //unloads AOI and turns off slider pane
+        //if draw submitted but not returned yet, leave pane on
+        if (vm.drawOrSubmitCommand !== "Working") {
+            vm.paneOff();
+            vm.drawOrSubmitCommand = "DRAW";
+            vm.mapFullScreen();
+        } else {
+            vm.mapHalfScreen();
+            vm.startSpin();
+            vm.paneOn();
+
+        }
         AOI.unloadData();
         vm.drawOn();
     };
@@ -188,12 +206,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
-
-    $rootScope.$on('$stateChangeSuccess', function (e, toState) {
-        if (toState.name === 'draw') {
-            vm.off();
-        }
-    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -407,13 +419,4 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
 
 
-//angular.element(document).ready(function () {
-//
-//    c = angular.element(document.querySelector('#controller-demo')).scope();
-//});
-//
-//
-//angular.element(document).ready(function () {
-//    // if (console.assert)
-//    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
-//});
+

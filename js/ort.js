@@ -23310,34 +23310,33 @@ angular.module('myApp.services', [])
                                 where: "AOI_ID =" + AOI.ID + "",
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
-                        }
 
-                        AOI.layer.on("load", function (evt) {
-                            // create a new empty Leaflet bounds object
+                            AOI.layer.on("load", function (evt) {
+                                // create a new empty Leaflet bounds object
 
-                            var myBounds = L.latLngBounds([]);
-                            // loop through the features returned by the server
+                                var myBounds = L.latLngBounds([]);
+                                // loop through the features returned by the server
 
-                            AOI.layer.eachFeature(function (layer) {
-                                // get the bounds of an individual feature
-                                var layerBounds = layer.getBounds();
-                                // extend the bounds of the collection to fit the bounds of the new feature
-                                myBounds.extend(layerBounds);
+                                AOI.layer.eachFeature(function (layer) {
+                                    // get the bounds of an individual feature
+                                    var layerBounds = layer.getBounds();
+                                    // extend the bounds of the collection to fit the bounds of the new feature
+                                    myBounds.extend(layerBounds);
+                                });
+
+                                try {
+                                    AOI.map.fitBounds(myBounds);
+
+                                    AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                                }
+                                catch (err) {
+                                    //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                    //so for now we will zoom out on error and allow this event to fire again.
+
+                                    AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                                }
                             });
-
-                            try {
-                                AOI.map.fitBounds(myBounds);
-
-                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
-                            }
-                            catch (err) {
-                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                                //so for now we will zoom out on error and allow this event to fire again.
-
-                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
-                            }
-                        });
-
+                        }
                         AOI.isVisible = true;
                     });
 
@@ -23350,20 +23349,20 @@ angular.module('myApp.services', [])
                     AOI.map.setView([33.51, -78.3], 6);
                     AOI.isVisible = false;
                 },
-                zoomTo: function () {
-
-                    var myBounds = L.latLngBounds([]);
-                    // loop through the features returned by the server
-                    AOI.layer.eachFeature(function (layer) {
-                        // get the bounds of an individual feature
-                        var layerBounds = layer.getBounds();
-                        // extend the bounds of the collection to fit the bounds of the new feature
-                        myBounds.extend(layerBounds);
-                    });
-                    AOI.map.fitBounds(myBounds);
-
-
-                },
+                //zoomTo: function () {
+                //
+                //    var myBounds = L.latLngBounds([]);
+                //    // loop through the features returned by the server
+                //    AOI.layer.eachFeature(function (layer) {
+                //        // get the bounds of an individual feature
+                //        var layerBounds = layer.getBounds();
+                //        // extend the bounds of the collection to fit the bounds of the new feature
+                //        myBounds.extend(layerBounds);
+                //    });
+                //    AOI.map.fitBounds(myBounds);
+                //
+                //
+                //},
                 isVisible: false,
                 getReport: function () {
                     var allPromises = [];
@@ -24455,7 +24454,7 @@ angular.module('myApp.services', [])
                         AOI.ECStateGDP.length = 0;
                         AOI.ECCountyGDP.length = 0;
                         AOI.OceanJobContributionsSeries.length = 0;
-                        AOI.drawAreaJobId = {};
+                        // AOI.drawAreaJobId = {};
                         AOI.Shared = false;
                         AOI.CEPlaces.length = 0;
                         AOI.TIShipping.length = 0;
@@ -25205,29 +25204,36 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
             case "DRAW":
 
-                if (vm.drawtoolOn) {
-                    if (vm.drawlocked) {
-                        vm.drawOff();
-                    } else {
-                        vm.startDrawing();
-                    }
-                }
+
+                vm.startDrawing();
+
+                //if (vm.drawtoolOn) {
+                //    if (vm.drawLocked) {
+                //        vm.drawOff();
+                //
+                //    } else {
+                //        vm.startDrawing();
+                //    }
+                //}
                 break;
             case "Subm":
                 //allPromises = [];
 
                 vm.drawOrSubmitCommand = "Working";
 
-                vm.startSpin();
-                vm.drawOff();
+
+                //vm.drawOff();
                 vm.paneOn();
+                //map to 50%
+                vm.mapHalfScreen();
+                vm.startSpin();
 
                 AOI.getReport().then(function () {
                     vm.stopSpin();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = "DRAW";
                     vm.baseMapControlOn = false;
-
+                    vm.drawOff();
                     $state.go('CEview');
                 });
 
@@ -25238,6 +25244,7 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             case "Comp":
                 vm.completeDraw();
                 break;
+
         }
     };
 
@@ -25277,8 +25284,18 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.resetMap();
     };
 
-    vm.off = function () { //unloads AOI and turns off slider pane
-        vm.paneOff();
+    vm.drawMenu = function () { //unloads AOI and turns off slider pane
+        //if draw submitted but not returned yet, leave pane on
+        if (vm.drawOrSubmitCommand !== "Working") {
+            vm.paneOff();
+            vm.drawOrSubmitCommand = "DRAW";
+            vm.mapFullScreen();
+        } else {
+            vm.mapHalfScreen();
+            vm.startSpin();
+            vm.paneOn();
+
+        }
         AOI.unloadData();
         vm.drawOn();
     };
@@ -25354,12 +25371,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
-
-    $rootScope.$on('$stateChangeSuccess', function (e, toState) {
-        if (toState.name === 'draw') {
-            vm.off();
-        }
-    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -25573,16 +25584,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
 
 
-//angular.element(document).ready(function () {
-//
-//    c = angular.element(document.querySelector('#controller-demo')).scope();
-//});
-//
-//
-//angular.element(document).ready(function () {
-//    // if (console.assert)
-//    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
-//});
+
 ;
 'use strict';
 
@@ -25677,7 +25679,10 @@ angular.module('myApp.directives', [])
                 drawOn: '=',
                 drawOff: '=',
                 map: '=',
-                startDrawing: '='
+                startDrawing: '=',
+                mapFullScreen: '=',
+                mapHalfScreen: '='
+
             },
             replace: true,
             templateUrl: 'partials/ortMap.html',
@@ -25783,34 +25788,43 @@ angular.module('myApp.directives', [])
                     $scope.drawAvailable = false;
 
                     $scope.startDrawing = function () {
-                        $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
-                        $scope.map.setMaxZoom($scope.map.getZoom());
-                        $scope.map.dragging.disable(); //no panning
-                        $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                        $scope.map.doubleClickZoom.disable();
-                        $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
-                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                        $scope.drawLocked = true;
-                        $scope.drawButtonText = "Drawing";
-                        $scope.polyLayerEnabled = false;
-                        if (searchControl) searchControl.disable();
-                        $scope.map.pm.enableDraw('Poly');
-                        $scope.drawEnabled = true;
+
+                        if ($scope.drawAvailable) {
+                            $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                            $scope.map.setMaxZoom($scope.map.getZoom());
+                            $scope.map.dragging.disable(); //no panning
+                            $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                            $scope.map.doubleClickZoom.disable();
+                            $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                            //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                            $scope.drawLocked = true;
+                            $scope.drawButtonText = "Drawing";
+                            $scope.polyLayerEnabled = false;
+                            if (searchControl) searchControl.disable();
+                            $scope.map.pm.enableDraw('Poly');
+                            $scope.drawEnabled = true;
+                        }
                     };
 
                     $scope.drawOn = function () {
 
                         clearMouseLayer();
                         searchControl.addTo($scope.map);
+                        $scope.drawEnabled = true;
+                    };
+
+                    $scope.mapFullScreen = function () {
+
                         $element.css('width', '100%');
                         $element.find('#map').css('width', '100%');
                         $scope.map.invalidateSize();
-                        $scope.drawEnabled = true;
-
-                        //$element.css('width', '100%');
-                        //$scope.map.invalidateSize();
                     };
+                    $scope.mapHalfScreen = function () {
 
+                        $element.css('width', '50%');
+                        $element.find('#map').css('width', '50%');
+                        $scope.map.invalidateSize();
+                    };
                     $scope.drawOff = function () {
                         $scope.map.setMinZoom(1);
                         $scope.map.setMaxZoom(12);
@@ -25820,16 +25834,11 @@ angular.module('myApp.directives', [])
                         $scope.map.boxZoom.enable(); // shift mouse drag zooming.
                         //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
                         $scope.map.dragging.enable();
-                        //if (searchControl) searchControl.enable();
                         $scope.drawLocked = false;
                         $scope.map.pm.disableDraw('Poly');
                         $scope.map.removeControl(searchControl);
-                        $element.css('width', '50%');
-                        $element.find('#map').css('width', '50%');
-                        $scope.map.invalidateSize();
                         $scope.drawEnabled = false;
                         $scope.drawAvailable = false;
-                        $scope.drawButtonText = 'DRAW';
                         if (polyLayer) {
                             $scope.map.removeLayer(polyLayer);
                             polyLayer = null;
@@ -25884,6 +25893,7 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.resetMap = function () {
+                        $scope.mapHalfScreen();
                         $scope.baseMapControlEnabled = false;
                         $scope.searchControlEnabled = false;
                         $scope.drawOff();
@@ -25966,18 +25976,6 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
-                //var test1 = false;
-                //if ((AOI.inPrintWindow) && (test1)) {
-                //    leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                //        var img = document.createElement('img');
-                //        var dimensions = $scope.AOI.smallMap.getSize();
-                //        img.width = dimensions.x;
-                //        img.height = dimensions.y;
-                //        img.src = canvas.toDataURL();
-                //        document.getElementById('map3').innerHTML = '';
-                //        document.getElementById('map3').appendChild(img);
-                //    });
-                //}
             }]
         }
     });

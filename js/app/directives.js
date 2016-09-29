@@ -81,7 +81,10 @@ angular.module('myApp.directives', [])
                 drawOn: '=',
                 drawOff: '=',
                 map: '=',
-                startDrawing: '='
+                startDrawing: '=',
+                mapFullScreen: '=',
+                mapHalfScreen: '='
+
             },
             replace: true,
             templateUrl: 'partials/ortMap.html',
@@ -187,34 +190,43 @@ angular.module('myApp.directives', [])
                     $scope.drawAvailable = false;
 
                     $scope.startDrawing = function () {
-                        $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
-                        $scope.map.setMaxZoom($scope.map.getZoom());
-                        $scope.map.dragging.disable(); //no panning
-                        $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                        $scope.map.doubleClickZoom.disable();
-                        $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
-                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
-                        $scope.drawLocked = true;
-                        $scope.drawButtonText = "Drawing";
-                        $scope.polyLayerEnabled = false;
-                        if (searchControl) searchControl.disable();
-                        $scope.map.pm.enableDraw('Poly');
-                        $scope.drawEnabled = true;
+
+                        if ($scope.drawAvailable) {
+                            $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                            $scope.map.setMaxZoom($scope.map.getZoom());
+                            $scope.map.dragging.disable(); //no panning
+                            $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                            $scope.map.doubleClickZoom.disable();
+                            $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                            //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                            $scope.drawLocked = true;
+                            $scope.drawButtonText = "Drawing";
+                            $scope.polyLayerEnabled = false;
+                            if (searchControl) searchControl.disable();
+                            $scope.map.pm.enableDraw('Poly');
+                            $scope.drawEnabled = true;
+                        }
                     };
 
                     $scope.drawOn = function () {
 
                         clearMouseLayer();
                         searchControl.addTo($scope.map);
+                        $scope.drawEnabled = true;
+                    };
+
+                    $scope.mapFullScreen = function () {
+
                         $element.css('width', '100%');
                         $element.find('#map').css('width', '100%');
                         $scope.map.invalidateSize();
-                        $scope.drawEnabled = true;
-
-                        //$element.css('width', '100%');
-                        //$scope.map.invalidateSize();
                     };
+                    $scope.mapHalfScreen = function () {
 
+                        $element.css('width', '50%');
+                        $element.find('#map').css('width', '50%');
+                        $scope.map.invalidateSize();
+                    };
                     $scope.drawOff = function () {
                         $scope.map.setMinZoom(1);
                         $scope.map.setMaxZoom(12);
@@ -224,16 +236,11 @@ angular.module('myApp.directives', [])
                         $scope.map.boxZoom.enable(); // shift mouse drag zooming.
                         //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
                         $scope.map.dragging.enable();
-                        //if (searchControl) searchControl.enable();
                         $scope.drawLocked = false;
                         $scope.map.pm.disableDraw('Poly');
                         $scope.map.removeControl(searchControl);
-                        $element.css('width', '50%');
-                        $element.find('#map').css('width', '50%');
-                        $scope.map.invalidateSize();
                         $scope.drawEnabled = false;
                         $scope.drawAvailable = false;
-                        $scope.drawButtonText = 'DRAW';
                         if (polyLayer) {
                             $scope.map.removeLayer(polyLayer);
                             polyLayer = null;
@@ -288,6 +295,7 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.resetMap = function () {
+                        $scope.mapHalfScreen();
                         $scope.baseMapControlEnabled = false;
                         $scope.searchControlEnabled = false;
                         $scope.drawOff();
@@ -370,18 +378,6 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
-                //var test1 = false;
-                //if ((AOI.inPrintWindow) && (test1)) {
-                //    leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                //        var img = document.createElement('img');
-                //        var dimensions = $scope.AOI.smallMap.getSize();
-                //        img.width = dimensions.x;
-                //        img.height = dimensions.y;
-                //        img.src = canvas.toDataURL();
-                //        document.getElementById('map3').innerHTML = '';
-                //        document.getElementById('map3').appendChild(img);
-                //    });
-                //}
             }]
         }
     });

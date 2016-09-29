@@ -193,7 +193,7 @@
                 <div class="nav_menu_left">
                     <a ui-sref="splash" class="resetbutton" ng-click="vm.startOver()" role="button">RESET</a>
                     <a ui-sref="menu" class="areasbutton" ng-click="vm.startMenu()" role="button">KNOWN AREAS</a>
-                    <a ui-sref="draw" class="drawbutton" ng-click="vm.off()" role="button">DRAW AREA</a>
+                    <a ui-sref="draw" class="drawbutton" ng-click="vm.drawMenu()" role="button">DRAW AREA</a>
 
 
                 </div>
@@ -218,7 +218,8 @@
                          draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
                          search-control-enabled="vm.searchControlOn" mouse-over="vm.mouseOn" mouse-out="vm.mouseOff"
                          poly-layer-enabled="vm.polyLayerOn" reset-map="vm.resetMap" start-drawing="vm.startDrawing"
-                         draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt">
+                         draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt"
+                         map-half-screen="vm.mapHalfScreen" map-full-screen="vm.mapFullScreen">
                 </ort-map>
 
                 <div id="slide_div">
@@ -256,7 +257,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?a8fc8d71636c8f4a"></script>
+<script src="js/ort.js?24494a17be14fdbc"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

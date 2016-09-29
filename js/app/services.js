@@ -211,34 +211,33 @@ angular.module('myApp.services', [])
                                 where: "AOI_ID =" + AOI.ID + "",
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
-                        }
 
-                        AOI.layer.on("load", function (evt) {
-                            // create a new empty Leaflet bounds object
+                            AOI.layer.on("load", function (evt) {
+                                // create a new empty Leaflet bounds object
 
-                            var myBounds = L.latLngBounds([]);
-                            // loop through the features returned by the server
+                                var myBounds = L.latLngBounds([]);
+                                // loop through the features returned by the server
 
-                            AOI.layer.eachFeature(function (layer) {
-                                // get the bounds of an individual feature
-                                var layerBounds = layer.getBounds();
-                                // extend the bounds of the collection to fit the bounds of the new feature
-                                myBounds.extend(layerBounds);
+                                AOI.layer.eachFeature(function (layer) {
+                                    // get the bounds of an individual feature
+                                    var layerBounds = layer.getBounds();
+                                    // extend the bounds of the collection to fit the bounds of the new feature
+                                    myBounds.extend(layerBounds);
+                                });
+
+                                try {
+                                    AOI.map.fitBounds(myBounds);
+
+                                    AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                                }
+                                catch (err) {
+                                    //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                    //so for now we will zoom out on error and allow this event to fire again.
+
+                                    AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                                }
                             });
-
-                            try {
-                                AOI.map.fitBounds(myBounds);
-
-                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
-                            }
-                            catch (err) {
-                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                                //so for now we will zoom out on error and allow this event to fire again.
-
-                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
-                            }
-                        });
-
+                        }
                         AOI.isVisible = true;
                     });
 
@@ -251,20 +250,20 @@ angular.module('myApp.services', [])
                     AOI.map.setView([33.51, -78.3], 6);
                     AOI.isVisible = false;
                 },
-                zoomTo: function () {
-
-                    var myBounds = L.latLngBounds([]);
-                    // loop through the features returned by the server
-                    AOI.layer.eachFeature(function (layer) {
-                        // get the bounds of an individual feature
-                        var layerBounds = layer.getBounds();
-                        // extend the bounds of the collection to fit the bounds of the new feature
-                        myBounds.extend(layerBounds);
-                    });
-                    AOI.map.fitBounds(myBounds);
-
-
-                },
+                //zoomTo: function () {
+                //
+                //    var myBounds = L.latLngBounds([]);
+                //    // loop through the features returned by the server
+                //    AOI.layer.eachFeature(function (layer) {
+                //        // get the bounds of an individual feature
+                //        var layerBounds = layer.getBounds();
+                //        // extend the bounds of the collection to fit the bounds of the new feature
+                //        myBounds.extend(layerBounds);
+                //    });
+                //    AOI.map.fitBounds(myBounds);
+                //
+                //
+                //},
                 isVisible: false,
                 getReport: function () {
                     var allPromises = [];
@@ -1356,7 +1355,7 @@ angular.module('myApp.services', [])
                         AOI.ECStateGDP.length = 0;
                         AOI.ECCountyGDP.length = 0;
                         AOI.OceanJobContributionsSeries.length = 0;
-                        AOI.drawAreaJobId = {};
+                        // AOI.drawAreaJobId = {};
                         AOI.Shared = false;
                         AOI.CEPlaces.length = 0;
                         AOI.TIShipping.length = 0;
