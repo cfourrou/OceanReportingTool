@@ -123,7 +123,7 @@ angular.module('myApp.services', [])
     .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService', 'myGPService',
         function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService, myGPService) {
             var AOI = {
-                toggleFullStyle:[],
+                toggleFullStyle: [],
                 OceanJobContributionsSeries: [],
                 drawAreaJobId: {},
                 Shared: false,
@@ -299,7 +299,6 @@ angular.module('myApp.services', [])
 
                         AOI.unloadData();
                         AOI.loadData(-9999, '');
-                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
 
 
@@ -341,7 +340,6 @@ angular.module('myApp.services', [])
                             }
                         });
                         AOI.loadData(-9999, '');
-                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
                 },
                 loadData: function (id, name) {
@@ -639,7 +637,10 @@ angular.module('myApp.services', [])
 
                         AOI.massageData(tempFeatureArray);
                         AOI.display();
-                        AOI.name = name;
+
+                        if (AOI.CEPlaces.length > 0) AOI.name = "Near " + AOI.CEPlaces[0].Name;
+                        else AOI.name = "My Report";
+
 
                     } else {
                         var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerData);
@@ -1649,17 +1650,17 @@ angular.module('myApp.services', [])
 
                         AOI.sliderWidth = '100%';
                         AOI.toggleFullStyle.MarginLeft = '0px';
-                        AOI.toggleFullStyle.WebkitTransform= "rotate(180deg)";
-                        AOI.toggleFullStyle.msTransform= "rotate(180deg)";
-                        AOI.toggleFullStyle.transform= "rotate(180deg)";
+                        AOI.toggleFullStyle.WebkitTransform = "rotate(180deg)";
+                        AOI.toggleFullStyle.msTransform = "rotate(180deg)";
+                        AOI.toggleFullStyle.transform = "rotate(180deg)";
 
                     } else {
 
                         AOI.toggleFullStyle.MarginLeft = '-25px';
                         AOI.sliderWidth = '50%';
-                        AOI.toggleFullStyle.WebkitTransform= "rotate(0deg)";
-                        AOI.toggleFullStyle.msTransform= "rotate(0deg)";
-                        AOI.toggleFullStyle.transform= "rotate(0deg)";
+                        AOI.toggleFullStyle.WebkitTransform = "rotate(0deg)";
+                        AOI.toggleFullStyle.msTransform = "rotate(0deg)";
+                        AOI.toggleFullStyle.transform = "rotate(0deg)";
 
                     }
 
