@@ -52,12 +52,7 @@ HELPERS
     HELPERS
 **************************************/
 
-@ortBlue-light: #3284BC;
-@ortBlue-Dark: #46596D;
-@ortGrey-Dark: #4a4a4a;
-@ortOrange: #EB660C;
-@ortBlue-Pale: #F4F8FC;
-@ortGrey-Background: #EFEFEF;
+
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
@@ -65,33 +60,33 @@ HELPERS
 
 a:link {
   text-decoration: none;
-  color: #2955A0;
+  color: @noaaBlue-dark;
 
 }
 
 .nav_bar a:link {
   text-decoration: none;
-  color: white;
+  color: @colorWhite;
 }
 
 .nav_bar a:visited {
   text-decoration: none;
-  color: white;
+  color: @colorWhite;
 }
 
 a:visited {
   text-decoration: none;
-  color: #2955A0;
+  color: @noaaBlue-dark;
 }
 
 a:hover {
   text-decoration: none;
-  color: #2955A0;
+  color: @noaaBlue-dark;
 }
 
 a:active {
   text-decoration: none;
-  color: #2955A0;
+  color: @noaaBlue-dark;
 }
 
 tbody {
@@ -118,7 +113,7 @@ tbody {
   left: 0px;
 }
 
-#container {
+.WindChartContainer {
   height: 231px;
   width: 190px;
   position: relative;
@@ -201,7 +196,7 @@ h6 {
 }
 
 .leftbutton {
-  color: #FFFFFF !important;
+  color: @colorWhite !important;
   font-size: 14px;
   font-weight: 300;
   text-decoration: none;
@@ -223,7 +218,7 @@ h6 {
 }
 
 .rightbutton {
-  color: #FFFFFF;
+  color: @colorWhite;
   font-size: 11px;
   text-decoration: none;
   width: 20%;
@@ -258,7 +253,7 @@ h6 {
 }
 .helpbutton {
   float: right;
-  color: #FFFFFF !important;
+  color: @colorWhite !important;
   font-size: 17px;
   .font-light;
   padding: 0px 25px;
@@ -266,18 +261,18 @@ h6 {
 }
 
 .helpbutton:hover {
-  color: #C6C6C6 !important;
+  color: @ortGrey-Light !important;
   text-decoration: none;
 }
 
 .leftbutton:hover {
-  color: #14396A !important;
+  color: @colorPrussianBlue !important;
   text-decoration: none;
 }
 
 body {
   font-size: 20px;
-  color: #333;
+  color: @colorNightRider;
   height: 100%;
 }
 
@@ -285,7 +280,7 @@ p {
   padding: 10px;
 }
 
-#wrapper {
+.MainWrapper {
   position: relative;
   top: 45px;
 }
@@ -295,7 +290,7 @@ p {
   height: 15px;
   width: 100%;
   background: @ortBlue-Dark;
-  color: white;
+  color: @colorWhite;
   font-size: 19px;
   line-height: 15px;
   padding-left: 15px;
@@ -313,7 +308,7 @@ p {
   top: 45px;
   float: left;
   width: 100%;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   background: @ortBlue-light;
   z-index: 1001;
   opacity: .85;
@@ -325,7 +320,7 @@ p {
   width: 50%;
   vertical-align: middle;
   line-height: 45px;
-  color: white;
+  color: @colorWhite;
   display: inline-block;
 
 }
@@ -334,7 +329,7 @@ p {
   height: 100%;
   width: 50%;
   text-align: center;
-  color: white;
+  color: @colorWhite;
   display: inline-block;
 }
 
@@ -346,7 +341,7 @@ p {
 }
 
 #content {
-  background: #FFFFFF;
+  background: @colorWhite;
   width: 100%;
   overflow: auto;
 }
@@ -359,7 +354,7 @@ p {
   left: 35px;
   background-color: @ortGrey-Dark;
   opacity: .85;
-  color: white;
+  color: @colorWhite;
   font-size: 14px;
   padding: 8px;
   border-radius: 6px 6px 0px 0px;
@@ -376,7 +371,7 @@ p {
   left: 35px;
   background-color: @ortGrey-Dark;
   opacity: .85;
-  color: white;
+  color: @colorWhite;
   font-size: 14px;
   border-radius: 0px 0px 6px 6px;
   z-index: 402;
@@ -389,7 +384,7 @@ p {
   float: left;
   border-top-style: solid;
   border-width: 1px;
-  border-color: grey;
+  border-color: @colorGrey;
   height: 27px;
   border-radius: 0px 0px 0px 6px;
   padding-top: 6px;
@@ -397,14 +392,14 @@ p {
 }
 
 .drawbutton-dis {
-  color: #777;
+  color: @colorGrey;
   #Main-Draw-Icon {
-    fill: #777;
+    fill: @colorGrey;
   }
 }
 
 .drawbutton-enl {
-  color: White;
+  color: @colorWhite;
   &:hover {
     background-color: @ortBlue-light;
   }
@@ -412,14 +407,14 @@ p {
     background-color: @ortBlue-light;
   }
   #Main-Draw-Icon {
-    fill: White;
+    fill: @colorWhite;
   }
 }
 
 .findButton-enl {
-  color: White;
+  color: @colorWhite;
   #Main-Draw-Icon {
-    fill: White;
+    fill: @colorWhite;
   }
   cursor: pointer;
 }
@@ -430,7 +425,7 @@ p {
   float: left;
   border-top-style: solid;
   border-width: 1px;
-  border-color: grey;
+  border-color: @colorGrey;
   padding-top: 6px;
   height: 27px;
   width: 185.5px;
@@ -450,7 +445,7 @@ p {
 }
 
 .leaflet-bar {
-  box-shadow: 0 1px 3px white !important;
+  box-shadow: 0 1px 3px @colorWhite !important;
   border-radius: 2px;
   border-collapse: separate;
 }
@@ -458,8 +453,8 @@ p {
 .geocoder-control-input {
   background-image: url(../img/search_2.svg);
   background-size: 22px !important;
-  background-color: gray;
-  color: white;
+  background-color: @colorGrey;
+  color: @colorWhite;
   border: none !important;
 }
 
@@ -467,53 +462,53 @@ p {
   top: 168px;
   left: 206px;
   width: 167px;
-  background-color: #4a4a4a;
+  background-color: @ortGrey-Dark;
   opacity: .85;
-  color: white;
+  color: @colorWhite;
 }
 
 .searchmap {
-  background-color: grey;
+  background-color: @colorGrey;
 }
 
 .footer2 {
   font-size: 11px;
-  color: #C6C6C6;
+  color: @ortGrey-Light;
   height: 20px;
   width: 200%;
   background: @ortGrey-Dark;
   clear: both;
   margin-left: -100%;
   &:hover {
-    color: white;
+    color: @colorWhite;
   }
 }
 
 .footer2 a:link {
   font-size: 11px;
-  color: #C6C6C6;
+  color: @ortGrey-Light;
   height: 20px;
   background: @ortGrey-Dark;
   clear: both;
   &:hover {
-    color: white;
+    color: @colorWhite;
   }
 }
 
 .footer2 a:visited {
   font-size: 11px;
-  color: #C6C6C6;
+  color: @ortGrey-Light;
   height: 20px;
   background: @ortGrey-Dark;
   clear: both;
   &:hover {
-    color: white;
+    color: @colorWhite;
   }
 }
 
 .footer {
   font-size: 11px;
-  color: #C6C6C6;
+  color: @ortGrey-Light;
   height: 20px;
   width: 100%;
   background: @ortGrey-Dark;
@@ -533,7 +528,7 @@ p {
 .ng-pageslide {
   float: right;
   min-height: 955px;
-  background: white;
+  background: @colorWhite;
 }
 
 html {
@@ -547,7 +542,7 @@ html {
 
 #slide-right {
   margin-top: 55px;
-  background: white;
+  background: @colorWhite;
 }
 
 body.ng-pageslide-body-open::before {
@@ -555,7 +550,7 @@ body.ng-pageslide-body-open::before {
   display: block;
   position: absolute;
   top: 0;
-  background-color: rgb(0, 0, 0);
+  background-color: @colorBlack;
   left: 0;
   right: 0;
   bottom: 0;
@@ -571,7 +566,7 @@ body.ng-pageslide-body-closed::before {
   display: block;
   position: absolute;
   top: 0;
-  background-color: rgb(0, 0, 0);
+  background-color: @colorBlack;
   left: 0;
   right: 0;
   bottom: 0;
@@ -604,13 +599,13 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   height: 280px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
 }
 
 .sBox {
   background: @ortBlue-Pale;
   padding: 10%;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
 }
 
 #wrbox1 {
@@ -643,7 +638,7 @@ body.ng-pageslide-body-closed::before {
   text-align: left;
   font-family: 'Open Sans';
   font-size: 12px;
-  color: #060606;
+  color: @colorAlmostBlack;
 }
 
 .metaline1 {
@@ -678,290 +673,290 @@ body.ng-pageslide-body-closed::before {
 }
 
 .a_1979 {
-  background-color: #c4298f;
-  fill: #c4298f;
+  background-color: @colorMediumRedViolet;
+  fill: @colorMediumRedViolet;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1980 {
-  background-color: #2d3a8d;
-  fill: #2d3a8d;
+  background-color: @colorJacksonsPurple;
+  fill: @colorJacksonsPurple;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1981 {
-  background-color: #ba03d1;
-  fill: #ba03d1;
+  background-color: @colorDeepMagenta;
+  fill: @colorDeepMagenta;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1982 {
-  background-color: #34084c;
-  fill: #34084c;
+  background-color: @colorBlackcurrant;
+  fill: @colorBlackcurrant;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1983 {
-  background-color: #4bff01;
-  fill: #4bff01;
+  background-color: @colorHarlequin;
+  fill: @colorHarlequin;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1984 {
-  background-color: #c28a3d;
-  fill: #c28a3d;
+  background-color: @colorPizza;
+  fill: @colorPizza;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1985 {
-  background-color: #fa67e0;
-  fill: #fa67e0;
+  background-color: @colorFreeSpeechMagenta;
+  fill: @colorFreeSpeechMagenta;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1986 {
-  background-color: #2ca841;
-  fill: #2ca841;
+  background-color: @colorChateauGreen;
+  fill: @colorChateauGreen;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1987 {
-  background-color: #49fee4;
-  fill: #49fee4;
+  background-color: @colorTurquoise;
+  fill: @colorTurquoise;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1988 {
-  background-color: #888e31;
-  fill: #888e31;
+  background-color: @colorWasabi;
+  fill: @colorWasabi;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1989 {
-  background-color: #1fe403;
-  fill: #1fe403;
+  background-color: @colorFreeSpeechGreen;
+  fill: @colorFreeSpeechGreen;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1990 {
-  background-color: #9f0e52;
-  fill: #9f0e52;
+  background-color: @colorJazzberryJam;
+  fill: @colorJazzberryJam;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1991 {
-  background-color: #7677e8;
-  fill: #7677e8;
+  background-color: @colorMediumSlateBlue;
+  fill: @colorMediumSlateBlue;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1992 {
-  background-color: #710d53;
-  fill: #710d53;
+  background-color: @colorTyrianPurple;
+  fill: @colorTyrianPurple;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1993 {
-  background-color: #f75278;
-  fill: #f75278;
+  background-color: @colorWildWatermelon;
+  fill: @colorWildWatermelon;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1994 {
-  background-color: #e371fc;
-  fill: #e371fc;
+  background-color: @colorHeliotrope;
+  fill: @colorHeliotrope;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1995 {
-  background-color: #968be6;
-  fill: #968be6;
+  background-color: @colorBlueBell;
+  fill: @colorBlueBell;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1996 {
-  background-color: #746f26;
-  fill: #746f26;
+  background-color: @colorOlivetone;
+  fill: @colorOlivetone;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1997 {
-  background-color: #3905e3;
-  fill: #3905e3;
+  background-color: @colorHanPurple;
+  fill: @colorHanPurple;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1998 {
-  background-color: #c97a1b;
-  fill: #c97a1b;
+  background-color: @colorOchre;
+  fill: @colorOchre;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_1999 {
-  background-color: #85b52d;
-  fill: #85b52d;
+  background-color: @colorLimerick;
+  fill: @colorLimerick;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2000 {
-  background-color: #4e65ba;
-  fill: #4e65ba;
+  background-color: @colorFreeSpeechBlue;
+  fill: @colorFreeSpeechBlue;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2001 {
-  background-color: #1c7f41;
-  fill: #1c7f41;
+  background-color: @colorDarkSpringGreen;
+  fill: @colorDarkSpringGreen;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2002 {
-  background-color: #08c0a6;
-  fill: #08c0a6;
+  background-color: @colorCaribbeanGreen;
+  fill: @colorCaribbeanGreen;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2003 {
-  background-color: #f89b57;
-  fill: #f89b57;
+  background-color: @colorSandyBrown;
+  fill: @colorSandyBrown;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2004 {
-  background-color: #ab08aa;
-  fill: #ab08aa;
+  background-color: @colorDarkMagenta;
+  fill: @colorDarkMagenta;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2005 {
-  background-color: #a7be9c;
-  fill: #a7be9c;
+  background-color: @colorSpringRain;
+  fill: @colorSpringRain;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2006 {
-  background-color: #5927c0;
-  fill: #5927c0;
+  background-color: @colorPurpleHeart;
+  fill: @colorPurpleHeart;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2007 {
-  background-color: #69f65f;
-  fill: #69f65f;
+  background-color: @colorScreaminGreen;
+  fill: @colorScreaminGreen;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2008 {
-  background-color: #f427ca;
-  fill: #f427ca;
+  background-color: @colorRazzleDazzleRose;
+  fill: @colorRazzleDazzleRose;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2009 {
-  background-color: #5a54ac;
-  fill: #5a54ac;
+  background-color: @colorRichBlue;
+  fill: @colorRichBlue;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2010 {
-  background-color: #a636e5;
-  fill: #a636e5;
+  background-color: @colorDarkOrchid;
+  fill: @colorDarkOrchid;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2011 {
-  background-color: #62717c;
-  fill: #62717c;
+  background-color: @colorBlueBayoux;
+  fill: @colorBlueBayoux;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2012 {
-  background-color: #b6a972;
-  fill: #b6a972;
+  background-color: @colorGimblet;
+  fill: @colorGimblet;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2013 {
-  background-color: #d2746d;
-  fill: #d2746d;
+  background-color: @colorContessa;
+  fill: @colorContessa;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2014 {
-  background-color: #39834f;
-  fill: #39834f;
+  background-color: @colorAmazon;
+  fill: @colorAmazon;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2015 {
-  background-color: #de946c;
-  fill: #de946c;
+  background-color: @colorCopper;
+  fill: @colorCopper;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2016 {
-  background-color: #df4561;
-  fill: #df4561;
+  background-color: @colorCerise;
+  fill: @colorCerise;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2017 {
-  background-color: #c1fd73;
-  fill: #c1fd73;
+  background-color: @colorSulu;
+  fill: @colorSulu;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2018 {
-  background-color: #61dfce;
-  fill: #61dfce;
+  background-color: @colorDowny;
+  fill: @colorDowny;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .a_2019 {
-  background-color: #44e68f;
-  fill: #44e68f;
+  background-color: @colorShamrock;
+  fill: @colorShamrock;
   stroke-width: 1;
-  stroke: rgb(0, 0, 0);
+  stroke: @colorBlack;
 }
 
 .GreyText14 {
@@ -986,12 +981,12 @@ body.ng-pageslide-body-closed::before {
 
 .GreenText16 {
   font-size: 16px;
-  color: #447709;
+  color: @colorBilbao;
 }
 
 .RedText16 {
   font-size: 16px;
-  color: #D10A23;
+  color: @colorFireEngineRed;
 }
 
 .PaleText14 {
@@ -1002,15 +997,15 @@ body.ng-pageslide-body-closed::before {
 
 .blackBoldText14 {
   font-size: 14px;
-  color: black;
+  color: @colorBlack;
   font-weight: 700;
-  background-color: #869DA5;
+  background-color: @colorBaliHai;
 }
 
 .Greychart {
   background-color: @ortGrey-Background;
   text-align: center;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   border-collapse: separate;
 
 }
@@ -1021,25 +1016,25 @@ body.ng-pageslide-body-closed::before {
 }
 
 .infobutton.mainbutton .infoicon-1 {
-  stroke: black;
+  stroke: @colorBlack;
 }
 
 .infobutton.mainbutton .infoicon-2 {
-  stroke: black;
+  stroke: @colorBlack;
 }
 
 .infobutton.mainbutton .infoicon-3 {
-  stroke: black;
+  stroke: @colorBlack;
 }
 
 #line3 {
   width: 440px;
-  color: black;
+  color: @colorBlack;
   z-index: 100;
   position: relative;
   left: 200px;
   top: 140px;
-  background: black;
+  background: @colorBlack;
   vertical-align: middle;
 }
 
@@ -1072,8 +1067,8 @@ body.ng-pageslide-body-closed::before {
   fill: @ortGrey-Dark;
   width: 96px;
   height: 96px;
-  -webkit-filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
-  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5)); /* Same syntax as box-shadow */
+  -webkit-filter: drop-shadow(0px 2px 2px fade(@colorBlack,50%));
+  filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%)); /* Same syntax as box-shadow */
   float: right;
 }
 
@@ -1081,7 +1076,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   height: 280px;
   width: 312.8px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
 }
 
@@ -1089,7 +1084,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   height: 280px;
   width: 312.8px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -1099,7 +1094,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   min-height: 284px;
   width: 312.8px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -1109,7 +1104,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   min-height: 121px;
   width: 312.8px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -1120,7 +1115,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   min-height: 284px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -1130,7 +1125,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   height: 284px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -1140,7 +1135,7 @@ body.ng-pageslide-body-closed::before {
   background: @ortBlue-Pale;
   min-height: 568px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -1178,7 +1173,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .boemline2a a:link, a:visited {
-  color: #2955A0;
+  color: @noaaBlue-dark;
 }
 
 .boemline2b {
@@ -1265,8 +1260,8 @@ body.ng-pageslide-body-closed::before {
   left: 25%;
   top: 25%;
   padding: 25px;
-  border: 2px solid black;
-  background-color: #ffffff;
+  border: 2px solid @colorBlack;
+  background-color: @colorWhite;
   width: 50%;
   z-index: 9999;
 }
@@ -1275,7 +1270,7 @@ body.ng-pageslide-body-closed::before {
   position: fixed;
   left: 0%;
   top: 0%;
-  background-color: black;
+  background-color: @colorBlack;
   -moz-opacity: 0.7;
   opacity: .70;
   filter: alpha(opacity=70);
@@ -1308,7 +1303,7 @@ body.ng-pageslide-body-closed::before {
   position: absolute;
   top: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: fade(@colorBlack,30%);
   border-radius: 50%;
   -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
@@ -1317,13 +1312,13 @@ body.ng-pageslide-body-closed::before {
 .modal-close svg {
   width: 24px;
   height: 24px;
-  fill: #fff;
+  fill: @colorWhite;
   pointer-events: none;
   vertical-align: top;
 }
 
 .modal-close:hover {
-  background: rgba(0, 0, 0, 0.6);
+  background: fade(@colorBlack, 60%);
 }
 
 .footnote {
@@ -1341,24 +1336,24 @@ body.ng-pageslide-body-closed::before {
 }
 
 .blackimg #Page-1 {
-  stroke: black;
-  fill: black;
+  stroke: @colorBlack;
+  fill: @colorBlack;
 }
 
 .menuBoxlight {
   background: @ortBlue-Pale;
   padding: 6px;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%); //cof
   text-align: center;
   margin-bottom: 1px;
   width: 100%;
 }
 
 .menuBoxdark {
-  background: #EDF1F4;
+  background: @colorAliceBlue;
   padding: 6px;
   width: 100%;
-  box-shadow: 0px 2px 4px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);//cof
   text-align: center;
   background-repeat: no-repeat;
   background-position: left;
@@ -1426,12 +1421,12 @@ body.ng-pageslide-body-closed::before {
   -webkit-transform: rotate(0deg);
   .trackclass {
     fill: @ortGrey-Dark;
-    opacity: 1;
-    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+    opacity: 1; //cof
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
   }
   .knobclass {
-    fill: white;
-    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+    fill: @colorWhite;
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
   }
 
 }
@@ -1445,11 +1440,11 @@ body.ng-pageslide-body-closed::before {
   .trackclass {
     fill: @ortOrange;
     opacity: .5;
-    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
   }
   .knobclass {
     fill: @ortOrange;
-    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
   }
 
 }
@@ -1461,7 +1456,7 @@ body.ng-pageslide-body-closed::before {
   text-align: left;
   font-family: 'Open Sans';
   font-size: 10px;
-  color: #060606;
+  color: @colorAlmostBlack;
 }
 
 .sliderbuttontext {
@@ -1472,7 +1467,7 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-size: 10px;
   font-weight: normal;
-  color: #787878;
+  color: @colorGrey;
 }
 
 .sliderbuttont2 {
@@ -1483,7 +1478,7 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-size: 10px;
   font-weight: normal;
-  color: #787878;
+  color: @colorGrey;
 }
 
 .swatch {
@@ -1493,7 +1488,7 @@ body.ng-pageslide-body-closed::before {
   text-align: left;
   font-family: 'Open Sans';
   font-size: 12px;
-  color: #060606;
+  color: @colorAlmostBlack;
   background-repeat: no-repeat;
 }
 
@@ -1566,16 +1561,16 @@ body.ng-pageslide-body-closed::before {
 }
 
 .oddrow {
-  background-color: #f1f1f1;
+  background-color: @colorWhiteSmoke;
   text-align: center;
   width: 165px;
-  border: 1px solid white;
+  border: 1px solid @colorWhite;
 }
 
 .evenrow {
   text-align: center;
   width: 165px;
-  border: 1px solid white;
+  border: 1px solid @colorWhite;
 }
 
 .padtop5 {
@@ -1594,7 +1589,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .table_beachnourishmentchart {
-  border: 2px solid white;
+  border: 2px solid @colorWhite;
 }
 
 .table_beachnourishmentchartrow {
@@ -1652,7 +1647,7 @@ body.ng-pageslide-body-closed::before {
 
 .slide-right {
   margin-top: 55px;
-  background: white;
+  background: @colorWhite;
 }
 
 //CE_Elevation.html
@@ -1686,7 +1681,7 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 16px;
-  color: #4a4a4a;
+  color: @ortGrey-Dark;
   margin-top: 25px;
   margin-left: 15px;
   margin-bottom: 5px;
@@ -1696,14 +1691,14 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 12px;
-  color: #4a4a4a;
+  color: @ortGrey-Dark;
 }
 
 .infolistitem {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 12px;
-  color: #4a4a4a;
+  color: @ortGrey-Dark;
   margin-left: 15px;
 }
 
@@ -1715,7 +1710,7 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 14px;
-  color: white;
+  color: @colorWhite;
   background-color: @ortBlue-light;
   overflow: auto;
 }
@@ -1724,7 +1719,7 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 14px;
-  color: white;
+  color: @colorWhite;
   overflow: auto;
 }
 
@@ -1732,15 +1727,15 @@ body.ng-pageslide-body-closed::before {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 12px;
-  color: #4a4a4a;
-  background-color: white !important;
+  color: @ortGrey-Dark;
+  background-color: @colorWhite !important;
   padding-left: 10px;
 }
 
 .boundaryItem {
   width: 98%;
   height: 20px;
-  background-color: #3284BC;
+  background-color: @ortBlue-light;
   padding-left: 10px;
 }
 
@@ -1755,7 +1750,7 @@ body.ng-pageslide-body-closed::before {
 
 .CommonSwatchLine {
   font-size: 15px;
-  color: #4a4a4a;
+  color: @ortGrey-Dark;
 }
 
 .CEElevationData {
@@ -1788,7 +1783,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .powerscalediv {
-  border-color: #E6E8EA;
+  border-color: @colorSolitude;
   border-left-style: solid;
   border-width: 2px;
   width: 41px;
@@ -1808,7 +1803,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .powergraphbar {
-  background-color: #416AD2;
+  background-color: @colorRoyalBlue;
   height: 20px;
   position: relative;
   top: -57px;
@@ -1830,7 +1825,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .tpowerscalediv {
-  border-color: #E6E8EA;
+  border-color: @colorSolitude;
   border-left-style: solid;
   border-width: 2px;
   width: 75px;
@@ -1845,7 +1840,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .tpowergraphbar {
-  background-color: grey;
+  background-color: @colorGrey;
   height: 20px;
   position: relative;
   top: -57px;
@@ -1853,7 +1848,7 @@ body.ng-pageslide-body-closed::before {
 
 //EM_WavePower.html
 .wpowerscalediv {
-  border-color: #E6E8EA;
+  border-color: @colorSolitude;
   border-left-style: solid;
   border-width: 2px;
   width: 68px;
@@ -1878,7 +1873,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .wpowergraphbar {
-  background-color: grey;
+  background-color: @colorGrey;
   height: 20px;
   position: relative;
   top: -57px;
@@ -1921,7 +1916,7 @@ body.ng-pageslide-body-closed::before {
 .SedimentChart {
   width: 70%;
   text-align: center;
-  box-shadow: 2px 2px 2px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 2px 2px 2px 0px fade(@colorGrey-BoxShadow, 50%);
   margin-bottom: 4px;
   margin-left: 11px;
 }
@@ -1935,12 +1930,12 @@ body.ng-pageslide-body-closed::before {
 
 .SedimentBar {
   height: 19px;
-  background-color: #FEE893;
+  background-color: @colorVisVis;
 }
 
 .SedimentchartType {
   width: 25%;
-  box-shadow: 2px 2px 2px 0px rgba(180, 180, 180, 0.50);
+  box-shadow: 2px 2px 2px 0px fade(@colorGrey-BoxShadow, 50%);
 }
 
 .marginleft5px {
@@ -1971,18 +1966,18 @@ body.ng-pageslide-body-closed::before {
 }
 
 .GreychartBorder {
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
   height: 20px;
 }
 
 .GreychartBorder40 {
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
   height: 20px;
   width: 120px;
 }
 
 .GreychartBorder60 {
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
   height: 20px;
   width: 155px;
 }
@@ -1995,7 +1990,7 @@ body.ng-pageslide-body-closed::before {
 
 .OGTableLabel {
   width: 288px;
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
 }
 
 .OGTable {
@@ -2003,13 +1998,13 @@ body.ng-pageslide-body-closed::before {
 }
 
 .OGTableBorderShort {
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
   height: 20px;
   width: 95px;
 }
 
 .OGTableBorderLong {
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
   height: 20px;
   width: 315px;
 
@@ -2047,7 +2042,7 @@ body.ng-pageslide-body-closed::before {
 
 .CommonlineSwatchLine {
   font-size: 15px;
-  color: #4a4a4a;
+  color: @ortGrey-Dark;
 }
 
 .TILineData {
@@ -2061,7 +2056,7 @@ body.ng-pageslide-body-closed::before {
   text-align: left;
   font-family: 'Open Sans';
   font-size: 12px;
-  color: #060606;
+  color: @colorAlmostBlack;
   background-repeat: no-repeat;
   overflow: hidden;
 }
@@ -2072,38 +2067,38 @@ body.ng-pageslide-body-closed::before {
 }
 
 .c_NASA {
-  background-color: #1a5dad;
-  fill: #1a5dad;
+  background-color: @colorDenim;
+  fill: @colorDenim;
 }
 
 .c_orce { //Air Force
-  background-color: #7dc7ec;
-  fill: #7dc7ec;
+  background-color: @colorSkyBlue;
+  fill: @colorSkyBlue;
 }
 
 .c_Army {
-  background-color: #ffd800;
-  fill: #ffd800;
+  background-color: @colorSchoolBusYellow;
+  fill: @colorSchoolBusYellow;
 }
 
 .c_orps { //marine Corps
-  background-color: #b6100c;
-  fill: #b6100c;
+  background-color: @colorFreeSpeechRed;
+  fill: @colorFreeSpeechRed;
 }
 
 .c_Navy {
-  background-color: #1c2f6b;
-  fill: #1c2f6b;
+  background-color: @colorSapphire;
+  fill: @colorSapphire;
 }
 
 .c_uard { //Coast Guard
-  background-color: #f3871a;
-  fill: #f3871a;
+  background-color: @colorCarrotOrange;
+  fill: @colorCarrotOrange;
 }
 
 .c_nown { //unknown
-  background-color: #b1b1b1;
-  fill: #b1b1b1;
+  background-color: @colorDarkGray;
+  fill: @colorDarkGray;
 }
 
 .danger_svg {
@@ -2134,7 +2129,7 @@ body.ng-pageslide-body-closed::before {
   width: 46%;
   margin-left: 17px;
   margin-bottom: 8px;
-  background-color: white;
+  background-color: @colorWhite;
 }
 
 .w79 {
@@ -2157,19 +2152,19 @@ body.ng-pageslide-body-closed::before {
 }
 
 .metaTable tr {
-  border: 1px solid #000;
+  border: 1px solid @colorBlack;
   padding: 5px;
 }
 
 .metaTable td {
-  border: 1px solid #000;
+  border: 1px solid @colorBlack;
   padding: 5px;
   word-wrap:break-word
 
 }
 
 .metaTable th {
-  border: 1px solid #000;
+  border: 1px solid @colorBlack;
   padding: 5px;
 
 }
@@ -2185,8 +2180,8 @@ body.ng-pageslide-body-closed::before {
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 65px;
-  background-color: #4a4a4a;
-  color: #fff;
+  background-color: @ortGrey-Dark;
+  color: @colorWhite;
   text-align: center;
   border-radius: 6px;
   position: absolute;
@@ -2208,7 +2203,7 @@ body.ng-pageslide-body-closed::before {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: black transparent transparent transparent;
+  border-color: @colorBlack transparent transparent transparent;
 }
 
 .tooltip:hover .tooltiptext {
@@ -2217,14 +2212,14 @@ body.ng-pageslide-body-closed::before {
 }
 
 .OceanJobEmployeesChart {
-  border: 1px solid #000;
+  border: 1px solid @colorBlack;
   width: 283px;
   height: 220px;
   margin-left: 10px;
 }
 
 .OceanJobDollarsChart {
-  border: 1px solid #000;
+  border: 1px solid @colorBlack;
   width: 329px;
   height: 220px;
   margin-left: 10px;
@@ -2305,7 +2300,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .whale {
-  color: #fff;
+  color: @colorWhite;
   height: 96px;
   width: 100%;
   background-image: url(../img/transportation-whale.svg);
@@ -2316,42 +2311,42 @@ body.ng-pageslide-body-closed::before {
 }
 
 .Vessel1 {
-  background-color: #4776b3;
+  background-color: @colorSteelBlue;
   height: 20px;
   width: 50px;
   float: left;
 }
 
 .Vessel2 {
-  background-color: #a7b9c8;
+  background-color: @colorHeather;
   height: 20px;
   width: 50px;
   float: left;
 }
 
 .Vessel3 {
-  background-color: #d9dec1;
+  background-color: @colorFrost;
   height: 20px;
   width: 50px;
   float: left;
 }
 
 .Vessel4 {
-  background-color: #fbd39e;
+  background-color: @colorFrangipani;
   height: 20px;
   width: 50px;
   float: left;
 }
 
 .Vessel5 {
-  background-color: #ee815e;
+  background-color: @colorCrusta;
   height: 20px;
   width: 50px;
   float: left;
 }
 
 .Vessel6 {
-  background-color: #d4321e;
+  background-color: @colorHarleyDavidsonOrange;
   height: 20px;
   width: 50px;
   float: left;
@@ -2388,7 +2383,7 @@ body.ng-pageslide-body-closed::before {
   height: 19px;
   position: relative;
   top: 13px;
-  background-color: #cddff0;
+  background-color: @colorPattensBlue;
   margin-left: 22px;
   margin-bottom: 38px;
   margin-top: 15px;
@@ -2435,7 +2430,7 @@ body.ng-pageslide-body-closed::before {
 }
 
 .infolisthead2 {
-  color: #4a4a4a;
+  color: @ortGrey-Dark;
   margin-bottom: 5px;
   padding-left: 15px;
 
@@ -2450,40 +2445,40 @@ body.ng-pageslide-body-closed::before {
   float: left;
 }
 .Coral1 {
-  background-color: #b6edf0;
+  background-color: @colorPaleTurquoise;
   height: 17px;
   width: 28px;
   float: left;
 }
 .Coral2 {
-  background-color: #74b4e8;
+  background-color: @colorJordyBlue;
   height: 17px;
   width: 28px;
   float: left;
 }
 .Coral3 {
-  background-color: #1f83e0;
+  background-color: @colorDodgerBlue;
   height: 17px;
   width: 28px;
   float: left;
 }
 .Coral4 {
-  background-color: #1d44b8;
+  background-color: @colorPersianBlue;
   height: 17px;
   width: 28px;
   float: left;
 }
 .Coral5 {
-  background-color: #090991;
+  background-color: @colorUltramarine;
   height: 17px;
   width: 28px;
   float: left;
 }
 .censusTable {
-  background-color: white;
+  background-color: @colorWhite;
   width: 100%;
   text-align: left;
-  border: 2px solid #D6D6D6;
+  border: 2px solid @colorLightGrey;
 }
 
 .censusTable td {
@@ -2491,7 +2486,7 @@ body.ng-pageslide-body-closed::before {
 
 }
 .censusTable tr{
-  border: 1px solid #D6D6D6;
+  border: 1px solid @colorLightGrey;
 }
 
 .censusTable th {
@@ -2511,7 +2506,7 @@ body.ng-pageslide-body-closed::before {
   position: relative;
   top: 5px;
   float:left;
-  color: #666;
+  color: @colorDimGray;
 }
 .footerleft{
   float:left;
