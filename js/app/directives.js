@@ -222,10 +222,18 @@ angular.module('myApp.directives', [])
                         $scope.map.invalidateSize();
                     };
                     $scope.mapHalfScreen = function () {
-
                         $element.css('width', '50%');
                         $element.find('#map').css('width', '50%');
                         $scope.map.invalidateSize();
+                        if (AOI.drawLayerShape) {
+                            var bounds = L.geoJson(AOI.drawLayerShape, {
+                                color: '#EB660C',
+                                weight: 1.5,
+                                fillOpacity: .3,
+                                pane: 'AOIfeature'
+                            }).getBounds();
+                            $scope.map.fitBounds(bounds);
+                        }
                     };
                     $scope.drawOff = function () {
                         $scope.map.setMinZoom(1);
@@ -312,9 +320,20 @@ angular.module('myApp.directives', [])
             restrict: 'E',
             scope: {
                 mapPromise: '=',
+                resetDrawArea: '='
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
+                function setDrawnArea () {
+                    minicLayer = L.geoJson($scope.AOI.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+                    var minibounds = minicLayer.getBounds();
+                    $scope.AOI.smallMap.fitBounds(minibounds);
+                }
+
                 $scope.AOI = AOI;
                 var mapDeferred = $q.defer(), basemapDefered = $q.defer(),
                     basemapLabelsDefered = $q.defer();
@@ -349,14 +368,7 @@ angular.module('myApp.directives', [])
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
-                    minicLayer = L.geoJson(AOI.drawLayerShape, {
-                        color: '#EB660C',
-                        weight: 1.5,
-                        fillOpacity: .3
-                    }).addTo($scope.AOI.smallMap);
-                    var minibounds = minicLayer.getBounds();
-                    $scope.AOI.smallMap.fitBounds(minibounds);
-
+                    setDrawnArea();
                 } else {
                     minicLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
@@ -378,6 +390,12 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
+
+                $scope.$watch('AOI.ID', function (newValue, oldValue) {
+                    if (newValue !== oldValue && newValue === -9999) {
+                        setDrawnArea();
+                    }
+                })
             }]
         }
     });

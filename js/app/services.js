@@ -247,7 +247,6 @@ angular.module('myApp.services', [])
                     if (AOI.isVisible) {
                         AOI.map.removeLayer(AOI.layer);
                     }
-                    AOI.map.setView([33.51, -78.3], 6);
                     AOI.isVisible = false;
                 },
                 //zoomTo: function () {

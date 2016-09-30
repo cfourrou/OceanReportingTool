@@ -1,7 +1,6 @@
 'use strict';
 
-function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                       myQueryService, AOIConfig, $rootScope) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope) {
     //this one loads once on start up
     var vm = this;
     vm.AOI = AOI;
@@ -24,7 +23,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
+
     vm.checked = true;
+
+    $scope.currState = $state;
 
     vm.startSpin = function () {
         usSpinnerService.spin('spinner-1');
@@ -79,7 +81,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             case "Comp":
                 vm.completeDraw();
                 break;
-
         }
     };
 
@@ -129,7 +130,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             vm.mapHalfScreen();
             vm.startSpin();
             vm.paneOn();
-
         }
         AOI.unloadData();
         vm.drawOn();
@@ -206,6 +206,13 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
+
+    var listener = $scope.$watch('currState.current.name', function (newValue, oldValue) {
+        if (newValue !== oldValue && newValue === 'draw') {
+            vm.drawMenu();
+            listener();
+        }
+    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -213,6 +220,7 @@ PageslideCtrl.prototype.mout = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
+
 
 function AOICtrl(AOI, webService) {
     var vm = this;
@@ -258,19 +266,7 @@ function AOICtrl(AOI, webService) {
         vm.houseMenu = "+";
     };
 
-    vm.childMouseOut(vm.AOI.ID);
-
-    vm.paneOn();
-
 }
-
-AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
-AOICtrl.prototype.childMouseOut = function (id) {
-    this.mout(id);
-};
-AOICtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function NaturalResourceCtrl(AOI, webService) {
     var vm = this;
@@ -281,13 +277,7 @@ function NaturalResourceCtrl(AOI, webService) {
         vm.NRCConfig = result;
     });
 
-    vm.childPaneOn();
 }
-
-NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
-NaturalResourceCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function TransportationAndInfrastructureCtrl(AOI, webService) {
     var vm = this;
@@ -297,15 +287,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     webService.getData('TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
-
-
-    vm.childPaneOn();
-
 }
-TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
-TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function EnergyAndMineralsCtrl(AOI, webService) {
     var vm = this;
@@ -315,15 +297,8 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     webService.getData('EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
-
-
-    vm.childPaneOn();
 }
 
-EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
-EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function EconCtrl(AOI, webService) {
     var vm = this;
@@ -334,14 +309,7 @@ function EconCtrl(AOI, webService) {
         vm.ECConfig = result;
     });
 
-    vm.childPaneOn();
 }
-
-EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
-EconCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
-
 
 function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
 
@@ -384,21 +352,12 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     });
 }
 
-PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
-
 function SearchCtrl(AOI) {
     var vm = this;
-    AOI.inPrintWindow = false;
-    if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
+    //AOI.inPrintWindow = false;
+    //AOI.toggleFull = true;
 }
 
-SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
-SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
-    return this.drawOrSubmitCommand;
-};
-SearchCtrl.prototype.childStartSpin = function () {
-    this.startSpin();
-};
 
 angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, close) {
@@ -415,8 +374,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-    .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
+    .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
+        'AOIConfig', '$scope', PageslideCtrl]);
 
 
 

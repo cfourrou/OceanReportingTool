@@ -163,13 +163,11 @@ $http.get("gis_config.json").then(function (result) {
             });
 
             $stateProvider
-
                 .state('otherwise', {
                     url: '/main',
                     templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
-
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl as AOIvm'
                 })
@@ -179,29 +177,23 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {
-
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
                     controller: 'NaturalResourcesCtrl as NRCvm'
                 })
                 .state('TIview', {
-
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
                     controller: 'TransportationAndInfrastructureCtrl as TIvm'
                 })
                 .state('EMview', {
-
                     templateUrl: 'partials/EnergyAndMinerals.html',
                     controller: 'EnergyAndMineralsCtrl as EMvm'
                 })
                 .state('ECview', {
-
                     templateUrl: 'partials/EconomicsAndCommerce.html',
                     controller: 'EconCtrl as ECvm'
                 })
                 .state('meta', {
-
                     templateUrl: 'partials/metadata.html'
-
                 })
                 .state('splash', {
                     url: '/splash',
@@ -217,11 +209,9 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'SearchCtrl as Searchvm'
                 })
                 .state('print', {
-
                     templateUrl: 'partials/printPreview.html',
                     controller: 'PrintCtrl as Printvm'
-                })
-            ;
+                });
         }])
         .config(function ($animateProvider) {
             $animateProvider.classNameFilter(/angular-animate/);
