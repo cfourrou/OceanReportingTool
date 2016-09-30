@@ -10,8 +10,16 @@ function printDirective($state, $timeout) {
             printElement.id = 'printSection';
             angular.element(document.body).append(printElement);
             window.print();
+            angular.element(document).ready(function () {
+                console.log('page loading completed');
+            });
             printElement.innerHTML = "";
+
             $state.go('CEview');
+
+
+
+
         });
     }
 
@@ -324,7 +332,7 @@ angular.module('myApp.directives', [])
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
-                function setDrawnArea () {
+                function setDrawnArea() {
                     minicLayer = L.geoJson($scope.AOI.drawLayerShape, {
                         color: '#EB660C',
                         weight: 1.5,

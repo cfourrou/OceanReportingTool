@@ -23346,7 +23346,6 @@ angular.module('myApp.services', [])
                     if (AOI.isVisible) {
                         AOI.map.removeLayer(AOI.layer);
                     }
-                    AOI.map.setView([33.51, -78.3], 6);
                     AOI.isVisible = false;
                 },
                 //zoomTo: function () {
@@ -25165,8 +25164,7 @@ angular.module('myApp.services', [])
 ;
 'use strict';
 
-function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                       myQueryService, AOIConfig, $rootScope) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope) {
     //this one loads once on start up
     var vm = this;
     vm.AOI = AOI;
@@ -25189,7 +25187,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
+
     vm.checked = true;
+
+    $scope.currState = $state;
 
     vm.startSpin = function () {
         usSpinnerService.spin('spinner-1');
@@ -25244,7 +25245,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             case "Comp":
                 vm.completeDraw();
                 break;
-
         }
     };
 
@@ -25294,7 +25294,6 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             vm.mapHalfScreen();
             vm.startSpin();
             vm.paneOn();
-
         }
         AOI.unloadData();
         vm.drawOn();
@@ -25371,6 +25370,13 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
             AOI.getSavedReport();
         }
     }
+
+    var listener = $scope.$watch('currState.current.name', function (newValue, oldValue) {
+        if (newValue !== oldValue && newValue === 'draw') {
+            vm.drawMenu();
+            listener();
+        }
+    });
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -25378,6 +25384,7 @@ PageslideCtrl.prototype.mout = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
+
 
 function AOICtrl(AOI, webService) {
     var vm = this;
@@ -25423,19 +25430,7 @@ function AOICtrl(AOI, webService) {
         vm.houseMenu = "+";
     };
 
-    vm.childMouseOut(vm.AOI.ID);
-
-    vm.paneOn();
-
 }
-
-AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
-AOICtrl.prototype.childMouseOut = function (id) {
-    this.mout(id);
-};
-AOICtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function NaturalResourceCtrl(AOI, webService) {
     var vm = this;
@@ -25446,13 +25441,7 @@ function NaturalResourceCtrl(AOI, webService) {
         vm.NRCConfig = result;
     });
 
-    vm.childPaneOn();
 }
-
-NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
-NaturalResourceCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function TransportationAndInfrastructureCtrl(AOI, webService) {
     var vm = this;
@@ -25462,15 +25451,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     webService.getData('TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
-
-
-    vm.childPaneOn();
-
 }
-TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
-TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function EnergyAndMineralsCtrl(AOI, webService) {
     var vm = this;
@@ -25480,15 +25461,8 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     webService.getData('EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
-
-
-    vm.childPaneOn();
 }
 
-EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
-EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function EconCtrl(AOI, webService) {
     var vm = this;
@@ -25499,14 +25473,7 @@ function EconCtrl(AOI, webService) {
         vm.ECConfig = result;
     });
 
-    vm.childPaneOn();
 }
-
-EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
-EconCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
-
 
 function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
 
@@ -25549,21 +25516,12 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     });
 }
 
-PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
-
 function SearchCtrl(AOI) {
     var vm = this;
-    AOI.inPrintWindow = false;
-    if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
+    //AOI.inPrintWindow = false;
+    //AOI.toggleFull = true;
 }
 
-SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
-SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
-    return this.drawOrSubmitCommand;
-};
-SearchCtrl.prototype.childStartSpin = function () {
-    this.startSpin();
-};
 
 angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, close) {
@@ -25580,8 +25538,8 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-    .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
+    .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
+        'AOIConfig', '$scope', PageslideCtrl]);
 
 
 
@@ -25608,8 +25566,16 @@ function printDirective($state, $timeout) {
             printElement.id = 'printSection';
             angular.element(document.body).append(printElement);
             window.print();
+            angular.element(document).ready(function () {
+                console.log('page loading completed');
+            });
             printElement.innerHTML = "";
+
             $state.go('CEview');
+
+
+
+
         });
     }
 
@@ -25820,10 +25786,18 @@ angular.module('myApp.directives', [])
                         $scope.map.invalidateSize();
                     };
                     $scope.mapHalfScreen = function () {
-
                         $element.css('width', '50%');
                         $element.find('#map').css('width', '50%');
                         $scope.map.invalidateSize();
+                        if (AOI.drawLayerShape) {
+                            var bounds = L.geoJson(AOI.drawLayerShape, {
+                                color: '#EB660C',
+                                weight: 1.5,
+                                fillOpacity: .3,
+                                pane: 'AOIfeature'
+                            }).getBounds();
+                            $scope.map.fitBounds(bounds);
+                        }
                     };
                     $scope.drawOff = function () {
                         $scope.map.setMinZoom(1);
@@ -25910,9 +25884,20 @@ angular.module('myApp.directives', [])
             restrict: 'E',
             scope: {
                 mapPromise: '=',
+                resetDrawArea: '='
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
+                function setDrawnArea() {
+                    minicLayer = L.geoJson($scope.AOI.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+                    var minibounds = minicLayer.getBounds();
+                    $scope.AOI.smallMap.fitBounds(minibounds);
+                }
+
                 $scope.AOI = AOI;
                 var mapDeferred = $q.defer(), basemapDefered = $q.defer(),
                     basemapLabelsDefered = $q.defer();
@@ -25947,14 +25932,7 @@ angular.module('myApp.directives', [])
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
-                    minicLayer = L.geoJson(AOI.drawLayerShape, {
-                        color: '#EB660C',
-                        weight: 1.5,
-                        fillOpacity: .3
-                    }).addTo($scope.AOI.smallMap);
-                    var minibounds = minicLayer.getBounds();
-                    $scope.AOI.smallMap.fitBounds(minibounds);
-
+                    setDrawnArea();
                 } else {
                     minicLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
@@ -25976,6 +25954,12 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
+
+                $scope.$watch('AOI.ID', function (newValue, oldValue) {
+                    if (newValue !== oldValue && newValue === -9999) {
+                        setDrawnArea();
+                    }
+                })
             }]
         }
     });
@@ -26147,13 +26131,11 @@ $http.get("gis_config.json").then(function (result) {
             });
 
             $stateProvider
-
                 .state('otherwise', {
                     url: '/main',
                     templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
-
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl as AOIvm'
                 })
@@ -26163,29 +26145,23 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {
-
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
                     controller: 'NaturalResourcesCtrl as NRCvm'
                 })
                 .state('TIview', {
-
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
                     controller: 'TransportationAndInfrastructureCtrl as TIvm'
                 })
                 .state('EMview', {
-
                     templateUrl: 'partials/EnergyAndMinerals.html',
                     controller: 'EnergyAndMineralsCtrl as EMvm'
                 })
                 .state('ECview', {
-
                     templateUrl: 'partials/EconomicsAndCommerce.html',
                     controller: 'EconCtrl as ECvm'
                 })
                 .state('meta', {
-
                     templateUrl: 'partials/metadata.html'
-
                 })
                 .state('splash', {
                     url: '/splash',
@@ -26201,11 +26177,9 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'SearchCtrl as Searchvm'
                 })
                 .state('print', {
-
                     templateUrl: 'partials/printPreview.html',
                     controller: 'PrintCtrl as Printvm'
-                })
-            ;
+                });
         }])
         .config(function ($animateProvider) {
             $animateProvider.classNameFilter(/angular-animate/);

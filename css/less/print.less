@@ -23,7 +23,6 @@
 @media print {
   body * {
     visibility: hidden;
-    //display:none;
   }
 
   .header, .header * {
@@ -53,18 +52,13 @@
   .slide-right, .slide-right * {
     display: none;
   }
+
   .clear {
     clear: left;
-    //page-break-after: always;
-    //page-break-before: always;
-
   }
 
   .AOItabClass {
-   // display: inline-block;
     page-break-before: always;
-    //page-break-inside: avoid;
-    //break-inside: avoid;
   }
 
   #printSection, #printSection * {
@@ -72,49 +66,35 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
-    //page-break-inside: avoid;
-    //display:block;
-
-
   }
-  .zeroheightkludge,.zeroheightkludge * {
-      //widows:3;
-      //orphans:3;
-     //page-break-before: always;
-     //page-break-after: always;
-     page-break-inside: avoid;
-    break-inside: avoid;
 
-   }
-  .metatable{
+  .zeroheightkludge, .zeroheightkludge * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .metatable {
     margin-bottom: 0px;
     font-size: 12px;
   }
-  .metaline1, .metaline1 *{
+
+  .metaline1, .metaline1 * {
     page-break-inside: avoid;
     break-inside: avoid;
 
   }
-  .pwrbox,.pwrbox * {
-    widows:5;
-    //orphans:4;
-    //page-break-before: always;
-    //page-break-after: always;
+
+  .pwrbox, .pwrbox * {
+    widows: 5;
     page-break-inside: avoid;
     break-inside: avoid;
 
   }
+
   #printSection {
-    //page-break-after: auto;
-
-    //page-break-before: auto;
-
   }
 
   #printSection:last-child {
-
-    //page-break-after: auto;
-
   }
 
 }
