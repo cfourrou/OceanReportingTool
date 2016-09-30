@@ -164,6 +164,7 @@ $http.get("gis_config.json").then(function (result) {
 
             $stateProvider
                 .state('otherwise', {
+                    cache: false,
                     url: '/main',
                     templateUrl: 'partials/splash.html'
                 })
@@ -172,6 +173,7 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
+                    cache: false,
                     url: '/AOI?AOIdetail',
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl as AOIvm'
@@ -196,14 +198,17 @@ $http.get("gis_config.json").then(function (result) {
                     templateUrl: 'partials/metadata.html'
                 })
                 .state('splash', {
+                    cache: false,
                     url: '/splash',
                     templateUrl: 'partials/splash.html'
                 })
                 .state('menu', {
+                    cache: false,
                     url: '/menu',
                     templateUrl: 'partials/KnownAreasMenu.html'
                 })
                 .state('draw', {
+                    cache: false,
                     url: '/draw',
                     templateUrl: 'partials/draw.html',
                     controller: 'SearchCtrl as Searchvm'

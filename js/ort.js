@@ -25125,14 +25125,7 @@ angular.module('myApp.services', [])
                     return loadDeferred.promise;
                 },
                 reloadAbort: function () {
-
-                    setTimeout(function () {
-
-                        $window.location.reload();
-
-                    }, 100);
-
-
+                    $window.location.reload();
                 },
                 reloadAllCharts: function () {
                     var allPromises = [];
@@ -25270,6 +25263,8 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
         vm.drawOrSubmitCommand = "DRAW";
         vm.reset();
+        $state.go('splash');
+
         AOI.reloadAbort();
 
     };
@@ -25475,7 +25470,7 @@ function EconCtrl(AOI, webService) {
 
 }
 
-function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
+function PrintCtrl($rootScope, AOI, webService, $q) {
 
     var vm = this;
     vm.AOI = AOI;
@@ -25531,7 +25526,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
     })
 
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', 'webService', '$q', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
@@ -26126,6 +26121,7 @@ $http.get("gis_config.json").then(function (result) {
 
             $stateProvider
                 .state('otherwise', {
+                    cache: false,
                     url: '/main',
                     templateUrl: 'partials/splash.html'
                 })
@@ -26134,6 +26130,7 @@ $http.get("gis_config.json").then(function (result) {
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
+                    cache: false,
                     url: '/AOI?AOIdetail',
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl as AOIvm'
@@ -26158,14 +26155,17 @@ $http.get("gis_config.json").then(function (result) {
                     templateUrl: 'partials/metadata.html'
                 })
                 .state('splash', {
+                    cache: false,
                     url: '/splash',
                     templateUrl: 'partials/splash.html'
                 })
                 .state('menu', {
+                    cache: false,
                     url: '/menu',
                     templateUrl: 'partials/KnownAreasMenu.html'
                 })
                 .state('draw', {
+                    cache: false,
                     url: '/draw',
                     templateUrl: 'partials/draw.html',
                     controller: 'SearchCtrl as Searchvm'

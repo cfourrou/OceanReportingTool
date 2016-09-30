@@ -3,7 +3,8 @@ indivdual infographics ID's 1-25 for EM
 -->
 
 <a ng-click="EMvm.AOI.toggleFullSlider('EM')" href="" id="togglefull" class="toggleicon"
-   ng-style="{'top':(window.innerHeight /2)+'px'}"><img class="toggleimg" src="img/ArrowButton.svg"></a>
+   ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':EMvm.AOI.toggleFullStyle.MarginLeft,'transform':EMvm.AOI.toggleFullStyle.transform,'msTransform':EMvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':EMvm.AOI.toggleFullStyle.WebkitTransform}"><img
+        class="toggleimg" src="img/ArrowButton.svg"></a>
 
 <div class="padding30 slide-right">
     <ng-include src="'partials/AOI_head.html'"></ng-include>

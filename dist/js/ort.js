@@ -23222,6 +23222,7 @@ angular.module('myApp.services', [])
     .service('AOI', ['$rootScope', '$window', 'L', '$q', 'AOIConfig', 'myQueryService', 'myGetService', 'myGPService',
         function ($rootScope, $window, L, $q, AOIConfig, myQueryService, myGetService, myGPService) {
             var AOI = {
+                toggleFullStyle: [],
                 OceanJobContributionsSeries: [],
                 drawAreaJobId: {},
                 Shared: false,
@@ -23309,34 +23310,33 @@ angular.module('myApp.services', [])
                                 where: "AOI_ID =" + AOI.ID + "",
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
-                        }
 
-                        AOI.layer.on("load", function (evt) {
-                            // create a new empty Leaflet bounds object
+                            AOI.layer.on("load", function (evt) {
+                                // create a new empty Leaflet bounds object
 
-                            var myBounds = L.latLngBounds([]);
-                            // loop through the features returned by the server
+                                var myBounds = L.latLngBounds([]);
+                                // loop through the features returned by the server
 
-                            AOI.layer.eachFeature(function (layer) {
-                                // get the bounds of an individual feature
-                                var layerBounds = layer.getBounds();
-                                // extend the bounds of the collection to fit the bounds of the new feature
-                                myBounds.extend(layerBounds);
+                                AOI.layer.eachFeature(function (layer) {
+                                    // get the bounds of an individual feature
+                                    var layerBounds = layer.getBounds();
+                                    // extend the bounds of the collection to fit the bounds of the new feature
+                                    myBounds.extend(layerBounds);
+                                });
+
+                                try {
+                                    AOI.map.fitBounds(myBounds);
+
+                                    AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
+                                }
+                                catch (err) {
+                                    //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
+                                    //so for now we will zoom out on error and allow this event to fire again.
+
+                                    AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                                }
                             });
-
-                            try {
-                                AOI.map.fitBounds(myBounds);
-
-                                AOI.layer.off('load'); // unwire the event listener so that it only fires once when the page is loaded or again on error
-                            }
-                            catch (err) {
-                                //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
-                                //so for now we will zoom out on error and allow this event to fire again.
-
-                                AOI.map.setView([33.51, -78.3], 6); //it should try again.
-                            }
-                        });
-
+                        }
                         AOI.isVisible = true;
                     });
 
@@ -23346,23 +23346,22 @@ angular.module('myApp.services', [])
                     if (AOI.isVisible) {
                         AOI.map.removeLayer(AOI.layer);
                     }
-                    AOI.map.setView([33.51, -78.3], 6);
                     AOI.isVisible = false;
                 },
-                zoomTo: function () {
-
-                    var myBounds = L.latLngBounds([]);
-                    // loop through the features returned by the server
-                    AOI.layer.eachFeature(function (layer) {
-                        // get the bounds of an individual feature
-                        var layerBounds = layer.getBounds();
-                        // extend the bounds of the collection to fit the bounds of the new feature
-                        myBounds.extend(layerBounds);
-                    });
-                    AOI.map.fitBounds(myBounds);
-
-
-                },
+                //zoomTo: function () {
+                //
+                //    var myBounds = L.latLngBounds([]);
+                //    // loop through the features returned by the server
+                //    AOI.layer.eachFeature(function (layer) {
+                //        // get the bounds of an individual feature
+                //        var layerBounds = layer.getBounds();
+                //        // extend the bounds of the collection to fit the bounds of the new feature
+                //        myBounds.extend(layerBounds);
+                //    });
+                //    AOI.map.fitBounds(myBounds);
+                //
+                //
+                //},
                 isVisible: false,
                 getReport: function () {
                     var allPromises = [];
@@ -23397,7 +23396,6 @@ angular.module('myApp.services', [])
 
                         AOI.unloadData();
                         AOI.loadData(-9999, '');
-                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
 
 
@@ -23439,7 +23437,6 @@ angular.module('myApp.services', [])
                             }
                         });
                         AOI.loadData(-9999, '');
-                        AOI.name = (AOI.CEPlaces[0].Name ? ("Near " + AOI.CEPlaces[0].Name) : "My Report");
                     });
                 },
                 loadData: function (id, name) {
@@ -23737,7 +23734,10 @@ angular.module('myApp.services', [])
 
                         AOI.massageData(tempFeatureArray);
                         AOI.display();
-                        AOI.name = name;
+
+                        if (AOI.CEPlaces.length > 0) AOI.name = "Near " + AOI.CEPlaces[0].Name;
+                        else AOI.name = "My Report";
+
 
                     } else {
                         var queryService = new myQueryService(AOIConfig.ortMapServer + AOIConfig.ortLayerData);
@@ -24453,7 +24453,7 @@ angular.module('myApp.services', [])
                         AOI.ECStateGDP.length = 0;
                         AOI.ECCountyGDP.length = 0;
                         AOI.OceanJobContributionsSeries.length = 0;
-                        AOI.drawAreaJobId = {};
+                        // AOI.drawAreaJobId = {};
                         AOI.Shared = false;
                         AOI.CEPlaces.length = 0;
                         AOI.TIShipping.length = 0;
@@ -24472,10 +24472,6 @@ angular.module('myApp.services', [])
                         AOI.TIPilot.length = 0;
 
                         AOI.hide();
-
-                        chartsDeferred = $q.defer();
-                        AOI.chartsLoaded = chartsDeferred.promise;
-
                     }
                     AOI.isLoaded = false;
                 },
@@ -24748,31 +24744,20 @@ angular.module('myApp.services', [])
                     if (AOI.toggleFull) {
 
                         // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-                        document.getElementById("slide1").style.width = '100%';
-                        document.getElementById("togglefull").style.marginLeft = '0px';
-                        document.getElementById("togglefull").style.WebkitTransform = "rotate(180deg)";
-                        document.getElementById("togglefull").style.msTransform = "rotate(180deg)";
-                        document.getElementById("togglefull").style.transform = "rotate(180deg)";
 
-                        var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'inline-block';
-                        })
+                        AOI.sliderWidth = '100%';
+                        AOI.toggleFullStyle.MarginLeft = '0px';
+                        AOI.toggleFullStyle.WebkitTransform = "rotate(180deg)";
+                        AOI.toggleFullStyle.msTransform = "rotate(180deg)";
+                        AOI.toggleFullStyle.transform = "rotate(180deg)";
 
                     } else {
 
-                        document.getElementById("togglefull").style.marginLeft = "-25px";
-
-                        document.getElementById("slide1").style.width = '50%';
-                        var elems = document.getElementsByClassName('AOItabClass2');
-                        angular.forEach(elems, function (myElement) {
-                            myElement.style.display = 'none';
-                        })
-
-                        document.getElementById("togglefull").style.WebkitTransform = "rotate(0deg)";
-                        // Code for IE9
-                        document.getElementById("togglefull").style.msTransform = "rotate(0deg)";
-                        document.getElementById("togglefull").style.transform = "rotate(0deg)";
+                        AOI.toggleFullStyle.MarginLeft = '-25px';
+                        AOI.sliderWidth = '50%';
+                        AOI.toggleFullStyle.WebkitTransform = "rotate(0deg)";
+                        AOI.toggleFullStyle.msTransform = "rotate(0deg)";
+                        AOI.toggleFullStyle.transform = "rotate(0deg)";
 
                     }
 
@@ -25140,14 +25125,7 @@ angular.module('myApp.services', [])
                     return loadDeferred.promise;
                 },
                 reloadAbort: function () {
-
-                    setTimeout(function () {
-
-                        $window.location.reload();
-
-                    }, 100);
-
-
+                    $window.location.reload();
                 },
                 reloadAllCharts: function () {
                     var allPromises = [];
@@ -25179,8 +25157,7 @@ angular.module('myApp.services', [])
 ;
 'use strict';
 
-function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $stateParams, $q, myGPService,
-                       myQueryService, AOIConfig, $rootScope) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope) {
     //this one loads once on start up
     var vm = this;
     vm.AOI = AOI;
@@ -25203,18 +25180,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     });
 
+
     vm.checked = true;
 
-    vm.showSubmitModal = function () {
-        ModalService.showModal({
-            templateUrl: "modalDraw.html",
-            controller: "submitModalController"
-        }).then(function (modal) {
-            modal.close.then(function (result) {
-                vm.customResult = "All good!";
-            });
-        });
-    };
+    $scope.currState = $state;
 
     vm.startSpin = function () {
         usSpinnerService.spin('spinner-1');
@@ -25229,37 +25198,39 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
             case "DRAW":
 
-                if (vm.drawtoolOn) {
-                    if (vm.drawlocked) {
-                        vm.drawOff();
-                    } else {
-                        vm.startDrawing();
-                    }
-                }
+
+                vm.startDrawing();
+
+                //if (vm.drawtoolOn) {
+                //    if (vm.drawLocked) {
+                //        vm.drawOff();
+                //
+                //    } else {
+                //        vm.startDrawing();
+                //    }
+                //}
                 break;
             case "Subm":
                 //allPromises = [];
 
-                vm.showSubmitModal();
-
                 vm.drawOrSubmitCommand = "Working";
 
+
+                //vm.drawOff();
+                vm.paneOn();
+                //map to 50%
+                vm.mapHalfScreen();
                 vm.startSpin();
 
                 AOI.getReport().then(function () {
                     vm.stopSpin();
-                    vm.drawOff();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = "DRAW";
                     vm.baseMapControlOn = false;
-
+                    vm.drawOff();
                     $state.go('CEview');
-                    vm.paneOn();
                 });
 
-                break;
-            case "Work":
-                vm.showSubmitModal();
                 break;
             case "Erro":
                 vm.drawOrSubmitCommand = "Submit";
@@ -25292,6 +25263,8 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
 
         vm.drawOrSubmitCommand = "DRAW";
         vm.reset();
+        $state.go('splash');
+
         AOI.reloadAbort();
 
     };
@@ -25306,8 +25279,17 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         vm.resetMap();
     };
 
-    vm.off = function () { //unloads AOI and turns off slider pane
-        vm.paneOff();
+    vm.drawMenu = function () { //unloads AOI and turns off slider pane
+        //if draw submitted but not returned yet, leave pane on
+        if (vm.drawOrSubmitCommand !== "Working") {
+            vm.paneOff();
+            vm.drawOrSubmitCommand = "DRAW";
+            vm.mapFullScreen();
+        } else {
+            vm.mapHalfScreen();
+            vm.startSpin();
+            vm.paneOn();
+        }
         AOI.unloadData();
         vm.drawOn();
     };
@@ -25384,9 +25366,10 @@ function PageslideCtrl(AOI, ModalService, $state, usSpinnerService, $location, $
         }
     }
 
-    $rootScope.$on('$stateChangeSuccess', function (e, toState) {
-        if (toState.name === 'draw') {
-            vm.off();
+    var listener = $scope.$watch('currState.current.name', function (newValue, oldValue) {
+        if (newValue !== oldValue && newValue === 'draw') {
+            vm.drawMenu();
+            listener();
         }
     });
 }
@@ -25396,6 +25379,7 @@ PageslideCtrl.prototype.mout = function (id) {
 };
 PageslideCtrl.prototype.paneOn = function (id) {
 };
+
 
 function AOICtrl(AOI, webService) {
     var vm = this;
@@ -25441,19 +25425,7 @@ function AOICtrl(AOI, webService) {
         vm.houseMenu = "+";
     };
 
-    vm.childMouseOut(vm.AOI.ID);
-
-    vm.paneOn();
-
 }
-
-AOICtrl.prototype = Object.create(PageslideCtrl.prototype);
-AOICtrl.prototype.childMouseOut = function (id) {
-    this.mout(id);
-};
-AOICtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function NaturalResourceCtrl(AOI, webService) {
     var vm = this;
@@ -25464,13 +25436,7 @@ function NaturalResourceCtrl(AOI, webService) {
         vm.NRCConfig = result;
     });
 
-    vm.childPaneOn();
 }
-
-NaturalResourceCtrl.prototype = Object.create(PageslideCtrl.prototype);
-NaturalResourceCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function TransportationAndInfrastructureCtrl(AOI, webService) {
     var vm = this;
@@ -25480,15 +25446,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     webService.getData('TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
-
-
-    vm.childPaneOn();
-
 }
-TransportationAndInfrastructureCtrl.prototype = Object.create(PageslideCtrl.prototype);
-TransportationAndInfrastructureCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function EnergyAndMineralsCtrl(AOI, webService) {
     var vm = this;
@@ -25498,15 +25456,8 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     webService.getData('EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
-
-
-    vm.childPaneOn();
 }
 
-EnergyAndMineralsCtrl.prototype = Object.create(PageslideCtrl.prototype);
-EnergyAndMineralsCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
 
 function EconCtrl(AOI, webService) {
     var vm = this;
@@ -25517,16 +25468,9 @@ function EconCtrl(AOI, webService) {
         vm.ECConfig = result;
     });
 
-    vm.childPaneOn();
 }
 
-EconCtrl.prototype = Object.create(PageslideCtrl.prototype);
-EconCtrl.prototype.childPaneOn = function () {
-    this.paneOn();
-};
-
-
-function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
+function PrintCtrl($rootScope, AOI, webService, $q) {
 
     var vm = this;
     vm.AOI = AOI;
@@ -25567,21 +25511,12 @@ function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
     });
 }
 
-PrintCtrl.prototype = Object.create(PageslideCtrl.prototype);
-
 function SearchCtrl(AOI) {
     var vm = this;
-    AOI.inPrintWindow = false;
-    if (vm.childDrawOrSubmitCommand === "Working") vm.childStartSpin();
+    //AOI.inPrintWindow = false;
+    //AOI.toggleFull = true;
 }
 
-SearchCtrl.prototype = Object.create(PageslideCtrl.prototype);
-SearchCtrl.prototype.childDrawOrSubmitCommand = function () {
-    return this.drawOrSubmitCommand;
-};
-SearchCtrl.prototype.childStartSpin = function () {
-    this.startSpin();
-};
 
 angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, close) {
@@ -25591,31 +25526,18 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
     })
 
-    .controller('submitModalController', function (close) {
-        close(false, 6000);//close after 10 seconds anyway.
-    })
-
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', 'webService', '$q', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-    .controller('pageslideCtrl', ['AOI', 'ModalService', '$state', 'usSpinnerService', '$location',
-        '$stateParams', '$q', 'myGPService', 'myQueryService', 'AOIConfig', '$rootScope', PageslideCtrl]);
+    .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
+        'AOIConfig', '$scope', PageslideCtrl]);
 
 
-angular.element(document).ready(function () {
 
-    c = angular.element(document.querySelector('#controller-demo')).scope();
-});
-
-
-angular.element(document).ready(function () {
-    // if (console.assert)
-    //     console.assert(document.querySelectorAll('body > .ng-pageslide').length === 12, 'Made all of them')
-});
 ;
 'use strict';
 
@@ -25635,12 +25557,14 @@ angular.module('myApp.filters', [])
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            var printElement = element[0].cloneNode(true);
-            printElement.id = 'printSection';
-            document.body.appendChild(printElement);
-            window.print();
-            printElement.innerHTML = "";
-            $state.go('CEview');
+            $timeout(function () {
+                var printElement = element[0].cloneNode(true);
+                printElement.id = 'printSection';
+                angular.element(document.body).append(printElement);
+                window.print();
+                printElement.innerHTML = "";
+                $state.go('CEview');
+            });
         });
     }
 
@@ -25710,7 +25634,10 @@ angular.module('myApp.directives', [])
                 drawOn: '=',
                 drawOff: '=',
                 map: '=',
-                startDrawing: '='
+                startDrawing: '=',
+                mapFullScreen: '=',
+                mapHalfScreen: '='
+
             },
             replace: true,
             templateUrl: 'partials/ortMap.html',
@@ -25801,6 +25728,7 @@ angular.module('myApp.directives', [])
                     });
 
                     $scope.zoomLevel = $scope.map.getZoom();
+
                     $scope.basemapControlEnabled = false;
 
                     var polyLayer;
@@ -25815,32 +25743,51 @@ angular.module('myApp.directives', [])
                     $scope.drawAvailable = false;
 
                     $scope.startDrawing = function () {
-                        $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
-                        $scope.map.setMaxZoom($scope.map.getZoom());
-                        $scope.map.dragging.disable(); //no panning
-                        $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
-                        $scope.map.doubleClickZoom.disable();
-                        $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
-                        // $scope.drawLocked = true;
-                        //$scope.drawButtonText = "Drawing";
-                        $scope.polyLayerEnabled = false;
-                        $scope.map.pm.enableDraw('Poly');
-                        $scope.drawEnabled = true;
+
+                        if ($scope.drawAvailable) {
+                            $scope.map.setMinZoom($scope.map.getZoom()); //lock map view at current zoom level
+                            $scope.map.setMaxZoom($scope.map.getZoom());
+                            $scope.map.dragging.disable(); //no panning
+                            $scope.map.touchZoom.disable(); //no 2 finger zooms from touchscreens
+                            $scope.map.doubleClickZoom.disable();
+                            $scope.map.boxZoom.disable(); //no shift mouse drag zooming.
+                            //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+                            $scope.drawLocked = true;
+                            $scope.drawButtonText = "Drawing";
+                            $scope.polyLayerEnabled = false;
+                            if (searchControl) searchControl.disable();
+                            $scope.map.pm.enableDraw('Poly');
+                            $scope.drawEnabled = true;
+                        }
                     };
 
                     $scope.drawOn = function () {
-                        //$scope.map.zoomControl.disable(); //https://github.com/Leaflet/Leaflet/issues/3172
+
                         clearMouseLayer();
                         searchControl.addTo($scope.map);
+                        $scope.drawEnabled = true;
+                    };
+
+                    $scope.mapFullScreen = function () {
+
                         $element.css('width', '100%');
                         $element.find('#map').css('width', '100%');
                         $scope.map.invalidateSize();
-                        $scope.drawEnabled = true;
-
-                        //$element.css('width', '100%');
-                        //$scope.map.invalidateSize();
                     };
-
+                    $scope.mapHalfScreen = function () {
+                        $element.css('width', '50%');
+                        $element.find('#map').css('width', '50%');
+                        $scope.map.invalidateSize();
+                        if (AOI.drawLayerShape) {
+                            var bounds = L.geoJson(AOI.drawLayerShape, {
+                                color: '#EB660C',
+                                weight: 1.5,
+                                fillOpacity: .3,
+                                pane: 'AOIfeature'
+                            }).getBounds();
+                            $scope.map.fitBounds(bounds);
+                        }
+                    };
                     $scope.drawOff = function () {
                         $scope.map.setMinZoom(1);
                         $scope.map.setMaxZoom(12);
@@ -25850,16 +25797,11 @@ angular.module('myApp.directives', [])
                         $scope.map.boxZoom.enable(); // shift mouse drag zooming.
                         //$scope.map.zoomControl.enable(); //https://github.com/Leaflet/Leaflet/issues/3172
                         $scope.map.dragging.enable();
-                        //if (searchControl) searchControl.enable();
                         $scope.drawLocked = false;
                         $scope.map.pm.disableDraw('Poly');
                         $scope.map.removeControl(searchControl);
-                        $element.css('width', '50%');
-                        $element.find('#map').css('width', '50%');
-                        $scope.map.invalidateSize();
                         $scope.drawEnabled = false;
                         $scope.drawAvailable = false;
-                        $scope.drawButtonText = 'DRAW';
                         if (polyLayer) {
                             $scope.map.removeLayer(polyLayer);
                             polyLayer = null;
@@ -25878,17 +25820,17 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.map.on('zoomend', function (e) {
-                        if ($scope.drawEnabled) {
-                            var zoomLevel = $scope.map.getZoom();
-                            console.log(zoomLevel +" " + $scope.drawAvailable);
-                            if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
-                                $scope.drawAvailable = true;
-                                $scope.$apply();
-                            } else if ((zoomLevel > 12) ||  (zoomLevel < 10) && $scope.drawAvailable) {
-                                $scope.drawAvailable = false;
-                                $scope.$apply();
-                            }
+
+                        var zoomLevel = $scope.map.getZoom();
+
+                        if ((zoomLevel <= 12) && (zoomLevel >= 10 ) && !$scope.drawAvailable) {
+                            $scope.drawAvailable = true;
+                            if ($scope.drawEnabled) $scope.$apply();
+                        } else if ((zoomLevel > 12) || (zoomLevel < 10) && $scope.drawAvailable) {
+                            $scope.drawAvailable = false;
+                            if ($scope.drawEnabled) $scope.$apply();
                         }
+
                     });
 
                     $scope.$watch('searchControlEnabled', function (newValue, oldValue) {
@@ -25914,6 +25856,7 @@ angular.module('myApp.directives', [])
                     };
 
                     $scope.resetMap = function () {
+                        $scope.mapHalfScreen();
                         $scope.baseMapControlEnabled = false;
                         $scope.searchControlEnabled = false;
                         $scope.drawOff();
@@ -25930,9 +25873,20 @@ angular.module('myApp.directives', [])
             restrict: 'E',
             scope: {
                 mapPromise: '=',
+                resetDrawArea: '='
             },
             templateUrl: 'partials/smallOrtMap.html',
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
+                function setDrawnArea() {
+                    minicLayer = L.geoJson($scope.AOI.drawLayerShape, {
+                        color: '#EB660C',
+                        weight: 1.5,
+                        fillOpacity: .3
+                    }).addTo($scope.AOI.smallMap);
+                    var minibounds = minicLayer.getBounds();
+                    $scope.AOI.smallMap.fitBounds(minibounds);
+                }
+
                 $scope.AOI = AOI;
                 var mapDeferred = $q.defer(), basemapDefered = $q.defer(),
                     basemapLabelsDefered = $q.defer();
@@ -25967,14 +25921,7 @@ angular.module('myApp.directives', [])
 
                 var minicLayer;
                 if (AOI.ID === -9999) {
-                    minicLayer = L.geoJson(AOI.drawLayerShape, {
-                        color: '#EB660C',
-                        weight: 1.5,
-                        fillOpacity: .3
-                    }).addTo($scope.AOI.smallMap);
-                    var minibounds = minicLayer.getBounds();
-                    $scope.AOI.smallMap.fitBounds(minibounds);
-
+                    setDrawnArea();
                 } else {
                     minicLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
@@ -25996,18 +25943,12 @@ angular.module('myApp.directives', [])
                     });
                 }
                 $scope.AOI.smallMap.invalidateSize();
-                var test1 = false;
-                if ((AOI.inPrintWindow) && (test1)) {
-                    leafletImage($scope.AOI.smallMap, function (err, canvas) {
-                        var img = document.createElement('img');
-                        var dimensions = $scope.AOI.smallMap.getSize();
-                        img.width = dimensions.x;
-                        img.height = dimensions.y;
-                        img.src = canvas.toDataURL();
-                        document.getElementById('map3').innerHTML = '';
-                        document.getElementById('map3').appendChild(img);
-                    });
-                }
+
+                $scope.$watch('AOI.ID', function (newValue, oldValue) {
+                    if (newValue !== oldValue && newValue === -9999) {
+                        setDrawnArea();
+                    }
+                })
             }]
         }
     });
@@ -26179,65 +26120,60 @@ $http.get("gis_config.json").then(function (result) {
             });
 
             $stateProvider
-
                 .state('otherwise', {
+                    cache: false,
                     url: '/main',
                     templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
-
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
+                    cache: false,
                     url: '/AOI?AOIdetail',
                     templateUrl: 'partials/CommonElements.html',
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {
-
                     templateUrl: 'partials/NaturalResourcesAndConservation.html',
                     controller: 'NaturalResourcesCtrl as NRCvm'
                 })
                 .state('TIview', {
-
                     templateUrl: 'partials/TransportationAndInfrastructure.html',
                     controller: 'TransportationAndInfrastructureCtrl as TIvm'
                 })
                 .state('EMview', {
-
                     templateUrl: 'partials/EnergyAndMinerals.html',
                     controller: 'EnergyAndMineralsCtrl as EMvm'
                 })
                 .state('ECview', {
-
                     templateUrl: 'partials/EconomicsAndCommerce.html',
                     controller: 'EconCtrl as ECvm'
                 })
                 .state('meta', {
-
                     templateUrl: 'partials/metadata.html'
-
                 })
                 .state('splash', {
+                    cache: false,
                     url: '/splash',
                     templateUrl: 'partials/splash.html'
                 })
                 .state('menu', {
+                    cache: false,
                     url: '/menu',
                     templateUrl: 'partials/KnownAreasMenu.html'
                 })
                 .state('draw', {
+                    cache: false,
                     url: '/draw',
                     templateUrl: 'partials/draw.html',
                     controller: 'SearchCtrl as Searchvm'
                 })
                 .state('print', {
-
                     templateUrl: 'partials/printPreview.html',
                     controller: 'PrintCtrl as Printvm'
-                })
-            ;
+                });
         }])
         .config(function ($animateProvider) {
             $animateProvider.classNameFilter(/angular-animate/);

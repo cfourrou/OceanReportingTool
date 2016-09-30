@@ -1,6 +1,6 @@
 <div class="infographic-box-medium-b" tabindex="0">
-    <div id="wrbox1">
-        <div id="line1a">Wind Resource Potential</div>
+    <div class="wrbox1">
+        <div class="line1a">Wind Resource Potential</div>
 
         <div id="slider_but0" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
             <div ng-class="EMvm.AOI.EMWindResourcePotentialLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
@@ -11,7 +11,7 @@
     </div>
 
 
-    <div id="line2">
+    <div class="line2">
         <div class="floatitleft w25"> Weighted Average:<br>
             {{EMvm.AOI.EMWindResourcePotential[0].AVG_WGHT}} m/s
         </div>
@@ -26,7 +26,7 @@
 
             <script type="text/ng-template" id="modal0.html">
                 <div id="custom-modal">
-                    <div id="overlay">
+                    <div class="overlay">
                         <a href="" class="modal-close" ng-click="close('Cancel')">
                             <svg class="" viewBox="0 0 24 24">
                                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
@@ -37,13 +37,13 @@
                         {{metadataurl}} MW.
                         <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
                     </div>
-                    <div id="fade"></div>
+                    <div class="fade"></div>
                 </div>
             </script>
 
 
         </div>
-        <div id="spacer">&nbsp;</div>
+        <div class="spacer">&nbsp;</div>
         <div class="floatitleft w38">Potential Houses Supported Annually:
             {{EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM}}
         </div>
@@ -55,7 +55,7 @@
 
             <script type="text/ng-template" id="modal0b.html">
                 <div id="custom-modal" class="modal">
-                    <div id="overlay">
+                    <div class="overlay">
                         <a href="" class="modal-close" ng-click="close('Cancel')">
                             <svg class="" viewBox="0 0 24 24">
                                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
@@ -74,14 +74,14 @@
 
 
                     </div>
-                    <div id="fade"></div>
+                    <div class="fade"></div>
                 </div>
             </script>
 
         </div>
         <!-- iButton end-->
     </div>
-    <div id="line3">
+    <div class="line3">
         <div id="wrscale" class="line3a"><!--<img src="img/GandH.png?168a886aba220a3d">-->
             <div class="stackedlines">
                 <svg class="stackedlineicon">

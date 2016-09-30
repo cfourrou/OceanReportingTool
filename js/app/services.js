@@ -2026,14 +2026,7 @@ angular.module('myApp.services', [])
                     return loadDeferred.promise;
                 },
                 reloadAbort: function () {
-
-                    setTimeout(function () {
-
-                        $window.location.reload();
-
-                    }, 100);
-
-
+                    $window.location.reload();
                 },
                 reloadAllCharts: function () {
                     var allPromises = [];

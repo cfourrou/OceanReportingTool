@@ -106,6 +106,8 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
         vm.drawOrSubmitCommand = "DRAW";
         vm.reset();
+        $state.go('splash');
+
         AOI.reloadAbort();
 
     };
@@ -311,7 +313,7 @@ function EconCtrl(AOI, webService) {
 
 }
 
-function PrintCtrl($rootScope, AOI, $timeout, webService, $q) {
+function PrintCtrl($rootScope, AOI, webService, $q) {
 
     var vm = this;
     vm.AOI = AOI;
@@ -367,7 +369,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
         };
     })
 
-    .controller('PrintCtrl', ['$rootScope', 'AOI', '$timeout', 'webService', '$q', PrintCtrl])
+    .controller('PrintCtrl', ['$rootScope', 'AOI', 'webService', '$q', PrintCtrl])
     .controller('AOICtrl', ['AOI', 'webService', AOICtrl])
     .controller('SearchCtrl', ['AOI', SearchCtrl])
     .controller('EnergyAndMineralsCtrl', ['AOI', 'webService', EnergyAndMineralsCtrl])
