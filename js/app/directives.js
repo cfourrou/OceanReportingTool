@@ -6,20 +6,14 @@
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            var printElement = element[0].cloneNode(true);
-            printElement.id = 'printSection';
-            angular.element(document.body).append(printElement);
-            window.print();
-            angular.element(document).ready(function () {
-                console.log('page loading completed');
+            $timeout(function () {
+                var printElement = element[0].cloneNode(true);
+                printElement.id = 'printSection';
+                angular.element(document.body).append(printElement);
+                window.print();
+                printElement.innerHTML = "";
+                $state.go('CEview');
             });
-            printElement.innerHTML = "";
-
-            $state.go('CEview');
-
-
-
-
         });
     }
 
