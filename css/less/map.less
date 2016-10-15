@@ -1,6 +1,7 @@
 @import "leaflet.css";
 @import "esri-leaflet-geocoder.css";
 @import "leaflet.pm.css";
+
 /****************************************************
 
 modifications to Leaflet and esri leaflet generic css
@@ -49,6 +50,7 @@ map and map controls
   top: 45px;
   float: left;
 }
+
 .map-tools {
   width: 350px;
   left: 35px;
@@ -62,6 +64,16 @@ map and map controls
   position: absolute;
   top: 98px;
   z-index: 401;
+}
+
+.map-tools-title {
+  width: 100%;
+}
+
+.control-search {
+  width: 100%;
+  float: left;
+
 }
 
 .drawTools2 {
@@ -139,7 +151,6 @@ map and map controls
   }
 }
 
-
 .searchmap {
   background-color: @colorGrey;
 }
@@ -148,8 +159,10 @@ map and map controls
   height: 30px;
   width: 25%;
   float: left;
+
 }
-.basemap-button {
+
+.map-control--button {
   vertical-align: text-top;
   padding-right: 10px;
 }

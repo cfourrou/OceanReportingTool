@@ -19,12 +19,10 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            Activites allowed to be performed in the ocean may be influenced by state and federal
-                            representatives.
-                            If you are interested in conveying your opinion on any of the ocean activities occurring in
-                            this area please
-                            contact the represenatitves of the districts listed below. For Federal representatives,
-                            check here:
+                            Allowable activities performed in the ocean may be influenced by state and federal
+                            representatives. If you are interested in conveying your opinion on any of the ocean
+                            activities occurring in this area please contact the represenatitves of the districts listed
+                            below. For Federal representatives, check here:
                             <a href="https://www.govtrack.us/congress/members/map" target="_blank">US Congressional
                                 District</a>
 
@@ -48,7 +46,8 @@
                     <div class="infomenuplus">{{AOIvm.congressMenu}}</div>
                 </div>
 
-                <div class="infoDropDownList" ng-show="AOIvm.congressIsActive" ng-repeat="congress in AOIvm.AOI.CECongress">
+                <div class="infoDropDownList" ng-show="AOIvm.congressIsActive"
+                     ng-repeat="congress in AOIvm.AOI.CECongress">
                     <div class="politicallist floatitleft" ng-if="$odd">{{congress.stateName}} {{congress.NAMELSAD}}
                     </div>
                     <div class="politicallist floatitleft" ng-if="$even">{{congress.stateName}} {{congress.NAMELSAD}}

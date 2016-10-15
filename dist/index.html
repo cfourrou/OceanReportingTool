@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?daa66c8703f4b74c">
+    <link rel="stylesheet" href="css/ort.min.css?6767bbc5d14f2ead">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -112,16 +112,16 @@
 
 </head>
 <body>
-<div id="header" class="header">
+<div class="header">
     <strong>Marine Cadastre</strong> Ocean Reporting Tool
 
-    <info-directive modal-template="contactUs.html" message="message" var-data="About" class="helpbutton"
+    <info-directive modal-template="contactUs.html" message="message" var-data="About" class="header-helpButton"
                     modal-img="img/info.svg"></info-directive>
 
 </div>
-<div id="wrapper" class="MainWrapper">
+<div class="wrapper">
     <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer padding-none" ng-controller="pageslideCtrl as vm">
+    <div class="outer padding-none" ng-controller="pageslideCtrl as vm">
         <script type="text/ng-template" id="Share1.html">
             <div class="custom-modal">
                 <div class="overlay">
@@ -188,7 +188,7 @@
             </div>
         </script>
 
-        <div id="main_content" class="inner">
+        <div class="inner">
             <div class="nav_bar">
                 <div class="nav_menu_left">
                     <a ui-sref="splash" class="resetbutton" ng-click="vm.startOver()" role="button">RESET</a>
@@ -212,7 +212,7 @@
 
                 </div>
             </div>
-            <div id="contentliquid" class="WrapLower">
+            <div  class="wrapLower">
 
                 <ort-map zoom-level="vm.zoomlevel" draw-enabled="vm.drawtoolOn" draw-on="vm.drawOn"
                          draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
@@ -225,17 +225,17 @@
                 <div id="slide_div">
                 </div>
 
-                <div id="slide1" pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
+                <div pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
                      ps-custom-top="55px" ng-style="{'width' : vm.AOI.sliderWidth}">
                     <div ui-view class="h900"></div>
-                    <div id="foot" class="footer2">
-                        <div class="footerleft"><a target="_blank" href="https://www.commerce.gov/">United States
+                    <div class="footer">
+                        <div class="footer--left"><a target="_blank" href="https://www.commerce.gov/">United States
                             Department of Commerce</a>
                             | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
                                 Administration</a>
                             | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
                         </div>
-                        <div class="footerright">
+                        <div class="footer--right">
                             <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
                                 href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
                             Policy</a>
@@ -257,7 +257,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?50e4ade68fa3723b"></script>
+<script src="js/ort.js?4d7a16ae5295d060"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

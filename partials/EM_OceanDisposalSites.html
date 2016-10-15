@@ -1,16 +1,9 @@
 <div class="infographic-box-small" tabindex="0">
-    <div class="wrbox1">
-        <div id="slider_but3" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.EMOceanDisposalSitesLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleEMOceanDisposalSitesLayer()" ng-include="'img/switch_off.svg'"></div>
-        </div>
-
-        <div class="infographicline1">Ocean Disposal Sites</div>
-        <div class="swatch floatitleft"><img src="img/OceanDisposalGraphic.svg"></div>
-        <div class="infographicline2">
-            <span class="boemline2a floatitleft">Within 10 miles</span>
+    <div >
+        <div class="infographicTitle">
+            <div class="floatitleft">Ocean Disposal Sites</div>
             <!-- iButton start-->
-            <div>
+            <div class="floatitleft">
                 <info-directive class="infobutton mainbutton" modal-template="modal3.html" message="message"
                                 alttext="Element lists a count of each type of Ocean Disposal Site within 10 miles of the selected area. Symbology is a rose colored polygon on the map."
                                 modal-img="img/info.svg"></info-directive>
@@ -44,9 +37,15 @@
 
             </div>
             <!-- iButton end-->
-
+            <div id="slider_but3" class="inlinesliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMOceanDisposalSitesLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="EMvm.AOI.toggleEMOceanDisposalSitesLayer()" ng-include="'img/switch_off.svg'"></div>
+            </div>
         </div>
-        <div class="GreyText10 padLeft15 floatitleft">
+        <div class="swatch floatitleft"><img src="img/OceanDisposalGraphic.svg"></div>
+        <div class="infographicline2">
+            <span class="boemline2a floatitleft">&nbsp Within 10 miles</span>
+        <div class="GreyText10 floatitleft">
             <div ng-repeat="count in EMvm.AOI.EMOceanDisposalSites | filter:query as filtered">
             </div>
             <div ng-repeat="dispx in EMvm.AOI.EMOceanDisposalSites | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">

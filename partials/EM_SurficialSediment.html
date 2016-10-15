@@ -1,12 +1,9 @@
 <div class="infographic-box-medium" tabindex="0">
-    <div class="wrbox1">
-        <div class="infographicline1">Surficial Sediment Classification</div>
-
-        <div class="infographicline3">
-            <span class="boemline2a floatitleft">Number of Samples Collected</span>
+    <div>
+        <div class="infographicTitle">
+            <div class="floatitleft">Surficial Sediment Classification</div>
             <!-- iButton start-->
-            <div>
-
+            <div class="floatitleft">
                 <info-directive class="infobutton mainbutton" modal-template="modal7.html" message="message"
                                 alttext="Graphic of a bar chart that lists the type of sediment samples found in the selected area and how many of each type are present."
                                 modal-img="img/info.svg"></info-directive>
@@ -36,7 +33,7 @@
             <!-- iButton end-->
 
         </div>
-
+        <span class="GreyText12 floatitleft padLeft15 w100 ">Number of Samples Collected.</span>
         <div ng-repeat="dispx in EMvm.AOI.EMSurficialSediment | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
             <div ng-repeat="count in EMvm.AOI.EMSurficialSediment | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered ">
 
@@ -48,7 +45,7 @@
 
 
                  </span>
-            <div class="floatitleft w10 ">
+            <div class="floatitleft w10 GreyText12 ">
                 &nbsp;
             </div>
             <div class="floatitleft PaleText14 SedimentchartType">
