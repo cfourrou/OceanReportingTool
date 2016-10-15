@@ -1,0 +1,155 @@
+@import "leaflet.css";
+@import "esri-leaflet-geocoder.css";
+@import "leaflet.pm.css";
+/****************************************************
+
+modifications to Leaflet and esri leaflet generic css
+
+*****************************************************/
+
+.geocoder-control-suggestions {
+  top: 85px;
+}
+
+.geocoder-control {
+  top: 116px;
+  left: 105px;
+}
+
+.leaflet-bar {
+  box-shadow: 0 1px 3px @colorWhite !important;
+  border-radius: 2px;
+  border-collapse: separate;
+}
+
+.geocoder-control-input {
+  background-image: url(../img/search_2.svg);
+  background-size: 22px !important;
+  background-color: @colorGrey;
+  color: @colorWhite;
+  border: none !important;
+}
+
+.leaflet-control-layers {
+  top: 168px;
+  left: 206px;
+  width: 167px;
+  background-color: @ortGrey-Dark;
+  opacity: .85;
+  color: @colorWhite;
+}
+
+/*****************************************************
+map and map controls
+******************************************************/
+.map {
+  min-height: 955px;
+  width: 50%;
+  position: fixed;
+  top: 45px;
+  float: left;
+}
+.map-tools {
+  width: 350px;
+  left: 35px;
+  background-color: @ortGrey-Dark;
+  opacity: .85;
+  color: @colorWhite;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 6px 6px 0px 0px;
+  height: 65px;
+  position: absolute;
+  top: 98px;
+  z-index: 401;
+}
+
+.drawTools2 {
+  position: fixed;
+  TOP: 224PX;
+  HEIGHT: 34PX;
+  left: 35px;
+  background-color: @ortGrey-Dark;
+  opacity: .85;
+  color: @colorWhite;
+  font-size: 14px;
+  border-radius: 0px 0px 6px 6px;
+  z-index: 402;
+  width: 366px;
+}
+
+.drawbutton1 {
+  text-align: center;
+  width: 49%;
+  float: left;
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: @colorGrey;
+  height: 27px;
+  border-radius: 0px 0px 0px 6px;
+  padding-top: 6px;
+  border-right-style: solid;
+}
+
+.drawbutton--dis {
+  color: @colorGrey;
+  #Main-Draw-Icon {
+    fill: @colorGrey;
+  }
+}
+
+.drawbutton--enl {
+  color: @colorWhite;
+  &:hover {
+    background-color: @ortBlue-light;
+  }
+  &:visited {
+    background-color: @ortBlue-light;
+  }
+  #Main-Draw-Icon {
+    fill: @colorWhite;
+  }
+}
+
+.findButton--enl {
+  color: @colorWhite;
+  #Main-Draw-Icon {
+    fill: @colorWhite;
+  }
+  cursor: pointer;
+}
+
+.drawbutton2 {
+  text-align: center;
+  width: 49%;
+  float: left;
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: @colorGrey;
+  padding-top: 6px;
+  height: 27px;
+  width: 185.5px;
+  border-radius: 0px 0px 6px 0px;
+  cursor: pointer;
+  &:hover {
+    background-color: @ortBlue-light;
+  }
+  &:visited {
+    background-color: @ortBlue-light;
+  }
+}
+
+
+.searchmap {
+  background-color: @colorGrey;
+}
+
+.drawtoolsbase {
+  height: 30px;
+  width: 25%;
+  float: left;
+}
+.basemap-button {
+  vertical-align: text-top;
+  padding-right: 10px;
+}

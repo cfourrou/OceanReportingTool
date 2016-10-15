@@ -6,11 +6,11 @@
             <div class="floatitleft">Danger Zones</div>
             <!-- iButton start-->
             <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal49.html" message="message"
+                <info-directive class="infobutton mainbutton" modal-template="modal51.html" message="message"
                                 alttext="Element contains a count of danger zones within 1 mile of the selected area and a list of who maintains each area and what percentage of the selected area it covers."
                                 modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal49.html">
+                <script type="text/ng-template" id="modal51.html">
                     <div id="custom-modal" class="modal">
                         <div class="overlay">
                             <a href="" class="modal-close" ng-click="close('Cancel')">
@@ -33,7 +33,7 @@
 
             </div>
             <!-- iButton end-->
-            <div id="slider_but49" class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
+            <div id="slider_but51" class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
                 <div ng-class="TIvm.AOI.TIDangerZonesIsVisable ? 'flip' : 'rotateCounterwise180'"
                      ng-click="TIvm.AOI.toggleTIDangerZones()" ng-include="'img/switch_off.svg'"></div>
             </div>

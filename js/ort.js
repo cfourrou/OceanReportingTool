@@ -24736,32 +24736,24 @@ angular.module('myApp.services', [])
                     }
                 },
                 toggleFull: false,
-                toggleFullSlider: function (pageID) {
+                toggleFullSlider: function () {
                     AOI.toggleFull = !AOI.toggleFull;
-                    AOI.doFullSlider(pageID);
+                    AOI.doFullSlider();
                 },
-                doFullSlider: function (pageID) {
+                doFullSlider: function () {
                     if (AOI.toggleFull) {
-
-                        // the following should be changed to a more angularjs friendly approach. not supposed to be do DOM manipulation here.
-
                         AOI.sliderWidth = '100%';
                         AOI.toggleFullStyle.MarginLeft = '0px';
                         AOI.toggleFullStyle.WebkitTransform = "rotate(180deg)";
                         AOI.toggleFullStyle.msTransform = "rotate(180deg)";
                         AOI.toggleFullStyle.transform = "rotate(180deg)";
-
                     } else {
-
                         AOI.toggleFullStyle.MarginLeft = '-25px';
                         AOI.sliderWidth = '50%';
                         AOI.toggleFullStyle.WebkitTransform = "rotate(0deg)";
                         AOI.toggleFullStyle.msTransform = "rotate(0deg)";
                         AOI.toggleFullStyle.transform = "rotate(0deg)";
-
                     }
-
-
                 },
                 loadStateChart: function () {
                     var loadDeferred = $q.defer();

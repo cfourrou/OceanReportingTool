@@ -1,10 +1,10 @@
 <span>
-    <div id="map" class="mapclass">
+    <div id="map" class="map">
         <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
-        <div ng-show="drawEnabled" id="drawtool" class="drawTools">
+        <div ng-show="drawEnabled" id="drawtool" class="map-tools">
             <div class="w100">Map Navigation</div>
             <div class="w100 floatitleft">
-                <div class="drawtoolsbase" ng-class="drawLocked? 'drawbutton-dis':'findButton-enl'">
+                <div class="drawtoolsbase" ng-class="drawLocked? 'drawbutton--dis':'findButton--enl'">
                     <img class="basemap-button" src="img/texticon.svg?5e0f1fe48f7f9b52"/>FIND
                 </div>
             </div>
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div ng-show="drawEnabled" id="drawtoolbottom" class="drawTools2">
-        <div ng-class="drawAvailable? 'drawbutton-enl':'drawbutton-dis'" ng-click="drawIt()"
+        <div ng-class="drawAvailable? 'drawbutton--enl':'drawbutton--dis'" ng-click="drawIt()"
              class="drawbutton1">
             <ng-include class="basemap-button" src="'img/MapInput_2.svg'"></ng-include>
             {{drawButtonText}}
