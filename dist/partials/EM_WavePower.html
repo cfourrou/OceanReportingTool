@@ -1,27 +1,15 @@
 <div class="infographic-box-medium" tabindex="0">
-    <div class="pwrbox">
-        <div id="slider_but8" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.EMOceanWaveResourcePotentialLayerIsVisable ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleEMOceanWaveResourcePotentialLayer()" ng-include="'img/switch_off.svg'"></div>
-        </div>
-        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
-        </div>
-        <div class="infographicline1">Wave Power</div>
-
-        <div class="Leftbox60 floatitleft">
-            <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
-                                                                                    ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
-
-            <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
+    <div>
+        <div class="infographicTitle">
+            <div class="floatitleft">Wave Power</div>
             <!-- iButton start-->
-            <div class="iButtoncontainer">
+            <div class="floatitleft">
                 <info-directive class="infobutton mainbutton " modal-template="modal8.html"
                                 alttext="Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter."
                                 message="message"
                                 modal-img="img/info.svg"></info-directive>
-
                 <script type="text/ng-template" id="modal8.html">
-                    <div id="custom-modal">
+                    <div id="custom-modal" class="modal">
                         <div class="overlay">
                             <a href="" class="modal-close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
@@ -42,110 +30,127 @@
                         <div class="fade"></div>
                     </div>
                 </script>
-            </div> <!-- iButton end-->
-
-
-            <div class="padbottom16 w100 GreyText14 padLeft15 floatitleft">Wave Power
-                Generation
             </div>
-            <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10]">
-                Wave Power is <span ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">NOT</span> >10 kW/m
+            <!-- iButton end-->
+            <div id="slider_but8" class="inlinesliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMOceanWaveResourcePotentialLayerIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="EMvm.AOI.toggleEMOceanWaveResourcePotentialLayer()"
+                     ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div class="powerscale2 GreyText14 padLeft15"></div>
-            <div class="wpowerscale2 GreyText14 padLeft15">
-
-                <div ng-repeat="a in [1,2,3,4,5,6]" class="wpowerscalediv floatitleft">
-
-                </div>
-
-
-            </div>
-
-            <div class="wpowerscalenum GreyText14 padLeft15">
-                <div ng-repeat="b in [0,10,20,30,40,50]" class="wpowerscalenum2 floatitleft">
-                    {{b}}
-                </div>
-
-                <div id="thebar" class="wpowergraphbar floatitleft "
-                     ng-style="{'width': (EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER*7) + 'px' };">
-                    <div class="w100 h100" ng-style="{'background-color':EMvm.AOI.EMOceanWaveResourcePotential[0].COLOR}"></div>
-                </div>
-            </div>
-            <div class="text-center GreyText10"> Wave Power kW/m</div>
-        </div>
-
-        <div class="w40 floatitleft GreyText14">
-            <div class="w100">
-                Annual Wave Energy (kW/m)
-            </div>
-            <div class="w30 floatitleft GreyText14">
-                <img src="img/WavePowerGraphic.svg">
-            </div>
-            <div class="w65 floatitleft GreyText14">
-                <div id="wrscale" class=""><!--<img src="img/GandH.png?168a886aba220a3d">-->
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#EBF6D8" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        0.00-2.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#E4EFD2" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        2.01-4.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#DEE7C9" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        4.01-6.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#D5DDC0" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        6.01-8.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#D0D8B9" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        8.01-10.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#C9D0B1" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        10.01-15.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#C0C6A8" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        15.01-20.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#BBC1A4" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        20.01-30.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#B6BC9E" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        30.01-40.00 kW/m
-                    </div>
-                    <div class="stackedlines">
-                        <svg class="stackedlineicon">
-                            <circle cx="7" cy="7" r="7" fill="#B0B497" stroke="#9B9B9B" stroke-width="1"/>
-                        </svg>
-                        40.01-50.00 kW/m
-                    </div>
-                </div>
+            <div id="slbuttxt0" class="inlinesliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
+        <div class="power-graphic">
+            <div class="power-chart ">
+                <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
+                                                                                        ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
+
+                <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
+                <div class="padbottom16 w100 GreyText14 padLeft15 floatitleft">Wave Power
+                    Generation
+                </div>
+                <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10]">
+                    Wave Power is <span ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">NOT</span>
+                    >10
+                    kW/m
+                </div>
+                <div class="powerscale2 GreyText14 padLeft15"></div>
+                <div class="wpowerscale2 GreyText14 padLeft15">
+
+                    <div ng-repeat="a in [1,2,3,4,5,6]" class="wpowerscalediv floatitleft">
+
+                    </div>
+
+
+                </div>
+
+                <div class="wpowerscalenum GreyText14 padLeft15">
+                    <div ng-repeat="b in [0,10,20,30,40,50]" class="wpowerscalenum2 floatitleft">
+                        {{b}}
+                    </div>
+
+                    <div id="thebar" class="wpowergraphbar floatitleft "
+                         ng-style="{'width': (EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER*7) + 'px' };">
+                        <div class="w100 h100"
+                             ng-style="{'background-color':EMvm.AOI.EMOceanWaveResourcePotential[0].COLOR}"></div>
+                    </div>
+                </div>
+                <div class="text-center GreyText10"> Wave Power kW/m</div>
+            </div>
+            <div class="power-key">
+                <div class="w100">
+                    Annual Wave Energy (kW/m)
+                </div>
+                <div class="w30 floatitleft GreyText14">
+                    <img src="img/WavePowerGraphic.svg">
+                </div>
+                <div class="w65 floatitleft GreyText14">
+                    <div id="wrscale" class=""><!--<img src="img/GandH.png?168a886aba220a3d">-->
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#EBF6D8" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            0.00-2.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#E4EFD2" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            2.01-4.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#DEE7C9" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            4.01-6.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#D5DDC0" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            6.01-8.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#D0D8B9" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            8.01-10.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#C9D0B1" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            10.01-15.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#C0C6A8" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            15.01-20.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#BBC1A4" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            20.01-30.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#B6BC9E" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            30.01-40.00 kW/m
+                        </div>
+                        <div class="stackedlines">
+                            <svg class="stackedlineicon">
+                                <circle cx="7" cy="7" r="7" fill="#B0B497" stroke="#9B9B9B" stroke-width="1"/>
+                            </svg>
+                            40.01-50.00 kW/m
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>

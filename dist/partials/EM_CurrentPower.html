@@ -1,28 +1,15 @@
 <div class="infographic-box-medium" tabindex="0">
-    <div class="pwrbox">
-        <div id="slider_but10" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.EMCurrentPowerIsVisable ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleEMCurrentPower()" ng-include="'img/switch_off.svg'"></div>
-        </div>
-        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
-        </div>
-        <div class="infographicline1">Ocean Current Power</div>
-
-        <div class="Leftbox60 floatitleft">
-
-            <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
-                                                                                    ng-hide="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1">&nbsp;NOT</span>
-
-            <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
+    <div>
+        <div class="infographicTitle">
+            <div class="floatitleft">Ocean Current Power</div>
             <!-- iButton start-->
-            <div class="iButtoncontainer">
+            <div class="floatitleft">
                 <info-directive class="infobutton mainbutton " modal-template="modal10.html"
                                 alttext="Element describes the suitablility of the selected area for ocean current power generation. Includes a bar graph representing the average current speed in meters per second."
                                 message="message"
                                 modal-img="img/info.svg"></info-directive>
-
                 <script type="text/ng-template" id="modal10.html">
-                    <div id="custom-modal">
+                    <div id="custom-modal" class="modal">
                         <div class="overlay">
                             <a href="" class="modal-close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
@@ -45,57 +32,69 @@
                         <div class="fade"></div>
                     </div>
                 </script>
-            </div> <!-- iButton end-->
-
-
-            <div class="padbottom16 GreyText14 padLeft15 floatitleft w100">Ocean Current Power
-                Generation
             </div>
-
-            <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1]">
-                Current Speed is <span ng-show="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT<=1">NOT</span> >1 m/s
+            <!-- iButton end-->
+            <div id="slider_but10" class="inlinesliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMCurrentPowerIsVisable ? 'flip' : 'rotateCounterwise180'"
+                     ng-click="EMvm.AOI.toggleEMCurrentPower()" ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div class="powerscale GreyText14 padLeft15"></div>
-            <div class="powerscale2 GreyText14 padLeft15">
-
-                <div ng-repeat="a in [1, 2, 3, 4,5,6,7,8,9]" class="powerscalediv floatitleft"></div>
-
-            </div>
-
-            <div class="powerscalenum GreyText14 padLeft15">
-
-                <div ng-repeat="b in [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6]" class="powerscalenum2 floatitleft">
-                    {{b}}
-                </div>
-
-
-                <div id="thebar" class="floatitleft powergraphbar"
-                     ng-style="{'width': (EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT*215) + 'px' };"></div>
-            </div>
-            <div class="GreyText10 text-center"> Ocean Current (m/s)</div>
-        </div>
-
-        <div class="w40 floatitleft GreyText14">
-            <div class="w100">
-                Ocean Current Speed (ms)
-            </div>
-            <div class="w30 floatitleft GreyText14">
-                <img src="img/OceanCurrentPowerGraphic.svg">
-            </div>
-            <div class="w65 floatitleft GreyText14 ">
-                <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
-                    <img class="floatitleft" src="img/OceanCurrentRectangle.svg">
-                </div>
-                <div class="floatitleft GreyText14 padLeft15">
-                    High: 1.72
-                </div>
-                <div class="powerchartswatch floatitleft GreyText14 padLeft15">
-                    Low: 0
-                </div>
+            <div id="slbuttxt0" class="inlinesliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
+        <div class="power-graphic">
+            <div class="power-chart ">
+                <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
+                                                                                        ng-hide="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1">&nbsp;NOT</span>
+
+                <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
+                <div class="padbottom16 GreyText14 padLeft15 floatitleft w100">Ocean Current Power
+                    Generation
+                </div>
+
+                <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1]">
+                    Current Speed is <span ng-show="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT<=1">NOT</span> >1 m/s
+                </div>
+                <div class="powerscale GreyText14 padLeft15"></div>
+                <div class="powerscale2 GreyText14 padLeft15">
+
+                    <div ng-repeat="a in [1, 2, 3, 4,5,6,7,8,9]" class="powerscalediv floatitleft"></div>
+
+                </div>
+
+                <div class="powerscalenum GreyText14 padLeft15">
+
+                    <div ng-repeat="b in [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6]" class="powerscalenum2 floatitleft">
+                        {{b}}
+                    </div>
+
+
+                    <div id="thebar" class="floatitleft powergraphbar"
+                         ng-style="{'width': (EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT*215) + 'px' };"></div>
+                </div>
+                <div class="GreyText10 text-center"> Ocean Current (m/s)</div>
+            </div>
+
+            <div class="power-key">
+                <div class="w100">
+                    Ocean Current Speed (ms)
+                </div>
+                <div class="w30 floatitleft GreyText14">
+                    <img src="img/OceanCurrentPowerGraphic.svg">
+                </div>
+                <div class="w65 floatitleft GreyText14 ">
+                    <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
+                        <img class="floatitleft" src="img/OceanCurrentRectangle.svg">
+                    </div>
+                    <div class="floatitleft GreyText14 padLeft15">
+                        High: 1.72
+                    </div>
+                    <div class="powerchartswatch floatitleft GreyText14 padLeft15">
+                        Low: 0
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
 </div>
-
 

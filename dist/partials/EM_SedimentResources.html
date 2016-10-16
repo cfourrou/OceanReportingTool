@@ -1,11 +1,9 @@
 <div class="infographic-box-small" tabindex="0">
-    <div class="wrbox1">
-        <div class="infographicline1">Sediment Resources</div>
-
-        <div class="infographicline2">
-            <span class="boemline2a floatitleft">Click on the icon for more information</span>
+    <div>
+        <div class="infographicTitle">
+            <div class="floatitleft">Sediment Resources</div>
             <!-- iButton start-->
-            <div>
+            <div class="floatitleft">
                 <info-directive class="infobutton mainbutton" modal-template="modal5.html" message="message"
                                 alttext="Element is currently empty, the data for this element is not yet available for this tool"
                                 modal-img="img/info.svg"></info-directive>
@@ -19,7 +17,7 @@
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            This data is currently unavailable, new data will be added as it becomes available.
+                            This data is currently unavailable. New data will be added as it becomes available.
                             <br>
                             <div class="GreyText10">
                                 Sand Resources are areas with sediment potentially available for beach renourishment
@@ -56,18 +54,9 @@
 
             </div>
             <!-- iButton end-->
+            <span class="boemline2a floatitleft">Click on the above icon for more information</span>
+        </div>
 
-        </div>
-        <div ng-repeat="count in EMOceanDisposalSites | filter:query as filtered">
-        </div>
-        <div ng-repeat="dispx in EMOceanDisposalSites | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in EMOceanDisposalSites | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
-            </div>
-            <div class="boemline2">
-                <span class="boemline2b">{{filtered.length}}</span>
-                <span class="boemline2a">{{dispx.PRIMARY_USE}}</span>
-            </div>
-        </div>
 
     </div>
 </div>
