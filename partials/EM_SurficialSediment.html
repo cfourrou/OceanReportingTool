@@ -1,17 +1,17 @@
-<div class="infographic-box-medium" tabindex="0">
+<div class="infographic-box infographic-box--medium" tabindex="0">
     <div>
-        <div class="infographicTitle">
-            <div class="floatitleft">Surficial Sediment Classification</div>
+        <div class="infographic-title">
+            <div class="float-left">Surficial Sediment Classification</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal7.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal7.html" message="message"
                                 alttext="Graphic of a bar chart that lists the type of sediment samples found in the selected area and how many of each type are present."
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal7.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -25,7 +25,7 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
@@ -33,22 +33,22 @@
             <!-- iButton end-->
 
         </div>
-        <span class="GreyText12 floatitleft padLeft15 w100 ">Number of Samples Collected.</span>
+        <span class="GreyText12 float-left padLeft15 w100 ">Number of Samples Collected.</span>
         <div ng-repeat="dispx in EMvm.AOI.EMSurficialSediment | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
             <div ng-repeat="count in EMvm.AOI.EMSurficialSediment | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered ">
 
             </div>
-                <span class="floatitleft blackBoldText14 SedimentChart">
+                <span class="float-left blackBoldText14 SedimentChart">
                     <div class="SedimentCenteredData">{{filtered.length}}</div>
                     <div ng-style="{'width': (filtered.length/EMvm.AOI.EMSurficialSediment.length)*100 + '%' }"
-                         class="SedimentBar floatitleft"></div>
+                         class="SedimentBar float-left"></div>
 
 
                  </span>
-            <div class="floatitleft w10 GreyText12 ">
+            <div class="float-left w10 GreyText12 ">
                 &nbsp;
             </div>
-            <div class="floatitleft PaleText14 SedimentchartType">
+            <div class="float-left PaleText14 SedimentchartType">
                 <span class="marginleft5px">{{dispx.PRIMARY_USE}}</span>
             </div>
         </div>

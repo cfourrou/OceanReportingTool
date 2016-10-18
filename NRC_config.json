@@ -1,7 +1,7 @@
 [
-    { "filename":"partials/NRC_HabitatConcern.html", "priority":56 },
-    { "filename":"partials/smallMap.html", "priority":57},
-    {"filename":"partials/NRC_CriticalHabitat.html","priority":58},
+    {"filename":"partials/NRC_HabitatConcern.html", "priority":56 },
+    {"filename":"partials/smallMap.html", "priority":58},
+    {"filename":"partials/NRC_CriticalHabitat.html","priority":57},
     {"filename":"partials/NRC_MigratorySpecies.html","priority":59},
     {"filename":"partials/NRC_NearbyAreas.html","priority":60},
     {"filename":"partials/NRC_Corals.html","priority":61},

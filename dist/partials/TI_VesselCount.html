@@ -1,47 +1,46 @@
-<div class="infographic-box-small" tabindex="0">
+<div class="infographic-box infographic-box--small" tabindex="0">
     <div>
 
 
-        <div class="infographicTitle">
-            <div class="floatitleft">Vessel Count</div>
+        <div class="infographic-title">
+            <div class="float-left">Vessel Count</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal50.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal50.html" message="message"
                                 alttext="Element displays a color ramp representing the number of vessels in a raster pixel. The average value of the selected area is indicated with a tugboat icon."
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal50.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
                                 </svg>
                             </a>
-                            This data represents the average annual number of vessels traversing the area based on 2011
-                            Vessel
-                            Traffic (AIS) layer created by BOEM. Heavy vessel traffic may interfere with planned
-                            activities.
+                            This data represents the average number of vessels traversing the area based on 2011 Vessel
+                            Traffic (AIS) layer created by BOEM. Ship icon represents the overall average of the
+                            selected polygon. Heavy vessel traffic may interfere with planned activities.
 
                             <br>
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
             <!-- iButton end-->
-            <div class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
-                <div ng-class="TIvm.AOI.TIVesselLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
+            <div class="layertoggle-button" ng-hide="TIvm.AOI.toggleFull===true">
+                <div ng-class="TIvm.AOI.TIVesselLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                      ng-click="TIvm.AOI.toggleTIVesselLayer()" ng-include="'img/switch_off.svg'"></div>
             </div>
 
         </div>
         <div>
-            <div class="GreyText14 floatitleft padLeft15 w100">
+            <div class="GreyText14 float-left padLeft15 w100">
 
                 <div class="VesselLine">
                     <div class="Vessel1"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg===0" class="ship"

@@ -1,19 +1,17 @@
-<div class="infographic-box-tiny" tabindex="0">
+<div class="infographic-box infographic-box--tiny" tabindex="0">
     <div>
-
-
-        <div class="infographicTitle">
-            <div class="floatitleft">Elevation</div>
+        <div class="infographic-title">
+            <div class="float-left">Elevation</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal26.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal26.html" message="message"
                                 alttext="Graphic represents the contour symbology (blue lines) on the map and displays the minimum, maximum, and mean elevation values of the area in meters."
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal26.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -28,21 +26,21 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
             <!-- iButton end-->
-            <div id="slider_but26" class="inlinesliderbutton" ng-hide="AOIvm.AOI.toggleFull===true">
-                <div ng-class="AOIvm.AOI.CEElevationIsVisable ? 'flip' : 'rotateCounterwise180'"
+            <div id="slider_but26" class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
+                <div ng-class="AOIvm.AOI.CEElevationIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                      ng-click="AOIvm.AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
             </div>
 
         </div>
         <div>
-            <div class="CommonSwatchLine floatitleft">
-                <div class="swatch floatitleft "><img src="img/contours-01.svg"></div>
+            <div class="CommonSwatchLine">
+                <div class="swatch float-left "><img src="img/contours-01.svg"></div>
                 <div class="CEElevationData">
                     <div><b>Max:</b> {{AOIvm.AOI.CEElevation[0].depth_max_m}}<span
                             ng-show="AOIvm.AOI.CEElevation[0].depth_max_m !== 'Unknown'">m</span></div>

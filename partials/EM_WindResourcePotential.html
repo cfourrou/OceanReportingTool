@@ -1,70 +1,78 @@
-<div class="infographic-box-medium-b" tabindex="0">
-    <div class="wrbox1">
-        <div class="line1a">Wind Resource Potential</div>
-
-        <div id="slider_but0" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.EMWindResourcePotentialLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleEMWindResourcePotentialLayer()" ng-include="'img/switch_off.svg'"></div>
-        </div>
-        <div id="slbuttxt0" class="sliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+<div class="infographic-box infographic-box--mediumb" tabindex="0">
+    <div>
+        <div class="infographic-title">
+            <div class="float-left">Wind Resource Potential</div>
+            <div id="slider_but0" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMWindResourcePotentialLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                     ng-click="EMvm.AOI.toggleEMWindResourcePotentialLayer()"
+                     ng-include="'img/switch_off.svg'"></div>
+            </div>
+            <div id="slbuttxt0" class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+            </div>
         </div>
     </div>
-
-
     <div class="line2">
-        <div class="floatitleft w25"> Weighted Average:<br>
+        <div class="float-left w25"> Weighted Average:<br>
             {{EMvm.AOI.EMWindResourcePotential[0].AVG_WGHT}} m/s
         </div>
-        <div>
+        <div class="iModal">
 
             <!-- //metadata-url="{{EMWindResourcePotential[0].METADATA_URL}}" -->
-            <info-directive class="infobutton mainbutton floatitleft" modal-template="modal0.html"
+            <info-directive class="iModal-button" modal-template="modal0.html"
                             alttext="Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy."
                             message="message"
                             modal-img="img/info.svg"
                             metadata-url="{{EMvm.AOI.EMWindResourcePotential[0].CAPACITY}}"></info-directive>
 
             <script type="text/ng-template" id="modal0.html">
-                <div id="custom-modal">
-                    <div class="overlay">
-                        <a href="" class="modal-close" ng-click="close('Cancel')">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                             <svg class="" viewBox="0 0 24 24">
                                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                 <path d="M0 0h24v24h-24z" fill="none"/>
                             </svg>
                         </a>
-                        Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m height are generally considered to have a wind resource suitable for offshore development. The potential megawatts (MW) of rated capacity that could be installed in this area, assuming 5 MW of installed capacity per square kilometer of water is:
+                        Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m
+                        height are generally considered to have a wind resource suitable for offshore
+                        development.
+                        The potential megawatts (MW) of rated capacity that could be installed in this area,
+                        assuming 5 MW of installed capacity per square kilometer of water is:
                         {{metadataurl}} MW.
-                        <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
+                        <!--div class="modal-overlay--footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
                     </div>
-                    <div class="fade"></div>
+                    <div class="modal-fade"></div>
                 </div>
             </script>
 
 
         </div>
+
+
         <div class="spacer">&nbsp;</div>
-        <div class="floatitleft w38">Potential Houses Supported Annually:
+        <div class="float-left w38">Potential Houses Supported Annually:
             {{EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM}}
         </div>
         <!-- iButton start-->
-        <div>
-            <info-directive class="infobutton mainbutton floatitleft" modal-template="modal0b.html"
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal0b.html"
                             message="message"
                             modal-img="img/info.svg"></info-directive>
 
             <script type="text/ng-template" id="modal0b.html">
-                <div id="custom-modal" class="modal">
-                    <div class="overlay">
-                        <a href="" class="modal-close" ng-click="close('Cancel')">
+                <div   class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                             <svg class="" viewBox="0 0 24 24">
                                 <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                 <path d="M0 0h24v24h-24z" fill="none"/>
                             </svg>
                         </a>
-                        Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual household energy use of 2kW <sup>2</sup>.<br>
+                        Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual
+                        household
+                        energy use of 2kW <sup>2</sup>.<br>
 
-                        <div class="footnote"><sup>1</sup> <a target="_blank"
+                        <div class="modal-overlay--footnote"><sup>1</sup> <a target="_blank"
                                                               href="http://apps2.eere.energy.gov/wind/windexchange/windmaps/offshore.asp">U.S.
                             Department of Energy offshore wind potential</a><br>
                             <sup>2</sup> <a target="_blank"
@@ -74,14 +82,15 @@
 
 
                     </div>
-                    <div class="fade"></div>
+                    <div class="modal-fade"></div>
                 </div>
             </script>
 
         </div>
         <!-- iButton end-->
+
     </div>
-    <div class="line3">
+    <div class="windResource-key">
         <div id="wrscale" class="line3a"><!--<img src="img/GandH.png?168a886aba220a3d">-->
             <div class="stackedlines">
                 <svg class="stackedlineicon">
@@ -141,4 +150,5 @@
 
     <br>
 
+</div>
 </div>

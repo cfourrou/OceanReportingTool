@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?be44ae429ed9ceb5">
+    <link rel="stylesheet" href="css/ort.min.css?5bf8566061be7584">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -119,139 +119,140 @@
                     modal-img="img/info.svg"></info-directive>
 
 </div>
-
-<!-- MAIN CONTENT -->
-<div class="wrapper" ng-controller="pageslideCtrl as vm">
-    <script type="text/ng-template" id="Share1.html">
-        <div class="modal">
-            <div class="modal-overlay">
-                <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                    <svg class="" viewBox="0 0 24 24">
-                        <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                        <path d="M0 0h24v24h-24z" fill="none"/>
-                    </svg>
-                </a>
-                Copy the link below to share.
-                <input type="text" ng-model="metadataurl" class="share-link">
-
-            </div>
-            <div class="modal-fade"></div>
-        </div>
-    </script>
-
-    <script type="text/ng-template" id="contactUs.html">
-        <div class="modal">
-            <div class="modal-overlay">
-                <div class="modal-overlay--background">
-                    <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+<div class="wrapper">
+    <!-- MAIN CONTENT -->
+    <div class="outer padding-none" ng-controller="pageslideCtrl as vm">
+        <script type="text/ng-template" id="Share1.html">
+            <div class="iModal">
+                <div class="overlay">
+                    <a href="" class="modal-close" ng-click="close('Cancel')">
                         <svg class="" viewBox="0 0 24 24">
                             <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                             <path d="M0 0h24v24h-24z" fill="none"/>
                         </svg>
                     </a>
-                    The Ocean Reporting Tool (Version 0.3 Release Date: August 18, 2016) is a component of
-                    MarineCadastre.gov,
-                    a partnership between the U.S.
-                    Department of Commerce’s National Oceanic and Atmospheric Administration (NOAA) Office for
-                    Coastal
-                    Management and the U.S. Department of the Interior’s Bureau of Ocean Energy Management (BOEM).
-                    To
-                    learn more about MarineCadastre.gov go <a href="http://marinecadastre.gov/about/"
-                                                              target="_blank">here </a>
-                    or <a href="mailto:info@marinecadastre.gov?Subject=OceanReporting" target="_blank">Contact
-                    Us</a>.<br><br>
-                    <div class="logosgroup">
-                        <div class="logos">
-                            <div class="logos-spacer"></div>
-                            <div class="logosleft">
-                                <img class="logosleft-img" src="img/BOEM_logo.svg"></div>
-                            <div class="logos-text">
-                                45600 Woodland Road<br>
-                                Sterling, VA 20166<br>
-                                Phone: (703) 787-1315<br>
+                    Copy the link below to share.
+                    <input type="text" ng-model="metadataurl" class="share-link">
+
+                </div>
+                <div class="fade"></div>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="contactUs.html">
+            <div class="iModal">
+                <div class="overlay">
+                    <div class="backgroundortblue">
+                        <a href="" class="modal-close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        The Ocean Reporting Tool (Version 0.3 Release Date: August 18, 2016) is a component of
+                        MarineCadastre.gov,
+                        a partnership between the U.S.
+                        Department of Commerce’s National Oceanic and Atmospheric Administration (NOAA) Office for
+                        Coastal
+                        Management and the U.S. Department of the Interior’s Bureau of Ocean Energy Management (BOEM).
+                        To
+                        learn more about MarineCadastre.gov go <a href="http://marinecadastre.gov/about/"
+                                                                  target="_blank">here </a>
+                        or <a href="mailto:info@marinecadastre.gov?Subject=OceanReporting" target="_blank">Contact
+                        Us</a>.<br><br>
+                        <div>
+                            <div class="float-left w50 backgroundortblue h310">
+                                <div class="h50"></div>
+                                <div class=" text-center h150">
+                                    <img height="100" width="250" src="img/BOEM_logo.svg"></div>
+                                <div class=" text-center">
+                                    45600 Woodland Road<br>
+                                    Sterling, VA 20166<br>
+                                    Phone: (703) 787-1315<br>
+                                </div>
                             </div>
-                        </div>
-                        <div class="logos">
-                            <div class="logosright">
-                                <img class="logosright-img" src="img/NOAA_logo.svg"></div>
-                            <div class="logos-text">
-                                Office for Coastal Management<br>
-                                2234 South Hobson Avenue<br>
-                                Charleston, South Carolina 29405-2413<br>
-                                Phone: (843) 740-1200
+                            <div class="float-left w50 backgroundortblue h310 ">
+                                <div class=" text-center h200">
+                                    <img height="175" width="175" src="img/NOAA_logo.svg"></div>
+                                <div class=" text-center">
+                                    Office for Coastal Management<br>
+                                    2234 South Hobson Avenue<br>
+                                    Charleston, South Carolina 29405-2413<br>
+                                    Phone: (843) 740-1200
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="fade"></div>
             </div>
-            <div class="modal-fade"></div>
-        </div>
-    </script>
+        </script>
 
-    <div class="inner">
-        <div class="menu">
-            <div class="menu-left">
-                <a ui-sref="splash" class="menu-reset" ng-click="vm.startOver()" role="button">RESET</a>
-                <a ui-sref="menu" class="menu-areas" ng-click="vm.startMenu()" role="button">KNOWN AREAS</a>
-                <a ui-sref="draw" class="menu-draw" ng-click="vm.drawMenu()" role="button">DRAW AREA</a>
+        <div class="inner">
+            <div class="nav_bar">
+                <div class="nav_menu_left">
+                    <a ui-sref="splash" class="resetbutton" ng-click="vm.startOver()" role="button">RESET</a>
+                    <a ui-sref="menu" class="areasbutton" ng-click="vm.startMenu()" role="button">KNOWN AREAS</a>
+                    <a ui-sref="draw" class="drawbutton" ng-click="vm.drawMenu()" role="button">DRAW AREA</a>
 
 
-            </div>
-            <div ng-cloak ng-show="vm.AOI.isLoaded" class="menu-right">
+                </div>
+                <div ng-cloak ng-show="vm.AOI.isLoaded" class="nav_menu_right">
 
-                <button class="menu-rightbutton--italics" role="button" ui-sref="CEview" href="">
-                    {{vm.AOI.name.toUpperCase()}}
-                </button>
-                <button class="menu-rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
-                <button class="menu-rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
-                    CONSERVATION
-                </button>
-                <button class="menu-rightbutton" role="button" ui-sref="TIview" href="">TRANSPORTATION & INFRASTRUCTURE
-                </button>
-                <button class="menu-rightbutton" role="button" ui-sref="ECview" href="">ECONOMICS & COMMERCE</button>
+                    <button class="rightbuttonItalics" role="button" ui-sref="CEview" href="">
+                        {{vm.AOI.name.toUpperCase()}}
+                    </button>
+                    <button class="rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
+                    <button class="rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
+                        CONSERVATION
+                    </button>
+                    <button class="rightbutton" role="button" ui-sref="TIview" href="">TRANSPORTATION & INFRASTRUCTURE
+                    </button>
+                    <button class="rightbutton" role="button" ui-sref="ECview" href="">ECONOMICS & COMMERCE</button>
 
-            </div>
-        </div>
-        <div class="lowerwindow">
-
-            <ort-map zoom-level="vm.zoomlevel" draw-enabled="vm.drawtoolOn" draw-on="vm.drawOn"
-                     draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
-                     search-control-enabled="vm.searchControlOn" mouse-over="vm.mouseOn" mouse-out="vm.mouseOff"
-                     poly-layer-enabled="vm.polyLayerOn" reset-map="vm.resetMap" start-drawing="vm.startDrawing"
-                     draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt"
-                     map-half-screen="vm.mapHalfScreen" map-full-screen="vm.mapFullScreen">
-            </ort-map>
-
-            <div id="slide_div">
-            </div>
-
-            <div pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
-                 ps-custom-top="55px" ng-style="{'width' : vm.AOI.sliderWidth}">
-                <div ui-view class="h900"></div>
-                <div class="footer">
-                    <div class="footer--left"><a target="_blank" href="https://www.commerce.gov/">United States
-                        Department of Commerce</a>
-                        | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
-                            Administration</a>
-                        | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
-                    </div>
-                    <div class="footer--right">
-                        <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
-                            href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
-                        Policy</a>
-                        | <a href="" target="_blank">Link Disclaimer</a> | <a
-                            href="http://usa.gov"
-                            target="_blank">USA.gov</a>
-
-                    </div>
                 </div>
             </div>
+            <div  class="wrapLower">
+
+                <ort-map zoom-level="vm.zoomlevel" draw-enabled="vm.drawtoolOn" draw-on="vm.drawOn"
+                         draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
+                         search-control-enabled="vm.searchControlOn" mouse-over="vm.mouseOn" mouse-out="vm.mouseOff"
+                         poly-layer-enabled="vm.polyLayerOn" reset-map="vm.resetMap" start-drawing="vm.startDrawing"
+                         draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt"
+                         map-half-screen="vm.mapHalfScreen" map-full-screen="vm.mapFullScreen">
+                </ort-map>
+
+                <div id="slide_div">
+                </div>
+
+                <div pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
+                     ps-custom-top="55px" ng-style="{'width' : vm.AOI.sliderWidth}">
+                    <div ui-view class="h900"></div>
+                    <div class="footer">
+                        <div class="footer--left"><a target="_blank" href="https://www.commerce.gov/">United States
+                            Department of Commerce</a>
+                            | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
+                                Administration</a>
+                            | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
+                        </div>
+                        <div class="footer--right">
+                            <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
+                                href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
+                            Policy</a>
+                            | <a href="" target="_blank">Link Disclaimer</a> | <a
+                                href="http://usa.gov"
+                                target="_blank">USA.gov</a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
         </div>
+
 
     </div>
-
-
 </div>
 
 

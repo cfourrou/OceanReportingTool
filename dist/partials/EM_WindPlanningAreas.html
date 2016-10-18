@@ -1,23 +1,17 @@
-<div class="infographic-box-small" tabindex="0">
-    <div class="wrbox1">
-
-        <div id="slider_but2" class="sliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-            <div ng-class="EMvm.AOI.EMWindPlanningAreaLayerIsVisible ? 'flip' : 'rotateCounterwise180'"
-                 ng-click="EMvm.AOI.toggleEMWindPlanningAreaLayer()" ng-include="'img/switch_off.svg'"></div>
-        </div>
-        <div class="infographicline1">
-            <div class="floatitleft">Wind Planning Areas</div>
+<div class="infographic-box infographic-box--small" tabindex="0">
+    <div>
+        <div class="infographic-title">
+            <div class="float-left">Wind Planning Areas</div>
             <!-- iButton start-->
-            <div>
-
-                <info-directive class="infobutton mainbutton" modal-template="modal2.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal2.html" message="message"
                                 alttext="Element contains a count of the number of wind planning areas that intersect the selected area and calculates the percentage of the selected area that the WPAs cover and how many OCS blocks that includes. Includes hyperlinks for more information on the WPAs"
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal2.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -30,13 +24,17 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
+            <!-- iButton end-->
+            <div id="slider_but2" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMWindPlanningAreaLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                     ng-click="EMvm.AOI.toggleEMWindPlanningAreaLayer()" ng-include="'img/switch_off.svg'"></div>
+            </div>
         </div>
-        <!-- iButton end-->
         <div class="swatch"><img src="img/Wind_Planning_Areas.svg"></div>
         <div class="infographicline2">
             <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT}}</span>
@@ -51,10 +49,14 @@
         </div>
 
         <div class="boemline2">
-            <div class="boemline2a">{{EMvm.AOI.EMWindPlanningArea[0].PROT_NUMBE}} {{EMvm.AOI.EMWindPlanningArea[0].INFO}}</div>
-            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK1}} target="_blank">Current Federal Register Notice</a>
+            <div class="boemline2a">{{EMvm.AOI.EMWindPlanningArea[0].PROT_NUMBE}}
+                {{EMvm.AOI.EMWindPlanningArea[0].INFO}}
             </div>
-            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}} target="_blank">Current State Activities</a></div>
+            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK1}} target="_blank">Current Federal
+                Register Notice</a>
+            </div>
+            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}} target="_blank">Current State
+                Activities</a></div>
         </div>
     </div>
 </div>

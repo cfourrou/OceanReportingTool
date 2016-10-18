@@ -23678,27 +23678,6 @@ angular.module('myApp.services', [])
                         }
                     });
 
-                    //AOI.TIVesselLayer = L.esri.featureLayer({
-                    //    url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TIVesselLayer,
-                    //    pane: 'TIVesselLayerPane',
-                    //    style: function (feature) {
-                    //        if (feature.properties.all_2011 > 1500) {
-                    //            return {color: '#d4321e', weight: 1, fillOpacity: .8};
-                    //        } else if (feature.properties.all_2011 > 750) {
-                    //            return {color: '#ee815e', weight: 1, fillOpacity: .8};
-                    //        } else if (feature.properties.all_2011 > 250) {
-                    //            return {color: '#fbd39e', weight: 1, fillOpacity: .8};
-                    //        } else if (feature.properties.all_2011 > 75) {
-                    //            return {color: '#d9dec1', weight: 1, fillOpacity: .8};
-                    //        } else if (feature.properties.all_2011 > 0) {
-                    //            return {color: '#a7b9c8', weight: 1, fillOpacity: .8};
-                    //        } else if (feature.properties.all_2011 = 0) {
-                    //            return {color: '#4776b3', weight: 1, fillOpacity: .8};
-                    //        } else {
-                    //            return {color: '#4776b3', weight: 1, fillOpacity: .8};
-                    //        }
-                    //    }
-                    //});
 
                     AOI.TIVesselLayer = L.esri.dynamicMapLayer({
                         url: AOIConfig.ortMapServer,

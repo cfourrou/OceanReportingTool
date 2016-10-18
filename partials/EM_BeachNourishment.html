@@ -1,17 +1,17 @@
-<div class="infographic-box-medium" tabindex="0">
+<div class="infographic-box infographic-box--medium" tabindex="0">
     <div>
-        <div class="infographicTitle">
-            <div class="floatitleft">Beach Nourishment Projects</div>
+        <div class="infographic-title">
+            <div class="float-left">Beach Nourishment Projects</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton " modal-template="modal11.html"
+            <div class="iModal">
+                <info-directive class="iModal-button " modal-template="modal11.html"
                                 alttext="Graphic of a bar graph showing available beach renourishment projects within 15 miles of the  selected area and how much sand was placed for each project. Bars are colored by year."
                                 message="message"
                                 modal-img="img/info.svg"></info-directive>
                 <script type="text/ng-template" id="modal11.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -21,33 +21,33 @@
                             Sand mined for these construction projects (measured in cubic yards, y3) is often removed
                             from state and federal offshore waters. This data is currently only available for South
                             Carolina. New data will be added as it becomes available.
-                            <!--div class="footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
+                            <!--div class="modal-overlay--footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
             <!-- iButton end-->
-            <div id="slider_but11" class="inlinesliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-                <div ng-class="EMvm.AOI.EMBeachNourishmentProjectsLayerIsVisable ? 'flip' : 'rotateCounterwise180'"
+            <div id="slider_but11" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMBeachNourishmentProjectsLayerIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                      ng-click="EMvm.AOI.toggleEMBeachNourishmentProjectsLayer()"
                      ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div id="slbuttxt0" class="inlinesliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+            <div id="slbuttxt0" class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
-        <div class="floatitleft beachswatchimg">
-            <span class="GreyText14 floatitleft padLeft15"><img class="GreyText14 floatitleft padLeft15 padtop5"
+        <div class="float-left beachswatchimg">
+            <span class="GreyText14 float-left padLeft15"><img class="GreyText14 float-left padLeft15 padtop5"
                                                                 src="img/BeachNourishmentGraphicLine.svg">Within 15 miles </span>
 
 
-            <div class="floatitleft GreyText14 padLeft15">Sand Volume (y<sup>3</sup>) per Beach Nourishment Project
+            <div class="float-left GreyText14 padLeft15">Sand Volume (y<sup>3</sup>) per Beach Nourishment Project
             </div>
 
-            <div class="floatitleft GreyText10 padLeft15">
+            <div class="float-left GreyText10 padLeft15">
                 <table class="table_beachnourishment">
                     <tr ng-repeat="beach in EMvm.AOI.EMBeachNourishmentProjects | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
 
@@ -77,18 +77,18 @@
                         </td>
                     </tr>
                 </table>
-                <div class="beachnourishchartscale floatitleft">
-                    <div class="beachnourishchartscalenull  floatitleft"></div>
-                    <div class="beachnourishchartscale0 floatitleft">0y<sup>3</sup></div>
-                    <div class="beachnourishchartscale1 floatitleft">1.2My<sup>3</sup></div>
-                    <div class="beachnourishchartscale3 floatitleft">3.4My<sup>3</sup></div>
+                <div class="beachnourishchartscale float-left">
+                    <div class="beachnourishchartscalenull  float-left"></div>
+                    <div class="beachnourishchartscale0 float-left">0y<sup>3</sup></div>
+                    <div class="beachnourishchartscale1 float-left">1.2My<sup>3</sup></div>
+                    <div class="beachnourishchartscale3 float-left">3.4My<sup>3</sup></div>
                 </div>
 
 
             </div>
 
         </div>
-        <div class="beachnourishchartyear floatitleft">
+        <div class="beachnourishchartyear float-left">
             <div class="beachnourishchartyearbox">
 
             </div>

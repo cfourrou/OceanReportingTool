@@ -1,4 +1,4 @@
-.nav_bar {
+.menu {
   height: 55px;
   position: fixed;
   top: 45px;
@@ -10,17 +10,17 @@
   opacity: .85;
 }
 
-.nav_bar a:link {
+.menu a:link {
   text-decoration: none;
   color: @colorWhite;
 }
 
-.nav_bar a:visited {
+.menu a:visited {
   text-decoration: none;
   color: @colorWhite;
 }
 
-.nav_menu_left {
+.menu-left {
   float: left;
   height: 100%;
   width: 50%;
@@ -31,29 +31,29 @@
 
 }
 
-.nav_menu_right {
+.menu-right {
   height: 100%;
   width: 50%;
   text-align: center;
   color: @colorWhite;
   display: inline-block;
 }
-.resetbutton {
+.menu-reset {
   background-image: url('../img/Reset_2.svg');
-  .leftbutton;
+  .menu-leftbutton;
 }
 
-.areasbutton {
+.menu-areas {
   background-image: url('../img/KnownAreas_2.svg');
-  .leftbutton;
+  .menu-leftbutton;
 }
 
-.drawbutton {
+.menu-draw {
   background-image: url('../img/MapInput_2.svg');
-  .leftbutton;
+  .menu-leftbutton;
 }
 
-.leftbutton {
+.menu-leftbutton {
   color: @colorWhite !important;
   font-size: 14px;
   font-weight: 300;
@@ -78,7 +78,7 @@
 
 
 
-.rightbutton {
+.menu-rightbutton {
   color: @colorWhite;
   font-size: 11px;
   text-decoration: none;
@@ -98,14 +98,14 @@
   }
 }
 
-.rightbuttonItalics {
+.menu-rightbutton--italics {
   font-style: italic;
-  .rightbutton;
+  .menu-rightbutton;
   &:hover {
   }
 }
 
-.rightbutton p {
+.menu-rightbutton p {
   display: table-cell;
   vertical-align: middle;
   text-align: center;

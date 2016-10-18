@@ -1,19 +1,19 @@
-<div class="infographic-box-medium" tabindex="0">
+<div class="infographic-box infographic-box--medium" tabindex="0">
     <div>
 
 
-        <div class="infographicTitle">
-            <div class="floatitleft">Ocean Job Contributions (in Dollars)</div>
+        <div class="infographic-title">
+            <div class="float-left">Ocean Job Contributions (in Dollars)</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal66.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal66.html" message="message"
                                 alttext="Element contains 2 bar graphs, one representing the number of employees per state or county that work in the ocean industry and one representing the number of dollars in both wages and goods and services per state or county."
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal66.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -26,21 +26,21 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
             <!-- iButton end-->
         </div>
-        <div class="h20"></div>
-        <div class="floatitleft">
+
+        <div class="float-left">
 
         </div>
         <highchart id="OceanJobEmployeesChart" config="ECvm.AOI.OceanJobEmployeesChart"
-                   class="OceanJobEmployeesChart floatitleft"></highchart>
+                   class="OceanJobEmployeesChart float-left"></highchart>
         <highchart id="OceanJobDollarsChart" config="ECvm.AOI.OceanJobDollarsChart"
-                   class="OceanJobDollarsChart floatitleft"></highchart>
+                   class="OceanJobDollarsChart float-left"></highchart>
         <div>
 
         </div>

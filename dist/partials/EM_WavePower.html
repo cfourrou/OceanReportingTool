@@ -1,17 +1,17 @@
-<div class="infographic-box-medium" tabindex="0">
+<div class="infographic-box infographic-box--medium" tabindex="0">
     <div>
-        <div class="infographicTitle">
-            <div class="floatitleft">Wave Power</div>
+        <div class="infographic-title">
+            <div class="float-left">Wave Power</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton " modal-template="modal8.html"
+            <div class="iModal">
+                <info-directive class="iModal-button " modal-template="modal8.html"
                                 alttext="Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter."
                                 message="message"
                                 modal-img="img/info.svg"></info-directive>
                 <script type="text/ng-template" id="modal8.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -20,33 +20,33 @@
                             Wave Power is a renewable resource that captures the energy stored in wave height to produce
                             electricity. To develop this resource a minimum of 10 kW/m must be available to be
                             considered a potential location for development.
-                            <div class="footnote"><a target="_blank"
+                            <div class="modal-overlay--footnote"><a target="_blank"
                                                      href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping
                                 and Assessment of the United States Ocean Wave Energy Resource</a></div>
-                            <div class="footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>AquaGen
+                            <div class="modal-overlay--footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>AquaGen
                                 Technologies: Why Wave Energy?</a>
                             </div>
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
             </div>
             <!-- iButton end-->
-            <div id="slider_but8" class="inlinesliderbutton" ng-hide="EMvm.AOI.toggleFull===true">
-                <div ng-class="EMvm.AOI.EMOceanWaveResourcePotentialLayerIsVisable ? 'flip' : 'rotateCounterwise180'"
+            <div id="slider_but8" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+                <div ng-class="EMvm.AOI.EMOceanWaveResourcePotentialLayerIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                      ng-click="EMvm.AOI.toggleEMOceanWaveResourcePotentialLayer()"
                      ng-include="'img/switch_off.svg'"></div>
             </div>
-            <div id="slbuttxt0" class="inlinesliderbuttontext" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+            <div id="slbuttxt0" class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
             </div>
         </div>
         <div class="power-graphic">
             <div class="power-chart ">
-                <span class="GreyText14 floatitleft padLeft15">This area is</span><span class="GreyText14 floatitleft"
+                <span class="GreyText14 float-left padLeft15">This area is</span><span class="GreyText14 float-left"
                                                                                         ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
 
-                <span class="GreyText14 floatitleft">&nbsp;suitable for</span>
-                <div class="padbottom16 w100 GreyText14 padLeft15 floatitleft">Wave Power
+                <span class="GreyText14 float-left">&nbsp;suitable for</span>
+                <div class="padbottom16 w100 GreyText14 padLeft15 float-left">Wave Power
                     Generation
                 </div>
                 <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10]">
@@ -57,7 +57,7 @@
                 <div class="powerscale2 GreyText14 padLeft15"></div>
                 <div class="wpowerscale2 GreyText14 padLeft15">
 
-                    <div ng-repeat="a in [1,2,3,4,5,6]" class="wpowerscalediv floatitleft">
+                    <div ng-repeat="a in [1,2,3,4,5,6]" class="wpowerscalediv float-left">
 
                     </div>
 
@@ -65,11 +65,11 @@
                 </div>
 
                 <div class="wpowerscalenum GreyText14 padLeft15">
-                    <div ng-repeat="b in [0,10,20,30,40,50]" class="wpowerscalenum2 floatitleft">
+                    <div ng-repeat="b in [0,10,20,30,40,50]" class="wpowerscalenum2 float-left">
                         {{b}}
                     </div>
 
-                    <div id="thebar" class="wpowergraphbar floatitleft "
+                    <div id="thebar" class="wpowergraphbar float-left "
                          ng-style="{'width': (EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER*7) + 'px' };">
                         <div class="w100 h100"
                              ng-style="{'background-color':EMvm.AOI.EMOceanWaveResourcePotential[0].COLOR}"></div>
@@ -81,10 +81,10 @@
                 <div class="w100">
                     Annual Wave Energy (kW/m)
                 </div>
-                <div class="w30 floatitleft GreyText14">
+                <div class="w30 float-left GreyText14">
                     <img src="img/WavePowerGraphic.svg">
                 </div>
-                <div class="w65 floatitleft GreyText14">
+                <div class="w65 float-left GreyText14">
                     <div id="wrscale" class=""><!--<img src="img/GandH.png?168a886aba220a3d">-->
                         <div class="stackedlines">
                             <svg class="stackedlineicon">

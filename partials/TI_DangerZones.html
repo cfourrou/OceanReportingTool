@@ -1,19 +1,19 @@
-<div class="infographic-box-tiny" tabindex="0">
+<div class="infographic-box infographic-box--tiny" tabindex="0">
     <div>
 
 
-        <div class="infographicTitle">
-            <div class="floatitleft">Danger Zones</div>
+        <div class="infographic-title">
+            <div class="float-left">Danger Zones</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal51.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal51.html" message="message"
                                 alttext="Element contains a count of danger zones within 1 mile of the selected area and a list of who maintains each area and what percentage of the selected area it covers."
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal51.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -27,25 +27,25 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
             <!-- iButton end-->
-            <div id="slider_but51" class="inlinesliderbutton" ng-hide="TIvm.AOI.toggleFull===true">
-                <div ng-class="TIvm.AOI.TIDangerZonesIsVisable ? 'flip' : 'rotateCounterwise180'"
+            <div id="slider_but51" class="layertoggle-button" ng-hide="TIvm.AOI.toggleFull===true">
+                <div ng-class="TIvm.AOI.TIDangerZonesIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                      ng-click="TIvm.AOI.toggleTIDangerZones()" ng-include="'img/switch_off.svg'"></div>
             </div>
 
         </div>
         <div>
-            <div class="GreyText14 floatitleft padLeft15 w100">
+            <div class="GreyText14 float-left padLeft15 w100">
                 <span class="boemline2b"><ng-hide ng-hide="TIvm.AOI.TIDangerZones[0].TOTAL_CNT>=0">0</ng-hide>{{TIvm.AOI.TIDangerZones[0].TOTAL_CNT}}</span><span
                     class="boemline2a"> within 1nm</span>
 
             </div>
-            <div class="GreyText12 floatitleft padLeft15 w70" ng-repeat="x in TIvm.AOI.TIDangerZones">
+            <div class="GreyText12 float-left padLeft15 w70" ng-repeat="x in TIvm.AOI.TIDangerZones">
                 <div>{{x.boundaryType}} - {{x.agencyOfUse}}
                     <svg width="15" height="15" class="danger_svg">
                         <rect width="15" height="15" ng-class="x.Style"/>

@@ -1,4 +1,4 @@
-.smallmapclass {
+.smallmap {
   height: 280px; //60%;
   width: 312px; //100%;
 }
@@ -132,10 +132,6 @@ body.ng-pageslide-body-closed::before {
 .spacer {
   float: left;
   width: 12%;
-}
-
-.floatitleft {
-  float: left;
 }
 
 .a_1979 {
@@ -476,30 +472,14 @@ body.ng-pageslide-body-closed::before {
 
 }
 
-.infobutton {
-  height: 20px;
-  text-align: left;
-}
 
-.infobutton.mainbutton .infoicon-1 {
-  stroke: @colorBlack;
-}
-
-.infobutton.mainbutton .infoicon-2 {
-  stroke: @colorBlack;
-}
-
-.infobutton.mainbutton .infoicon-3 {
-  stroke: @colorBlack;
-}
-
-.line3 {
+.windResource-key {
   width: 440px;
   color: @colorBlack;
   z-index: 100;
   position: relative;
   left: 200px;
-  top: 140px;
+  top: 75px;
   background: @colorBlack;
   vertical-align: middle;
 }
@@ -538,55 +518,38 @@ body.ng-pageslide-body-closed::before {
   float: right;
 }
 
-.infographic-box-small {
+.infographic-box {
   background: @ortBlue-Pale;
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+}
+
+.infographic-box--small {
   min-height: 284px;
   width: 312.8px;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
-  float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
 }
 
-.infographic-box-tiny {
-  background: @ortBlue-Pale;
-  min-height: 121px;
+.infographic-box--tiny {
+  min-height: 127.5px;
   width: 312.8px;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
-  float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
 }
 
-.infographic-box-medium {
-  background: @ortBlue-Pale;
+.infographic-box--medium {
   min-height: 284px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
-  float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
 }
 
-.infographic-box-medium-b {
-  background: @ortBlue-Pale;
+.infographic-box--mediumb {
   height: 284px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
-  float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
 }
 
-.infographic-box-large {
-  background: @ortBlue-Pale;
+.infographic-box--large {
   min-height: 568px;
   width: 645px;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
-  float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
 }
 
 .zeroheightkludge {
@@ -666,7 +629,15 @@ body.ng-pageslide-body-closed::before {
   color: @ortOrange;
 }
 
-.overlay {
+
+
+/***********************************************
+
+
+Information Modal
+
+***********************************************/
+.modal-overlay {
   position: fixed;
   left: 25%;
   top: 25%;
@@ -677,7 +648,7 @@ body.ng-pageslide-body-closed::before {
   z-index: 9999;
 }
 
-.fade {
+.modal-fade {
   position: fixed;
   left: 0%;
   top: 0%;
@@ -690,25 +661,47 @@ body.ng-pageslide-body-closed::before {
   z-index: 1000;
 }
 
-.custom-modal.ng-enter {
+
+.iModal {
+  float: left;
+}
+
+.iModal-button {
+  .infobutton {
+    height: 20px;
+    text-align: left;
+    .infoicon-2 {
+      stroke: @colorBlack;
+    }
+    .infoicon-1 {
+      stroke: @colorBlack;
+    }
+    .infoicon-3 {
+      stroke: @colorBlack;
+    }
+  }
+}
+
+
+.iModal.ng-enter {
   transition: opacity .5s ease-out;
   opacity: 0;
 }
 
-.custom-modal.ng-enter.ng-enter-active {
+.iModal.ng-enter.ng-enter-active {
   opacity: 1;
 }
 
-.custom-modal.ng-leave {
+.iModal.ng-leave {
   transition: opacity .5s ease-out;
   opacity: 1;
 }
 
-.custom-modal.ng-leave.ng-leave-active {
+.iModal.ng-leave.ng-leave-active {
   opacity: 0;
 }
 
-.modal-close {
+.modal-overlay--close {
   width: 24px;
   height: 24px;
   position: absolute;
@@ -720,7 +713,7 @@ body.ng-pageslide-body-closed::before {
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.modal-close svg {
+.modal-overlay--close svg {
   width: 24px;
   height: 24px;
   fill: @colorWhite;
@@ -728,13 +721,51 @@ body.ng-pageslide-body-closed::before {
   vertical-align: top;
 }
 
-.modal-close:hover {
+.modal-overlay--close:hover {
   background: fade(@colorBlack, 60%);
 }
 
-.footnote {
+.modal-overlay--background {
+  background-color: @ortBlue-Pale !important;
+}
+
+.modal-overlay--footnote {
   font-size: 62.5%;
 }
+
+.logos{
+  float:left;
+  width:50%;
+  background-color: @ortBlue-Pale !important;
+  height:310px;
+}
+
+.logos-spacer{
+  height:50px;
+}
+.logosleft{
+  text-align: center;
+  height:150px;
+}
+.logosright{
+  text-align: center;
+  height:200px;
+}
+.logos-text{
+  text-align: center;
+}
+.logosleft-img{
+  height:100px;
+  width:250px;
+}
+.logosright-img{
+  height:175px;
+  width:175px;
+}
+/**************************************************
+
+
+**************************************************/
 
 .sText {
   font-size: 14px;
@@ -827,7 +858,7 @@ body.ng-pageslide-body-closed::before {
   -webkit-transform: rotate(180deg);
 }
 
-.rotateCounterwise180 {
+.layertoggle-button--off {
   -webkit-transform: rotate(0deg);
   .trackclass {
     fill: @ortGrey-Dark;
@@ -841,7 +872,7 @@ body.ng-pageslide-body-closed::before {
 
 }
 
-.flip {
+.layertoggle-button--on {
   -moz-transform: scaleX(-1); /* Gecko */
   -o-transform: scaleX(-1); /* Opera */
   -webkit-transform: scaleX(-1); /* Webkit */
@@ -857,27 +888,6 @@ body.ng-pageslide-body-closed::before {
     box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
   }
 
-}
-
-.sliderbutton {
-  float: right;
-  padding-top: 11px;
-  padding-right: 15px;
-  text-align: left;
-  font-family: 'Open Sans';
-  font-size: 10px;
-  color: @colorAlmostBlack;
-}
-
-.sliderbuttontext {
-  float: right;
-  padding-top: 16px;
-  padding-right: 15px;
-  text-align: middle;
-  font-family: 'Open Sans';
-  font-size: 10px;
-  font-weight: normal;
-  color: @colorGrey;
 }
 
 .sliderbuttont2 {
@@ -902,7 +912,7 @@ body.ng-pageslide-body-closed::before {
   background-repeat: no-repeat;
 }
 
-//index.html
+
 .padding-none {
   padding: 0px;
 }
@@ -1048,17 +1058,13 @@ body.ng-pageslide-body-closed::before {
 
 //CE_Elevation.html
 
-.floatitright {
-  float: right;
-}
-
 .infographicline1 {
   padding-top: 10px;
   padding-left: 15px;
   padding-bottom: 10px;
 }
 
-.infographicTitle {
+.infographic-title {
   font-family: 'Open Sans';
   font-weight: 400;
   font-size: 16px;
@@ -1070,12 +1076,16 @@ body.ng-pageslide-body-closed::before {
   height: 23px;
 }
 
-.inlinesliderbutton {
+.infographic-title--0height {
+  height: 0px !important;
+}
+
+.layertoggle-button {
   float: right;
   padding-right: 30px;
 }
 
-.inlinesliderbuttontext {
+.layertoggle-text {
   float: right;
   padding-top: 4px;
   padding-right: 15px;
@@ -1159,6 +1169,7 @@ body.ng-pageslide-body-closed::before {
 .CommonSwatchLine {
   font-size: 15px;
   color: @ortGrey-Dark;
+  float: left;
 }
 
 .CEElevationData {
@@ -1259,16 +1270,19 @@ body.ng-pageslide-body-closed::before {
   width: 100%;
   float: left;
 }
-.power-chart{
+
+.power-chart {
   float: left;
   width: 60%;
 }
-.power-key{
+
+.power-key {
   float: left;
   font-size: 14px;
   color: @ortGrey-Dark;
   width: 40%;
 }
+
 .wpowerscalediv {
   border-color: @colorSolitude;
   border-left-style: solid;
@@ -1677,9 +1691,7 @@ body.ng-pageslide-body-closed::before {
   color: inherit;
 }
 
-.backgroundortblue {
-  background-color: @ortBlue-Pale !important;
-}
+
 
 .h310 {
   height: 310px;

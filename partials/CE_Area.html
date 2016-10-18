@@ -1,19 +1,19 @@
-<div class="infographic-box-tiny" tabindex="0">
+<div class="infographic-box infographic-box--tiny" tabindex="0">
     <div>
 
 
-        <div class="infographicTitle">
-            <div class="floatitleft">Area of Polygon</div>
+        <div class="infographic-title">
+            <div class="float-left">Area of Polygon</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal27.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal27.html" message="message"
                                 alttext="Graphic represents the selected area symbology (orange polygon) on the map and displays the area calculation in miles squared, nautical miles squared, and kilometers squared."
                                 modal-img="img/info.svg"></info-directive>
 
                 <script type="text/ng-template" id="modal27.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -25,7 +25,7 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
@@ -34,9 +34,9 @@
         </div>
 
         <div>
-            <div class="h12"></div>
-            <div class="CommonSwatchLine floatitleft">
-                <div class="swatch floatitleft"><img src="img/area-polygon-01.svg"></div>
+            <div></div>
+            <div class="CommonSwatchLine">
+                <div class="swatch float-left"><img src="img/area-polygon-01.svg"></div>
                 <div class="CEAreaData padtop5">
 
                     <div><b>mi<sup>2</sup></b> {{AOIvm.AOI.CEAreaOfPoly[0].Area_mi2.toLocaleString()}}</div>

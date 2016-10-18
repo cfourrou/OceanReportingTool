@@ -1,19 +1,19 @@
-<div class="infographic-box-medium" tabindex="0">
+<div class="infographic-box infographic-box--medium" tabindex="0">
     <div>
-        <div class="infographicTitle">
-            <div class="floatitleft">State and County</div>
+        <div class="infographic-title">
+            <div class="float-left">State and County</div>
             <!-- iButton start-->
-            <div class="floatitleft">
-                <info-directive class="infobutton mainbutton" modal-template="modal28.html" message="message"
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="modal28.html" message="message"
                                 alttext="Graphic is a pie graph showing the proportion of the selected area that falls in state and/or federal jurisdiction. Lists which states and which counties it overlaps."
                                 modal-img="img/info.svg">
 
                 </info-directive>
 
                 <script type="text/ng-template" id="modal28.html">
-                    <div id="custom-modal" class="modal">
-                        <div class="overlay">
-                            <a href="" class="modal-close" ng-click="close('Cancel')">
+                    <div   class="modal">
+                        <div class="modal-overlay">
+                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
                                 <svg class="" viewBox="0 0 24 24">
                                     <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
                                     <path d="M0 0h24v24h-24z" fill="none"/>
@@ -26,15 +26,15 @@
 
 
                         </div>
-                        <div class="fade"></div>
+                        <div class="modal-fade"></div>
                     </div>
                 </script>
 
             </div>
             <!-- iButton end-->
         </div>
-        <div class="h20"></div>
-        <div class="floatitleft padbottom10">
+
+        <div class="float-left padbottom10">
             <div ng-repeat="istate in AOIvm.AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
 
 
