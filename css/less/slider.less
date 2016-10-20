@@ -3,40 +3,16 @@
   width: 312px; //100%;
 }
 
-/****************************************
-
-
-*****************************************/
-
-tbody {
-  display: table-row-group;
-  vertical-align: middle;
-  border-color: inherit;
+.slider {
+  margin-top: 55px;
+  background: @colorWhite;
+  padding: 30px;
 }
 
-.windmillbox {
-  width: 190px;
-  height: 239px;
-  position: relative;
-  z-index: 50;
-  bottom: 40px;
-  overflow: hidden;
-}
-
-.windmill {
-  width: 190px;
-  height: 239px;
-  position: relative;
-  z-index: 100;
-  top: 0;
-  left: 0;
-}
-
-.WindChartContainer {
-  height: 231px;
-  width: 190px;
-  position: relative;
-  bottom: 271px;
+.slider-box {
+  background: @ortBlue-Pale;
+  padding: 10%;
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
 }
 
 .ng-pageslide {
@@ -49,7 +25,7 @@ tbody {
   min-height: 900px;
 }
 
-body.ng-pageslide-body-open::before {
+.ng-pageslide-body-open::before {
   content: '.';
   display: block;
   position: absolute;
@@ -63,7 +39,7 @@ body.ng-pageslide-body-open::before {
   transition: opacity 1s;
 }
 
-body.ng-pageslide-body-closed::before {
+.ng-pageslide-body-closed::before {
   transition: opacity 1s;
   opacity: 0;
   content: '.';
@@ -78,446 +54,44 @@ body.ng-pageslide-body-closed::before {
   pointer-events: none;
 }
 
-.sBox {
-  background: @ortBlue-Pale;
-  padding: 10%;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
+.toggle-img {
+  transform: rotate(0deg);
 }
 
-.wrbox1 {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 16px;
-  color: @ortOrange;
-  padding-bottom: 8px;
+.toggle {
+  width: 43px;
+  height: 43px;
+  position: fixed;
+  margin-left: -25px;
+  top: 470px;
+  z-index: 9998;
+  overflow-y: visible;
+  overflow-x: visible;
 }
 
-.pwrbox {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 16px;
-  color: @ortOrange;
-  padding-bottom: 8px;
-  height: 276px;
-}
-
-.line1a {
-  float: left;
-  padding-top: 15px;
-  padding-left: 15px;
-}
-
-.metaline1 {
+.theme {
   font-size: 20px;
-  color: @ortGrey-Dark;
+  color: @ortOrange;
+  padding: 10px;
 }
 
-.metaline2 {
-  padding-left: 20px;
+.theme--printfriendly {
+  font-size: 20px;
+  color: @ortOrange;
+  padding: 10px;
+}
+
+.narrative {
+  color: @ortGrey-Dark;
   font-size: 14px;
-  color: @ortGrey-Dark;
+  max-width: 751.5px;
+  margin-bottom: 10px;
 }
 
-.line2 {
-  float: left;
-  width: 500px;
-  font-size: 14px;
-  color: @ortGrey-Dark;
-  z-index: 100;
-  position: relative;
-  left: 135px;
-  top: 20px;
-}
+/****************************************
+Generic infographic classes
 
-.spacer {
-  float: left;
-  width: 12%;
-}
-
-.a_1979 {
-  background-color: @colorMediumRedViolet;
-  fill: @colorMediumRedViolet;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1980 {
-  background-color: @colorJacksonsPurple;
-  fill: @colorJacksonsPurple;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1981 {
-  background-color: @colorDeepMagenta;
-  fill: @colorDeepMagenta;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1982 {
-  background-color: @colorBlackcurrant;
-  fill: @colorBlackcurrant;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1983 {
-  background-color: @colorHarlequin;
-  fill: @colorHarlequin;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1984 {
-  background-color: @colorPizza;
-  fill: @colorPizza;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1985 {
-  background-color: @colorFreeSpeechMagenta;
-  fill: @colorFreeSpeechMagenta;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1986 {
-  background-color: @colorChateauGreen;
-  fill: @colorChateauGreen;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1987 {
-  background-color: @colorTurquoise;
-  fill: @colorTurquoise;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1988 {
-  background-color: @colorWasabi;
-  fill: @colorWasabi;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1989 {
-  background-color: @colorFreeSpeechGreen;
-  fill: @colorFreeSpeechGreen;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1990 {
-  background-color: @colorJazzberryJam;
-  fill: @colorJazzberryJam;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1991 {
-  background-color: @colorMediumSlateBlue;
-  fill: @colorMediumSlateBlue;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1992 {
-  background-color: @colorTyrianPurple;
-  fill: @colorTyrianPurple;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1993 {
-  background-color: @colorWildWatermelon;
-  fill: @colorWildWatermelon;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1994 {
-  background-color: @colorHeliotrope;
-  fill: @colorHeliotrope;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1995 {
-  background-color: @colorBlueBell;
-  fill: @colorBlueBell;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1996 {
-  background-color: @colorOlivetone;
-  fill: @colorOlivetone;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1997 {
-  background-color: @colorHanPurple;
-  fill: @colorHanPurple;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1998 {
-  background-color: @colorOchre;
-  fill: @colorOchre;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_1999 {
-  background-color: @colorLimerick;
-  fill: @colorLimerick;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2000 {
-  background-color: @colorFreeSpeechBlue;
-  fill: @colorFreeSpeechBlue;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2001 {
-  background-color: @colorDarkSpringGreen;
-  fill: @colorDarkSpringGreen;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2002 {
-  background-color: @colorCaribbeanGreen;
-  fill: @colorCaribbeanGreen;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2003 {
-  background-color: @colorSandyBrown;
-  fill: @colorSandyBrown;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2004 {
-  background-color: @colorDarkMagenta;
-  fill: @colorDarkMagenta;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2005 {
-  background-color: @colorSpringRain;
-  fill: @colorSpringRain;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2006 {
-  background-color: @colorPurpleHeart;
-  fill: @colorPurpleHeart;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2007 {
-  background-color: @colorScreaminGreen;
-  fill: @colorScreaminGreen;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2008 {
-  background-color: @colorRazzleDazzleRose;
-  fill: @colorRazzleDazzleRose;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2009 {
-  background-color: @colorRichBlue;
-  fill: @colorRichBlue;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2010 {
-  background-color: @colorDarkOrchid;
-  fill: @colorDarkOrchid;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2011 {
-  background-color: @colorBlueBayoux;
-  fill: @colorBlueBayoux;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2012 {
-  background-color: @colorGimblet;
-  fill: @colorGimblet;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2013 {
-  background-color: @colorContessa;
-  fill: @colorContessa;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2014 {
-  background-color: @colorAmazon;
-  fill: @colorAmazon;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2015 {
-  background-color: @colorCopper;
-  fill: @colorCopper;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2016 {
-  background-color: @colorCerise;
-  fill: @colorCerise;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2017 {
-  background-color: @colorSulu;
-  fill: @colorSulu;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2018 {
-  background-color: @colorDowny;
-  fill: @colorDowny;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.a_2019 {
-  background-color: @colorShamrock;
-  fill: @colorShamrock;
-  stroke-width: 1;
-  stroke: @colorBlack;
-}
-
-.GreyText14 {
-  font-size: 14px;
-  color: @ortGrey-Dark;
-}
-
-.GreyText12 {
-  font-size: 12px;
-  color: @ortGrey-Dark;
-}
-
-.GreyText10 {
-  font-size: 10px;
-  color: @ortGrey-Dark;
-}
-
-.GreyText9 {
-  font-size: 9px;
-  color: @ortGrey-Dark;
-}
-
-.GreenText16 {
-  font-size: 16px;
-  color: @colorBilbao;
-}
-
-.RedText16 {
-  font-size: 16px;
-  color: @colorFireEngineRed;
-}
-
-.PaleText14 {
-  font-size: 14px;
-  color: @ortBlue-Pale;
-  background-color: @ortGrey-Dark;
-}
-
-.blackBoldText14 {
-  font-size: 14px;
-  color: @colorBlack;
-  font-weight: 700;
-  background-color: @colorBaliHai;
-}
-
-.Greychart {
-  background-color: @ortGrey-Background;
-  text-align: center;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
-  border-collapse: separate;
-
-}
-
-
-.windResource-key {
-  width: 440px;
-  color: @colorBlack;
-  z-index: 100;
-  position: relative;
-  left: 200px;
-  top: 75px;
-  background: @colorBlack;
-  vertical-align: middle;
-}
-
-.line3a {
-  width: 300px;
-  height: 100px;
-  font-family: 'Open Sans';
-  font-size: 12px;
-  color: @ortGrey-Dark;
-  position: absolute;
-
-}
-
-.stackedlines {
-  font-family: 'Open Sans';
-  font-size: 12px;
-  color: @ortGrey-Dark;
-  position: relative;
-}
-
-.stackedlineicon {
-  height: 14px;
-  width: 20px;
-  position: relative;
-  top: 3px;
-
-}
-
-.house-color {
-  fill: @ortGrey-Dark;
-  width: 96px;
-  height: 96px;
-  -webkit-filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%));
-  filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%)); /* Same syntax as box-shadow */
-  float: right;
-}
-
+*****************************************/
 .infographic-box {
   background: @ortBlue-Pale;
   box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
@@ -552,11 +126,272 @@ body.ng-pageslide-body-closed::before {
   width: 645px;
 }
 
-.zeroheightkludge {
-  height: 0px;
+.infographic-text {
+  float: left;
 }
 
-.boemline2a {
+.infographic-title {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 16px;
+  color: @ortOrange;
+  padding-top: 15px;
+  padding-left: 14px;
+  padding-bottom: 10px;
+  height: 23px;
+}
+
+.infographic-title--2line {
+  height: 35px;
+}
+
+.infographic-title--0height {
+  height: 0px !important;
+}
+
+.layertoggle-button {
+  float: right;
+  padding-right: 10px;
+}
+
+.layertoggle-button--off {
+  -webkit-transform: rotate(0deg);
+  .trackclass {
+    fill: @ortGrey-Dark;
+    opacity: 1; //cof
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
+  }
+  .knobclass {
+    fill: @colorWhite;
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
+  }
+
+}
+
+.layertoggle-button--on {
+  -moz-transform: scaleX(-1); /* Gecko */
+  -o-transform: scaleX(-1); /* Opera */
+  -webkit-transform: scaleX(-1); /* Webkit */
+  transform: scaleX(-1); /* Standard */
+  filter: FlipH; /* IE 6/7/8 */
+  .trackclass {
+    fill: @ortOrange;
+    opacity: .5;
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
+  }
+  .knobclass {
+    fill: @ortOrange;
+    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
+  }
+
+}
+
+.layertoggle-text {
+  float: right;
+  padding-top: 4px;
+  padding-right: 15px;
+  font-family: 'Open Sans';
+  font-size: 10px;
+  font-weight: normal;
+  color: @colorGrey;
+}
+
+.infographic-swatch {
+  font-size: 15px;
+  color: @ortGrey-Dark;
+  float: left;
+  width: 100%;
+}
+
+.infographic-line {
+
+  float: left;
+  width: 100%;
+}
+
+.line-img {
+  float: left;
+  padding-left: 15px;
+}
+
+.line-text {
+  float: left;
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  padding-top: 7px;
+
+}
+
+.swatch-img {
+  width: 73px;
+  height: 66px;
+  padding-left: 12px;
+  text-align: left;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: @colorAlmostBlack;
+  background-repeat: no-repeat;
+  float: left;
+}
+
+.swatch-img--fill {
+  width: 100%;
+  height: 100%;
+}
+
+.swatch-dataarea {
+  padding-top: 3px;
+  padding-left: 95px;
+  width: 200px;
+}
+
+.swatch-coral {
+  padding-top: 3px;
+  padding-left: 40px;
+  padding-bottom: 25px;
+  height: 100px;
+  width: 200px;
+}
+
+.swatch-dataarea--smalltext {
+  font-size: 12px;
+}
+
+.infographic-icon {
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  float: left;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.infographic-list {
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  float: left;
+  width: 100%;
+  //padding-bottom: 15px;
+}
+
+.infographic-list--pad {
+  padding-left: 15px;
+}
+
+.icon-img {
+  width: 25px;
+  height: 25px;
+  padding-left: 12px;
+  text-align: left;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: @colorAlmostBlack;
+  background-repeat: no-repeat;
+  float: left;
+}
+
+.icon-img--fill {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-dataarea {
+  padding-top: 3px;
+}
+
+.infographic-dataarea--small {
+  height: 70px;
+  //width: 312.8px;
+  padding-left: 12px;
+  vertical-align: bottom;
+}
+
+.infographic-dataarea {
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+}
+
+.infographic-dataarea--nopad {
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+
+.infographic-dataarea--split {
+  width: 50%;
+  float: left;
+  //font-size: 14px;
+}
+
+.infographic-dropmenu {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 14px;
+  color: @colorWhite;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+
+.dropmenu-list {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  background-color: @colorWhite !important;
+  padding-left: 10px;
+}
+
+.dropmenu-list--alternate {
+  width: 50%;
+  float: left;
+}
+
+.dropmenu-bar {
+  height: 20px;
+  background-color: @ortBlue-light;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.dropmenu-title {
+  float: left;
+}
+
+.dropmenu-icon {
+  float: right;
+  padding-right: 5px;
+}
+
+.list-categorized {
+  float: left;
+  padding-bottom: 10px;
+}
+
+.list-catagory {
+  color: @ortGrey-Dark;
+  margin-bottom: 5px;
+  padding-left: 15px;
+
+}
+
+.list-area {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 12px;
+  color: @ortGrey-Dark;
+}
+
+.list-item {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  margin-left: 15px;
+}
+
+.infographic-twosizeline--small {
   font-family: 'Open Sans';
   font-size: 12px;
   color: @ortGrey-Dark;
@@ -565,72 +400,45 @@ body.ng-pageslide-body-closed::before {
 
 }
 
-.boemline2a a:link, a:visited {
+.infographic-twosizeline--medium {
+  font-family: 'Open Sans';
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  vertical-align: bottom;
+  line-height: 23px;
+
+}
+
+.infographic-twosizeline {
+  // width: 312.8px;
+  padding-left: 12px;
+  vertical-align: bottom;
+}
+
+.infographic-twosizeline--small a:link, a:visited {
   color: @noaaBlue-dark;
 }
 
-.boemline2b {
+.infographic-twosizeline--large {
   font-family: 'Open Sans';
   font-size: 21px;
   color: @ortGrey-Dark;
   vertical-align: bottom;
 }
 
-.padLeft15 {
-  padding-left: 15px;
-}
-
-.padLeft25 {
-  padding-left: 25px;
-}
-
-.boemline2 {
-  width: 312.8px;
-  padding-left: 12px;
-  vertical-align: bottom;
-}
-
-.toggleimg {
-  transform: rotate(0deg);
-}
-
-.toggleicon {
-  width: 43px;
-  height: 43px;
-  position: fixed;
-  margin-left: -25px;
-  top: 470px;
-  z-index: 9998;
-  overflow-y: visible;
-  overflow-x: visible;
-}
-
-.AOItabClass {
-  font-size: 20px;
-  color: @ortOrange;
-  padding: 10px;
-}
-
-.AOItabClassPrint {
-  font-size: 20px;
-  color: @ortOrange;
-  padding: 10px;
-}
-
-.AOItabClass2 {
-  font-size: 20px;
+.infographic-text--large {
+  font-size: 16px;
+  color: @ortGrey-Dark;
   float: left;
-  color: @ortOrange;
-  display: none;
+  width: 100%;
 }
-
-.AOItabClass3 {
-  font-size: 20px;
-  color: @ortOrange;
+.infographic-list-small {
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  padding-left: 20px;
+  padding-right: 20px;
+ width:77%;
 }
-
-
-
 /***********************************************
 
 
@@ -661,7 +469,6 @@ Information Modal
   z-index: 1000;
 }
 
-
 .iModal {
   float: left;
 }
@@ -681,7 +488,6 @@ Information Modal
     }
   }
 }
-
 
 .iModal.ng-enter {
   transition: opacity .5s ease-out;
@@ -732,70 +538,281 @@ Information Modal
 .modal-overlay--footnote {
   font-size: 62.5%;
 }
-
-.logos{
-  float:left;
-  width:50%;
+.modal-overlay--small {
+  font-size: 10px;
+}
+.logos {
+  float: left;
+  width: 50%;
   background-color: @ortBlue-Pale !important;
-  height:310px;
+  height: 310px;
 }
 
-.logos-spacer{
-  height:50px;
+.logos-spacer {
+  height: 50px;
 }
-.logosleft{
+
+.logosleft {
   text-align: center;
-  height:150px;
+  height: 150px;
 }
-.logosright{
+
+.logosright {
   text-align: center;
-  height:200px;
+  height: 200px;
 }
-.logos-text{
+
+.logos-text {
   text-align: center;
 }
-.logosleft-img{
-  height:100px;
-  width:250px;
+
+.logosleft-img {
+  height: 100px;
+  width: 250px;
 }
-.logosright-img{
-  height:175px;
-  width:175px;
+
+.logosright-img {
+  height: 175px;
+  width: 175px;
 }
+
 /**************************************************
-
+Common Elements Nearest Places infographic
 
 **************************************************/
+.table-places {
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  color: @ortGrey-Dark;
 
-.sText {
+}
+
+.table-places td {
+  text-align: left;
+
+}
+
+.table-places th {
+  font-style: italic;
+  text-align: left;
+}
+
+.table-tribe {
+  width: 69%;
+  text-align: left;
   font-size: 14px;
   color: @ortGrey-Dark;
 }
 
-.orangeHead {
+.table-tribe td {
+  text-align: left;
+}
+
+.table-tribe th {
+  font-style: italic;
+  text-align: left;
+}
+
+.table-places--capitolize {
+  text-transform: capitalize;
+}
+
+/*****************************************
+Highcharts
+*****************************************/
+
+.highcharts-windchart {
+  height: 231px;
+  width: 190px;
+  position: relative;
+  bottom: 271px;
+}
+
+.highcharts-stateandfed {
+  background-color: @ortBlue-Pale;
+  fill: @ortBlue-Pale;
+  width: 66%;
+  height: 235px;
+  float: right;
+  position: relative;
+  top: -20px;
+}
+
+.highcharts-stateandfed .highcharts-background {
+  fill: @ortBlue-Pale;
+}
+
+.highcharts-oceanjobemployees {
+  border: 1px solid @colorBlack;
+  width: 283px;
+  height: 220px;
+  margin-left: 10px;
+  float: left;
+}
+
+.highcharts-oceanjobdollars {
+  border: 1px solid @colorBlack;
+  width: 329px;
+  height: 220px;
+  margin-left: 10px;
+  float: left;
+}
+
+.highcharts-oceanjobcontributions {
+  fill: @ortBlue-Pale;
+  width: 625px;
+  //margin-left: 10px;
+  .highcharts-background {
+    fill: @ortBlue-Pale;
+  }
+}
+
+.JobChartPieName {
+  float: left;
+  font-size: 12px;
+  font-weight: 400;
+  color: @ortGrey-Dark;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+
+/******************************************
+Metadata
+******************************************/
+.metadata-table {
+  margin-bottom: 30px;
+  font-size: 14px;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.metadata-table tr {
+  border: 1px solid @colorBlack;
+  padding: 5px;
+  padding-left: 20px;
+  font-size: 14px;
+  color: @ortGrey-Dark;
+}
+
+.metadata-table td {
+  border: 1px solid @colorBlack;
+  padding: 5px;
+  word-wrap: break-word
+
+}
+
+.metadata-table th {
+  border: 1px solid @colorBlack;
+  padding: 5px;
+
+}
+
+.metadata-table--narrow {
+  width: 30%;
+}
+
+.metadata {
+  font-size: 20px;
+  color: @ortGrey-Dark;
+}
+
+.metadata--bold {
+  font-weight: 700;
+}
+
+.metadata--printsize {
+  font-size: 12px;
+}
+
+.metadata--printsizesmall {
+  font-size: 10px;
+}
+
+/******************************************
+
+Splash
+
+******************************************/
+.splash {
+  background: @ortBlue-Pale;
+  padding: 10%;
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
+}
+
+.splash-title--img {
+  height: 50px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 357px;
+
+}
+
+.splash-title {
+  text-align: center;
+}
+
+.splash-text {
+  font-size: 14px;
+  color: @ortGrey-Dark;
+}
+
+.splash-head {
   font-size: 20px;
   color: @ortOrange;
 }
 
-.blackimg #Page-1 {
-  stroke: @colorBlack;
-  fill: @colorBlack;
+.icon--black {
+  float: left;
+  #Page-1 {
+    stroke: @colorBlack;
+    fill: @colorBlack;
+  }
 }
 
-.menuBoxlight {
+.partnership {
+  text-align: right;
+  top: 20px;
+  padding-top: 25px;
+}
+
+.partnership p {
+  font-size: 20px;
+  position: relative;
+  top: 5px;
+  float: left;
+  color: @colorDimGray;
+}
+
+/******************************************
+
+known areas menu
+
+******************************************/
+
+.AOImenu-head {
+  font-size: 20px;
+  color: @ortOrange;
+}
+
+.AOImenu-box {
   background: @ortBlue-Pale;
   padding: 6px;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%); //cof
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   text-align: center;
   margin-bottom: 1px;
   width: 100%;
+  cursor: pointer;
 }
 
-.menuBoxdark {
+.AOImenu-item {
+  cursor: pointer;
   background: @colorAliceBlue;
   padding: 6px;
   width: 100%;
-  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%); //cof
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
   text-align: center;
   background-repeat: no-repeat;
   background-position: left;
@@ -809,463 +826,441 @@ Information Modal
   }
 }
 
-.menuboxofboxes {
+.AOImenu-group {
   margin-top: 3px;
   margin-left: 50px;
 }
 
-.areasicon {
+.AOImenu-category {
   float: left;
   height: 23px;
 }
 
-.rotate,
-.rotateCounterwise {
+.AOImenu-icon--rotate,
+.AOImenu-icon--counterrotate {
   -webkit-transition: 300ms ease all;
   -moz-transition: 300ms ease all;
   -o-transition: 300ms ease all;
   transition: 300ms ease all;
 }
 
-.rotate {
+.AOImenu-icon--rotate {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
-.rotateCounterwise {
+.AOImenu-icon--counterrotate {
   -webkit-transform: rotate(0deg);
   transform: rotate(0deg);
 }
 
-.pluscloseIcon {
+.AOImenu-icon {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
-.splashtitleimg {
-  height: 50px;
-  margin-bottom: 30px;
+/******************************************
+
+Economics and Commerce
+  Census
+
+******************************************/
+
+.table-census {
+  background-color: @colorWhite;
   width: 100%;
-  max-width: 357px;
+  text-align: left;
+  border: 2px solid @colorLightGrey;
+  font-size: 14px;
+  color: @ortGrey-Dark;
+}
+
+.table-census td {
+  text-align: center;
 
 }
 
-.splashtitle {
+.table-census tr {
+  border: 1px solid @colorLightGrey;
+}
+
+.table-census th {
   text-align: center;
 }
 
-.rotate180 {
-  -webkit-transform: rotate(180deg);
+.table-census--capitolize {
+  text-transform: capitalize;
 }
 
-.layertoggle-button--off {
-  -webkit-transform: rotate(0deg);
-  .trackclass {
-    fill: @ortGrey-Dark;
-    opacity: 1; //cof
-    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
-  }
-  .knobclass {
-    fill: @colorWhite;
-    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
-  }
-
-}
-
-.layertoggle-button--on {
-  -moz-transform: scaleX(-1); /* Gecko */
-  -o-transform: scaleX(-1); /* Opera */
-  -webkit-transform: scaleX(-1); /* Webkit */
-  transform: scaleX(-1); /* Standard */
-  filter: FlipH; /* IE 6/7/8 */
-  .trackclass {
-    fill: @ortOrange;
-    opacity: .5;
-    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
-  }
-  .knobclass {
-    fill: @ortOrange;
-    box-shadow: 0px 0px 1px 0px fade(@colorBlack, 12%), 0px 1px 1px 0px fade(@colorBlack, 24%);
-  }
-
-}
-
-.sliderbuttont2 {
-  float: right;
-  padding-top: 5px;
-  padding-right: 15px;
-  text-align: middle;
-  font-family: 'Open Sans';
+/******************************************
+Energy and Minerals
+  Beach Nourishment
+*******************************************/
+.table-beachnourishment {
+  border: 2px solid @colorWhite;
+  float: left;
   font-size: 10px;
-  font-weight: normal;
-  color: @colorGrey;
+  color: #4a4a4a;
 }
 
-.swatch {
-  width: 73px;
-  height: 66px;
-  padding-left: 12px;
-  text-align: left;
-  font-family: 'Open Sans';
+.beachnourish-row {
+  width: 367px;
+}
+
+.beachnourish-bar {
+  height: 5px;
+}
+
+.beachnourish-scale {
+  width: 600px;
+  float: left;
+}
+
+.beachnourish-scale--null {
+  height: 8px;
+  width: 165px;
+  float: left;
+}
+
+.beachnourish-scale--0 {
+  width: 185px;
+  float: left;
+}
+
+.beachnourish-scale--1 {
+  width: 168px;
+  float: left;
+}
+
+.beachnourish-scale--3 {
+  width: 50px;
+  float: left;
+}
+
+.beachnourish-legend {
+  //width: 15%;
+  padding-bottom: 8px;
+  float: left;
+}
+
+.beachnourish-box {
+  height: 38px;
   font-size: 12px;
-  color: @colorAlmostBlack;
-  background-repeat: no-repeat;
+  color: @ortGrey-Dark;
 }
 
-
-.padding-none {
-  padding: 0px;
+.beachnourish-1979 {
+  background-color: @colorMediumRedViolet;
+  fill: @colorMediumRedViolet;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w100 {
-  width: 100%;
+.beachnourish-1980 {
+  background-color: @colorJacksonsPurple;
+  fill: @colorJacksonsPurple;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w200 {
-  width: 200px;
+.beachnourish-1981 {
+  background-color: @colorDeepMagenta;
+  fill: @colorDeepMagenta;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w265 {
-  width: 265px;
+.beachnourish-1982 {
+  background-color: @colorBlackcurrant;
+  fill: @colorBlackcurrant;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w35 {
-  width: 35%;
+.beachnourish-1983 {
+  background-color: @colorHarlequin;
+  fill: @colorHarlequin;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w38 {
-  width: 38%;
+.beachnourish-1984 {
+  background-color: @colorPizza;
+  fill: @colorPizza;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w25 {
-  width: 25%;
+.beachnourish-1985 {
+  background-color: @colorFreeSpeechMagenta;
+  fill: @colorFreeSpeechMagenta;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w30 {
-  width: 30%;
+.beachnourish-1986 {
+  background-color: @colorChateauGreen;
+  fill: @colorChateauGreen;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w40 {
-  width: 40%;
+.beachnourish-1987 {
+  background-color: @colorTurquoise;
+  fill: @colorTurquoise;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w45 {
-  width: 45%;
+.beachnourish-1988 {
+  background-color: @colorWasabi;
+  fill: @colorWasabi;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w65 {
-  width: 65%;
+.beachnourish-1989 {
+  background-color: @colorFreeSpeechGreen;
+  fill: @colorFreeSpeechGreen;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w70 {
-  width: 70%;
+.beachnourish-1990 {
+  background-color: @colorJazzberryJam;
+  fill: @colorJazzberryJam;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w10 {
-  width: 10px;
+.beachnourish-1991 {
+  background-color: @colorMediumSlateBlue;
+  fill: @colorMediumSlateBlue;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.w50 {
-  width: 50%;
+.beachnourish-1992 {
+  background-color: @colorTyrianPurple;
+  fill: @colorTyrianPurple;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-//EM_BeachNourishment.html
-.iButtoncontainer {
-  height: 19px;
+.beachnourish-1993 {
+  background-color: @colorWildWatermelon;
+  fill: @colorWildWatermelon;
+  stroke-width: 1;
+  stroke: @colorBlack;
 }
 
-.oddrow {
+.beachnourish-1994 {
+  background-color: @colorHeliotrope;
+  fill: @colorHeliotrope;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-1995 {
+  background-color: @colorBlueBell;
+  fill: @colorBlueBell;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-1996 {
+  background-color: @colorOlivetone;
+  fill: @colorOlivetone;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-1997 {
+  background-color: @colorHanPurple;
+  fill: @colorHanPurple;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-1998 {
+  background-color: @colorOchre;
+  fill: @colorOchre;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-1999 {
+  background-color: @colorLimerick;
+  fill: @colorLimerick;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2000 {
+  background-color: @colorFreeSpeechBlue;
+  fill: @colorFreeSpeechBlue;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2001 {
+  background-color: @colorDarkSpringGreen;
+  fill: @colorDarkSpringGreen;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2002 {
+  background-color: @colorCaribbeanGreen;
+  fill: @colorCaribbeanGreen;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2003 {
+  background-color: @colorSandyBrown;
+  fill: @colorSandyBrown;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2004 {
+  background-color: @colorDarkMagenta;
+  fill: @colorDarkMagenta;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2005 {
+  background-color: @colorSpringRain;
+  fill: @colorSpringRain;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2006 {
+  background-color: @colorPurpleHeart;
+  fill: @colorPurpleHeart;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2007 {
+  background-color: @colorScreaminGreen;
+  fill: @colorScreaminGreen;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2008 {
+  background-color: @colorRazzleDazzleRose;
+  fill: @colorRazzleDazzleRose;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2009 {
+  background-color: @colorRichBlue;
+  fill: @colorRichBlue;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2010 {
+  background-color: @colorDarkOrchid;
+  fill: @colorDarkOrchid;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2011 {
+  background-color: @colorBlueBayoux;
+  fill: @colorBlueBayoux;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2012 {
+  background-color: @colorGimblet;
+  fill: @colorGimblet;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2013 {
+  background-color: @colorContessa;
+  fill: @colorContessa;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2014 {
+  background-color: @colorAmazon;
+  fill: @colorAmazon;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2015 {
+  background-color: @colorCopper;
+  fill: @colorCopper;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2016 {
+  background-color: @colorCerise;
+  fill: @colorCerise;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2017 {
+  background-color: @colorSulu;
+  fill: @colorSulu;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2018 {
+  background-color: @colorDowny;
+  fill: @colorDowny;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.beachnourish-2019 {
+  background-color: @colorShamrock;
+  fill: @colorShamrock;
+  stroke-width: 1;
+  stroke: @colorBlack;
+}
+
+.table-beachnourishment--oddrow {
   background-color: @colorWhiteSmoke;
   text-align: center;
   width: 165px;
   border: 1px solid @colorWhite;
 }
 
-.evenrow {
+.table-beachnourishment--evenrow {
   text-align: center;
   width: 165px;
   border: 1px solid @colorWhite;
 }
 
-.padtop5 {
-  padding-top: 5px;
-}
-
-.padtop40 {
-  padding-top: 40px;
-}
-
-.padtop20 {
-  padding-top: 20px;
-}
-
-.beachswatchimg {
-  width: 85%;
-  padding-bottom: 8px
-}
-
-.table_beachnourishmentchart {
-  border: 2px solid @colorWhite;
-}
-
-.table_beachnourishmentchartrow {
-  width: 367px;
-}
-
-.beachnourishchartbar {
-  height: 5px;
-}
-
-.beachnourishchartscale {
-  width: 600px;
-}
-
-.beachnourishchartscalenull {
-  height: 8px;
-  width: 165px;
-}
-
-.beachnourishchartscale0 {
-  width: 185px;
-}
-
-.beachnourishchartscale1 {
-  width: 168px;
-}
-
-.beachnourishchartscale3 {
-  width: 50px;
-}
-
-.beachnourishchartyear {
-  width: 15%;
-  padding-bottom: 8px;
-}
-
-.beachnourishchartyearbox {
-  height: 38px;
-}
-
-//CommonElements.html
-.padding30 {
-  padding: 30px;
-}
-
-.slide-right {
-  margin-top: 55px;
-  background: @colorWhite;
-}
-
-//CE_Elevation.html
-
-.infographicline1 {
-  padding-top: 10px;
-  padding-left: 15px;
-  padding-bottom: 10px;
-}
-
-.infographic-title {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 16px;
-  color: @ortOrange;
-  padding-top: 15px;
-  padding-left: 15px;
-  padding-bottom: 10px;
-  width: 100%;
-  height: 23px;
-}
-
-.infographic-title--0height {
-  height: 0px !important;
-}
-
-.layertoggle-button {
-  float: right;
-  padding-right: 30px;
-}
-
-.layertoggle-text {
-  float: right;
-  padding-top: 4px;
-  padding-right: 15px;
-  font-family: 'Open Sans';
-  font-size: 10px;
-  font-weight: normal;
-  color: @colorGrey;
-}
-
-.infolisthead {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 16px;
-  color: @ortGrey-Dark;
-  margin-top: 25px;
-  margin-left: 15px;
-  margin-bottom: 5px;
-}
-
-.infolist {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 12px;
-  color: @ortGrey-Dark;
-}
-
-.infolistitem {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 12px;
-  color: @ortGrey-Dark;
-  margin-left: 15px;
-}
-
-.infomenu {
-  margin: 25px;
-}
-
-.infoDropDownMenu {
-  font-family: 'Open Sans';
-  font-weight: 400;
+.beachnourish-text {
   font-size: 14px;
-  color: @colorWhite;
-  background-color: @ortBlue-light;
-  overflow: auto;
-}
-
-.infoDropDownMenu2 {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 14px;
-  color: @colorWhite;
-  overflow: auto;
-}
-
-.infoDropDownList {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 12px;
   color: @ortGrey-Dark;
-  background-color: @colorWhite !important;
-  padding-left: 10px;
 }
 
-.boundaryItem {
-  width: 98%;
-  height: 20px;
-  background-color: @ortBlue-light;
-  padding-left: 10px;
-}
-
-.infomenuspacer {
-  height: 10px;
-}
-
-.infomenuplus {
-  float: right;
-  padding-right: 5px;
-}
-
-.CommonSwatchLine {
-  font-size: 15px;
-  color: @ortGrey-Dark;
-  float: left;
-}
-
-.CEElevationData {
-  padding-top: 3px;
-  padding-left: 95px;
-  width: 200px;
-}
-
-//EM_CurrentPower.html
-.Leftbox60 {
-  width: 60%;
-}
-
-.padbottom16 {
-  padding-bottom: 16px;
-}
-
-.padbottom10 {
-  padding-bottom: 10px;
-}
-
-.powerscale {
-  width: 386px;
-  height: 45px;
-}
-
-.powerscale2 {
-  width: 387px;
-  height: 50px;
-}
-
-.powerscalediv {
-  border-color: @colorSolitude;
-  border-left-style: solid;
-  border-width: 2px;
-  width: 41px;
-  height: 45px;
-  position: relative;
-  z-index: 1;
-}
-
-.powerscalenum {
-  width: 385px;
-  height: 20px;
-}
-
-.powerscalenum2 {
-  width: 41px;
-  height: 20px;
-}
-
-.powergraphbar {
-  background-color: @colorRoyalBlue;
-  height: 20px;
-  position: relative;
-  top: -57px;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.powerchartswatch {
-  top: 59px;
-  position: relative;
-}
-
-//EM_TidalPower.html
-.tpowerscale {
-  width: 386px;
-  height: 17px;
-}
-
-.tpowerscalediv {
-  border-color: @colorSolitude;
-  border-left-style: solid;
-  border-width: 2px;
-  width: 75px;
-  height: 45px;
-  position: relative;
-  z-index: 1;
-}
-
-.tpowerscalenum2 {
-  width: 77px;
-  weight: 20px;
-}
-
-.tpowergraphbar {
-  background-color: @colorGrey;
-  height: 20px;
-  position: relative;
-  top: -57px;
-}
-
-//EM_WavePower.html
+/******************************************
+Energy and Minerals
+  Power graphics.
+    Current
+    Tidal
+    Wave
+*******************************************/
 .power-graphic {
   width: 100%;
   float: left;
@@ -1283,7 +1278,58 @@ Information Modal
   width: 40%;
 }
 
-.wpowerscalediv {
+.power-suitability {
+  float: left;
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  padding-left: 15px;
+  padding-bottom: 35px;
+  width: 100%;
+}
+
+.power-suitability--green {
+  font-size: 16px;
+  color: @colorBilbao;
+}
+
+.power-suitability--red {
+  font-size: 16px;
+  color: @colorFireEngineRed;
+}
+
+.power-scale {
+  width: 421px;
+  height: 181px;
+  padding-left: 15px;
+  font-size: 14px;
+  color: @ortGrey-Dark;
+}
+
+.power-scale--current {
+  border-color: @colorSolitude;
+  border-left-style: solid;
+  border-width: 2px;
+  width: 41px;
+  height: 45px;
+  position: relative;
+  z-index: 1;
+  float: left;
+  top: 35px;
+}
+
+.power-scale--tidal {
+  border-color: @colorSolitude;
+  border-left-style: solid;
+  border-width: 2px;
+  width: 75px;
+  height: 45px;
+  position: relative;
+  z-index: 1;
+  float: left;
+  top: -6px;
+}
+
+.power-scale--wave {
   border-color: @colorSolitude;
   border-left-style: solid;
   border-width: 2px;
@@ -1291,104 +1337,357 @@ Information Modal
   height: 45px;
   position: relative;
   z-index: 1;
+  float: left;
+  top: 35px;
 }
 
-.wpowerscale2 {
+.tpowerscale {
+  width: 386px;
+  height: 17px;
+}
+
+.power-numbers {
+  width: 385px;
+  height: 20px;
+  padding-left: 15px;
+  font-size: 14px;
+  color: @ortGrey-Dark;
+}
+
+.power-numbers--wave {
   width: 420px;
-  height: 50px;
 }
 
-.wpowerscalenum2 {
+.power-text {
+  text-align: center;
+  font-size: 10px;
+  color: @ortGrey-Dark;
+}
+
+.power-graduation--current {
+  width: 41px;
+  height: 20px;
+  float: left;
+}
+
+.power-graduation--tidal {
+  width: 77px;
+  weight: 20px;
+  float: left;
+}
+
+.power-graduation--wave {
   width: 68px;
   height: 20px;
+  float: left;
 }
 
-.wpowerscalenum {
-  width: 420px;
-  height: 20px;
-}
-
-.wpowergraphbar {
-  background-color: @colorGrey;
+.power-graphbar {
   height: 20px;
   position: relative;
   top: -57px;
+  float: left;
 }
 
-.h100 {
+.power-graphbar--current {
+  background-color: @colorRoyalBlue;
+
+}
+
+.power-graphbar--tidal {
+  background-color: @colorGrey;
+
+}
+
+.power-graphbar--wave {
+  background-color: @colorGrey;
+
+}
+
+.power-graphbar--fill {
   height: 100%;
+  width: 100%;
 }
 
-.h100px {
-  height: 100px;
+.key-title {
+  width: 100%;
 }
 
-.h200 {
-  height: 200px;
+.key-swatch {
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  float: left;
+  width: 30%;
 }
 
-.h50 {
-  height: 50px;
+.key-scale {
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  float: left;
+  width: 65%;
 }
 
-.h60 {
-  height: 60px;
+.key-img {
+  float: left;
 }
 
-.h150 {
-  height: 150px;
+.key-high {
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  float: left;
+  padding-left: 15px;
 }
 
-//printPreview.html
-.overflowauto {
-  overflow: auto;
+.key-low {
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  float: left;
+  padding-left: 15px;
+  top: 59px;
+  position: relative;
 }
 
-//splash.html
-.valign-middle {
-  vertical-align: middle;
+.key-lines {
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  position: relative;
 }
 
-//EM_SurficialSediment.html
+.key-icons {
+  height: 14px;
+  width: 20px;
+  position: relative;
+  top: 3px;
 
-.SedimentChart {
+}
+
+/******************************************
+Energy and Minerals
+  Oil and Gas
+    Active leases
+    wells
+    this are currently inactive files.
+*******************************************/
+.oilandgas {
+  font-size: 10px;
+  color: @ortGrey-Dark;
+  padding-left: 15px;
+}
+
+.oilandgas-spacer {
+  height: 10px;
+  width: 315px;
+  float: left;
+}
+
+.oilandgas-title {
+  width: 288px;
+  border: 1px solid @colorLightGrey;
+  float: left;
+  background-color: @ortGrey-Background;
+  text-align: center;
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
+  border-collapse: separate;
+  font-family: 'Open Sans';
+  font-size: 10px;
+}
+
+.OGTable {
+  width: 603.8px;
+}
+
+.table-oilandgas {
+  background-color: @ortGrey-Background;
+  text-align: center;
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
+  border-collapse: separate;
+  font-family: 'Open Sans';
+  font-size: 10px;
+
+}
+
+.table-oilandgas tr {
+  border: 1px solid @colorLightGrey;
+  height: 20px;
+}
+
+.table-oilandgas th {
+  border: 1px solid @colorLightGrey;
+  height: 20px;
+}
+
+.table-oilandgas td {
+  border: 1px solid @colorLightGrey;
+  height: 20px;
+}
+
+.table-oilandgas--narrow {
+  width: 120px;
+}
+
+.table-oilandgas--wide {
+  width: 155px;
+}
+
+.table-spacer {
+  height: 30px;
+  width: 315px;
+}
+
+.table-oilandgas--short {
+
+  width: 95px;
+}
+
+.table-oilandgas--long {
+
+  width: 315px;
+
+}
+
+.padbottom10 {
+  padding-bottom: 10px;
+}
+
+/******************************************
+Energy and Minerals
+  Surficial Sediment
+*******************************************/
+
+.sediment {
   width: 70%;
   text-align: center;
   box-shadow: 2px 2px 2px 0px fade(@colorGrey-BoxShadow, 50%);
   margin-bottom: 4px;
   margin-left: 11px;
+  font-size: 14px;
+  color: @colorBlack;
+  font-weight: 700;
+  background-color: @colorBaliHai;
+  float: left;
 }
 
-.SedimentCenteredData {
+.sediment-data {
   float: left;
   position: relative;
   left: 50%;
   width: 0;
 }
 
-.SedimentBar {
+.sediment-bar {
   height: 19px;
   background-color: @colorVisVis;
 }
 
-.SedimentchartType {
+.sediment-type {
   width: 25%;
   box-shadow: 2px 2px 2px 0px fade(@colorGrey-BoxShadow, 50%);
+  float: left;
+  font-size: 14px;
+  color: @ortBlue-Pale;
+  background-color: @ortGrey-Dark;
 }
 
-.marginleft5px {
+.sediment-type--margin {
   margin-left: 5px;
 }
 
-//EM_HydrokineticLeases.html
-.infographicline2 {
-  height: 70px;
-  width: 312.8px;
-  padding-left: 12px;
-  vertical-align: bottom;
+.sediment-spacer {
+  float: left;
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  width: 10px;
 }
 
-// EM_WindResourcePotential.html
+/*****************************************
+Energy and Minerals
+  Wind Resource Potential
+*****************************************/
+.wind-spacer {
+  float: left;
+  width: 12%;
+}
+
+.wind-avg {
+  float: left;
+  width: 25%;
+}
+
+.wind-houses {
+  float: left;
+  width: 38%;
+}
+
+.wind-box {
+  float: left;
+  width: 500px;
+  font-size: 14px;
+  color: @ortGrey-Dark;
+  z-index: 100;
+  position: relative;
+  left: 135px;
+  top: 20px;
+}
+
+.windResource-key {
+  width: 440px;
+  color: @colorBlack;
+  z-index: 100;
+  position: relative;
+  left: 200px;
+  top: 75px;
+  background: @colorBlack;
+  vertical-align: middle;
+}
+
+.wind-key {
+  width: 300px;
+  height: 100px;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  position: absolute;
+
+}
+
+.house {
+  width: 300px;
+  height: 100px;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  position: absolute;
+
+}
+
+.house-color {
+  fill: @ortGrey-Dark;
+  width: 96px;
+  height: 96px;
+  -webkit-filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%));
+  filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%)); /* Same syntax as box-shadow */
+  float: right;
+}
+
+.windmill {
+  width: 190px;
+  height: 239px;
+  position: relative;
+  z-index: 50;
+  bottom: 40px;
+  overflow: hidden;
+}
+
+.windmill-img {
+  width: 190px;
+  height: 239px;
+  position: relative;
+  z-index: 100;
+  top: 0;
+  left: 0;
+}
+
 .windmillbinary {
   border-style: none;
   height: 231px;
@@ -1397,113 +1696,128 @@ Information Modal
   bottom: 237px;
 }
 
-.infographicline3 {
-  width: 312.8px;
-  padding-left: 12px;
-  vertical-align: bottom;
+/****************************************
+Natural Resource and Conservation
+  Migratory Species
+*****************************************/
+.species {
+  height: 100%;
+  padding-top: 20px;
+}
+.species-species{
+  float:left;
+  width:79%;
+}
+.species-box {
+  width: 46%;
+  margin-left: 17px;
+  margin-bottom: 8px;
+  background-color: @colorWhite;
+  float: left;
 }
 
-.GreychartBorder {
-  border: 1px solid @colorLightGrey;
-  height: 20px;
-}
-
-.GreychartBorder40 {
-  border: 1px solid @colorLightGrey;
-  height: 20px;
-  width: 120px;
-}
-
-.GreychartBorder60 {
-  border: 1px solid @colorLightGrey;
-  height: 20px;
-  width: 155px;
-}
-
-//EM_OG_resourcePotential.html
-.OGTablebox {
-  height: 10px;
-  width: 315px;
-}
-
-.OGTableLabel {
-  width: 288px;
-  border: 1px solid @colorLightGrey;
-}
-
-.OGTable {
-  width: 603.8px;
-}
-
-.OGTableBorderShort {
-  border: 1px solid @colorLightGrey;
-  height: 20px;
-  width: 95px;
-}
-
-.OGTableBorderLong {
-  border: 1px solid @colorLightGrey;
-  height: 20px;
-  width: 315px;
-
-}
-
-//EM_OG_CoastalEnergyFacilities.html
-.CoastalEnergyspace {
-  height: 30px;
-  width: 315px;
-}
-
-.CoastalEnergyTable {
-  width: 603.8px;
-}
-
-//CE_Area.html
-.CEAreaData {
-  padding-left: 95px;
-  width: 200px;
-}
-
-.stateandFedchart {
-  background-color: @ortBlue-Pale;
-  fill: @ortBlue-Pale;
-  width: 66%;
-  height: 235px;
-  float: right;
-  position: relative;
-  top: -20px;
-}
-
-.stateandFedchart .highcharts-background {
-  fill: @ortBlue-Pale;
-}
-
-.CommonlineSwatchLine {
-  font-size: 15px;
-  color: @ortGrey-Dark;
-}
-
-.TILineData {
-  padding-left: 70px;
-}
-
-.lineswatch {
-  width: 48px;
-  padding-left: 5px;
-  padding-right: 5px;
-  text-align: left;
+.species-menu {
   font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 14px;
+  color: @colorWhite;
+  background-color: @ortBlue-light;
+  overflow: auto;
+}
+
+.species-list {
+  font-family: 'Open Sans';
+  font-weight: 400;
   font-size: 12px;
-  color: @colorAlmostBlack;
-  background-repeat: no-repeat;
-  overflow: hidden;
-}
-
-.GreyText16 {
-  font-size: 16px;
   color: @ortGrey-Dark;
+  background-color: @colorWhite !important;
+  padding-left: 10px;
 }
 
+/***************************************
+Natural Resource and Conservation
+****************************************/
+.coral-num {
+  float: left;
+  padding-left: 10px;
+}
+
+.coral-line {
+  width: 100%;
+  float: left;
+}
+
+.coral-1 {
+  background-color: @colorPaleTurquoise;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+
+.coral-2 {
+  background-color: @colorJordyBlue;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+
+.coral-3 {
+  background-color: @colorDodgerBlue;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+
+.coral-4 {
+  background-color: @colorPersianBlue;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+
+.coral-5 {
+  background-color: @colorUltramarine;
+  height: 17px;
+  width: 28px;
+  float: left;
+}
+
+
+
+/****************************************
+Natural Resource and Conservation
+  reefs
+*****************************************/
+
+.reef-spacer {
+  height: 85px;
+
+}
+
+/****************************************
+whales
+****************************************/
+
+.whale {
+  color: @colorWhite;
+  height: 96px;
+  width: 100%;
+  background-image: url(../img/transportation-whale.svg);
+  background-position: 41px -71px;
+  background-size: 268px;
+  background-repeat: no-repeat;
+  text-align: center;
+}
+
+
+
+
+
+
+/******************************************
+Transportation and Infrastructure
+  Danger Zones
+*********************************************/
 .c_NASA {
   background-color: @colorDenim;
   fill: @colorDenim;
@@ -1539,282 +1853,95 @@ Information Modal
   fill: @colorDarkGray;
 }
 
-.danger_svg {
+.danger-img {
   float: right;
 }
 
-.narrative {
-  color: @ortGrey-Dark;
-  font-size: 14px;
-  max-width: 751.5px;
-  margin-bottom: 10px;
-}
+/******************************************
+Transportation and Infrastructure
+  Principle Ports
+*********************************************/
 
-.h20 {
-  height: 20px;
-}
-
-.h12 {
-  height: 12px;
-}
-
-.menutitle {
-  height: 100%;
-  padding-top: 20px;
-}
-
-.doublemenubox {
-  width: 46%;
-  margin-left: 17px;
-  margin-bottom: 8px;
-  background-color: @colorWhite;
-}
-
-.w79 {
-  width: 79%;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.font-bold {
-  font-weight: 700;
-}
-
-.metaTable {
-  margin-bottom: 30px;
-  font-size: 14px;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.metaTable tr {
-  border: 1px solid @colorBlack;
-  padding: 5px;
-}
-
-.metaTable td {
-  border: 1px solid @colorBlack;
-  padding: 5px;
-  word-wrap: break-word
-
-}
-
-.metaTable th {
-  border: 1px solid @colorBlack;
-  padding: 5px;
-
-}
-
-.metaTableCol1 {
-  width: 30%;
-}
-
-.tooltip {
-  position: relative;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 65px;
-  background-color: @ortGrey-Dark;
-  color: @colorWhite;
-  text-align: center;
-  border-radius: 6px;
-  position: absolute;
-  z-index: 1002;
-  bottom: 135%;
-  left: 50%;
-  margin-left: -21px;
-  font-size: 12px;
-  font-weight: 400;
-  opacity: 0;
-  transition: opacity 1s;
-}
-
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: @colorBlack transparent transparent transparent;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-.OceanJobEmployeesChart {
-  border: 1px solid @colorBlack;
-  width: 283px;
-  height: 220px;
-  margin-left: 10px;
-}
-
-.OceanJobDollarsChart {
-  border: 1px solid @colorBlack;
-  width: 329px;
-  height: 220px;
-  margin-left: 10px;
-}
-
-.OceanJobContributionsChart {
-  fill: @ortBlue-Pale;
-  width: 625px;
-  margin-left: 10px;
-  .highcharts-background {
-    fill: @ortBlue-Pale;
-  }
-}
-
-.JobChartPieName {
-  float: left;
-  font-size: 12px;
-  font-weight: 400;
-  color: @ortGrey-Dark;
-  position: relative;
-  top: 0px;
-  left: 0px;
-  z-index: 1;
-}
-
-.politicallist {
-  width: 50%
-}
-
-.inheritcolor {
-  color: inherit;
-}
-
-
-
-.h310 {
-  height: 310px;
-}
-
-.circleicon {
-  height: 14px;
-  width: 20px;
-}
-
-.padding15 {
-  padding: 15px;
-}
-
-.placesTable {
-  width: 100%;
-  text-align: left;
-}
-
-.placesTable td {
-  text-align: left;
-
-}
-
-.placesTable th {
-  font-style: italic;
-  text-align: left;
-}
-
-.tribeTable {
-  width: 69%;
-  text-align: left;
-}
-
-.tribeTable td {
-  text-align: left;
-}
-
-.tribeTable th {
-  font-style: italic;
-  text-align: left;
-}
-
-.whale {
-  color: @colorWhite;
-  height: 96px;
-  width: 100%;
-  background-image: url(../img/transportation-whale.svg);
-  background-position: 41px -71px;
-  background-size: 268px;
-  background-repeat: no-repeat;
-  text-align: center;
-}
-
-.Vessel1 {
+.vessel-1 {
   background-color: @colorSteelBlue;
   height: 20px;
   width: 50px;
   float: left;
 }
 
-.Vessel2 {
+.vessel-2 {
   background-color: @colorHeather;
   height: 20px;
   width: 50px;
   float: left;
 }
 
-.Vessel3 {
+.vessel-3 {
   background-color: @colorFrost;
   height: 20px;
   width: 50px;
   float: left;
 }
 
-.Vessel4 {
+.vessel-4 {
   background-color: @colorFrangipani;
   height: 20px;
   width: 50px;
   float: left;
 }
 
-.Vessel5 {
+.vessel-5 {
   background-color: @colorCrusta;
   height: 20px;
   width: 50px;
   float: left;
 }
 
-.Vessel6 {
+.vessel-6 {
   background-color: @colorHarleyDavidsonOrange;
   height: 20px;
   width: 50px;
   float: left;
 }
 
-.VesselNum {
+.vessel-num {
   float: left;
   width: 50%;
   padding-left: 10px;
 }
 
-.VesselLine {
+.vessel {
   width: 100%;
   float: left;
   padding-bottom: 15px;
 }
 
-.ship {
+.vessel-img {
   width: 50px;
   height: 50px;
   top: -15px;
   position: relative;
 }
-
-.anchor {
+/******************************************
+Transportation and Infrastructure
+  Principle Ports
+*********************************************/
+.ports{
+  font-size: 12px;
+  color: @ortGrey-Dark;
+  padding-left: 20px;
+  float:left;
+  padding-bottom: 10px;
+  height:108px;
+}
+.anchor-img {
   width: 40px;
   height: 40px;
   position: relative;
   top: 13px;
 }
 
-.starline {
+.star {
   width: 595px;
   height: 19px;
   position: relative;
@@ -1825,20 +1952,20 @@ Information Modal
   margin-top: 15px;
 }
 
-.star {
+.star-img {
   position: relative;
   top: -20px;
   left: -27px;
 
 }
 
-.anchordistance {
+.anchor-distance {
   position: relative;
   top: -15px;
   height: 95px;
 }
 
-.anchorbox {
+.anchor-box {
   position: relative;
   top: -81px;
   height: 95px;
@@ -1847,7 +1974,7 @@ Information Modal
   margin-left: 77px;
 }
 
-.distancetext {
+.distance-text {
   position: relative;
   top: -40px;
   text-align: center;
@@ -1857,104 +1984,4 @@ Information Modal
   height: 108px;
 }
 
-.padbottom25 {
-  padding-bottom: 25px;
-}
 
-.CamelCase {
-  text-transform: capitalize;
-}
-
-.infolisthead2 {
-  color: @ortGrey-Dark;
-  margin-bottom: 5px;
-  padding-left: 15px;
-
-}
-
-.CoralNum {
-  float: left;
-  padding-left: 10px;
-}
-
-.CoralLine {
-  width: 100%;
-  float: left;
-}
-
-.Coral1 {
-  background-color: @colorPaleTurquoise;
-  height: 17px;
-  width: 28px;
-  float: left;
-}
-
-.Coral2 {
-  background-color: @colorJordyBlue;
-  height: 17px;
-  width: 28px;
-  float: left;
-}
-
-.Coral3 {
-  background-color: @colorDodgerBlue;
-  height: 17px;
-  width: 28px;
-  float: left;
-}
-
-.Coral4 {
-  background-color: @colorPersianBlue;
-  height: 17px;
-  width: 28px;
-  float: left;
-}
-
-.Coral5 {
-  background-color: @colorUltramarine;
-  height: 17px;
-  width: 28px;
-  float: left;
-}
-
-.censusTable {
-  background-color: @colorWhite;
-  width: 100%;
-  text-align: left;
-  border: 2px solid @colorLightGrey;
-}
-
-.censusTable td {
-  text-align: center;
-
-}
-
-.censusTable tr {
-  border: 1px solid @colorLightGrey;
-}
-
-.censusTable th {
-  text-align: center;
-}
-
-.paddingtop60 {
-  padding-top: 60px;
-}
-
-.partnership {
-  text-align: right;
-  top: 20px;
-  padding-top: 25px;
-}
-
-.partnership p {
-  font-size: 20px;
-  position: relative;
-  top: 5px;
-  float: left;
-  color: @colorDimGray;
-}
-
-.share-link {
-  width: 100%;
-}

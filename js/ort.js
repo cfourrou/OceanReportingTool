@@ -23584,6 +23584,7 @@ angular.module('myApp.services', [])
                             return {color: '#3283BB', weight: 2, fillOpacity: 0};
                         }
                     });
+
                     AOI.TISubmarineLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TISubmarineLayer,
                         pane: 'TISubmarineLayerPane',
@@ -24888,8 +24889,9 @@ angular.module('myApp.services', [])
                             },
                             legend: {
                                 enabled: true,
-
                                 layout: 'horizontal',
+                                x: 0,
+                                y: 15,
                                 align: 'right',
                                 verticalAlign: 'top',
                                 floating: true,
@@ -24912,8 +24914,8 @@ angular.module('myApp.services', [])
                                 animation: !AOI.inPrintWindow
                             },
                             title: {
-                                enabled: false,
-                                text: null,
+                                enabled: true,
+                                text:"Contribution in Dollars",
                                 align: 'left'
                             },
                             exporting: {enabled: false},
@@ -24976,7 +24978,7 @@ angular.module('myApp.services', [])
                                 animation: !AOI.inPrintWindow
                             },
                             title: {
-                                text: "Employees",
+                                text: "Number of Employees",
                                 align: 'left'
                             },
                             exporting: {enabled: false},
@@ -25135,8 +25137,13 @@ angular.module('myApp.services', [])
 ;
 'use strict';
 
-function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll) {
     //this one loads once on start up
+
+    $rootScope.$on('$stateChangeStart',  function () {
+        $anchorScroll();
+    });
+
     var vm = this;
     vm.AOI = AOI;
 
@@ -25157,6 +25164,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
             numericSymbols: ["k", "M", "B", "T", "P", "E"]
         }
     });
+
 
 
     vm.checked = true;
@@ -25512,7 +25520,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
     .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', PageslideCtrl]);
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', PageslideCtrl]);
 
 
 

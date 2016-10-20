@@ -1,58 +1,49 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Elevation</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal26.html" message="message"
-                                alttext="Graphic represents the contour symbology (blue lines) on the map and displays the minimum, maximum, and mean elevation values of the area in meters."
-                                modal-img="img/info.svg"></info-directive>
+    <div class="infographic-title">
+        <div class="infographic-text">Elevation</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal26.html" message="message"
+                            alttext="Graphic represents the contour symbology (blue lines) on the map and displays the minimum, maximum, and mean elevation values of the area in meters."
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal26.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            <div tabindex="0">
-                                Elevation data was derived from NOAA's 3 arc-second <a
-                                    href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html" target="_blank">Coastal Relief
-                                Model</a>. Contours are 10m intervals.
-                            </div>
-                            <br>
-
-
+            <script type="text/ng-template" id="modal26.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        <div tabindex="0">
+                            Elevation data was derived from NOAA's 3 arc-second <a
+                                href="http://www.ngdc.noaa.gov/mgg/coastal/crm.html" target="_blank">Coastal Relief
+                            Model</a>. Contours are 10m intervals.
                         </div>
-                        <div class="modal-fade"></div>
+                        <br>
                     </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
-            <div id="slider_but26" class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
-                <div ng-class="AOIvm.AOI.CEElevationIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="AOIvm.AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
-            </div>
-
-        </div>
-        <div>
-            <div class="CommonSwatchLine">
-                <div class="swatch float-left "><img src="img/contours-01.svg"></div>
-                <div class="CEElevationData">
-                    <div><b>Max:</b> {{AOIvm.AOI.CEElevation[0].depth_max_m}}<span
-                            ng-show="AOIvm.AOI.CEElevation[0].depth_max_m !== 'Unknown'">m</span></div>
-                    <div><b>Mean:</b> {{AOIvm.AOI.CEElevation[0].depth_mean_m}}<span
-                            ng-show="AOIvm.AOI.CEElevation[0].depth_mean_m !== 'Unknown'">m</span></div>
-                    <div><b>Min:</b> {{AOIvm.AOI.CEElevation[0].depth_min_m}}<span
-                            ng-show="AOIvm.AOI.CEElevation[0].depth_min_m !== 'Unknown'">m</span></div>
-
+                    <div class="modal-fade"></div>
                 </div>
-            </div>
-
+            </script>
         </div>
-
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
+            <div ng-class="AOIvm.AOI.CEElevationIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="AOIvm.AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+    </div>
+    <div>
+        <div class="infographic-swatch">
+            <div class="swatch-img "><img src="img/contours-01.svg"></div>
+            <div class="swatch-dataarea">
+                <div><b>Max:</b> {{AOIvm.AOI.CEElevation[0].depth_max_m}}<span
+                        ng-show="AOIvm.AOI.CEElevation[0].depth_max_m !== 'Unknown'">m</span></div>
+                <div><b>Mean:</b> {{AOIvm.AOI.CEElevation[0].depth_mean_m}}<span
+                        ng-show="AOIvm.AOI.CEElevation[0].depth_mean_m !== 'Unknown'">m</span></div>
+                <div><b>Min:</b> {{AOIvm.AOI.CEElevation[0].depth_min_m}}<span
+                        ng-show="AOIvm.AOI.CEElevation[0].depth_min_m !== 'Unknown'">m</span></div>
+            </div>
+        </div>
     </div>
 </div>

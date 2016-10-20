@@ -1,19 +1,17 @@
 <!--
 indivdual infographics ID's 26-45 for CE
 -->
-<a ng-click="AOIvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggleicon"
+<a ng-click="AOIvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggle"
    ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':AOIvm.AOI.toggleFullStyle.MarginLeft,'transform':AOIvm.AOI.toggleFullStyle.transform,'msTransform':AOIvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':AOIvm.AOI.toggleFullStyle.WebkitTransform}"><img
-        class="toggleimg" src="img/ArrowButton.svg"></a>
+        class="toggle-img" src="img/ArrowButton.svg"></a>
 
-<div class="padding30 slide-right">
+<div class="slider">
     <ng-include src="'partials/AOI_head.html'"></ng-include>
-    <div id="sliderData">
-        <div id="AOItab" class="AOItabClass">
-            <div tabindex="0">General Information</div>
-            <div class="narrative" ng-bind-html="AOIvm.AOI.narratives[0].narrative | unsafe" tabindex="0"></div>
-            <div ng-repeat="CEConf in AOIvm.CEConfig | orderBy: 'priority'">
-                <div ng-if="CEConf.priority" class="zeroheightkludge" ng-include="CEConf.filename"></div>
-            </div>
+    <div class="theme">
+        <div tabindex="0">General Information</div>
+        <div class="narrative" ng-bind-html="AOIvm.AOI.narratives[0].narrative | unsafe" tabindex="0"></div>
+        <div ng-repeat="CEConf in AOIvm.CEConfig | orderBy: 'priority'">
+            <div ng-if="CEConf.priority" class="zeroheightkludge" ng-include="CEConf.filename"></div>
         </div>
     </div>
 </div>

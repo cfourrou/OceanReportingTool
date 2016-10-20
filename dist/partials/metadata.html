@@ -1,41 +1,27 @@
-
-
-<div class="padding30 slide-right">
-    <div class="CEHeader">
-        <div class="AOIname">{{AOI.name.toUpperCase()}}</div>
-        <div class="shareIcons">
-            <!--<div id="shareIcon"><a ui-sref="print" href=""><img src="img/Printer.svg"></a></div>-->
-            <!--<div id="shareIcon"><img src="img/Export.svg"></div>-->
-        </div>
+<div class="slider">
+    <div class="AOIhead">
+        <div class="AOIhead-name">{{vm.AOI.name.toUpperCase()}}</div>
     </div>
     <br class="clear"/>
 
-    <div id="sliderData">
-        <div id="AOItab" class="AOItabClass"> Metadata</div>
-        <div class="GreyText14">This page provides information on the data used in the Ocean Reporting Tool. The links
-            below are to
-            metadata and within the metadata records are links to download the source data.
-        </div>
-        <hr width="50%" align="left">
-        <div class="metaline1" ng-repeat="m1 in vm.AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'METADATA_SORT'">
-            <div class=" font-bold "> {{m1.REPORT_CAT}}</div>
-            <table class="metaTable">
-                <tbody>
-                <tr>
-                    <th class="metaTableCol1">Name</th>
-                    <th>Owner</th>
-
-
-                </tr>
-                <tr class="metaline2"
-                    ng-repeat="m2 in vm.AOI.metadata | unique: 'COMMON_NM'| filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
-                    <td>{{m2.COMMON_NM}}</td>
-                    <td><a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a></td>
-
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
+    <div class="theme"> Metadata</div>
+    <div class="narrative">This page provides information on the data used in the Ocean Reporting Tool. The links
+        below are to
+        metadata and within the metadata records are links to download the source data.
     </div>
+    <hr width="50%" align="left">
+    <div class="metadata" ng-repeat="m1 in vm.AOI.metadata | unique: 'REPORT_CAT' | orderBy : 'METADATA_SORT'">
+        <div class="metadata--bold"> {{m1.REPORT_CAT}}</div>
+        <table class="metadata-table">
+
+            <th class="metadata-table--narrow">Name</th>
+            <th>Owner</th>
+
+            <tr ng-repeat="m2 in vm.AOI.metadata | unique: 'COMMON_NM'| filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
+                <td>{{m2.COMMON_NM}}</td>
+                <td><a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
 </div>

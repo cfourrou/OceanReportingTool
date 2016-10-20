@@ -1,54 +1,51 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
-    <div>
+    <div class="infographic-title">
+        <div class="infographic-text">Fishing Economic Value 2007-2012</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal72.html" message="message"
+                            alttext="Element lists the minimum and maximum pixel value within the selected area of fishing economic value and a total value for the whole area."
+                            modal-img="img/info.svg"></info-directive>
+
+            <script type="text/ng-template" id="modal72.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Fishing Revenue is a summation of all the state revenues by all gear types and all species.
+                        The value is in US dollars for 2012 representing the sum of the mean values for all six
+                        years of the analysis. This is a single data set from a larger study. The full study is
+                        titled "Socio-Economic Impact of Outer Continental Shelf Wind Energy Development on Fishing
+                        in the U.S. Atlantic".
+                        <br>
 
 
-        <div class="infographic-title">
-            <div class="float-left">Fishing Economic Value 2007-2012</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal72.html" message="message"
-                                alttext="Element lists the minimum and maximum pixel value within the selected area of fishing economic value and a total value for the whole area."
-                                modal-img="img/info.svg"></info-directive>
-
-                <script type="text/ng-template" id="modal72.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Fishing Revenue is a summation of all the state revenues by all gear types and all species.
-                            The value is in US dollars for 2012 representing the sum of the mean values for all six
-                            years of the analysis. This is a single data set from a larger study. The full study is
-                            titled "Socio-Economic Impact of Outer Continental Shelf Wind Energy Development on Fishing
-                            in the U.S. Atlantic".
-                            <br>
-
-
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
-
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
         </div>
-        <div class="padtop5">
-            <div class="GreyText14 float-left padLeft15 w100">
-                <div class="w50 float-left">
-                    <div><b>Per Km<sup>2</sup></b></div>
-                    <div>Min: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_min|currency }}</div>
-                    <div>Max: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_max|currency}}</div>
-                </div>
-                <div class="w50 float-left">
-                    <div><b>Area Total</b></div>
-                    <div>{{ECvm.AOI.ECFishRevenue[0].FishingRev_total|currency}}</div>
-                </div>
-            </div>
+        <!-- iButton end-->
 
+
+    </div>
+    <div class="infographic-dataarea">
+
+        <div class="infographic-dataarea--split">
+            <div><b>Per Km<sup>2</sup></b></div>
+            <div>Min: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_min|currency }}</div>
+            <div>Max: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_max|currency}}</div>
+        </div>
+        <div class="infographic-dataarea--split">
+            <div><b>Area Total</b></div>
+            <div>{{ECvm.AOI.ECFishRevenue[0].FishingRev_total|currency}}</div>
         </div>
     </div>
+
+</div>
+

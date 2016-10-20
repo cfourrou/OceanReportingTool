@@ -1,63 +1,58 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Submarine Cables</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal46.html" message="message"
-                                alttext="Element contains a count of the submarine cables within the selected area and a list of who owns them and their current service state."
-                                modal-img="img/info.svg"></info-directive>
+    <div class="infographic-title">
+        <div class="infographic-text">Submarine Cables</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal46.html" message="message"
+                            alttext="Element contains a count of the submarine cables within the selected area and a list of who owns them and their current service state."
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal46.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Submarine cables represent cables and information gathered from NASCA and digitized NOAA
-                            nautical charts. Cables within an area of interest may require avoidance during any
-                            construction projects or anchoring.
+            <script type="text/ng-template" id="modal46.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Submarine cables represent cables and information gathered from NASCA and digitized NOAA
+                        nautical charts. Cables within an area of interest may require avoidance during any
+                        construction projects or anchoring.
 
-                            <br>
+                        <br>
 
 
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
-            <div id="slider_but46" class="layertoggle-button" ng-hide="TIvm.AOI.toggleFull===true">
-                <div ng-class="TIvm.AOI.TISubmarineIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="TIvm.AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
-
-            </div>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
         </div>
-        <div>
-            <div class="GreyText14 float-left padLeft15 w100">
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="TIvm.AOI.toggleFull===true">
+            <div ng-class="TIvm.AOI.TISubmarineIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="TIvm.AOI.toggleTISubmarine()" ng-include="'img/switch_off.svg'"></div>
 
-                <span class="boemline2b"><ng-hide ng-hide="TIvm.AOI.TISubmarine[0].TOTAL_CNT>=0">0</ng-hide>{{TIvm.AOI.TISubmarine[0].TOTAL_CNT}}</span><span
-                    class="boemline2a"> within 1nm</span>
+        </div>
 
-                <div class="CommonlineSwatchLine ">
-                    <div class="lineswatch float-left "><img src="img/svg-elements_submarine-cable.svg"></div>
-                    <div class="TILineData">
+    </div>
+    <div>
 
-                        <div class="GreyText10">Cable</div>
-
-                    </div>
-                </div>
-
+        <div class="infographic-line">
+            <div class="line-img">
+                <img src="img/svg-elements_submarine-cable.svg">
             </div>
-            <div class="GreyText12 float-left padLeft15 w100"
-                 ng-repeat="x in TIvm.AOI.TISubmarine| orderBy : 'OwnerStatus'| unique: 'OwnerStatus'">
-                {{x.OwnerStatus}}
-            </div>
+            <span class="infographic-twosizeline--large"><ng-hide ng-hide="TIvm.AOI.TISubmarine[0].TOTAL_CNT>=0">&nbsp;0
+            </ng-hide>&nbsp;{{TIvm.AOI.TISubmarine[0].TOTAL_CNT}}</span>
+           <span
+                   class="infographic-twosizeline--small"> Cables within 1nm</span>
+        </div>
+
+
+        <div class="infographic-list infographic-list--pad"
+             ng-repeat="x in TIvm.AOI.TISubmarine| orderBy : 'OwnerStatus'| unique: 'OwnerStatus'">
+            {{x.OwnerStatus}}
         </div>
     </div>
 </div>

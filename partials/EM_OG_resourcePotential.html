@@ -1,88 +1,86 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Oil and Gas Resource Potential</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal15.html" message="message"
-                                alttext="Element is a table that list oil reserve plays that overlap the selected area and estimated amounts of oil and gas available in each one."
-                                modal-img="img/info.svg"></info-directive>
+    <div class="infographic-title">
+        <div class="infographic-text">Oil and Gas Resource Potential</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal15.html" message="message"
+                            alttext="Element is a table that list oil reserve plays that overlap the selected area and estimated amounts of oil and gas available in each one."
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal15.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Oil and Gas Resource Potential shows the extent of the probable oil and/or gas geologic
-                            structures (plays) identified within the US Outer Continental Shelf. Plays are groups of
-                            known and/or postulated sub-seafloor hydrocarbon accumulations that share common geologic,
-                            geographic, and temporal properties. The listed values represent the mean expected resource
-                            within an entire play, not within the specific area of interest. For more information on
-                            conceptual plays within the Atlantic OCS, follow the link below.<br>
+            <script type="text/ng-template" id="modal15.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Oil and Gas Resource Potential shows the extent of the probable oil and/or gas geologic
+                        structures (plays) identified within the US Outer Continental Shelf. Plays are groups of
+                        known and/or postulated sub-seafloor hydrocarbon accumulations that share common geologic,
+                        geographic, and temporal properties. The listed values represent the mean expected resource
+                        within an entire play, not within the specific area of interest. For more information on
+                        conceptual plays within the Atlantic OCS, follow the link below.<br>
 
-                            Bbl: Billion barrels<br>
-                            Tcf: trillion cubic feet<br>
-                            BOE: barrels of oil equivalent<br>
-                            Source:<a
-                                href="http://www.boem.gov/uploadedFiles/BOEM/Oil_and_Gas_Energy_Program/Resource_Evaluation/Resource_Assessment/BOEM-2012-016%5b1%5d.pdf"
-                                target="_blank"> Assessment of Undiscovered Technically Recoverable Oil and Gas
-                            Resources of
-                            the Atlantic Outer Continental Shelf 2011 as of January 1, 2009</a>
-                            <br>
+                        Bbl: Billion barrels<br>
+                        Tcf: trillion cubic feet<br>
+                        BOE: barrels of oil equivalent<br>
+                        Source:<a
+                            href="http://www.boem.gov/uploadedFiles/BOEM/Oil_and_Gas_Energy_Program/Resource_Evaluation/Resource_Assessment/BOEM-2012-016%5b1%5d.pdf"
+                            target="_blank"> Assessment of Undiscovered Technically Recoverable Oil and Gas
+                        Resources of
+                        the Atlantic Outer Continental Shelf 2011 as of January 1, 2009</a>
+                        <br>
 
 
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
-        </div>
-        <div class="infographicline3">
-            <span class="boemline2a ">There are</span>
-            <span class="boemline2b ">{{EMvm.AOI.OGresource.length}}</span>
-            <span class="boemline2a ">plays within the area</span>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
         </div>
-
-        <div class="GreyText10 padLeft15">
-            <div class="float-left OGTablebox"></div>
-            <div class="OGTableLabel Greychart float-left">Undiscovered Technically Recoverable Oil and Gas
-                Resources
-            </div>
-            <table class="Greychart OGTable">
-
-                <tr class="GreychartBorder">
-                    <th class="OGTableBorderLong">OCS Play</th>
-                    <th class="OGTableBorderShort">Oil (bbl)</th>
-                    <th class="OGTableBorderShort">Gas (tcf)</th>
-                    <th class="OGTableBorderShort">BOE (bbl)</th>
-                </tr>
-                <tr class="GreychartBorder" ng-repeat="lease in EMvm.AOI.OGresource | orderBy : 'OCS_Play'">
-                    <td class="GreychartBorder">
-                        <div>{{lease.OCS_Play}}</div>
-                    </td>
-                    <td class="GreychartBorder">
-                        <div>{{lease.UTRR_Oil}}</div>
-                    </td>
-                    <td class="GreychartBorder">
-                        <div>{{lease.UTRR_Gas}}</div>
-                    </td>
-                    <td class="GreychartBorder">
-                        <div>{{lease.UTRR_BOE}}</div>
-                    </td>
-
-
-                </tr>
-            </table>
-
-        </div>
-
+        <!-- iButton end-->
+    </div>
+    <div class="infographic-twosizeline">
+        <span class="infographic-twosizeline--small ">There are</span>
+        <span class="infographic-twosizeline--large ">{{EMvm.AOI.OGresource.length}}</span>
+        <span class="infographic-twosizeline--small ">probable oil and/or gas geologic structures (plays) identified within the area</span>
 
     </div>
+
+    <div class="oilandgas">
+        <div class="oilandgas-spacer"></div>
+        <div class="oilandgas-title">Undiscovered Technically Recoverable Oil and Gas
+            Resources
+        </div>
+        <table class="table-oilandgas ">
+
+            <tr>
+                <th class="table-oilandgas--long">OCS Play</th>
+                <th class="table-oilandgas--short">Oil (bbl)</th>
+                <th class="table-oilandgas--short">Gas (tcf)</th>
+                <th class="table-oilandgas--short">BOE (bbl)</th>
+            </tr>
+            <tr ng-repeat="lease in EMvm.AOI.OGresource | orderBy : 'OCS_Play'">
+                <td>
+                    <div>{{lease.OCS_Play}}</div>
+                </td>
+                <td>
+                    <div>{{lease.UTRR_Oil}}</div>
+                </td>
+                <td>
+                    <div>{{lease.UTRR_Gas}}</div>
+                </td>
+                <td>
+                    <div>{{lease.UTRR_BOE}}</div>
+                </td>
+
+
+            </tr>
+        </table>
+
+    </div>
+
+
 </div>

@@ -1,4 +1,4 @@
-<div class="padding30 slide-right">
+<div class="slider">
     <div class="CEHeader">
         <div class="AOIname">Building Printable Page</div>
 
@@ -6,66 +6,72 @@
 
     <div class="clear">&nbsp;</div>
 
-    <div id="sliderData" class="h100">
-
-        <div class="overflowauto" ng-print load-promise="Printvm.readyToPrint">
-            <div>{{Printvm.AOI.name.toUpperCase()}}</div>
-            <div id="AOItab" class="AOItabClassPrint"> Common Elements
-                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
-                <div ng-repeat="x in Printvm.CEConfig | orderBy: 'priority'" ng-init="AOIvm=Printvm;">
-                    <div ng-show="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
-                </div>
-            </div>
-
-            <div class="clear">&nbsp;</div>
-
-            <div id="AOItab" class="AOItabClass"> Energy and Minerals
-                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
-                <div ng-repeat="x in Printvm.EMConfig | orderBy: 'priority'" ng-init="EMvm=Printvm">
-                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                         ng-include="x.filename"></div>
-                </div>
-
-            </div>
-            <div class="clear">&nbsp;</div>
-
-            <div id="AOItab" class="AOItabClass"> Natural Resources and Conservation
-                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
-                <div ng-repeat="x in Printvm.NRCConfig | orderBy: 'priority'" ng-init="NRCvm=Printvm">
-                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                         ng-include="x.filename"></div>
-                </div>
-            </div>
-
-            <div class="clear">&nbsp;</div>
-
-            <div id="AOItab" class="AOItabClass"> Transportation and Infrastructure
-                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
-                <div ng-repeat="x in Printvm.TIConfig | orderBy: 'priority'" ng-init="TIvm=Printvm">
-
-                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                         ng-include="x.filename"></div>
-
-                </div>
-
-            </div>
-            <div class="clear">&nbsp;</div>
-
-            <div id="AOItab" class="AOItabClass"> Economics And Commerce
-                <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
-                <div ng-repeat="x in Printvm.ECConfig | orderBy: 'priority'" ng-init="ECvm=Printvm">
-
-                    <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                         ng-include="x.filename"></div>
-
-                </div>
-
-            </div>
-            <div class="clear">&nbsp;</div>
-            <div id="AOItab" class="AOItabClass">Metadata
-                <div ng-include="'partials/metadataPrint.html'"></div>
+    <div class="overflowauto" ng-print load-promise="Printvm.readyToPrint">
+        <div>{{Printvm.AOI.name.toUpperCase()}}</div>
+        <div class="theme--printfriendly"> Common Elements
+            <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
+            <div ng-repeat="x in Printvm.CEConfig | orderBy: 'priority'" ng-init="AOIvm=Printvm;">
+                <div ng-show="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
             </div>
         </div>
 
+        <div class="clear">&nbsp;</div>
+
+        <div class="theme"> Energy and Minerals
+            <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
+            <div ng-repeat="x in Printvm.EMConfig | orderBy: 'priority'" ng-init="EMvm=Printvm">
+                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="x.filename"></div>
+            </div>
+
+        </div>
+        <div class="clear">&nbsp;</div>
+
+        <div class="theme"> Natural Resources and Conservation
+            <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
+            <div ng-repeat="x in Printvm.NRCConfig | orderBy: 'priority'" ng-init="NRCvm=Printvm">
+                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="x.filename"></div>
+            </div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div class="theme"> Transportation and Infrastructure
+            <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
+            <div ng-repeat="x in Printvm.TIConfig | orderBy: 'priority'" ng-init="TIvm=Printvm">
+
+                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="x.filename"></div>
+
+            </div>
+
+        </div>
+        <div class="clear">&nbsp;</div>
+
+        <div class="theme"> Economics And Commerce
+            <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
+            <div ng-repeat="x in Printvm.ECConfig | orderBy: 'priority'" ng-init="ECvm=Printvm">
+
+                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="x.filename"></div>
+
+            </div>
+
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="theme">Metadata
+            <div ng-include="'partials/metadataPrint.html'"></div>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="partnership">
+            A Collaboration of
+            <a class="partnership-link" href="http://www.boem.gov/" title="Bureau of Ocean Management Homepage"><img
+                    src="img/boem.png" alt="BOEM Logo"></a>
+            <a class="partnership-link" href="https://coast.noaa.gov/"
+               title="NOAA Office for Coastal Management Homepage"><img
+                    src="img/noaa.png" alt="NOAA Logo"></a>
+        </div>
     </div>
+
 </div>

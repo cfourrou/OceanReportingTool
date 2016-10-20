@@ -1,7 +1,12 @@
 'use strict';
 
-function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll) {
     //this one loads once on start up
+
+    $rootScope.$on('$stateChangeStart',  function () {
+        $anchorScroll();
+    });
+
     var vm = this;
     vm.AOI = AOI;
 
@@ -22,6 +27,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
             numericSymbols: ["k", "M", "B", "T", "P", "E"]
         }
     });
+
 
 
     vm.checked = true;
@@ -377,7 +383,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
     .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', PageslideCtrl]);
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', PageslideCtrl]);
 
 
 

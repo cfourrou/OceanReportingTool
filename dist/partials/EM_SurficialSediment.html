@@ -1,60 +1,60 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Surficial Sediment Classification</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal7.html" message="message"
-                                alttext="Graphic of a bar chart that lists the type of sediment samples found in the selected area and how many of each type are present."
-                                modal-img="img/info.svg"></info-directive>
+    <div class="infographic-title">
+        <div class="infographic-text">Surficial Sediment Classification</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal7.html" message="message"
+                            alttext="Graphic of a bar chart that lists the type of sediment samples found in the selected area and how many of each type are present."
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal7.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Represents a count and description of selected surface samples from the East Coast Sediment
-                            Texture Database within the AOI. Summary of these samples does not imply a homogenous
-                            sediment type over the whole area. Classification is based on Shepard’s pyramid.
-                            <br>
-                            <img src="img/Shepard1.png">
+            <script type="text/ng-template" id="modal7.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Represents a count and description of selected surface samples from the East Coast Sediment
+                        Texture Database within the AOI. Summary of these samples does not imply a homogenous
+                        sediment type over the whole area. Classification is based on Shepard’s pyramid.
+                        <br>
+                        <img src="img/Shepard1.png">
 
 
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
         </div>
-        <span class="GreyText12 float-left padLeft15 w100 ">Number of Samples Collected.</span>
+        <!-- iButton end-->
+
+    </div>
+    <div class="infographic-dataarea">
+        <span class="infographic-list">Number of Samples Collected.</span>
         <div ng-repeat="dispx in EMvm.AOI.EMSurficialSediment | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
             <div ng-repeat="count in EMvm.AOI.EMSurficialSediment | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered ">
 
             </div>
-                <span class="float-left blackBoldText14 SedimentChart">
-                    <div class="SedimentCenteredData">{{filtered.length}}</div>
+                <span class="sediment">
+                    <div class="sediment-data">{{filtered.length}}</div>
                     <div ng-style="{'width': (filtered.length/EMvm.AOI.EMSurficialSediment.length)*100 + '%' }"
-                         class="SedimentBar float-left"></div>
+                         class="sediment-bar float-left"></div>
 
 
                  </span>
-            <div class="float-left w10 GreyText12 ">
+            <div class="sediment-spacer">
                 &nbsp;
             </div>
-            <div class="float-left PaleText14 SedimentchartType">
-                <span class="marginleft5px">{{dispx.PRIMARY_USE}}</span>
+            <div class="sediment-type">
+                <span class="sediment-type--margin">{{dispx.PRIMARY_USE}}</span>
             </div>
         </div>
-        <div class="boemline2" ng-show="!EMvm.AOI.EMSurficialSediment.length">
-            <span class="boemline2b">0 </span>
-            <span class="boemline2a">Samples</span>
+        <div class="infographic-twosizeline" ng-show="!EMvm.AOI.EMSurficialSediment.length">
+            <span class="infographic-twosizeline--large">0 </span>
+            <span class="infographic-twosizeline--small">Samples</span>
         </div>
 
 

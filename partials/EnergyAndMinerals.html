@@ -1,26 +1,19 @@
 <!--
 indivdual infographics ID's 1-25 for EM
 -->
-
-<a ng-click="EMvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggleicon"
+<a ng-click="EMvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggle"
    ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':EMvm.AOI.toggleFullStyle.MarginLeft,'transform':EMvm.AOI.toggleFullStyle.transform,'msTransform':EMvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':EMvm.AOI.toggleFullStyle.WebkitTransform}"><img
-        class="toggleimg" src="img/ArrowButton.svg"></a>
+        class="toggle-img" src="img/ArrowButton.svg"></a>
 
-<div class="padding30 slide-right">
+<div class="slider">
     <ng-include src="'partials/AOI_head.html'"></ng-include>
-
-    <div id="sliderData">
-        <div id="AOItab" class="AOItabClass"> <div  tabindex="0">Energy and Minerals</div>
-            <div class="narrative" ng-bind-html="EMvm.AOI.narratives[1].narrative | unsafe" tabindex="0"></div>
-            <div ng-repeat="EMConf in EMvm.EMConfig | orderBy: 'priority'">
-                <div ng-if="EMConf.priority" class="zeroheightkludge" ng-include="EMConf.filename"></div>
-            </div>
-
+    <div class="theme">
+        <div tabindex="0">Energy and Minerals</div>
+        <div class="narrative" ng-bind-html="EMvm.AOI.narratives[1].narrative | unsafe" tabindex="0"></div>
+        <div ng-repeat="EMConf in EMvm.EMConfig | orderBy: 'priority'">
+            <div ng-if="EMConf.priority" class="zeroheightkludge" ng-include="EMConf.filename"></div>
         </div>
-
-
     </div>
 </div>
-
 <br>
 

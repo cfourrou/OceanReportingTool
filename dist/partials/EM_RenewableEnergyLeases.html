@@ -1,59 +1,60 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Renewable Energy Leases</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal1.html" message="message"
-                                alttext="Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes."
-                                modal-img="img/info.svg"></info-directive>
+    <div class="infographic-title">
+        <div class="infographic-text">Renewable Energy Leases</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal1.html" message="message"
+                            alttext="Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes."
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal1.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            BOEM's Outer Continental Shelf (OCS) Renewable Energy Program interim leasing policy allows
-                            for
-                            limited leasing and was designed for resource data collection and technology testing
-                            activities.
-                            The interim policy leases have a five year term and provide no subsequent commercial rights.
-                            <br>
+            <script type="text/ng-template" id="modal1.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        BOEM's Outer Continental Shelf (OCS) Renewable Energy Program interim leasing policy allows
+                        for
+                        limited leasing and was designed for resource data collection and technology testing
+                        activities.
+                        The interim policy leases have a five year term and provide no subsequent commercial rights.
+                        <br>
 
 
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
-            </div>
-
-            <!-- iButton end-->
-            <div id="slider_but1" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
-                <div ng-class="EMvm.AOI.EMActiveRenewableEnergyLeasesLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="EMvm.AOI.toggleEMActiveRenewableEnergyLeasesLayer()"
-                     ng-include="'img/switch_off.svg'"></div>
-            </div>
         </div>
-        <div class="swatch"><img src="img/Renewable_Energy_Leases.svg"></div>
 
-        <div class="infographicline2">
-            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_CNT>=0">0
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.EMActiveRenewableEnergyLeasesLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="EMvm.AOI.toggleEMActiveRenewableEnergyLeasesLayer()"
+                 ng-include="'img/switch_off.svg'"></div>
+        </div>
+    </div>
+    <div class="swatch-img"><img src="img/Renewable_Energy_Leases.svg"></div>
+
+    <div class="infographic-dataarea--small">
+            <span class="infographic-twosizeline--large"><ng-hide
+                    ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_CNT>=0">0
             </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_CNT}}</span>
-            <span class="boemline2a">BOEM Active Renewable Energy Leases</span>
-        </div>
-        <div class="boemline2">
-            <span class="boemline2a">Covers</span>
-            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].PERC_COVER>=0">0
+        <span class="infographic-twosizeline--small">BOEM Active Renewable Energy Leases</span>
+    </div>
+    <div class="infographic-twosizeline">
+        <span class="infographic-twosizeline--small">Covers</span>
+            <span class="infographic-twosizeline--large"><ng-hide
+                    ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].PERC_COVER>=0">0
             </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].PERC_COVER.toFixed(0)}}</span>
-            <span class="boemline2a">%, including</span>
-            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC>=0">0
+        <span class="infographic-twosizeline--small">%, including</span>
+            <span class="infographic-twosizeline--large"><ng-hide
+                    ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC>=0">0
             </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC}}</span>
-            <span class="boemline2a">OCS blocks</span>
-        </div>
+        <span class="infographic-twosizeline--small">OCS blocks</span>
     </div>
 </div>

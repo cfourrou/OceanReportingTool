@@ -1,65 +1,56 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">State and County</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal28.html" message="message"
-                                alttext="Graphic is a pie graph showing the proportion of the selected area that falls in state and/or federal jurisdiction. Lists which states and which counties it overlaps."
-                                modal-img="img/info.svg">
+    <div class="infographic-title">
+        <div class="infographic-text">State and County</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal28.html" message="message"
+                            alttext="Graphic is a pie graph showing the proportion of the selected area that falls in state and/or federal jurisdiction. Lists which states and which counties it overlaps."
+                            modal-img="img/info.svg">
 
-                </info-directive>
+            </info-directive>
 
-                <script type="text/ng-template" id="modal28.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Listed are adjacent states and counties. Pie chart represents the portion of the defined
-                            area that falls in either State or Federal waters.
+            <script type="text/ng-template" id="modal28.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Listed are adjacent states and counties. Pie chart represents the portion of the defined
+                        area that falls in either State or Federal waters.
 
-                            <br>
+                        <br>
 
-
-                        </div>
-                        <div class="modal-fade"></div>
-                    </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
-        </div>
-
-        <div class="float-left padbottom10">
-            <div ng-repeat="istate in AOIvm.AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
-
-
-                <div class="infolisthead2">{{istate.st_name}}
-
-                </div>
-                <div class="infolist">
-
-
-                    <div ng-repeat="icounty in AOIvm.AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
-
-
-                        <div class="infolistitem">{{icounty.cntyname}}</div>
 
                     </div>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
+        </div>
+        <!-- iButton end-->
+    </div>
+
+    <div class="list-categorized">
+        <div ng-repeat="istate in AOIvm.AOI.CECoastalCounties | unique: 'st_name' | orderBy : 'st_name'">
+            <div class="list-catagory">{{istate.st_name}}</div>
+            <div class="list-area">
+                <div ng-repeat="icounty in AOIvm.AOI.CECoastalCounties | filter: {st_name: istate.st_name}:true | unique: 'cntyname' | orderBy : 'cntyname'">
+                    <div class="list-item">{{icounty.cntyname}}</div>
                 </div>
 
-
             </div>
-        </div>
-        <highchart id="stateAndFedContainer" config="AOIvm.AOI.highchartsNGState" class="stateandFedchart"></highchart>
 
-        <div>
 
         </div>
     </div>
+    <highchart id="stateAndFedContainer" config="AOIvm.AOI.highchartsNGState"
+               class="highcharts-stateandfed"></highchart>
+
+    <div>
+
+    </div>
 </div>
+

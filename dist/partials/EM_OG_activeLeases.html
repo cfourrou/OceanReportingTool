@@ -1,63 +1,59 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
-    <div class="wrbox1">
-        <div class="infographicline1">
-            <div class="float-left">Oil and Gas Active Leases</div>
-            <!-- iButton start-->
-            <div class="iModal">
+    <div class="infographic-title">
+        <div class="infographic-text">Oil and Gas Active Leases</div>
+        <!-- iButton start-->
+        <div class="iModal">
 
-                <info-directive class="iModal-button" modal-template="modal13.html" message="message"
-                                alttext="Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes."
-                                modal-img="img/info.svg"></info-directive>
+            <info-directive class="iModal-button" modal-template="modal13.html" message="message"
+                            alttext="Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes."
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal13.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Oil and Gas leases are granted by BOEM to the highest bidder for the exploration,
-                            development and production of oil and gas contained within the Outer Continental Shelf.
-                            Under a lease, a company has the right to apply for permits to explore and develop the
-                            mineral resources within that area.
-                            <br>
+            <script type="text/ng-template" id="modal13.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Oil and Gas leases are granted by BOEM to the highest bidder for the exploration,
+                        development and production of oil and gas contained within the Outer Continental Shelf.
+                        Under a lease, a company has the right to apply for permits to explore and develop the
+                        mineral resources within that area.
+                        <br>
 
 
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-
-            </div>
-        </div>
-        <!-- iButton end-->
-        <div class="infographicline3 padbottom10">
-            <span class="boemline2b ">{{EMvm.AOI.OGLease[0].TOTAL_CNT}}</span>
-            <span class="boemline2a ">Oil and Gas leases within 2 miles of this area</span>
-        </div>
-        <div class="GreyText10 padLeft15">
-            <table class="Greychart">
-
-                <tr class="GreychartBorder">
-                    <th class="GreychartBorder40">Lease Number</th>
-                    <th class="GreychartBorder60">Status</th>
-                </tr>
-                <tr class="GreychartBorder" ng-repeat="lease in EMvm.AOI.OGLease | orderBy : 'Lease_Numb'">
-                    <td class="GreychartBorder">
-                        <div>{{lease.Lease_Numb}}</div>
-                    </td>
-                    <td class="GreychartBorder">
-                        <div>{{lease.Lease_expt}}</div>
-                    </td>
-
-
-                </tr>
-            </table>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
         </div>
+    </div>
+    <!-- iButton end-->
+    <span class="infographic-twosizeline padbottom10">
+        <span class="infographic-twosizeline--large ">{{EMvm.AOI.OGLease[0].TOTAL_CNT}}</span>
+        <span class="infographic-twosizeline--small ">Oil and Gas leases within 2 miles of this area</span>
+    </span>
+    <div class="infographic-dataarea">
+        <table class="table-oilandgas">
 
+            <tr>
+                <th class="table-oilandgas--narrow">Lease Number</th>
+                <th class="table-oilandgas--wide">Status</th>
+            </tr>
+            <tr ng-repeat="lease in EMvm.AOI.OGLease | orderBy : 'Lease_Numb'">
+                <td>
+                    <div>{{lease.Lease_Numb}}</div>
+                </td>
+                <td>
+                    <div>{{lease.Lease_expt}}</div>
+                </td>
+
+
+            </tr>
+        </table>
 
     </div>
 </div>

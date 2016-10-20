@@ -1,62 +1,65 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Wind Planning Areas</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal2.html" message="message"
-                                alttext="Element contains a count of the number of wind planning areas that intersect the selected area and calculates the percentage of the selected area that the WPAs cover and how many OCS blocks that includes. Includes hyperlinks for more information on the WPAs"
-                                modal-img="img/info.svg"></info-directive>
+    <div class="infographic-title">
+        <div class="infographic-text">Wind Planning Areas</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal2.html" message="message"
+                            alttext="Element contains a count of the number of wind planning areas that intersect the selected area and calculates the percentage of the selected area that the WPAs cover and how many OCS blocks that includes. Includes hyperlinks for more information on the WPAs"
+                            modal-img="img/info.svg"></info-directive>
 
-                <script type="text/ng-template" id="modal2.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Wind Planning Areas delineate an area that is being considered for Wind Power Development
-                            and can represent up to six different types of announcements within the US Federal Register
-                            (FR) that can be used to show the current status of wind power development.
-                            <br>
+            <script type="text/ng-template" id="modal2.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Wind Planning Areas delineate an area that is being considered for Wind Power Development
+                        and can represent up to six different types of announcements within the US Federal Register
+                        (FR) that can be used to show the current status of wind power development.
+                        <br>
 
 
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
-            </div>
-            <!-- iButton end-->
-            <div id="slider_but2" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
-                <div ng-class="EMvm.AOI.EMWindPlanningAreaLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="EMvm.AOI.toggleEMWindPlanningAreaLayer()" ng-include="'img/switch_off.svg'"></div>
-            </div>
         </div>
-        <div class="swatch"><img src="img/Wind_Planning_Areas.svg"></div>
-        <div class="infographicline2">
-            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT}}</span>
-            <span class="boemline2a">BOEM Wind Planning Area</span>
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.EMWindPlanningAreaLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="EMvm.AOI.toggleEMWindPlanningAreaLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
-        <div class="boemline2">
-            <span class="boemline2a">Covers</span>
-            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].PERC_COVER>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].PERC_COVER.toFixed(0)}}</span>
-            <span class="boemline2a">%, including</span>
-            <span class="boemline2b"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC>=0">0</ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC}}</span>
-            <span class="boemline2a">OCS blocks</span>
-        </div>
+    </div>
+    <div class="swatch-img"><img src="img/Wind_Planning_Areas.svg"></div>
+    <div class="infographic-dataarea--small">
+        <span class="infographic-twosizeline--large"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT>=0">0
+        </ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT}}</span>
+        <span class="infographic-twosizeline--small">BOEM Wind Planning Area</span>
+    </div>
+    <div class="infographic-twosizeline">
+        <span class="infographic-twosizeline--small">Covers</span>
+        <span class="infographic-twosizeline--large"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].PERC_COVER>=0">0
+        </ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].PERC_COVER.toFixed(0)}}</span>
+        <span class="infographic-twosizeline--small">%, including</span>
+        <span class="infographic-twosizeline--large"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC>=0">0
+        </ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC}}</span>
+        <span class="infographic-twosizeline--small">OCS blocks</span>
+    </div>
 
-        <div class="boemline2">
-            <div class="boemline2a">{{EMvm.AOI.EMWindPlanningArea[0].PROT_NUMBE}}
-                {{EMvm.AOI.EMWindPlanningArea[0].INFO}}
-            </div>
-            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK1}} target="_blank">Current Federal
-                Register Notice</a>
-            </div>
-            <div class="boemline2a"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}} target="_blank">Current State
-                Activities</a></div>
+    <div class="infographic-twosizeline">
+        <div class="infographic-twosizeline--small">{{EMvm.AOI.EMWindPlanningArea[0].PROT_NUMBE}}
+            {{EMvm.AOI.EMWindPlanningArea[0].INFO}}
         </div>
+        <div class="infographic-twosizeline--small"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK1}} target="_blank">Current
+            Federal
+            Register Notice</a>
+        </div>
+        <div class="infographic-twosizeline--small"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}} target="_blank">Current
+            State
+            Activities</a></div>
     </div>
 </div>

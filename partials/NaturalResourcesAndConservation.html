@@ -1,20 +1,17 @@
 <!--
 indivdual infographics ID's 56-65 for NRC
 -->
-<a ng-click="NRCvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggleicon"
+<a ng-click="NRCvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggle"
    ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':NRCvm.AOI.toggleFullStyle.MarginLeft,'transform':NRCvm.AOI.toggleFullStyle.transform,'msTransform':NRCvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':NRCvm.AOI.toggleFullStyle.WebkitTransform}"><img
-        class="toggleimg" src="img/ArrowButton.svg"></a>
+        class="toggle-img" src="img/ArrowButton.svg"></a>
 
-
-<div class="padding30 slide-right">
+<div class="slider">
     <ng-include src="'partials/AOI_head.html'"></ng-include>
-
-    <div id="sliderData">
-        <div id="AOItab" class="AOItabClass"> <div  tabindex="0">Natural Resources and Conservation</div>
-            <div class="narrative" ng-bind-html="NRCvm.AOI.narratives[2].narrative | unsafe" tabindex="0"></div>
-            <div ng-repeat="NRCConf in NRCvm.NRCConfig | orderBy: 'priority'">
-                <div ng-if="NRCConf.priority" class="zeroheightkludge" ng-include="NRCConf.filename"></div>
-            </div>
+    <div class="theme">
+        <div tabindex="0">Natural Resources and Conservation</div>
+        <div class="narrative" ng-bind-html="NRCvm.AOI.narratives[2].narrative | unsafe" tabindex="0"></div>
+        <div ng-repeat="NRCConf in NRCvm.NRCConfig | orderBy: 'priority'">
+            <div ng-if="NRCConf.priority" class="zeroheightkludge" ng-include="NRCConf.filename"></div>
         </div>
     </div>
 </div>

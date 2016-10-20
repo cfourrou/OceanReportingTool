@@ -1,100 +1,94 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Ocean Current Power</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button " modal-template="modal10.html"
-                                alttext="Element describes the suitablility of the selected area for ocean current power generation. Includes a bar graph representing the average current speed in meters per second."
-                                message="message"
-                                modal-img="img/info.svg"></info-directive>
-                <script type="text/ng-template" id="modal10.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Large scale ocean currents are a renewable source of energy due to their persistence and
-                            sustainability as a result of earth's rotation. Extraction of energy from these currents
-                            requires a water velocity of a minimum of 1.0 m/s to be considered a potential resource
-                            location.
-
-
-                            <div class="modal-overlay--footnote"><a target="_blank"
-                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/energy_production_ocean_currents_us_0.pdf'>Assessment
-                                of Energy Production Potential from
-                                Ocean Currents along the United States Coastline
-                            </a></div>
-                        </div>
-                        <div class="modal-fade"></div>
+    <div class="infographic-title">
+        <div class="infographic-text">Ocean Current Power</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button " modal-template="modal10.html"
+                            alttext="Element describes the suitablility of the selected area for ocean current power generation. Includes a bar graph representing the average current speed in meters per second."
+                            message="message"
+                            modal-img="img/info.svg"></info-directive>
+            <script type="text/ng-template" id="modal10.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Large scale ocean currents are a renewable source of energy due to their persistence and
+                        sustainability as a result of earth's rotation. Extraction of energy from these currents
+                        requires a water velocity of a minimum of 1.0 m/s to be considered a potential resource
+                        location.
+                        <div class="modal-overlay--footnote"><a target="_blank"
+                                                                href='http://energy.gov/sites/prod/files/2013/12/f5/energy_production_ocean_currents_us_0.pdf'>Assessment
+                            of Energy Production Potential from
+                            Ocean Currents along the United States Coastline
+                        </a></div>
                     </div>
-                </script>
-            </div>
-            <!-- iButton end-->
-            <div id="slider_but10" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
-                <div ng-class="EMvm.AOI.EMCurrentPowerIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="EMvm.AOI.toggleEMCurrentPower()" ng-include="'img/switch_off.svg'"></div>
-            </div>
-            <div id="slbuttxt0" class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
-            </div>
-        </div>
-        <div class="power-graphic">
-            <div class="power-chart ">
-                <span class="GreyText14 float-left padLeft15">This area is</span><span class="GreyText14 float-left"
-                                                                                        ng-hide="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1">&nbsp;NOT</span>
-
-                <span class="GreyText14 float-left">&nbsp;suitable for</span>
-                <div class="padbottom16 GreyText14 padLeft15 float-left w100">Ocean Current Power
-                    Generation
+                    <div class="modal-fade"></div>
                 </div>
+            </script>
+        </div>
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.EMCurrentPowerIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="EMvm.AOI.toggleEMCurrentPower()" ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+        </div>
+    </div>
+    <div class="power-graphic">
+        <div class="power-chart ">
+            <div class="power-suitability">
+                <span>This area is</span>
+                <span ng-hide="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1">&nbsp;NOT</span>
+                <span>&nbsp;suitable for</span>
+                <div>Ocean Current Power Generation</div>
 
-                <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1]">
+                <div ng-class="{false: 'power-suitability--red', true: 'power-suitability--green'}[EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT>1]">
                     Current Speed is <span ng-show="EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT<=1">NOT</span> >1 m/s
                 </div>
-                <div class="powerscale GreyText14 padLeft15"></div>
-                <div class="powerscale2 GreyText14 padLeft15">
-
-                    <div ng-repeat="a in [1, 2, 3, 4,5,6,7,8,9]" class="powerscalediv float-left"></div>
-
-                </div>
-
-                <div class="powerscalenum GreyText14 padLeft15">
-
-                    <div ng-repeat="b in [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6]" class="powerscalenum2 float-left">
-                        {{b}}
-                    </div>
-
-
-                    <div id="thebar" class="float-left powergraphbar"
-                         ng-style="{'width': (EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT*215) + 'px' };"></div>
-                </div>
-                <div class="GreyText10 text-center"> Ocean Current (m/s)</div>
             </div>
 
-            <div class="power-key">
-                <div class="w100">
-                    Ocean Current Speed (ms)
+            <div class="power-scale">
+                <div ng-repeat="a in [1, 2, 3, 4,5,6,7,8,9]" class="power-scale--current"></div>
+            </div>
+
+            <div class="power-numbers">
+
+                <div ng-repeat="b in [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6]" class="power-graduation--current">
+                    {{b}}
                 </div>
-                <div class="w30 float-left GreyText14">
-                    <img src="img/OceanCurrentPowerGraphic.svg">
+
+
+                <div class="power-graphbar power-graphbar--current"
+                     ng-style="{'width': (EMvm.AOI.EMCurrentPower[0].AVG_OCEAN_CURRENT*215) + 'px' };"></div>
+            </div>
+            <div class="power-text"> Ocean Current (m/s)</div>
+        </div>
+
+        <div class="power-key">
+            <div class="key-title">
+                Ocean Current Speed (ms)
+            </div>
+            <div class="key-swatch">
+                <img src="img/OceanCurrentPowerGraphic.svg">
+            </div>
+            <div class="key-scale">
+                <div>
+                    <img class="key-img" src="img/OceanCurrentRectangle.svg">
                 </div>
-                <div class="w65 float-left GreyText14 ">
-                    <div><!--<img src="img/GandH.png?168a886aba220a3d">-->
-                        <img class="float-left" src="img/OceanCurrentRectangle.svg">
-                    </div>
-                    <div class="float-left GreyText14 padLeft15">
-                        High: 1.72
-                    </div>
-                    <div class="powerchartswatch float-left GreyText14 padLeft15">
-                        Low: 0
-                    </div>
+                <div class="key-high">
+                    High: 1.72
+                </div>
+                <div class="key-low">
+                    Low: 0
                 </div>
             </div>
         </div>
-
     </div>
+
 </div>
+
 

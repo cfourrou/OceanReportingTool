@@ -1,158 +1,152 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
-    <div>
-        <div class="infographic-title">
-            <div class="float-left">Wave Power</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button " modal-template="modal8.html"
-                                alttext="Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter."
-                                message="message"
-                                modal-img="img/info.svg"></info-directive>
-                <script type="text/ng-template" id="modal8.html">
-                    <div   class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            Wave Power is a renewable resource that captures the energy stored in wave height to produce
-                            electricity. To develop this resource a minimum of 10 kW/m must be available to be
-                            considered a potential location for development.
-                            <div class="modal-overlay--footnote"><a target="_blank"
-                                                     href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping
-                                and Assessment of the United States Ocean Wave Energy Resource</a></div>
-                            <div class="modal-overlay--footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>AquaGen
-                                Technologies: Why Wave Energy?</a>
-                            </div>
+    <div class="infographic-title">
+        <div class="infographic-text">Wave Power</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button " modal-template="modal8.html"
+                            alttext="Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter."
+                            message="message"
+                            modal-img="img/info.svg"></info-directive>
+            <script type="text/ng-template" id="modal8.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        Wave Power is a renewable resource that captures the energy stored in wave height to produce
+                        electricity. To develop this resource a minimum of 10 kW/m must be available to be
+                        considered a potential location for development.
+                        <div class="modal-overlay--footnote"><a target="_blank"
+                                                                href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping
+                            and Assessment of the United States Ocean Wave Energy Resource</a></div>
+                        <div class="modal-overlay--footnote"><a target="_blank" href='http://www.aquagen.com.au/market'>AquaGen
+                            Technologies: Why Wave Energy?</a>
                         </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-            </div>
-            <!-- iButton end-->
-            <div id="slider_but8" class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
-                <div ng-class="EMvm.AOI.EMOceanWaveResourcePotentialLayerIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="EMvm.AOI.toggleEMOceanWaveResourcePotentialLayer()"
-                     ng-include="'img/switch_off.svg'"></div>
-            </div>
-            <div id="slbuttxt0" class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
-            </div>
-        </div>
-        <div class="power-graphic">
-            <div class="power-chart ">
-                <span class="GreyText14 float-left padLeft15">This area is</span><span class="GreyText14 float-left"
-                                                                                        ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
-
-                <span class="GreyText14 float-left">&nbsp;suitable for</span>
-                <div class="padbottom16 w100 GreyText14 padLeft15 float-left">Wave Power
-                    Generation
+                    <div class="modal-fade"></div>
                 </div>
-                <div ng-class="{false: 'RedText16 padLeft15', true: 'GreenText16 padLeft15'}[EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10]">
+            </script>
+        </div>
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
+            <div ng-class="EMvm.AOI.EMOceanWaveResourcePotentialLayerIsVisable ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="EMvm.AOI.toggleEMOceanWaveResourcePotentialLayer()"
+                 ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+        </div>
+    </div>
+    <div class="power-graphic">
+        <div class="power-chart ">
+            <div class="power-suitability">
+                <span>This area is</span>
+                <span ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">&nbsp;NOT</span>
+                <span>&nbsp;suitable for</span>
+                <div>Wave Power Generation</div>
+
+                <div ng-class="{false: 'power-suitability--red ', true: 'power-suitability--green'}[EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10]">
                     Wave Power is <span ng-hide="EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER>10">NOT</span>
                     >10
                     kW/m
                 </div>
-                <div class="powerscale2 GreyText14 padLeft15"></div>
-                <div class="wpowerscale2 GreyText14 padLeft15">
-
-                    <div ng-repeat="a in [1,2,3,4,5,6]" class="wpowerscalediv float-left">
-
-                    </div>
-
-
-                </div>
-
-                <div class="wpowerscalenum GreyText14 padLeft15">
-                    <div ng-repeat="b in [0,10,20,30,40,50]" class="wpowerscalenum2 float-left">
-                        {{b}}
-                    </div>
-
-                    <div id="thebar" class="wpowergraphbar float-left "
-                         ng-style="{'width': (EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER*7) + 'px' };">
-                        <div class="w100 h100"
-                             ng-style="{'background-color':EMvm.AOI.EMOceanWaveResourcePotential[0].COLOR}"></div>
-                    </div>
-                </div>
-                <div class="text-center GreyText10"> Wave Power kW/m</div>
             </div>
-            <div class="power-key">
-                <div class="w100">
-                    Annual Wave Energy (kW/m)
+
+            <div class="power-scale">
+                <div ng-repeat="a in [1,2,3,4,5,6]" class="power-scale--wave"></div>
+            </div>
+
+            <div class="power-numbers power-numbers--wave">
+                <div ng-repeat="b in [0,10,20,30,40,50]" class="power-graduation--wave">
+                    {{b}}
                 </div>
-                <div class="w30 float-left GreyText14">
-                    <img src="img/WavePowerGraphic.svg">
+
+                <div class="power-graphbar power-graphbar--wave"
+                     ng-style="{'width': (EMvm.AOI.EMOceanWaveResourcePotential[0].AVG_WAVE_POWER*7) + 'px' };">
+                    <div class="power-graphbar--fill"
+                         ng-style="{'background-color':EMvm.AOI.EMOceanWaveResourcePotential[0].COLOR}"></div>
                 </div>
-                <div class="w65 float-left GreyText14">
-                    <div id="wrscale" class=""><!--<img src="img/GandH.png?168a886aba220a3d">-->
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#EBF6D8" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            0.00-2.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#E4EFD2" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            2.01-4.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#DEE7C9" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            4.01-6.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#D5DDC0" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            6.01-8.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#D0D8B9" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            8.01-10.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#C9D0B1" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            10.01-15.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#C0C6A8" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            15.01-20.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#BBC1A4" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            20.01-30.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#B6BC9E" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            30.01-40.00 kW/m
-                        </div>
-                        <div class="stackedlines">
-                            <svg class="stackedlineicon">
-                                <circle cx="7" cy="7" r="7" fill="#B0B497" stroke="#9B9B9B" stroke-width="1"/>
-                            </svg>
-                            40.01-50.00 kW/m
-                        </div>
-                    </div>
+            </div>
+            <div class="power-text"> Wave Power kW/m</div>
+        </div>
+        <div class="power-key">
+            <div class="key-title">
+                Annual Wave Energy (kW/m)
+            </div>
+            <div class="key-swatch">
+                <img src="img/WavePowerGraphic.svg">
+            </div>
+            <div class="key-scale">
+
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#EBF6D8" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    0.00-2.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#E4EFD2" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    2.01-4.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#DEE7C9" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    4.01-6.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#D5DDC0" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    6.01-8.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#D0D8B9" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    8.01-10.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#C9D0B1" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    10.01-15.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#C0C6A8" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    15.01-20.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#BBC1A4" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    20.01-30.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#B6BC9E" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    30.01-40.00 kW/m
+                </div>
+                <div class="key-lines">
+                    <svg class="key-icons">
+                        <circle cx="7" cy="7" r="7" fill="#B0B497" stroke="#9B9B9B" stroke-width="1"/>
+                    </svg>
+                    40.01-50.00 kW/m
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
+
+
+
+
 
 

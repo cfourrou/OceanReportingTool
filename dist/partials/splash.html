@@ -1,72 +1,71 @@
-<div class="padding30 slide-right">
-    <div class="CEHeader"></div>
+<div class="slider">
+    <div class="splash">
+        <div class="splash-title"><img class="splash-title--img" src="img/OceanReportingToolBannerv2.png"></div>
+        <div class="splash-text">
+            The Ocean Reporting Tool is a web based, report centric tool for Ocean Planners. It provides summary
+            statistics and interpretive analysis for the Southeastern United States.
+            <br>
+        </div>
+        <br>
+        <div class="splash-head">Getting Started</div>
+        <hr width="50%" align="left">
+        <div class="splash-text">
+            Choose a geographic area to generate a report:
 
-    <div id="sliderData">
-        <div class="sBox">
-            <div class="splashtitle"><img class="splashtitleimg" src="img/OceanReportingToolBannerv2.png"></div>
-            <div class="sText">
-                The Ocean Reporting Tool is a web based, report centric tool for Ocean Planners. It provides high-level
-                summary statistics and interpretive analysis for the Southeastern United States.
-                <br>
+            <br><br>
+
+            <div>
+                <div ng-include="'img/KnownAreas_2.svg'" class="icon--black"></div>
+                &nbsp;
+                <span> Click <b><a ui-sref="menu" ng-click="startMenu()" role="button">KNOWN AREAS</a></b> to select a report from the list of pre-defined areas</span>
             </div>
             <br>
-            <div class="orangeHead">Getting Started</div>
-            <hr width="50%" align="left">
-            <div class="sText">
-                Choose a geographic area to generate a report:
-
-                <br><br>
-
-                <div>
-                    <div ng-include="'img/KnownAreas_2.svg'" class="blackimg float-left"></div>
-                    &nbsp;
-                    <span> Click <b><a ui-sref="menu" ng-click="startMenu()" role="button">KNOWN AREAS</a></b> to select a report from the list of pre-defined areas</span>
-                </div>
-                <br>
-                <div>
-                    <div ng-include="'img/MapInput_2.svg'" class="blackimg float-left"></div>
-                    &nbsp;
-                    <span>Click <b><a ui-sref="draw" ng-click="off()" role="button">DRAW AREA</a></b> to use the map to generate a report for a custom area</span>
-                </div>
-                <br>
-                <div>
-                    <div ng-include="'img/Reset_2.svg'" class="blackimg float-left"></div>
-                    &nbsp;
-                    <span>Click <b><a ui-sref="splash" ng-click="startOver()" role="button">RESET</a></b> to clear your current selection and report</span>
-                </div>
-
-
-                <br>
-                <div class="sText">Area selections initially display general report information. To view specific
-                    subject
-                    information, you may click on the tabs for energy and minerals, natural resources and conservation,
-                    marine transportation and infrastructure, and economics and commerce.
-                </div>
-                <br>
-                Export options for a report include:<br>
-                <ul>
-                    <li>Printing</li>
-                    <li>Sharing</li>
-                </ul>
-
-                <div class="orangeHead">LINKS</div>
-                <hr width="50%" align="left">
-                <a target="_blank" href="http://marinecadastre.gov/nationalviewer/">MarineCadastre.gov National Viewer
-                    v3.0</a><br>
-                <a target="_blank" href="http://marinecadastre.gov/espis">Environmental Studies Program Information
-                    System
-                    (ESPIS)</a><br>
-                <a target="_blank" href="https://coast.noaa.gov/snapshots/">NOAA's Coastal County Snapshots</a><br>
+            <div>
+                <div ng-include="'img/MapInput_2.svg'" class="icon--black"></div>
+                &nbsp;
+                <span>Click <b><a ui-sref="draw" ng-click="off()" role="button">DRAW AREA</a></b> to use the map to generate a report for a custom area</span>
             </div>
-        </div>
-        <div class="partnership">
-            A Collaboration of
-            <a class="boempart" href="http://www.boem.gov/" title="Bureau of Ocean Management Homepage"><img
-                    src="img/boem.png" alt="BOEM Logo"></a>
-            <a class="noaapart" href="https://coast.noaa.gov/" title="NOAA Office for Coastal Management Homepage"><img
-                    src="img/noaa.png" alt="NOAA Logo"></a>
+            <br>
+            <div>
+                <div ng-include="'img/Reset_2.svg'" class="icon--black"></div>
+                &nbsp;
+                <span>Click <b><a ui-sref="splash" ng-click="startOver()" role="button">RESET</a></b> to clear your current selection and report</span>
+            </div>
+
+
+            <br>
+            <div class="splash-text">Area selections initially display general report information. To view specific
+                subject
+                information, click on the tabs for energy and minerals, natural resources and conservation,
+                transportation and infrastructure, and economics and commerce.
+            </div>
+            <br>
+            Export options for a report include:<br>
+            <ul>
+                <li>Printing</li>
+                <li>Sharing</li>
+            </ul>
+
+            <div class="splash-head">LINKS</div>
+            <hr width="50%" align="left">
+            <a target="_blank" href="http://marinecadastre.gov/nationalviewer/">MarineCadastre.gov National Viewer
+                v3.0</a><br>
+            <a target="_blank" href="http://marinecadastre.gov/espis">Environmental Studies Program Information
+                System
+                (ESPIS)</a><br>
+            <a target="_blank" href="https://coast.noaa.gov/snapshots/">NOAA's Coastal County Snapshots</a><br>
         </div>
     </div>
+    <div class="partnership">
+        A Collaboration of
+        <a class="partnership-link" href="http://www.boem.gov/" title="Bureau of Ocean Management Homepage"><img
+                src="img/boem.png" alt="BOEM Logo"></a>
+        <a class="partnership-link" href="https://coast.noaa.gov/"
+           title="NOAA Office for Coastal Management Homepage"><img
+                src="img/noaa.png" alt="NOAA Logo"></a>
+    </div>
 </div>
+
+
 
 

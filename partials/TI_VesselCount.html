@@ -1,85 +1,80 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
-    <div>
+    <div class="infographic-title">
+        <div class="infographic-text">Vessel Count</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="modal50.html" message="message"
+                            alttext="Element displays a color ramp representing the number of vessels in a raster pixel. The average value of the selected area is indicated with a tugboat icon."
+                            modal-img="img/info.svg"></info-directive>
+
+            <script type="text/ng-template" id="modal50.html">
+                <div class="modal">
+                    <div class="modal-overlay">
+                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
+                            <svg class="" viewBox="0 0 24 24">
+                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
+                                <path d="M0 0h24v24h-24z" fill="none"/>
+                            </svg>
+                        </a>
+                        This data represents the average number of vessels traversing the area based on 2011 Vessel
+                        Traffic (AIS) layer created by BOEM. Ship icon represents the overall average of the
+                        selected polygon. Heavy vessel traffic may interfere with planned activities.
+
+                        <br>
 
 
-        <div class="infographic-title">
-            <div class="float-left">Vessel Count</div>
-            <!-- iButton start-->
-            <div class="iModal">
-                <info-directive class="iModal-button" modal-template="modal50.html" message="message"
-                                alttext="Element displays a color ramp representing the number of vessels in a raster pixel. The average value of the selected area is indicated with a tugboat icon."
-                                modal-img="img/info.svg"></info-directive>
-
-                <script type="text/ng-template" id="modal50.html">
-                    <div class="modal">
-                        <div class="modal-overlay">
-                            <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                                <svg class="" viewBox="0 0 24 24">
-                                    <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                    <path d="M0 0h24v24h-24z" fill="none"/>
-                                </svg>
-                            </a>
-                            This data represents the average number of vessels traversing the area based on 2011 Vessel
-                            Traffic (AIS) layer created by BOEM. Ship icon represents the overall average of the
-                            selected polygon. Heavy vessel traffic may interfere with planned activities.
-
-                            <br>
-
-
-                        </div>
-                        <div class="modal-fade"></div>
                     </div>
-                </script>
-
-            </div>
-            <!-- iButton end-->
-            <div class="layertoggle-button" ng-hide="TIvm.AOI.toggleFull===true">
-                <div ng-class="TIvm.AOI.TIVesselLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                     ng-click="TIvm.AOI.toggleTIVesselLayer()" ng-include="'img/switch_off.svg'"></div>
-            </div>
+                    <div class="modal-fade"></div>
+                </div>
+            </script>
 
         </div>
-        <div>
-            <div class="GreyText14 float-left padLeft15 w100">
-
-                <div class="VesselLine">
-                    <div class="Vessel1"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg===0" class="ship"
-                                              src="img/transportation-ship.svg"></div>
-                    <div class="VesselNum">0</div>
-                </div>
-                <div class="VesselLine">
-                    <div class="Vessel2"><img
-                            ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=1) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=75))"
-                            class="ship" src="img/transportation-ship.svg"></div>
-                    <div class="VesselNum">1-75</div>
-                </div>
-                <div class="VesselLine">
-                    <div class="Vessel3"><img
-                            ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=76) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=250))"
-                            class="ship" src="img/transportation-ship.svg"></div>
-                    <div class="VesselNum">76-250</div>
-                </div>
-                <div class="VesselLine">
-                    <div class="Vessel4"><img
-                            ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=251) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=750))"
-                            class="ship" src="img/transportation-ship.svg"></div>
-                    <div class="VesselNum">251-750</div>
-                </div>
-                <div class="VesselLine">
-                    <div class="Vessel5"><img
-                            ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=751) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=1500))"
-                            class="ship" src="img/transportation-ship.svg"></div>
-                    <div class="VesselNum">751-1500</div>
-                </div>
-                <div class="VesselLine">
-                    <div class="Vessel6"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg>=1501" class="ship"
-                                              src="img/transportation-ship.svg"></div>
-                    <div class="VesselNum">More than 1500</div>
-                </div>
-
-            </div>
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="TIvm.AOI.toggleFull===true">
+            <div ng-class="TIvm.AOI.TIVesselLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="TIvm.AOI.toggleTIVesselLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
 
     </div>
-</div>
+    <div>
+        <div class="infographic-list infographic-list--pad">
+
+            <div class="vessel">
+                <div class="vessel-1"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg===0" class="vessel-img"
+                                          src="img/transportation-ship.svg"></div>
+                <div class="vessel-num">0</div>
+            </div>
+            <div class="vessel">
+                <div class="vessel-2"><img
+                        ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=1) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=75))"
+                        class="vessel-img" src="img/transportation-ship.svg"></div>
+                <div class="vessel-num">1-75</div>
+            </div>
+            <div class="vessel">
+                <div class="vessel-3"><img
+                        ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=76) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=250))"
+                        class="vessel-img" src="img/transportation-ship.svg"></div>
+                <div class="vessel-num">76-250</div>
+            </div>
+            <div class="vessel">
+                <div class="vessel-4"><img
+                        ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=251) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=750))"
+                        class="vessel-img" src="img/transportation-ship.svg"></div>
+                <div class="vessel-num">251-750</div>
+            </div>
+            <div class="vessel">
+                <div class="vessel-5"><img
+                        ng-show="((TIvm.AOI.TIVessel[0].all_2011_avg>=751) &&(TIvm.AOI.TIVessel[0].all_2011_avg<=1500))"
+                        class="vessel-img" src="img/transportation-ship.svg"></div>
+                <div class="vessel-num">751-1500</div>
+            </div>
+            <div class="vessel">
+                <div class="vessel-6"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg>=1501" class="vessel-img"
+                                          src="img/transportation-ship.svg"></div>
+                <div class="vessel-num">More than 1500</div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
