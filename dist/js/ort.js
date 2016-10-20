@@ -23663,7 +23663,13 @@ angular.module('myApp.services', [])
                         style: function (feature) {
                             return {fillColor: '#ffffbe', color: '#e69901', weight: 1.5, fillOpacity: .5};
                         }
+                    }).bindPopup(function (feature) {
+                        console.log(feature.feature.properties.NAMELSAD);
+                        return L.Util.template('{NAMELSAD}', feature.feature.properties);
                     });
+
+
+
                     AOI.NRCNearbyLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.NRCNearbyLayer,
                         pane: 'NRCNearbyLayerPane',
@@ -23683,7 +23689,7 @@ angular.module('myApp.services', [])
                     AOI.TIVesselLayer = L.esri.dynamicMapLayer({
                         url: AOIConfig.ortMapServer,
                         pane: 'TIVesselLayerPane',
-                        layers:[AOIConfig.optionalLayers.TIVesselLayer],
+                        layers: [AOIConfig.optionalLayers.TIVesselLayer],
                         opacity: .8
                     });
 
@@ -24915,7 +24921,7 @@ angular.module('myApp.services', [])
                             },
                             title: {
                                 enabled: true,
-                                text:"Contribution in Dollars",
+                                text: "Contribution in Dollars",
                                 align: 'left'
                             },
                             exporting: {enabled: false},
