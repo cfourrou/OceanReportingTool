@@ -23,6 +23,7 @@
     "js/lib/html2canvas.js",
     "js/lib/highcharts.js",
     "js/lib/exporting.js",
+    "js/app/highchart_pie_title_plugin.js",
     "js/app/services.js",
     "js/app/controllers.js",
     "js/app/filters.js",

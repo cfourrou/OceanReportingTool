@@ -1,6 +1,6 @@
 'use strict';
 
-function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll,COMMAND) {
     //this one loads once on start up
 
     $rootScope.$on('$stateChangeStart',  function () {
@@ -14,7 +14,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.AOI.inPrintWindow = false;
 
-    vm.drawOrSubmitCommand = "DRAW";
+    vm.drawOrSubmitCommand = COMMAND.DRAW;
 
     Highcharts.setOptions({
         global: {
@@ -30,7 +30,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
 
 
-    vm.checked = true;
+    vm.sidePanelVisible = true;
 
     $scope.currState = $state;
 
@@ -43,9 +43,9 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.drawIt = function () {
 
-        switch (vm.drawOrSubmitCommand.substring(0, 4)) {
+        switch (vm.drawOrSubmitCommand) {
 
-            case "DRAW":
+            case COMMAND.DRAW:
 
 
                 vm.startDrawing();
@@ -59,10 +59,10 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
                 //    }
                 //}
                 break;
-            case "Subm":
+            case COMMAND.SUBMIT:
                 //allPromises = [];
 
-                vm.drawOrSubmitCommand = "Working";
+                vm.drawOrSubmitCommand = COMMAND.WORKING;
 
 
                 //vm.drawOff();
@@ -74,24 +74,24 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
                 AOI.getReport().then(function () {
                     vm.stopSpin();
                     vm.searchControlEnabled = false;
-                    vm.drawOrSubmitCommand = "DRAW";
+                    vm.drawOrSubmitCommand = COMMAND.DRAW;
                     vm.baseMapControlOn = false;
                     vm.drawOff();
                     $state.go('CEview');
                 });
 
                 break;
-            case "Erro":
-                vm.drawOrSubmitCommand = "Submit";
+            case COMMAND.ERROR:
+                vm.drawOrSubmitCommand = COMMAND.SUBMIT;
                 break;
-            case "Comp":
+            case COMMAND.COMPLETE:
                 vm.completeDraw();
                 break;
         }
     };
 
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
-        vm.checked = !vm.checked;
+        vm.sidePanelVisible =!vm.sidePanelVisible;
     };
 
     vm.menu = {};
@@ -110,7 +110,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.startOver = function () {
 
-        vm.drawOrSubmitCommand = "DRAW";
+        vm.drawOrSubmitCommand = COMMAND.DRAW;
         vm.reset();
         $state.go('splash');
 
@@ -130,9 +130,9 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.drawMenu = function () { //unloads AOI and turns off slider pane
         //if draw submitted but not returned yet, leave pane on
-        if (vm.drawOrSubmitCommand !== "Working") {
+        if (vm.drawOrSubmitCommand !== COMMAND.WORKING) {
             vm.paneOff();
-            vm.drawOrSubmitCommand = "DRAW";
+            vm.drawOrSubmitCommand = COMMAND.DRAW;
             vm.mapFullScreen();
         } else {
             vm.mapHalfScreen();
@@ -144,12 +144,12 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
     };
 
     vm.paneOff = function () {
-        vm.checked = false;
+        vm.sidePanelVisible = false;
         AOI.toggleFull = false;
     };
 
     vm.paneOn = function () {
-        vm.checked = true;
+        vm.sidePanelVisible = true;
         AOI.toggleFull = false;
     };
 
@@ -176,27 +176,28 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
-        // todo: what to do on error?
+        $window.alert("We are currently experiencing problems with network. Please try again later.");
         console.error(error);
     });
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
-        angular.forEach(featureCollection.features, function (feature, i) {
-            vm.statesMenu[i] = {
-                AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
-                COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
-                AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_
-            };
+        vm.statesMenu = [];
+        angular.forEach(featureCollection.features, function (feature) {
+            vm.statesMenu.push({
+                AOI_NAME: feature.properties.AOI_NAME,
+                COMMON_NM: feature.properties.COMMON_NM,
+                REPORT_TYPE: feature.properties.COMMON_NM,
+                AOI_ID: feature.properties.AOI_ID,
+                DATASET_NM: feature.properties.DATASET_NM,
+                DESC_: feature.properties.DESC_
+            });
         });
 
         vm.statesMenu.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
-        // todo: what to do on error?
+        $window.alert("We are currently experiencing problems with network. Please try again later.");
         console.error(error);
     });
 
@@ -242,10 +243,10 @@ function AOICtrl(AOI, webService) {
     vm.senateMenu = "+";
     vm.houseMenu = "+";
 
-    webService.getData('CE_config.json').then(function (result) {
+    webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
     });
-    webService.getData('narratives.json').then(function (result) {
+    webService.getData('data/narratives.json').then(function (result) {
         AOI.narratives = result;
     });
 
@@ -281,7 +282,7 @@ function NaturalResourceCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "NaturalResourcesCtrl";
-    webService.getData('NRC_config.json').then(function (result) {
+    webService.getData('data/NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
     });
 
@@ -292,7 +293,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "TransportationAndInfrastructureCtrl";
-    webService.getData('TI_config.json').then(function (result) {
+    webService.getData('data/TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
 }
@@ -302,7 +303,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "EnergyAndMineralsCtrl";
-    webService.getData('EM_config.json').then(function (result) {
+    webService.getData('data/EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
 }
@@ -313,7 +314,7 @@ function EconCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "EconCtrl";
-    webService.getData('EC_config.json').then(function (result) {
+    webService.getData('data/EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
 
@@ -337,19 +338,19 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     var chartPromise = AOI.reloadAllCharts();
     var allPromises = [];
 
-    allPromises.push(webService.getData('CE_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
     }));
-    allPromises.push(webService.getData('EM_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/EM_config.json').then(function (result) {
         vm.EMConfig = result;
     }));
-    allPromises.push(webService.getData('TI_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/TI_config.json').then(function (result) {
         vm.TIConfig = result;
     }));
-    allPromises.push(webService.getData('NRC_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
     }));
-    allPromises.push(webService.getData('EC_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/EC_config.json').then(function (result) {
         vm.ECConfig = result;
     }));
 
@@ -367,7 +368,7 @@ function SearchCtrl(AOI) {
 }
 
 
-angular.module('myApp.controllers', ["pageslide-directive"])
+angular.module('ortApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, close) {
         $scope.metadataurl = metaurl;
         $scope.close = function (result) {
@@ -383,7 +384,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
     .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', PageslideCtrl]);
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll','COMMAND', PageslideCtrl]);
 
 
 

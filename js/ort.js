@@ -23097,11 +23097,59 @@ h;delete o.states;g?h=function(a){a.stopPropagation();g.call(b,a)}:j&&(h=functio
 i/2,c.symbolY-i/2,i,i).attr(q(m,{"stroke-width":c.symbolStrokeWidth||1,zIndex:1})).add(d));d.add().align(q(c,{width:d.width,x:f.pick(c.x,z)}),!0,"spacingBox");z+=(d.width+c.buttonSpacing)*(c.align==="right"?-1:1);b.exportSVGElements.push(d,k)}},destroyExport:function(a){var a=a.target,b,e;for(b=0;b<a.exportSVGElements.length;b++)if(e=a.exportSVGElements[b])e.onclick=e.ontouchstart=null,a.exportSVGElements[b]=e.destroy();for(b=0;b<a.exportDivElements.length;b++)e=a.exportDivElements[b],B(e,"mouseleave"),
 a.exportDivElements[b]=e.onmouseout=e.onmouseover=e.ontouchstart=e.onclick=null,s(e)}});I.menu=function(a,b,e,c){return["M",a,b+2.5,"L",a+e,b+2.5,"M",a,b+c/2+0.5,"L",a+e,b+c/2+0.5,"M",a,b+c-1.5,"L",a+e,b+c-1.5]};A.prototype.callbacks.push(function(a){var b,e=a.options.exporting,c=e.buttons;z=0;if(e.enabled!==!1){for(b in c)a.addButton(c[b]);t(a,"destroy",a.destroyExport)}})});
 ;
+/**
+ * Pie title plugin
+ * Author: Torstein Hønsi
+ * Original: http://jsfiddle.net/highcharts/tnSRA/
+ * Last revision: 2015-08-31
+ */
+(function (Highcharts) {
+    Highcharts.seriesTypes.pie.prototype.setTitle = function (titleOption) {
+        var chart = this.chart,
+            center = this.center || (this.yAxis && this.yAxis.center),
+            labelBBox,
+            box,
+            format;
+
+        if (center && titleOption) {
+            box = {
+                x: chart.plotLeft + center[0] - 0.5 * center[2],
+                y: chart.plotTop + center[1] - 0.5 * center[2],
+                width: center[2],
+                height: center[2]
+            };
+
+            format = titleOption.text || titleOption.format;
+            format = Highcharts.format(format, this);
+
+            if (this.title) {
+                this.title.attr({
+                    text: format
+                });
+
+            } else {
+                this.title = this.chart.renderer.label(format)
+                    .css(titleOption.style)
+                    .add()
+            }
+            labelBBox = this.title.getBBox();
+            titleOption.width = labelBBox.width;
+            titleOption.height = labelBBox.height;
+            this.title.align(titleOption, null, box);
+        }
+    };
+
+    Highcharts.wrap(Highcharts.seriesTypes.pie.prototype, 'render', function (proceed) {
+        proceed.call(this);
+        this.setTitle(this.options.title);
+    });
+
+}(Highcharts));;
 'use strict';
 
 /* Services */
 
-angular.module('myApp.services', [])
+angular.module('ortApp.services', [])
     .factory('webService', function ($http) {
 
         var getData = function (urlInput) {
@@ -23490,7 +23538,17 @@ angular.module('myApp.services', [])
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMMarineMineralsLeasesLayer,
                         pane: 'EMMarineMineralsLeasesLayerPane',
                         style: function (feature) {
-                            return {color: '#7300D9', weight: 2, fillOpacity: 0};
+                            if (feature.properties.RuleID === 1) {
+                                return {color: '#7300D9', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 2) {
+                                return {color: '#92D050', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 3) {
+                                return {color: '#0070C0', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 4) {
+                                return {color: '#FFC000', weight: 2, fillOpacity: 0};
+                            } else {
+                                return {color: 'white', weight: 3, fillOpacity: 0};
+                            }
                         }
                     });
 
@@ -23677,7 +23735,7 @@ angular.module('myApp.services', [])
                             return L.marker(latlng, {
                                 icon: L.icon({
                                     iconUrl: 'img/svg-elements_reefs.svg',
-                                    iconSize: [32, 37],
+                                    iconSize: [24, 24],
                                     iconAnchor: [16, 37],
                                     popupAnchor: [0, -28]
                                 })
@@ -24126,9 +24184,9 @@ angular.module('myApp.services', [])
                                 AOI.OGresource.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     OCS_Play: (feature.OCS_Play || 'None'),
-                                    UTRR_Oil: (feature.UTRR_Oil || 'None'),
-                                    UTRR_Gas: (feature.UTRR_Gas || 'None'),
-                                    UTRR_BOE: (feature.UTRR_BOE || 'None')
+                                    UTRR_Oil: (feature.UTRR_Oil.toFixed(2) || 'None'),
+                                    UTRR_Gas: (feature.UTRR_Gas.toFixed(2) || 'None'),
+                                    UTRR_BOE: (feature.UTRR_BOE.toFixed(2) || 'None')
                                 });
                                 AOI.addMetadata(feature);
                                 break;
@@ -24218,7 +24276,8 @@ angular.module('myApp.services', [])
                                 break;
                             case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
                                 AOI.EMMarineMineralsLeases.push({
-                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    RuleID: (feature.RuleID || 0)
                                 });
                                 AOI.addMetadata(feature);
                                 break;
@@ -24454,7 +24513,7 @@ angular.module('myApp.services', [])
                         AOI.EMWindResourcePotentialLayerIsVisible = false;
                         AOI.EMWindPlanningAreaLayerIsVisible = false;
                         AOI.EMOceanDisposalSitesLayerIsVisible = false;
-                        AOI.EMMarineMineralsLeasesLayer = false;
+                        AOI.EMMarineMineralsLeasesLayerIsVisable = false;
                         AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
                         AOI.EMOceanWaveResourcePotentialLayerIsVisable = false;
                         AOI.EMTidalPowerLayerIsVisable = false;
@@ -25163,7 +25222,7 @@ angular.module('myApp.services', [])
                                         loadDeferred.resolve();
                                     }
                                 },
-                                animation: !AOI.inPrintWindow
+                                //animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: null
@@ -25194,7 +25253,7 @@ angular.module('myApp.services', [])
                                 },
                                 column: {
                                     stacking: 'percent',
-                                    animation: !AOI.inPrintWindow
+                                    //animation: !AOI.inPrintWindow
                                 }
                             }
 
@@ -25271,7 +25330,7 @@ angular.module('myApp.services', [])
 ;
 'use strict';
 
-function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll) {
+function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll,COMMAND) {
     //this one loads once on start up
 
     $rootScope.$on('$stateChangeStart',  function () {
@@ -25285,7 +25344,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.AOI.inPrintWindow = false;
 
-    vm.drawOrSubmitCommand = "DRAW";
+    vm.drawOrSubmitCommand = COMMAND.DRAW;
 
     Highcharts.setOptions({
         global: {
@@ -25301,7 +25360,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
 
 
-    vm.checked = true;
+    vm.sidePanelVisible = true;
 
     $scope.currState = $state;
 
@@ -25314,9 +25373,9 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.drawIt = function () {
 
-        switch (vm.drawOrSubmitCommand.substring(0, 4)) {
+        switch (vm.drawOrSubmitCommand) {
 
-            case "DRAW":
+            case COMMAND.DRAW:
 
 
                 vm.startDrawing();
@@ -25330,10 +25389,10 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
                 //    }
                 //}
                 break;
-            case "Subm":
+            case COMMAND.SUBMIT:
                 //allPromises = [];
 
-                vm.drawOrSubmitCommand = "Working";
+                vm.drawOrSubmitCommand = COMMAND.WORKING;
 
 
                 //vm.drawOff();
@@ -25345,24 +25404,24 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
                 AOI.getReport().then(function () {
                     vm.stopSpin();
                     vm.searchControlEnabled = false;
-                    vm.drawOrSubmitCommand = "DRAW";
+                    vm.drawOrSubmitCommand = COMMAND.DRAW;
                     vm.baseMapControlOn = false;
                     vm.drawOff();
                     $state.go('CEview');
                 });
 
                 break;
-            case "Erro":
-                vm.drawOrSubmitCommand = "Submit";
+            case COMMAND.ERROR:
+                vm.drawOrSubmitCommand = COMMAND.SUBMIT;
                 break;
-            case "Comp":
+            case COMMAND.COMPLETE:
                 vm.completeDraw();
                 break;
         }
     };
 
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
-        vm.checked = !vm.checked;
+        vm.sidePanelVisible =!vm.sidePanelVisible;
     };
 
     vm.menu = {};
@@ -25381,7 +25440,7 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.startOver = function () {
 
-        vm.drawOrSubmitCommand = "DRAW";
+        vm.drawOrSubmitCommand = COMMAND.DRAW;
         vm.reset();
         $state.go('splash');
 
@@ -25401,9 +25460,9 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
 
     vm.drawMenu = function () { //unloads AOI and turns off slider pane
         //if draw submitted but not returned yet, leave pane on
-        if (vm.drawOrSubmitCommand !== "Working") {
+        if (vm.drawOrSubmitCommand !== COMMAND.WORKING) {
             vm.paneOff();
-            vm.drawOrSubmitCommand = "DRAW";
+            vm.drawOrSubmitCommand = COMMAND.DRAW;
             vm.mapFullScreen();
         } else {
             vm.mapHalfScreen();
@@ -25415,12 +25474,12 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
     };
 
     vm.paneOff = function () {
-        vm.checked = false;
+        vm.sidePanelVisible = false;
         AOI.toggleFull = false;
     };
 
     vm.paneOn = function () {
-        vm.checked = true;
+        vm.sidePanelVisible = true;
         AOI.toggleFull = false;
     };
 
@@ -25447,27 +25506,28 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
-        // todo: what to do on error?
+        $window.alert("We are currently experiencing problems with network. Please try again later.");
         console.error(error);
     });
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
-        angular.forEach(featureCollection.features, function (feature, i) {
-            vm.statesMenu[i] = {
-                AOI_NAME: featureCollection.features[i].properties.AOI_NAME,
-                COMMON_NM: featureCollection.features[i].properties.COMMON_NM,
-                REPORT_TYPE: featureCollection.features[i].properties.COMMON_NM,
-                AOI_ID: featureCollection.features[i].properties.AOI_ID,
-                DATASET_NM: featureCollection.features[i].properties.DATASET_NM,
-                DESC_: featureCollection.features[i].properties.DESC_
-            };
+        vm.statesMenu = [];
+        angular.forEach(featureCollection.features, function (feature) {
+            vm.statesMenu.push({
+                AOI_NAME: feature.properties.AOI_NAME,
+                COMMON_NM: feature.properties.COMMON_NM,
+                REPORT_TYPE: feature.properties.COMMON_NM,
+                AOI_ID: feature.properties.AOI_ID,
+                DATASET_NM: feature.properties.DATASET_NM,
+                DESC_: feature.properties.DESC_
+            });
         });
 
         vm.statesMenu.sort(function (a, b) {
             return a.AOI_NAME.localeCompare(b.AOI_NAME);
         });
     }).catch(function (error) {
-        // todo: what to do on error?
+        $window.alert("We are currently experiencing problems with network. Please try again later.");
         console.error(error);
     });
 
@@ -25513,10 +25573,10 @@ function AOICtrl(AOI, webService) {
     vm.senateMenu = "+";
     vm.houseMenu = "+";
 
-    webService.getData('CE_config.json').then(function (result) {
+    webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
     });
-    webService.getData('narratives.json').then(function (result) {
+    webService.getData('data/narratives.json').then(function (result) {
         AOI.narratives = result;
     });
 
@@ -25552,7 +25612,7 @@ function NaturalResourceCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "NaturalResourcesCtrl";
-    webService.getData('NRC_config.json').then(function (result) {
+    webService.getData('data/NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
     });
 
@@ -25563,7 +25623,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "TransportationAndInfrastructureCtrl";
-    webService.getData('TI_config.json').then(function (result) {
+    webService.getData('data/TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
 }
@@ -25573,7 +25633,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "EnergyAndMineralsCtrl";
-    webService.getData('EM_config.json').then(function (result) {
+    webService.getData('data/EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
 }
@@ -25584,7 +25644,7 @@ function EconCtrl(AOI, webService) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = false;
     vm.name = "EconCtrl";
-    webService.getData('EC_config.json').then(function (result) {
+    webService.getData('data/EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
 
@@ -25608,19 +25668,19 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     var chartPromise = AOI.reloadAllCharts();
     var allPromises = [];
 
-    allPromises.push(webService.getData('CE_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
     }));
-    allPromises.push(webService.getData('EM_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/EM_config.json').then(function (result) {
         vm.EMConfig = result;
     }));
-    allPromises.push(webService.getData('TI_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/TI_config.json').then(function (result) {
         vm.TIConfig = result;
     }));
-    allPromises.push(webService.getData('NRC_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
     }));
-    allPromises.push(webService.getData('EC_config.json').then(function (result) {
+    allPromises.push(webService.getData('data/EC_config.json').then(function (result) {
         vm.ECConfig = result;
     }));
 
@@ -25638,7 +25698,7 @@ function SearchCtrl(AOI) {
 }
 
 
-angular.module('myApp.controllers', ["pageslide-directive"])
+angular.module('ortApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, close) {
         $scope.metadataurl = metaurl;
         $scope.close = function (result) {
@@ -25654,7 +25714,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
     .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', PageslideCtrl]);
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll','COMMAND', PageslideCtrl]);
 
 
 
@@ -25663,7 +25723,7 @@ angular.module('myApp.controllers', ["pageslide-directive"])
 
 /* Filters */
 
-angular.module('myApp.filters', [])
+angular.module('ortApp.filters', [])
     .filter('unsafe', function ($sce) {
         return $sce.trustAsHtml;
     })
@@ -25684,7 +25744,7 @@ function printDirective($state, $timeout) {
                 window.print();
                 printElement.innerHTML = "";
                 $state.go('CEview');
-            });
+            },1000);
         });
     }
 
@@ -25697,12 +25757,7 @@ function printDirective($state, $timeout) {
     };
 }
 
-angular.module('myApp.directives', [])
-    .directive('appVersion', ['version', function (version) {
-        return function (scope, elm, attrs) {
-            elm.text(version);
-        };
-    }])
+angular.module('ortApp.directives', [])
     .directive("ngPrint", ['$state', '$timeout', printDirective])
     .directive('infoDirective', function () {
         return {
@@ -26077,92 +26132,20 @@ angular.module('myApp.directives', [])
 ;
 'use strict';
 
-function preloader() {
-    if (document.images) {
-        var img1 = new Image();
-        var img2 = new Image();
-        img1.src = "img/wind_cc.svg";
-        img2.src = "img/BOEM_logo.svg";
-    }
-}
-function addLoadEvent(func) {
-    var oldOnLoad = window.onload;
-    if (typeof window.onload !== 'function') {
-        window.onload = func;
-    } else {
-        window.onload = function () {
-            if (oldOnLoad) {
-                oldOnLoad();
-            }
-            func();
-        }
-    }
-}
-
-addLoadEvent(preloader);
-
-/**
- * Pie title plugin
- * Author: Torstein Hønsi
- * Original: http://jsfiddle.net/highcharts/tnSRA/
- * Last revision: 2015-08-31
- */
-(function (Highcharts) {
-    Highcharts.seriesTypes.pie.prototype.setTitle = function (titleOption) {
-        var chart = this.chart,
-            center = this.center || (this.yAxis && this.yAxis.center),
-            labelBBox,
-            box,
-            format;
-
-        if (center && titleOption) {
-            box = {
-                x: chart.plotLeft + center[0] - 0.5 * center[2],
-                y: chart.plotTop + center[1] - 0.5 * center[2],
-                width: center[2],
-                height: center[2]
-            };
-
-            format = titleOption.text || titleOption.format;
-            format = Highcharts.format(format, this);
-
-            if (this.title) {
-                this.title.attr({
-                    text: format
-                });
-
-            } else {
-                this.title = this.chart.renderer.label(format)
-                    .css(titleOption.style)
-                    .add()
-            }
-            labelBBox = this.title.getBBox();
-            titleOption.width = labelBBox.width;
-            titleOption.height = labelBBox.height;
-            this.title.align(titleOption, null, box);
-        }
-    };
-
-    Highcharts.wrap(Highcharts.seriesTypes.pie.prototype, 'render', function (proceed) {
-        proceed.call(this);
-        this.setTitle(this.options.title);
-    });
-
-}(Highcharts));
 
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
 
-$http.get("gis_config.json").then(function (result) {
+$http.get("data/gis_config.json").then(function (result) {
 
 // Declare app level module which depends on filters, and services
-    angular.module('myApp', [
+    angular.module('ortApp', [
             'ui.router',
             'angular.filter',
-            'myApp.filters',
-            'myApp.services',
-            'myApp.directives',
-            'myApp.controllers',
+            'ortApp.filters',
+            'ortApp.services',
+            'ortApp.directives',
+            'ortApp.controllers',
             'angulartics',
             'angulartics.google.analytics',
             'pageslide-directive',
@@ -26173,6 +26156,13 @@ $http.get("gis_config.json").then(function (result) {
             'ngAria'
 
         ])
+        .constant("COMMAND", {
+            "DRAW": "DRAW",
+            "SUBMIT": "Submit",
+            "WORKING": "Working",
+            "ERROR":"Error",
+            "COMPLETE":"Complete"
+        })
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
             AOIConfigProvider.set({
@@ -26306,7 +26296,7 @@ $http.get("gis_config.json").then(function (result) {
             /* Records full path */
         });
     angular.element(document).ready(function () {
-        angular.bootstrap(document, ['myApp']);
+        angular.bootstrap(document, ['ortApp']);
     });
 });
 

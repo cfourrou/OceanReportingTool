@@ -2,7 +2,7 @@
 
 /* Filters */
 
-angular.module('myApp.filters', [])
+angular.module('ortApp.filters', [])
     .filter('unsafe', function ($sce) {
         return $sce.trustAsHtml;
     })

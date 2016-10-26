@@ -2,7 +2,7 @@
 
 /* Services */
 
-angular.module('myApp.services', [])
+angular.module('ortApp.services', [])
     .factory('webService', function ($http) {
 
         var getData = function (urlInput) {
@@ -391,7 +391,17 @@ angular.module('myApp.services', [])
                         url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMMarineMineralsLeasesLayer,
                         pane: 'EMMarineMineralsLeasesLayerPane',
                         style: function (feature) {
-                            return {color: '#7300D9', weight: 2, fillOpacity: 0};
+                            if (feature.properties.RuleID === 1) {
+                                return {color: '#7300D9', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 2) {
+                                return {color: '#92D050', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 3) {
+                                return {color: '#0070C0', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 4) {
+                                return {color: '#FFC000', weight: 2, fillOpacity: 0};
+                            } else {
+                                return {color: 'white', weight: 3, fillOpacity: 0};
+                            }
                         }
                     });
 
@@ -578,7 +588,7 @@ angular.module('myApp.services', [])
                             return L.marker(latlng, {
                                 icon: L.icon({
                                     iconUrl: 'img/svg-elements_reefs.svg',
-                                    iconSize: [32, 37],
+                                    iconSize: [24, 24],
                                     iconAnchor: [16, 37],
                                     popupAnchor: [0, -28]
                                 })
@@ -1027,9 +1037,9 @@ angular.module('myApp.services', [])
                                 AOI.OGresource.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     OCS_Play: (feature.OCS_Play || 'None'),
-                                    UTRR_Oil: (feature.UTRR_Oil || 'None'),
-                                    UTRR_Gas: (feature.UTRR_Gas || 'None'),
-                                    UTRR_BOE: (feature.UTRR_BOE || 'None')
+                                    UTRR_Oil: (feature.UTRR_Oil.toFixed(2) || 'None'),
+                                    UTRR_Gas: (feature.UTRR_Gas.toFixed(2) || 'None'),
+                                    UTRR_BOE: (feature.UTRR_BOE.toFixed(2) || 'None')
                                 });
                                 AOI.addMetadata(feature);
                                 break;
@@ -1119,7 +1129,8 @@ angular.module('myApp.services', [])
                                 break;
                             case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
                                 AOI.EMMarineMineralsLeases.push({
-                                    TOTAL_CNT: (feature.TOTAL_CNT || 0)
+                                    TOTAL_CNT: (feature.TOTAL_CNT || 0),
+                                    RuleID: (feature.RuleID || 0)
                                 });
                                 AOI.addMetadata(feature);
                                 break;
@@ -1355,7 +1366,7 @@ angular.module('myApp.services', [])
                         AOI.EMWindResourcePotentialLayerIsVisible = false;
                         AOI.EMWindPlanningAreaLayerIsVisible = false;
                         AOI.EMOceanDisposalSitesLayerIsVisible = false;
-                        AOI.EMMarineMineralsLeasesLayer = false;
+                        AOI.EMMarineMineralsLeasesLayerIsVisable = false;
                         AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
                         AOI.EMOceanWaveResourcePotentialLayerIsVisable = false;
                         AOI.EMTidalPowerLayerIsVisable = false;
@@ -2064,7 +2075,7 @@ angular.module('myApp.services', [])
                                         loadDeferred.resolve();
                                     }
                                 },
-                                animation: !AOI.inPrintWindow
+                                //animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: null
@@ -2095,7 +2106,7 @@ angular.module('myApp.services', [])
                                 },
                                 column: {
                                     stacking: 'percent',
-                                    animation: !AOI.inPrintWindow
+                                    //animation: !AOI.inPrintWindow
                                 }
                             }
 

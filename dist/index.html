@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?3eb7d78b9196a291">
+    <link rel="stylesheet" href="css/ort.min.css?fb8e9b050cf31ab0">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -199,9 +199,7 @@
             </div>
             <div ng-cloak ng-show="vm.AOI.isLoaded" class="menu-right">
 
-                <button class="menu-rightbutton--italics" role="button" ui-sref="CEview" href="">
-                    {{vm.AOI.name.toUpperCase()}}
-                </button>
+                <button class="menu-rightbutton" role="button" ui-sref="CEview" href="">GENERAL INFORMATION</button>
                 <button class="menu-rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
                 <button class="menu-rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
                     CONSERVATION
@@ -225,7 +223,7 @@
             <div id="slide_div">
             </div>
 
-            <div pageslide ps-open="vm.checked" ps-size="50%" ps-container="slide_div" ps-cloak="true"
+            <div pageslide ps-open="vm.sidePanelVisible" ps-size="50%" ps-container="slide_div" ps-cloak="true"
                  ps-custom-top="55px" ng-style="{'width' : vm.AOI.sliderWidth}">
                 <div ui-view class="h900"></div>
                 <div class="footer">
@@ -256,7 +254,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?0bc26ec2dac624bf"></script>
+<script src="js/ort.js?135d565aee1e051d"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

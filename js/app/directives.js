@@ -13,7 +13,7 @@ function printDirective($state, $timeout) {
                 window.print();
                 printElement.innerHTML = "";
                 $state.go('CEview');
-            });
+            },1000);
         });
     }
 
@@ -26,12 +26,7 @@ function printDirective($state, $timeout) {
     };
 }
 
-angular.module('myApp.directives', [])
-    .directive('appVersion', ['version', function (version) {
-        return function (scope, elm, attrs) {
-            elm.text(version);
-        };
-    }])
+angular.module('ortApp.directives', [])
     .directive("ngPrint", ['$state', '$timeout', printDirective])
     .directive('infoDirective', function () {
         return {

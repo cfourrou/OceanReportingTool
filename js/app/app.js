@@ -1,91 +1,19 @@
 'use strict';
 
-function preloader() {
-    if (document.images) {
-        var img1 = new Image();
-        var img2 = new Image();
-        img1.src = "img/wind_cc.svg";
-        img2.src = "img/BOEM_logo.svg";
-    }
-}
-function addLoadEvent(func) {
-    var oldOnLoad = window.onload;
-    if (typeof window.onload !== 'function') {
-        window.onload = func;
-    } else {
-        window.onload = function () {
-            if (oldOnLoad) {
-                oldOnLoad();
-            }
-            func();
-        }
-    }
-}
-
-addLoadEvent(preloader);
-
-/**
- * Pie title plugin
- * Author: Torstein Hønsi
- * Original: http://jsfiddle.net/highcharts/tnSRA/
- * Last revision: 2015-08-31
- */
-(function (Highcharts) {
-    Highcharts.seriesTypes.pie.prototype.setTitle = function (titleOption) {
-        var chart = this.chart,
-            center = this.center || (this.yAxis && this.yAxis.center),
-            labelBBox,
-            box,
-            format;
-
-        if (center && titleOption) {
-            box = {
-                x: chart.plotLeft + center[0] - 0.5 * center[2],
-                y: chart.plotTop + center[1] - 0.5 * center[2],
-                width: center[2],
-                height: center[2]
-            };
-
-            format = titleOption.text || titleOption.format;
-            format = Highcharts.format(format, this);
-
-            if (this.title) {
-                this.title.attr({
-                    text: format
-                });
-
-            } else {
-                this.title = this.chart.renderer.label(format)
-                    .css(titleOption.style)
-                    .add()
-            }
-            labelBBox = this.title.getBBox();
-            titleOption.width = labelBBox.width;
-            titleOption.height = labelBBox.height;
-            this.title.align(titleOption, null, box);
-        }
-    };
-
-    Highcharts.wrap(Highcharts.seriesTypes.pie.prototype, 'render', function (proceed) {
-        proceed.call(this);
-        this.setTitle(this.options.title);
-    });
-
-}(Highcharts));
 
 var initInjector = angular.injector(["ng"]);
 var $http = initInjector.get("$http");
 
-$http.get("gis_config.json").then(function (result) {
+$http.get("data/gis_config.json").then(function (result) {
 
 // Declare app level module which depends on filters, and services
-    angular.module('myApp', [
+    angular.module('ortApp', [
             'ui.router',
             'angular.filter',
-            'myApp.filters',
-            'myApp.services',
-            'myApp.directives',
-            'myApp.controllers',
+            'ortApp.filters',
+            'ortApp.services',
+            'ortApp.directives',
+            'ortApp.controllers',
             'angulartics',
             'angulartics.google.analytics',
             'pageslide-directive',
@@ -96,6 +24,13 @@ $http.get("gis_config.json").then(function (result) {
             'ngAria'
 
         ])
+        .constant("COMMAND", {
+            "DRAW": "DRAW",
+            "SUBMIT": "Submit",
+            "WORKING": "Working",
+            "ERROR":"Error",
+            "COMPLETE":"Complete"
+        })
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');
             AOIConfigProvider.set({
@@ -229,7 +164,7 @@ $http.get("gis_config.json").then(function (result) {
             /* Records full path */
         });
     angular.element(document).ready(function () {
-        angular.bootstrap(document, ['myApp']);
+        angular.bootstrap(document, ['ortApp']);
     });
 });
 

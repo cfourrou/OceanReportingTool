@@ -38,16 +38,36 @@
 
         </div>
     </div>
-    <div class="infographic-swatch">
-        <div class="swatch-img"><img src="img/MarineMineralLeases.svg"></div>
-        <div class="swatch-dataarea swatch-dataarea--smalltext">
-            <span>Within 2 miles of this area</span>
+    <div>
+        <div class="infographic-dataarea">
+            <span class="infographic-twosizeline--large">{{EMvm.AOI.EMMarineMineralsLeases.length}}</span><span
+                class="infographic-twosizeline--small"> Within 2 miles</span>
+
         </div>
-    </div>
-    <div class="infographic-dataarea">
+        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 1}:true as leaseCompleted "></div>
+        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 2}:true as leaseActive "></div>
+        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 3}:true as leaseExpired "></div>
+        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 4}:true as leaseProposed "></div>
+        <div class="infographic-list--small">
+            <span><img class="lease-icons" src="img/MarineMineralLeasesComplete.svg"></span>
+            <span class="infographic-twosizeline--large">{{leaseCompleted.length}}</span>
+            <span class="infographic-twosizeline--small"> Completed Leases</span>
+        </div>
+        <div class="infographic-list--small">
+            <span><img class="lease-icons" src="img/MarineMineralLeasesActive.svg"></span>
+            <span class="infographic-twosizeline--large">{{leaseActive.length}}</span>
+            <span class="infographic-twosizeline--small"> Active Leases</span>
+        </div>
+        <div class="infographic-list--small">
+            <span><img class="lease-icons" src="img/MarineMineralLeasesExpired.svg"></span>
+            <span class="infographic-twosizeline--large">{{leaseExpired.length}}</span>
+            <span class="infographic-twosizeline--small"> Expired Leases</span>
+        </div>
+        <div class="infographic-list--small">
+            <span><img class="lease-icons" src="img/MarineMineralLeasesProposed.svg"></span>
+            <span class="infographic-twosizeline--large">{{leaseProposed.length}}</span>
+            <span class="infographic-twosizeline--small"> Proposed Leases</span>
+        </div>
 
-        <span class="infographic-twosizeline--large">{{EMvm.AOI.EMMarineMineralsLeases.length}}</span><span
-            class="infographic-twosizeline--small"> Completed Leases</span>
     </div>
-
 </div>
