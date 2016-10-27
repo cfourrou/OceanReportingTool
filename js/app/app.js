@@ -28,8 +28,8 @@ $http.get("data/gis_config.json").then(function (result) {
             "DRAW": "DRAW",
             "SUBMIT": "Submit",
             "WORKING": "Working",
-            "ERROR":"Error",
-            "COMPLETE":"Complete"
+            "ERROR": "Error",
+            "COMPLETE": "Complete"
         })
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');

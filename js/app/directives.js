@@ -6,7 +6,7 @@
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            $timeout(function () {
+            $timeout(function () { // $timeout used to give just a little extra time for elements to render in print. Without it some of the vector graphics don't show.
                 var printElement = element[0].cloneNode(true);
                 printElement.id = 'printSection';
                 angular.element(document.body).append(printElement);

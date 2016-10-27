@@ -19,7 +19,9 @@
 
             <tr ng-repeat="m2 in vm.AOI.metadata | unique: 'COMMON_NM'| filter: {REPORT_CAT: m1.REPORT_CAT}:true | orderBy : 'REPORT_CAT'">
                 <td>{{m2.COMMON_NM}}</td>
-                <td><a target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a></td>
+                <td><a ng-hide="m2.METADATA_OWNER==='Unavailable'" target="_blank" href={{m2.METADATA_URL}}>{{m2.METADATA_OWNER}}</a>
+                    <div ng-if="m2.METADATA_OWNER==='Unavailable'">Unavailable</div>
+                </td>
             </tr>
         </table>
     </div>

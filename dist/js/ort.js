@@ -23543,9 +23543,9 @@ angular.module('ortApp.services', [])
                             } else if (feature.properties.RuleID === 2) {
                                 return {color: '#92D050', weight: 2, fillOpacity: 0};
                             } else if (feature.properties.RuleID === 3) {
-                                return {color: '#0070C0', weight: 2, fillOpacity: 0};
-                            } else if (feature.properties.RuleID === 4) {
                                 return {color: '#FFC000', weight: 2, fillOpacity: 0};
+                            } else if (feature.properties.RuleID === 4) {
+                                return {color: '#0070C0', weight: 2, fillOpacity: 0};
                             } else {
                                 return {color: 'white', weight: 3, fillOpacity: 0};
                             }
@@ -23627,7 +23627,7 @@ angular.module('ortApp.services', [])
                             if (feature.properties) {
                                 layer.bindPopup(function (feature) {
                                     return L.Util.template('<h3>{name}</h3><hr>{county}, {state}', feature.feature.properties);
-                                }, {closeButton: false, offset: L.point(0, -5),autoPanPaddingTopLeft:L.point(0, 60)});
+                                }, {closeButton: false, offset: L.point(0, -5), autoPanPaddingTopLeft: L.point(0, 60)});
                                 layer.on('mouseover', function () {
                                     layer.openPopup();
                                 });
@@ -23692,7 +23692,7 @@ angular.module('ortApp.services', [])
                             if (feature.properties) {
                                 layer.bindPopup(function (feature) {
                                     return L.Util.template('{NAME}, {ST}', feature.feature.properties);
-                                }, {closeButton: false, offset: L.point(0, -5),autoPanPaddingTopLeft:L.point(0, 60)});
+                                }, {closeButton: false, offset: L.point(0, -5), autoPanPaddingTopLeft: L.point(0, 60)});
                                 layer.on('mouseover', function () {
                                     layer.openPopup();
                                 });
@@ -23749,9 +23749,9 @@ angular.module('ortApp.services', [])
                             if (feature.properties) {
                                 layer.bindPopup(function (feature) {
                                     return L.Util.template('{NAMELSAD}', feature.feature.properties);
-                                }, {closeButton: false, offset: L.point(0, -5),autoPanPaddingTopLeft:L.point(0, 60)});
+                                }, {closeButton: false, offset: L.point(0, -5), autoPanPaddingTopLeft: L.point(0, 60)});
                                 layer.on('mouseover', function () {
-                                    layer.setStyle({ fillColor: '#969EA7',fillOpacity: 0.7});
+                                    layer.setStyle({fillColor: '#969EA7', fillOpacity: 0.7});
                                     layer.openPopup();
                                 });
                                 layer.on('mouseout', function () {
@@ -23773,13 +23773,13 @@ angular.module('ortApp.services', [])
                             if (feature.properties) {
                                 layer.bindPopup(function (feature) {
                                     return L.Util.template('{Site_Name}', feature.feature.properties);
-                                }, {closeButton: false, offset: L.point(0, -5),autoPanPaddingTopLeft:L.point(0, 60)});
+                                }, {closeButton: false, offset: L.point(0, -5), autoPanPaddingTopLeft: L.point(0, 60)});
                                 layer.on('mouseover', function () {
-                                    layer.setStyle({ fillColor: '#969EA7',fillOpacity: 0.7});
+                                    layer.setStyle({fillColor: '#969EA7', fillOpacity: 0.7});
                                     layer.openPopup();
                                 });
                                 layer.on('mouseout', function () {
-                                    layer.setStyle({fillColor: '#75bc73',  fillOpacity: .7});
+                                    layer.setStyle({fillColor: '#75bc73', fillOpacity: .7});
                                     layer.closePopup();
                                 });
                             }
@@ -23823,7 +23823,11 @@ angular.module('ortApp.services', [])
                             if (feature.properties) {
                                 layer.bindPopup(function (feature) {
                                     return L.Util.template('{cntyname}, {st_abbr}', feature.feature.properties);
-                                }, {closeButton: false, offset: L.point(0, -20),autoPanPaddingTopLeft:L.point(0, 60)});
+                                }, {
+                                    closeButton: false,
+                                    offset: L.point(0, -20),
+                                    autoPanPaddingTopLeft: L.point(0, 60)
+                                });
                                 layer.on('mouseover', function () {
                                     layer.setStyle({fillOpacity: 0.7});
                                     layer.openPopup();
@@ -25737,14 +25741,14 @@ angular.module('ortApp.filters', [])
 function printDirective($state, $timeout) {
     function link(scope, element, attrs) {
         scope.loadPromise.then(function () {
-            $timeout(function () {
+            $timeout(function () { // $timeout used to give just a little extra time for elements to render in print. Without it some of the vector graphics don't show.
                 var printElement = element[0].cloneNode(true);
                 printElement.id = 'printSection';
                 angular.element(document.body).append(printElement);
                 window.print();
                 printElement.innerHTML = "";
                 $state.go('CEview');
-            },1000);
+            });
         });
     }
 
@@ -26160,8 +26164,8 @@ $http.get("data/gis_config.json").then(function (result) {
             "DRAW": "DRAW",
             "SUBMIT": "Submit",
             "WORKING": "Working",
-            "ERROR":"Error",
-            "COMPLETE":"Complete"
+            "ERROR": "Error",
+            "COMPLETE": "Complete"
         })
         .config(['$stateProvider', '$urlRouterProvider', 'AOIConfigProvider', function ($stateProvider, $urlRouterProvider, AOIConfigProvider) {
             $urlRouterProvider.otherwise('/main');

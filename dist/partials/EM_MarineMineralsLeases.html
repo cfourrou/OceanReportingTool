@@ -46,8 +46,8 @@
         </div>
         <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 1}:true as leaseCompleted "></div>
         <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 2}:true as leaseActive "></div>
-        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 3}:true as leaseExpired "></div>
-        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 4}:true as leaseProposed "></div>
+        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 3}:true as leaseProposed "></div>
+        <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 4}:true as leaseExpired "></div>
         <div class="infographic-list--small">
             <span><img class="lease-icons" src="img/MarineMineralLeasesComplete.svg"></span>
             <span class="infographic-twosizeline--large">{{leaseCompleted.length}}</span>
