@@ -3,6 +3,9 @@
 /* Services */
 
 angular.module('ortApp.services', [])
+    .factory('Highcharts', function () {
+        return window.Highcharts; // assumes Highcharts has already been loaded on the page
+    })
     .factory('webService', function ($http) {
 
         var getData = function (urlInput) {
@@ -2079,7 +2082,7 @@ angular.module('ortApp.services', [])
                                         loadDeferred.resolve();
                                     }
                                 },
-                                //animation: !AOI.inPrintWindow
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: null
@@ -2110,7 +2113,7 @@ angular.module('ortApp.services', [])
                                 },
                                 column: {
                                     stacking: 'percent',
-                                    //animation: !AOI.inPrintWindow
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
 

@@ -13,7 +13,7 @@ function printDirective($state, $timeout) {
                 window.print();
                 printElement.innerHTML = "";
                 $state.go('CEview');
-            },1000);
+            }, 1000);
         });
     }
 

@@ -1,9 +1,9 @@
 'use strict';
 
-function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll,COMMAND) {
+function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll, COMMAND,$window) {
     //this one loads once on start up
 
-    $rootScope.$on('$stateChangeStart',  function () {
+    $rootScope.$on('$stateChangeStart', function () {
         $anchorScroll();
     });
 
@@ -27,8 +27,6 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
             numericSymbols: ["k", "M", "B", "T", "P", "E"]
         }
     });
-
-
 
     vm.sidePanelVisible = true;
 
@@ -85,13 +83,13 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
                 vm.drawOrSubmitCommand = COMMAND.SUBMIT;
                 break;
             case COMMAND.COMPLETE:
-                vm.completeDraw();
+
                 break;
         }
     };
 
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
-        vm.sidePanelVisible =!vm.sidePanelVisible;
+        vm.sidePanelVisible = !vm.sidePanelVisible;
     };
 
     vm.menu = {};
@@ -383,8 +381,8 @@ angular.module('ortApp.controllers', ["pageslide-directive"])
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-    .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', '$rootScope', '$anchorScroll','COMMAND', PageslideCtrl]);
+    .controller('pageslideCtrl', ['Highcharts', 'AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', 'COMMAND','$window', PageslideCtrl]);
 
 
 
