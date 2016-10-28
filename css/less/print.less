@@ -55,16 +55,16 @@
   }
 
   .slide-right, .slide-right * {
-    // display: none;
+     display: none;
     //visibility: hidden;
   }
 
-  .layertoggle-button {
-    visibility: hidden;
+  .layertoggle-button,.layertoggle-button * {
+    visibility: hidden !important;
   }
 
-  .layertoggle-text {
-    visibility: hidden;
+  .layertoggle-text, .layertoggle-text * {
+    visibility: hidden !important;
   }
 
   .clear {
@@ -76,7 +76,8 @@
   }
 
   #printSection, #printSection * {
-    // visibility: visible;
+    visibility: visible;
+    //display: block;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
@@ -94,21 +95,22 @@
     break-inside: avoid;
   }
 
-  .metadata, .metaline1, .metaline1 * {
+  .metadata, .metadata * {
     page-break-inside: avoid;
     break-inside: avoid;
 
   }
 
   .power-graphic .power-graphic * {
-    widows: 5;
+    // widows: 5;
     page-break-inside: avoid;
     break-inside: avoid;
 
   }
 
   .infographic-box, .infographic-box * {
-    widows: 5;
+    //widows: 5;
+    //orphans: 5;
     page-break-inside: avoid;
     break-inside: avoid;
   }
