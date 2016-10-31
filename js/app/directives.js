@@ -8,12 +8,12 @@ function printDirective($state, $timeout) {
         scope.loadPromise.then(function () {
             $timeout(function () { // $timeout used to give just a little extra time for elements to render in print. Without it some of the vector graphics don't show.
                 var printElement = element[0].cloneNode(true);
-                printElement.id = 'printSection';
+                printElement.id = 'printSectionChrome';
                 angular.element(document.body).append(printElement);
                 window.print();
                 printElement.innerHTML = "";
                 $state.go('CEview');
-            }, 1000);
+            });
         });
     }
 

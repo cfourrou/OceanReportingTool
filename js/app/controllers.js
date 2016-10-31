@@ -1,6 +1,6 @@
 'use strict';
 
-function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll, COMMAND,$window) {
+function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll, COMMAND, $window) {
     //this one loads once on start up
 
     $rootScope.$on('$stateChangeStart', function () {
@@ -233,6 +233,7 @@ function AOICtrl(AOI, webService) {
     var vm = this;
 
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.congressIsActive = true;
     vm.senateIsActive = false;
@@ -240,6 +241,7 @@ function AOICtrl(AOI, webService) {
     vm.congressMenu = "-";
     vm.senateMenu = "+";
     vm.houseMenu = "+";
+
 
     webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
@@ -278,6 +280,7 @@ function AOICtrl(AOI, webService) {
 function NaturalResourceCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "NaturalResourcesCtrl";
     webService.getData('data/NRC_config.json').then(function (result) {
@@ -289,6 +292,7 @@ function NaturalResourceCtrl(AOI, webService) {
 function TransportationAndInfrastructureCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "TransportationAndInfrastructureCtrl";
     webService.getData('data/TI_config.json').then(function (result) {
@@ -299,6 +303,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
 function EnergyAndMineralsCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "EnergyAndMineralsCtrl";
     webService.getData('data/EM_config.json').then(function (result) {
@@ -310,6 +315,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
 function EconCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "EconCtrl";
     webService.getData('data/EC_config.json').then(function (result) {
@@ -323,7 +329,7 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
-
+    //vm.AOI.sliderWidth = '100%';
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -382,7 +388,7 @@ angular.module('ortApp.controllers', ["pageslide-directive"])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
     .controller('pageslideCtrl', ['Highcharts', 'AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', 'COMMAND','$window', PageslideCtrl]);
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', 'COMMAND', '$window', PageslideCtrl]);
 
 
 

@@ -3,8 +3,10 @@
 **************************************/
 @media screen {
   #printSection {
-    display: none;
+   //display: none;
+    visibility: hidden;
   }
+
 }
 
 @media print and (min-width: 211mm) and (max-width: 216mm) {
@@ -20,9 +22,10 @@
   }
 }
 
-@media print {
+@media print { //ie
   body * {
-    //visibility: hidden;
+    visibility: hidden;
+    //display:none;
   }
 
   .header, .header * {
@@ -34,6 +37,7 @@
   }
 
   .h900, .h900 * {
+    //width:100%;
     //display: none;
     //visibility: hidden;
   }
@@ -49,13 +53,142 @@
     display: none;
   }
 
-  .ng-pageslide, .ng-pageslide * {
+  .CEHeader {
     display: none;
+  }
+
+  .ng-pageslide {
+    //display: none;
+    //visibility: hidden;
+    //width:100%;
+    z-index: 1000;
+    position: relative;
+    width: 100%;
+   // transition-duration: 0.5s;
+    //transition-property: width, height;
+    top: 0px;
+    left: 0px;
+    right: auto;
+  }
+
+  .slider {
+    padding: 0px;
+  }
+
+  .layertoggle-button, .layertoggle-button * {
+    visibility: hidden !important;
+  }
+
+  .layertoggle-text, .layertoggle-text * {
+    visibility: hidden !important;
+  }
+
+  .clear {
+    clear: left;
+    //page-break-before: always;
+  }
+
+  .theme {
+    page-break-before: always;
+    //-webkit-region-break-before: always;
+    // page-break-after: always;
+  }
+  //#printSectionChrome, #printSectionChrome * {
+  //  display: none;
+  //}
+  #printSection {
+    display: block !important;
+    visibility: visible;
+    //display: block !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  #printSection ,#printSection *{
+    visibility: visible;
+  }
+  .zeroheightkludge, .zeroheightkludge * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .metadata-table {
+    margin-bottom: 0px;
+    font-size: 12px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .metadata, .metadata * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+
+  }
+
+  .power-graphic .power-graphic * {
+    widows: 5;
+    page-break-inside: avoid;
+    break-inside: avoid;
+
+  }
+
+  .infographic-box, .infographic-box * {
+    widows: 5;
+    orphans: 5;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  //#printSection {
+  //}
+  //
+  //#printSection:last-child {
+  //}
+
+}
+
+@page {
+  margin-top: 0.5in;
+  margin-bottom: 0.5in;
+  margin-left: 0.5in;
+  margin-right: 0.5in;
+}
+
+
+@media print and (-webkit-min-device-pixel-ratio:0){ //chrome
+  body * {
+    visibility: visible;
+  }
+  .header, .header * {
+    display: none;
+  }
+
+  .menu, .menu * {
+    display: none;
+  }
+
+  .h900, .h900 * {
+    //width:100%;
+    //display: none;
     //visibility: hidden;
   }
 
-  .slide-right, .slide-right * {
-     display: none;
+  .footer, .footer * {
+    display: none;
+  }
+
+  //#map, #map * {
+  //  //display: none;
+  //}
+  #map {
+    display: none;
+  }
+
+  .CEHeader {
+    display: none;
+  }
+  .ng-pageslide, .ng-pageslide * {
+    display: none;
     //visibility: hidden;
   }
 
@@ -75,7 +208,12 @@
     page-break-before: always;
   }
 
-  #printSection, #printSection * {
+  #printSectionChrome{
+    display: block !important;
+    visibility: visible;
+  }
+
+  #printSectionChrome, #printSectionChrome * {
     visibility: visible;
     //display: block;
     -webkit-print-color-adjust: exact;
@@ -121,11 +259,4 @@
   //#printSection:last-child {
   //}
 
-}
-
-@page {
-  margin-top: 0.5in;
-  margin-bottom: 0.5in;
-  margin-left: 0.5in;
-  margin-right: 0.5in;
 }

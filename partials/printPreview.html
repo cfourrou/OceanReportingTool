@@ -1,12 +1,9 @@
 <div class="slider">
-    <div class="CEHeader">
-        <div class="AOIname">Building Printable Page</div>
 
-    </div>
-
+Building Printable Page
     <div class="clear">&nbsp;</div>
 
-    <div class="print-overflowauto" ng-print load-promise="Printvm.readyToPrint">
+    <div id="printSection" class="overflowauto" ng-print load-promise="Printvm.readyToPrint">
         <div>{{Printvm.AOI.name.toUpperCase()}}</div>
         <div class="theme--printfriendly"> Common Elements
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
