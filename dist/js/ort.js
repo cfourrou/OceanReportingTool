@@ -23150,6 +23150,9 @@ a.exportDivElements[b]=e.onmouseout=e.onmouseover=e.ontouchstart=e.onclick=null,
 /* Services */
 
 angular.module('ortApp.services', [])
+    .factory('Highcharts', function () {
+        return window.Highcharts; // assumes Highcharts has already been loaded on the page
+    })
     .factory('webService', function ($http) {
 
         var getData = function (urlInput) {
@@ -23339,6 +23342,16 @@ angular.module('ortApp.services', [])
                 TIAnchorage: [],
                 map: {},
 
+                toggleLayer: function (layer, isVisible) {
+                    if (!isVisible) {
+                        layer.addTo(AOI.map);
+                        isVisible = true;
+                    } else {
+                        AOI.map.removeLayer(layer);
+                        isVisible = false;
+                    }
+                    return isVisible;
+                },
                 display: function () {
                     AOI.map.isLoaded.then(function () {
                         if (AOI.ID === -9999) {
@@ -24517,16 +24530,16 @@ angular.module('ortApp.services', [])
                         AOI.EMWindResourcePotentialLayerIsVisible = false;
                         AOI.EMWindPlanningAreaLayerIsVisible = false;
                         AOI.EMOceanDisposalSitesLayerIsVisible = false;
-                        AOI.EMMarineMineralsLeasesLayerIsVisable = false;
+                        AOI.EMMarineMineralsLeasesLayerIsVisible = false;
                         AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
-                        AOI.EMOceanWaveResourcePotentialLayerIsVisable = false;
-                        AOI.EMTidalPowerLayerIsVisable = false;
-                        AOI.EMCurrentPowerIsVisable = false;
-                        AOI.EMBeachNourishmentProjectsLayerIsVisable = false;
-                        AOI.EMCoastalEnergyFacilitiesLayerIsVisable = false;
-                        AOI.CEElevationIsVisable = false;
-                        AOI.TISubmarineIsVisable = false;
-                        AOI.TIDangerZonesIsVisable = false;
+                        AOI.EMOceanWaveResourcePotentialLayerIsVisible = false;
+                        AOI.EMTidalPowerLayerIsVisible = false;
+                        AOI.EMCurrentPowerIsVisible = false;
+                        AOI.EMBeachNourishmentProjectsLayerIsVisible = false;
+                        AOI.EMCoastalEnergyFacilitiesLayerIsVisible = false;
+                        AOI.CEElevationIsVisible = false;
+                        AOI.TISubmarineIsVisible = false;
+                        AOI.TIDangerZonesIsVisible = false;
                         AOI.CEPlaceLayerIsVisible = false;
                         AOI.TIVesselLayerIsVisible = false;
                         AOI.TIPrincipalPortsIsVisible = false;
@@ -24606,308 +24619,119 @@ angular.module('ortApp.services', [])
                 isLoaded: false,
                 ECCoastalCountiesLayerIsVisible: false,
                 toggleECCoastalCountiesLayer: function () {
-
-                    if (!AOI.ECCoastalCountiesLayerIsVisible) {
-                        AOI.ECCoastalCountiesLayer.addTo(AOI.map);
-                        AOI.ECCoastalCountiesLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.ECCoastalCountiesLayer);
-                        AOI.ECCoastalCountiesLayerIsVisible = false;
-                    }
-                }
-
-                ,
+                    AOI.ECCoastalCountiesLayerIsVisible = AOI.toggleLayer(AOI.ECCoastalCountiesLayer, AOI.ECCoastalCountiesLayerIsVisible);
+                },
                 NRCBarrierLayerIsVisible: false,
                 toggleNRCBarrierLayer: function () {
-
-                    if (!AOI.NRCBarrierLayerIsVisible) {
-                        AOI.NRCBarrierLayer.addTo(AOI.map);
-                        AOI.NRCBarrierLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.NRCBarrierLayer);
-                        AOI.NRCBarrierLayerIsVisible = false;
-                    }
-                }
-
-                ,
+                    AOI.NRCBarrierLayerIsVisible = AOI.toggleLayer(AOI.NRCBarrierLayer, AOI.NRCBarrierLayerIsVisible);
+                },
                 NRCStoneyCoralLayerIsVisible: false,
                 toggleNRCStoneyCoralLayer: function () {
-
-                    if (!AOI.NRCStoneyCoralLayerIsVisible) {
-                        AOI.NRCStoneyCoralLayer.addTo(AOI.map);
-                        AOI.NRCStoneyCoralLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.NRCStoneyCoralLayer);
-                        AOI.NRCStoneyCoralLayerIsVisible = false;
-                    }
-                }
-
-                ,
+                    AOI.NRCStoneyCoralLayerIsVisible = AOI.toggleLayer(AOI.NRCStoneyCoralLayer, AOI.NRCStoneyCoralLayerIsVisible);
+                },
                 NRCSoftCoralLayerIsVisible: false,
                 toggleNRCSoftCoralLayer: function () {
-
-                    if (!AOI.NRCSoftCoralLayerIsVisible) {
-                        AOI.NRCSoftCoralLayer.addTo(AOI.map);
-                        AOI.NRCSoftCoralLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.NRCSoftCoralLayer);
-                        AOI.NRCSoftCoralLayerIsVisible = false;
-                    }
-                }
-
-                ,
+                    AOI.NRCSoftCoralLayerIsVisible = AOI.toggleLayer(AOI.NRCSoftCoralLayer, AOI.NRCSoftCoralLayerIsVisible);
+                },
                 NRCReefsLayerIsVisible: false,
                 toggleNRCReefsLayer: function () {
-
-                    if (!this.NRCReefsLayerIsVisible) {
-                        this.NRCReefsLayer.addTo(AOI.map);
-                        this.NRCReefsLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(this.NRCReefsLayer);
-                        this.NRCReefsLayerIsVisible = false;
-                    }
+                    AOI.NRCReefsLayerIsVisible = AOI.toggleLayer(AOI.NRCReefsLayer, AOI.NRCReefsLayerIsVisible);
                 }
-
                 ,
                 NRCNearbyLayerIsVisible: false,
                 toggleNRCNearby: function () {
-
-                    if (!AOI.NRCNearbyLayerIsVisible) {
-                        AOI.NRCNearbyLayer.addTo(AOI.map);
-                        AOI.NRCNearbyLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.NRCNearbyLayer);
-                        AOI.NRCNearbyLayerIsVisible = false;
-                    }
+                    AOI.NRCNearbyLayerIsVisible = AOI.toggleLayer(AOI.NRCNearbyLayer, AOI.NRCNearbyLayerIsVisible);
                 }
-
                 ,
-
                 TIPrincipalPortsIsVisible: false,
                 toggleTIPrincipalPorts: function () {
-
-
-                    if (!AOI.TIPrincipalPortsIsVisible) {
-                        AOI.TIPrincipalPortsLayer.addTo(AOI.map);
-                        AOI.TIPrincipalPortsIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.TIPrincipalPortsLayer);
-                        AOI.TIPrincipalPortsIsVisible = false;
-                    }
+                    AOI.TIPrincipalPortsIsVisible = AOI.toggleLayer(AOI.TIPrincipalPortsLayer, AOI.TIPrincipalPortsIsVisible);
                 }
-
                 ,
                 TIVesselLayerIsVisible: false,
                 toggleTIVesselLayer: function () {
-
-
-                    if (!AOI.TIVesselLayerIsVisible) {
-                        AOI.TIVesselLayer.addTo(AOI.map);
-                        AOI.TIVesselLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.TIVesselLayer);
-                        AOI.TIVesselLayerIsVisible = false;
-                    }
+                    AOI.TIVesselLayerIsVisible = AOI.toggleLayer(AOI.TIVesselLayer, AOI.TIVesselLayerIsVisible);
                 }
-
                 ,
                 CEPlaceLayerIsVisible: false,
                 toggleCEPlaceLayer: function () {
+                    AOI.CEPlaceLayerIsVisible = AOI.toggleLayer(AOI.CEPlaceLayer, AOI.CEPlaceLayerIsVisible);
+                },
+                CETribalLayerIsVisible: false,
+                toggleCETribalLayer: function () {
+                    AOI.CETribalLayerIsVisible = AOI.toggleLayer(AOI.CETribalLayer, AOI.CETribalLayerIsVisible);
+                },
 
-                    if (!AOI.CEPlaceLayerIsVisible) {
-                        AOI.CEPlaceLayer.addTo(AOI.map);
-                        AOI.CETribalLayer.addTo(AOI.map);
-                        AOI.CEPlaceLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.CEPlaceLayer);
-                        AOI.map.removeLayer(AOI.CETribalLayer);
-                        AOI.CEPlaceLayerIsVisible = false;
-                    }
-                }
-
-                ,
                 EMActiveRenewableEnergyLeasesLayerIsVisible: false,
                 toggleEMActiveRenewableEnergyLeasesLayer: function () {
-
-                    if (!AOI.EMActiveRenewableEnergyLeasesLayerIsVisible) {
-                        AOI.EMActiveRenewableEnergyLeasesLayer.addTo(AOI.map);
-                        AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMActiveRenewableEnergyLeasesLayer);
-                        AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = false;
-                    }
+                    AOI.EMActiveRenewableEnergyLeasesLayerIsVisible = AOI.toggleLayer(AOI.EMActiveRenewableEnergyLeasesLayer, AOI.EMActiveRenewableEnergyLeasesLayerIsVisible);
                 }
-
                 ,
                 EMWindPlanningAreaLayerIsVisible: false,
                 toggleEMWindPlanningAreaLayer: function () {
-                    if (!AOI.EMWindPlanningAreaLayerIsVisible) {
-                        AOI.EMWindPlanningAreaLayer.addTo(AOI.map);
-                        AOI.EMWindPlanningAreaLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMWindPlanningAreaLayer);
-                        AOI.EMWindPlanningAreaLayerIsVisible = false;
-                    }
+                    AOI.EMWindPlanningAreaLayerIsVisible = AOI.toggleLayer(AOI.EMWindPlanningAreaLayer, AOI.EMWindPlanningAreaLayerIsVisible);
                 }
-
                 ,
                 EMOceanDisposalSitesLayerIsVisible: false,
                 toggleEMOceanDisposalSitesLayer: function () {
-
-                    if (!AOI.EMOceanDisposalSitesLayerIsVisible) {
-                        AOI.EMOceanDisposalSitesLayer.addTo(AOI.map);
-                        AOI.EMOceanDisposalSitesLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMOceanDisposalSitesLayer);
-                        AOI.EMOceanDisposalSitesLayerIsVisible = false;
-                    }
+                    AOI.EMOceanDisposalSitesLayerIsVisible = AOI.toggleLayer(AOI.EMOceanDisposalSitesLayer, AOI.EMOceanDisposalSitesLayerIsVisible);
                 }
-
                 ,
                 EMMarineHydrokineticProjectsLayerIsVisible: false,
                 toggleEMMarineHydrokineticProjectsLayer: function () {
-
-                    if (!AOI.EMMarineHydrokineticProjectsLayerIsVisible) {
-                        AOI.EMMarineHydrokineticProjectsLayer.addTo(AOI.map);
-                        AOI.EMMarineHydrokineticProjectsLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMMarineHydrokineticProjectsLayer);
-                        AOI.EMMarineHydrokineticProjectsLayerIsVisible = false;
-                    }
+                    AOI.EMMarineHydrokineticProjectsLayerIsVisible = AOI.toggleLayer(AOI.EMMarineHydrokineticProjectsLayer, AOI.EMMarineHydrokineticProjectsLayerIsVisible);
                 }
-
                 ,
 
-                EMMarineMineralsLeasesLayerIsVisable: false,
+                EMMarineMineralsLeasesLayerIsVisible: false,
                 toggleEMMarineMineralsLeasesLayer: function () {
-
-                    if (!AOI.EMMarineMineralsLeasesLayerIsVisable) {
-                        AOI.EMMarineMineralsLeasesLayer.addTo(AOI.map);
-                        AOI.EMMarineMineralsLeasesLayerIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMMarineMineralsLeasesLayer);
-                        AOI.EMMarineMineralsLeasesLayerIsVisable = false;
-                    }
+                    AOI.EMMarineMineralsLeasesLayerIsVisible = AOI.toggleLayer(AOI.EMMarineMineralsLeasesLayer, AOI.EMMarineMineralsLeasesLayerIsVisible);
                 }
-
                 ,
-                EMOceanWaveResourcePotentialLayerIsVisable: false,
+                EMOceanWaveResourcePotentialLayerIsVisible: false,
                 toggleEMOceanWaveResourcePotentialLayer: function () {
-
-                    if (!AOI.EMOceanWaveResourcePotentialLayerIsVisable) {
-                        AOI.EMOceanWaveResourcePotentialLayer.addTo(AOI.map);
-                        AOI.EMOceanWaveResourcePotentialLayerIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMOceanWaveResourcePotentialLayer);
-                        AOI.EMOceanWaveResourcePotentialLayerIsVisable = false;
-                    }
+                    AOI.EMOceanWaveResourcePotentialLayerIsVisible = AOI.toggleLayer(AOI.EMOceanWaveResourcePotentialLayer, AOI.EMOceanWaveResourcePotentialLayerIsVisible);
                 }
-
                 ,
-                EMTidalPowerLayerIsVisable: false,
+                EMTidalPowerLayerIsVisible: false,
                 toggleEMTidalPowerLayer: function () {
-
-                    if (!AOI.EMTidalPowerLayerIsVisable) {
-                        AOI.EMTidalPowerLayer.addTo(AOI.map);
-                        AOI.EMTidalPowerLayerIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMTidalPowerLayer);
-                        AOI.EMTidalPowerLayerIsVisable = false;
-                    }
+                    AOI.EMTidalPowerLayerIsVisible = AOI.toggleLayer(AOI.EMTidalPowerLayer, AOI.EMTidalPowerLayerIsVisible);
                 }
-
                 ,
-                EMCurrentPowerIsVisable: false,
+                EMCurrentPowerIsVisible: false,
                 toggleEMCurrentPower: function () {
-
-                    if (!AOI.EMCurrentPowerIsVisable) {
-                        AOI.EMCurrentPowerLayer.addTo(AOI.map);
-                        AOI.EMCurrentPowerIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMCurrentPowerLayer);
-                        AOI.EMCurrentPowerIsVisable = false;
-                    }
+                    AOI.EMCurrentPowerIsVisible = AOI.toggleLayer(AOI.EMCurrentPowerLayer, AOI.EMCurrentPowerIsVisible);
                 }
-
                 ,
-                EMBeachNourishmentProjectsLayerIsVisable: false,
+                EMBeachNourishmentProjectsLayerIsVisible: false,
                 toggleEMBeachNourishmentProjectsLayer: function () {
-
-                    if (!AOI.EMBeachNourishmentProjectsLayerIsVisable) {
-                        AOI.EMBeachNourishmentProjectsLayer.addTo(AOI.map);
-                        AOI.EMBeachNourishmentProjectsLayerIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMBeachNourishmentProjectsLayer);
-                        AOI.EMBeachNourishmentProjectsLayerIsVisable = false;
-                    }
+                    AOI.EMBeachNourishmentProjectsLayerIsVisible = AOI.toggleLayer(AOI.EMBeachNourishmentProjectsLayer, AOI.EMBeachNourishmentProjectsLayerIsVisible);
                 }
-
                 ,
-                EMCoastalEnergyFacilitiesLayerIsVisable: false,
+                EMCoastalEnergyFacilitiesLayerIsVisible: false,
                 toggleEMCoastalEnergyFacilitiesLayer: function () {
-
-                    if (!AOI.EMCoastalEnergyFacilitiesLayerIsVisable) {
-                        AOI.EMCoastalEnergyFacilitiesLayer.addTo(AOI.map);
-                        AOI.EMCoastalEnergyFacilitiesLayerIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMCoastalEnergyFacilitiesLayer);
-                        AOI.EMCoastalEnergyFacilitiesLayerIsVisable = false;
-                    }
+                    AOI.EMCoastalEnergyFacilitiesLayerIsVisible = AOI.toggleLayer(AOI.EMCoastalEnergyFacilitiesLayer, AOI.EMCoastalEnergyFacilitiesLayerIsVisible);
                 }
-
                 ,
-
                 EMWindResourcePotentialLayerIsVisible: false,
                 toggleEMWindResourcePotentialLayer: function () {
-
-                    if (!AOI.EMWindResourcePotentialLayerIsVisible) {
-                        AOI.EMWindResourcePotentialLayer.addTo(AOI.map);
-                        AOI.EMWindResourcePotentialLayerIsVisible = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.EMWindResourcePotentialLayer);
-                        AOI.EMWindResourcePotentialLayerIsVisible = false;
-                    }
+                    AOI.EMWindResourcePotentialLayerIsVisible = AOI.toggleLayer(AOI.EMWindResourcePotentialLayer, AOI.EMWindResourcePotentialLayerIsVisible);
                 }
-
                 ,
-                CEElevationIsVisable: false,
+                CEElevationIsVisible: false,
                 toggleCEElevation: function () {
-
-                    if (!AOI.CEElevationIsVisable) {
-                        AOI.CEElevationLayer.addTo(AOI.map);
-                        AOI.CEElevationIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.CEElevationLayer);
-                        AOI.CEElevationIsVisable = false;
-                    }
+                    AOI.CEElevationIsVisible = AOI.toggleLayer(AOI.CEElevationLayer, AOI.CEElevationIsVisible);
                 }
-
                 ,
-                TISubmarineIsVisable: false,
+                TISubmarineIsVisible: false,
                 toggleTISubmarine: function () {
-
-                    if (!AOI.TISubmarineIsVisable) {
-                        AOI.TISubmarineLayer.addTo(AOI.map);
-                        AOI.TISubmarineIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.TISubmarineLayer);
-                        AOI.TISubmarineIsVisable = false;
-                    }
+                    AOI.TISubmarineIsVisible = AOI.toggleLayer(AOI.TISubmarineLayer, AOI.TISubmarineIsVisible);
                 }
-
                 ,
-                TIDangerZonesIsVisable: false,
+                TIDangerZonesIsVisible: false,
                 toggleTIDangerZones: function () {
-
-                    if (!AOI.TIDangerZonesIsVisable) {
-                        AOI.TIDangerZonesLayer.addTo(AOI.map);
-                        AOI.TIDangerZonesIsVisable = true;
-                    } else {
-                        AOI.map.removeLayer(AOI.TIDangerZonesLayer);
-                        AOI.TIDangerZonesIsVisable = false;
-                    }
+                    AOI.TIDangerZonesIsVisible = AOI.toggleLayer(AOI.TIDangerZonesLayer, AOI.TIDangerZonesIsVisible);
                 }
-
                 ,
                 toggleFull: false,
                 toggleFullSlider: function () {
@@ -25226,7 +25050,7 @@ angular.module('ortApp.services', [])
                                         loadDeferred.resolve();
                                     }
                                 },
-                                //animation: !AOI.inPrintWindow
+                                animation: !AOI.inPrintWindow
                             },
                             title: {
                                 text: null
@@ -25257,7 +25081,7 @@ angular.module('ortApp.services', [])
                                 },
                                 column: {
                                     stacking: 'percent',
-                                    //animation: !AOI.inPrintWindow
+                                    animation: !AOI.inPrintWindow
                                 }
                             }
 
@@ -25334,10 +25158,10 @@ angular.module('ortApp.services', [])
 ;
 'use strict';
 
-function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll,COMMAND) {
+function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQueryService, AOIConfig, $scope, $rootScope, $anchorScroll, COMMAND, $window) {
     //this one loads once on start up
 
-    $rootScope.$on('$stateChangeStart',  function () {
+    $rootScope.$on('$stateChangeStart', function () {
         $anchorScroll();
     });
 
@@ -25361,8 +25185,6 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
             numericSymbols: ["k", "M", "B", "T", "P", "E"]
         }
     });
-
-
 
     vm.sidePanelVisible = true;
 
@@ -25419,13 +25241,13 @@ function PageslideCtrl(AOI, $state, usSpinnerService, $location, myQueryService,
                 vm.drawOrSubmitCommand = COMMAND.SUBMIT;
                 break;
             case COMMAND.COMPLETE:
-                vm.completeDraw();
+
                 break;
         }
     };
 
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
-        vm.sidePanelVisible =!vm.sidePanelVisible;
+        vm.sidePanelVisible = !vm.sidePanelVisible;
     };
 
     vm.menu = {};
@@ -25569,6 +25391,7 @@ function AOICtrl(AOI, webService) {
     var vm = this;
 
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.congressIsActive = true;
     vm.senateIsActive = false;
@@ -25576,6 +25399,7 @@ function AOICtrl(AOI, webService) {
     vm.congressMenu = "-";
     vm.senateMenu = "+";
     vm.houseMenu = "+";
+
 
     webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
@@ -25614,6 +25438,7 @@ function AOICtrl(AOI, webService) {
 function NaturalResourceCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "NaturalResourcesCtrl";
     webService.getData('data/NRC_config.json').then(function (result) {
@@ -25625,6 +25450,7 @@ function NaturalResourceCtrl(AOI, webService) {
 function TransportationAndInfrastructureCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "TransportationAndInfrastructureCtrl";
     webService.getData('data/TI_config.json').then(function (result) {
@@ -25635,6 +25461,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
 function EnergyAndMineralsCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "EnergyAndMineralsCtrl";
     webService.getData('data/EM_config.json').then(function (result) {
@@ -25646,6 +25473,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
 function EconCtrl(AOI, webService) {
     var vm = this;
     vm.AOI = AOI;
+    if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
     vm.name = "EconCtrl";
     webService.getData('data/EC_config.json').then(function (result) {
@@ -25659,7 +25487,7 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
-
+    //vm.AOI.sliderWidth = '100%';
     vm.name = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -25717,8 +25545,8 @@ angular.module('ortApp.controllers', ["pageslide-directive"])
     .controller('TransportationAndInfrastructureCtrl', ['AOI', 'webService', TransportationAndInfrastructureCtrl])
     .controller('NaturalResourcesCtrl', ['AOI', 'webService', NaturalResourceCtrl])
     .controller('EconCtrl', ['AOI', 'webService', EconCtrl])
-    .controller('pageslideCtrl', ['AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
-        'AOIConfig', '$scope', '$rootScope', '$anchorScroll','COMMAND', PageslideCtrl]);
+    .controller('pageslideCtrl', ['Highcharts', 'AOI', '$state', 'usSpinnerService', '$location', 'myQueryService',
+        'AOIConfig', '$scope', '$rootScope', '$anchorScroll', 'COMMAND', '$window', PageslideCtrl]);
 
 
 
@@ -25743,7 +25571,7 @@ function printDirective($state, $timeout) {
         scope.loadPromise.then(function () {
             $timeout(function () { // $timeout used to give just a little extra time for elements to render in print. Without it some of the vector graphics don't show.
                 var printElement = element[0].cloneNode(true);
-                printElement.id = 'printSection';
+                printElement.id = 'printSectionChrome';
                 angular.element(document.body).append(printElement);
                 window.print();
                 printElement.innerHTML = "";

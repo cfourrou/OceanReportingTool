@@ -3,10 +3,11 @@
 **************************************/
 @media screen {
   #printSection {
-   //display: none;
     visibility: hidden;
   }
-
+  #printSectionChrome{
+    visibility: hidden;
+  }
 }
 
 @media print and (min-width: 211mm) and (max-width: 216mm) {
@@ -22,10 +23,10 @@
   }
 }
 
-@media print { //ie
+/* all browsers use the following section */
+@media print {
   body * {
     visibility: hidden;
-    //display:none;
   }
 
   .header, .header * {
@@ -37,18 +38,13 @@
   }
 
   .h900, .h900 * {
-    //width:100%;
-    //display: none;
-    //visibility: hidden;
+
   }
 
   .footer, .footer * {
     display: none;
   }
 
-  //#map, #map * {
-  //  //display: none;
-  //}
   #map {
     display: none;
   }
@@ -58,17 +54,9 @@
   }
 
   .ng-pageslide {
-    //display: none;
-    //visibility: hidden;
-    //width:100%;
-    //z-index: 1000;
-    //position: relative;
+
     width: 100% !important;
-   // transition-duration: 0.5s;
-    //transition-property: width, height;
-    //top: 0px;
-    //left: 0px;
-    //right: auto;
+
   }
 
   .slider {
@@ -85,28 +73,26 @@
 
   .clear {
     clear: left;
-    //page-break-before: always;
+
   }
 
   .theme {
     page-break-before: always;
-    //-webkit-region-break-before: always;
-    // page-break-after: always;
+
   }
-  //#printSectionChrome, #printSectionChrome * {
-  //  display: none;
-  //}
+
   #printSection {
     display: block !important;
     visibility: visible;
-    //display: block !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
   }
-  #printSection ,#printSection *{
+
+  #printSection, #printSection * {
     visibility: visible;
   }
+
   .zeroheightkludge, .zeroheightkludge * {
     page-break-inside: avoid;
     break-inside: avoid;
@@ -139,12 +125,6 @@
     break-inside: avoid;
   }
 
-  //#printSection {
-  //}
-  //
-  //#printSection:last-child {
-  //}
-
 }
 
 @page {
@@ -154,11 +134,12 @@
   margin-right: 0.5in;
 }
 
-
-@media print and (-webkit-min-device-pixel-ratio:0){ //chrome
+/* this section is for webkit browsers like Chrome  and run in addition to the above*/
+@media print and (-webkit-min-device-pixel-ratio: 0) {
   body * {
     visibility: visible;
   }
+
   .header, .header * {
     display: none;
   }
@@ -168,18 +149,12 @@
   }
 
   .h900, .h900 * {
-    //width:100%;
-    //display: none;
-    //visibility: hidden;
   }
 
   .footer, .footer * {
     display: none;
   }
 
-  //#map, #map * {
-  //  //display: none;
-  //}
   #map {
     display: none;
   }
@@ -187,12 +162,13 @@
   .CEHeader {
     display: none;
   }
+
   .ng-pageslide, .ng-pageslide * {
     display: none;
-    //visibility: hidden;
+
   }
 
-  .layertoggle-button,.layertoggle-button * {
+  .layertoggle-button, .layertoggle-button * {
     visibility: hidden !important;
   }
 
@@ -208,14 +184,13 @@
     page-break-before: always;
   }
 
-  #printSectionChrome{
+  #printSectionChrome {
     display: block !important;
     visibility: visible;
   }
 
   #printSectionChrome, #printSectionChrome * {
     visibility: visible;
-    //display: block;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
@@ -252,11 +227,5 @@
     page-break-inside: avoid;
     break-inside: avoid;
   }
-
-  //#printSection {
-  //}
-  //
-  //#printSection:last-child {
-  //}
 
 }

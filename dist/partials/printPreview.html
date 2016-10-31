@@ -1,12 +1,9 @@
 <div class="slider">
-    <div class="CEHeader">
-        <div class="AOIname">Building Printable Page</div>
 
-    </div>
-
+Building Printable Page
     <div class="clear">&nbsp;</div>
 
-    <div class="print-overflowauto" ng-print load-promise="Printvm.readyToPrint">
+    <div id="printSection" class="overflowauto" ng-print load-promise="Printvm.readyToPrint">
         <div>{{Printvm.AOI.name.toUpperCase()}}</div>
         <div class="theme--printfriendly"> Common Elements
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
@@ -15,7 +12,7 @@
             </div>
         </div>
 
-        <div class="clear">&nbsp;</div>
+        <div class="clear"></div>
 
         <div class="theme"> Energy and Minerals
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
@@ -25,7 +22,7 @@
             </div>
 
         </div>
-        <div class="clear">&nbsp;</div>
+        <div class="clear"></div>
 
         <div class="theme"> Natural Resources and Conservation
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
@@ -35,7 +32,7 @@
             </div>
         </div>
 
-        <div class="clear">&nbsp;</div>
+        <div class="clear"></div>
 
         <div class="theme"> Transportation and Infrastructure
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
@@ -47,7 +44,7 @@
             </div>
 
         </div>
-        <div class="clear">&nbsp;</div>
+        <div class="clear"></div>
 
         <div class="theme"> Economics And Commerce
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
@@ -59,11 +56,11 @@
             </div>
 
         </div>
-        <div class="clear">&nbsp;</div>
+        <div class="clear"></div>
         <div class="theme">Metadata
             <div ng-include="'partials/metadataPrint.html'"></div>
         </div>
-        <div class="clear">&nbsp;</div>
+        <div class="clear"></div>
         <div class="partnership">
             A Collaboration of
             <a class="partnership-link" href="http://www.boem.gov/" title="Bureau of Ocean Management Homepage"><img
@@ -73,5 +70,6 @@
                     src="img/noaa.png" alt="NOAA Logo"></a>
         </div>
     </div>
+
 
 </div>

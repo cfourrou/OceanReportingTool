@@ -28,7 +28,7 @@
         <!-- iButton end-->
         <div class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
             <div ng-class="AOIvm.AOI.CEPlaceLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                 ng-click="AOIvm.AOI.toggleCEPlaceLayer()" ng-include="'img/switch_off.svg'"></div>
+                 ng-click="AOIvm.AOI.toggleCEPlaceLayer();AOIvm.AOI.toggleCETribalLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
         <div class="layertoggle-text" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
