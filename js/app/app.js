@@ -37,6 +37,7 @@ $http.get("data/gis_config.json").then(function (result) {
                 ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
                 ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
                 ortLayerAOI: result.data['ortLayerAOI'].data,//Ocean Reporting Tool map Layer for this Area Of Interest
+                ortReportExpires: result.data['ortReportExpires'].data,//Ocean Reporting Tool custom drawn report data expiration text
                 ortEnergyGPService: result.data['ortEnergyGPService'].data, //ORT Energy GeoProcessing Service URL
                 ortCommonGPService: result.data['ortCommonGPService'].data, //ORT Common Elements or General Information GeoProcessing Service URL
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL

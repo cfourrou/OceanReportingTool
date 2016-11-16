@@ -23186,6 +23186,7 @@ angular.module('ortApp.services', [])
             ortMapServer: '',
             ortLayerAOI: '',
             ortLayerData: '',
+            ortReportExpires: '',
             ortEnergyGPService: '',
             ortCommonGPService: '',
             ortTranspoGPService: '',
@@ -23454,7 +23455,7 @@ angular.module('ortApp.services', [])
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, result.features);
                             }
                         });
-
+                        if (AOI.viewName !== 'draw') $window.alert("Your custom report has finished running. Click OK to view it.");
                         AOI.unloadData();
                         AOI.loadData(-9999, '');
                     });
@@ -25141,12 +25142,15 @@ angular.module('ortApp.services', [])
                 ShowURL: function () {
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
                     if (AOI.ID === -9999) {
+                        AOI.modaltext = "This link will be active for " + AOIConfig.ortReportExpires + " from the time it was first generated. During this time anyone who uses this link will continue to see the same report generated here.";
                         shareURL = shareURL +
                             '&TI=' + AOI.drawAreaJobId.TI +
                             '&EC=' + AOI.drawAreaJobId.EC +
                             '&CE=' + AOI.drawAreaJobId.CE +
                             '&NRC=' + AOI.drawAreaJobId.NRC +
                             '&EM=' + AOI.drawAreaJobId.EM
+                    } else {
+                        AOI.modaltext = "The link below will generate this same report for others to see.";
                     }
                     return (shareURL);
                 }
@@ -25378,6 +25382,9 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             listener();
         }
     });
+    vm.menuButtonActivate = function (menuItem) {
+        vm.AOI.viewName = menuItem;
+    };
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -25399,7 +25406,7 @@ function AOICtrl(AOI, webService) {
     vm.congressMenu = "-";
     vm.senateMenu = "+";
     vm.houseMenu = "+";
-
+    vm.AOI.viewName = "CEview";
 
     webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
@@ -25440,7 +25447,7 @@ function NaturalResourceCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "NaturalResourcesCtrl";
+    vm.AOI.viewName = "NRCview";
     webService.getData('data/NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
     });
@@ -25452,7 +25459,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "TransportationAndInfrastructureCtrl";
+    vm.AOI.viewName = "TIview";
     webService.getData('data/TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
@@ -25463,7 +25470,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "EnergyAndMineralsCtrl";
+    vm.AOI.viewName = "EMview";
     webService.getData('data/EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
@@ -25475,7 +25482,7 @@ function EconCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "EconCtrl";
+    vm.AOI.viewName = "ECview";
     webService.getData('data/EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
@@ -25488,7 +25495,7 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
     //vm.AOI.sliderWidth = '100%';
-    vm.name = "PrintCtrl";
+    vm.AOI.viewName = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
     vm.houseIsActive = true;
@@ -25531,8 +25538,9 @@ function SearchCtrl(AOI) {
 
 
 angular.module('ortApp.controllers', ["pageslide-directive"])
-    .controller('ModalController', function ($scope, metaurl, close) {
+    .controller('ModalController', function ($scope, metaurl, custom, close) {
         $scope.metadataurl = metaurl;
+        $scope.modalcustom = custom;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
@@ -25600,7 +25608,8 @@ angular.module('ortApp.directives', [])
                 message: '=',
                 metadataUrl: '@',
                 varData: '@',
-                alttext: '@'
+                alttext: '@',
+                modalCustom: '@'
             },
             template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{varData}}<div ng-if="!varData" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
@@ -25611,7 +25620,8 @@ angular.module('ortApp.directives', [])
                         controller: "ModalController",
                         inputs: {
                             metaurl: $scope.metadataUrl,
-                            myvarData: $scope.varData
+                            myvarData: $scope.varData,
+                            custom: $scope.modalCustom
 
                         }
 
@@ -25807,6 +25817,7 @@ angular.module('ortApp.directives', [])
                         $scope.drawLocked = false;
                         $scope.map.pm.disableDraw('Poly');
                         $scope.map.removeControl(searchControl);
+                        if (baseMapControl) $scope.map.removeControl(baseMapControl);
                         $scope.drawEnabled = false;
                         $scope.drawAvailable = false;
                         if (polyLayer) {
@@ -25864,7 +25875,7 @@ angular.module('ortApp.directives', [])
 
                     $scope.resetMap = function () {
                         $scope.mapHalfScreen();
-                        $scope.baseMapControlEnabled = false;
+                        $scope.basemapControlEnabled = false;
                         $scope.searchControlEnabled = false;
                         $scope.drawOff();
                         $scope.polyLayerEnabled = false;
@@ -26001,6 +26012,7 @@ $http.get("data/gis_config.json").then(function (result) {
                 ortMapServer: result.data['ortMapServer'].data,//Ocean Reporting Tool map server URL
                 ortLayerData: result.data['ortLayerData'].data,//Ocean Reporting Tool layer ID number for REPORT_INFO table
                 ortLayerAOI: result.data['ortLayerAOI'].data,//Ocean Reporting Tool map Layer for this Area Of Interest
+                ortReportExpires: result.data['ortReportExpires'].data,//Ocean Reporting Tool custom drawn report data expiration text
                 ortEnergyGPService: result.data['ortEnergyGPService'].data, //ORT Energy GeoProcessing Service URL
                 ortCommonGPService: result.data['ortCommonGPService'].data, //ORT Common Elements or General Information GeoProcessing Service URL
                 ortTranspoGPService: result.data['ortTranspoGPService'].data,//ORT Transporation and Infrastructure GeoProcessing Service URL

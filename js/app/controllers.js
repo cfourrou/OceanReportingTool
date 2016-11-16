@@ -220,6 +220,9 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             listener();
         }
     });
+    vm.menuButtonActivate = function (menuItem) {
+        vm.AOI.viewName = menuItem;
+    };
 }
 
 // functions defined in directive but placed here so nested controllers could inherit.
@@ -241,7 +244,7 @@ function AOICtrl(AOI, webService) {
     vm.congressMenu = "-";
     vm.senateMenu = "+";
     vm.houseMenu = "+";
-
+    vm.AOI.viewName = "CEview";
 
     webService.getData('data/CE_config.json').then(function (result) {
         vm.CEConfig = result;
@@ -282,7 +285,7 @@ function NaturalResourceCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "NaturalResourcesCtrl";
+    vm.AOI.viewName = "NRCview";
     webService.getData('data/NRC_config.json').then(function (result) {
         vm.NRCConfig = result;
     });
@@ -294,7 +297,7 @@ function TransportationAndInfrastructureCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "TransportationAndInfrastructureCtrl";
+    vm.AOI.viewName = "TIview";
     webService.getData('data/TI_config.json').then(function (result) {
         vm.TIConfig = result;
     });
@@ -305,7 +308,7 @@ function EnergyAndMineralsCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "EnergyAndMineralsCtrl";
+    vm.AOI.viewName = "EMview";
     webService.getData('data/EM_config.json').then(function (result) {
         vm.EMConfig = result;
     });
@@ -317,7 +320,7 @@ function EconCtrl(AOI, webService) {
     vm.AOI = AOI;
     if (vm.AOI.inPrintWindow) vm.AOI.sliderWidth = '50%';
     vm.AOI.inPrintWindow = false;
-    vm.name = "EconCtrl";
+    vm.AOI.viewName = "ECview";
     webService.getData('data/EC_config.json').then(function (result) {
         vm.ECConfig = result;
     });
@@ -330,7 +333,7 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
     //vm.AOI.sliderWidth = '100%';
-    vm.name = "PrintCtrl";
+    vm.AOI.viewName = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
     vm.houseIsActive = true;
@@ -373,8 +376,9 @@ function SearchCtrl(AOI) {
 
 
 angular.module('ortApp.controllers', ["pageslide-directive"])
-    .controller('ModalController', function ($scope, metaurl, close) {
+    .controller('ModalController', function ($scope, metaurl, custom, close) {
         $scope.metadataurl = metaurl;
+        $scope.modalcustom = custom;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };

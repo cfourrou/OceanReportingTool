@@ -38,6 +38,7 @@
   color: @colorWhite;
   display: inline-block;
 }
+
 .menu-reset {
   background-image: url('../img/Reset_2.svg');
   .menu-leftbutton;
@@ -63,7 +64,8 @@
   background-position: center 5px;
   width: 26%;
   max-width: 130px;
-  height: 43px;
+  height: 100%;
+  float:left;
   padding: 12px 12px 0px 12px;
   display: inline-block;
   line-height: 48px;
@@ -75,8 +77,6 @@
     text-decoration: none;
   }
 }
-
-
 
 .menu-rightbutton {
   color: @colorWhite;
@@ -109,4 +109,20 @@
   display: table-cell;
   vertical-align: middle;
   text-align: center;
+}
+
+.menu-border-right {
+  border-right: 1px solid rgba(255, 255, 255, .15);
+}
+.menu-border-left {
+  border-left: 1px solid rgba(255, 255, 255, .15);
+}
+.menu--active {
+  background-color: @ortBlue-Dark;
+  text-decoration: none;
+}
+
+.menu--inactive {
+  background-color: @ortBlue-light;
+  text-decoration: none;
 }

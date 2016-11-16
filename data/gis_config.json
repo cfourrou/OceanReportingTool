@@ -8,6 +8,9 @@
   "ortLayerAOI": {
     "data": "7"
   },
+  "ortReportExpires":{
+    "data":"14 days"
+  },
   "ortEnergyGPService": {
     "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/Draw%20Area%20-%20EM"
   },

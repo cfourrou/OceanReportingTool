@@ -39,6 +39,7 @@ angular.module('ortApp.services', [])
             ortMapServer: '',
             ortLayerAOI: '',
             ortLayerData: '',
+            ortReportExpires: '',
             ortEnergyGPService: '',
             ortCommonGPService: '',
             ortTranspoGPService: '',
@@ -307,7 +308,7 @@ angular.module('ortApp.services', [])
                                 AOI.featureCollection.features.push.apply(AOI.featureCollection.features, result.features);
                             }
                         });
-
+                        if (AOI.viewName !== 'draw') $window.alert("Your custom report has finished running. Click OK to view it.");
                         AOI.unloadData();
                         AOI.loadData(-9999, '');
                     });
@@ -1994,12 +1995,15 @@ angular.module('ortApp.services', [])
                 ShowURL: function () {
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
                     if (AOI.ID === -9999) {
+                        AOI.modaltext = "This link will be active for " + AOIConfig.ortReportExpires + " from the time it was first generated. During this time anyone who uses this link will continue to see the same report generated here.";
                         shareURL = shareURL +
                             '&TI=' + AOI.drawAreaJobId.TI +
                             '&EC=' + AOI.drawAreaJobId.EC +
                             '&CE=' + AOI.drawAreaJobId.CE +
                             '&NRC=' + AOI.drawAreaJobId.NRC +
                             '&EM=' + AOI.drawAreaJobId.EM
+                    } else {
+                        AOI.modaltext = "The link below will generate this same report for others to see.";
                     }
                     return (shareURL);
                 }

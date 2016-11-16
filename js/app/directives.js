@@ -37,7 +37,8 @@ angular.module('ortApp.directives', [])
                 message: '=',
                 metadataUrl: '@',
                 varData: '@',
-                alttext: '@'
+                alttext: '@',
+                modalCustom: '@'
             },
             template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{varData}}<div ng-if="!varData" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
@@ -48,7 +49,8 @@ angular.module('ortApp.directives', [])
                         controller: "ModalController",
                         inputs: {
                             metaurl: $scope.metadataUrl,
-                            myvarData: $scope.varData
+                            myvarData: $scope.varData,
+                            custom: $scope.modalCustom
 
                         }
 
@@ -244,6 +246,7 @@ angular.module('ortApp.directives', [])
                         $scope.drawLocked = false;
                         $scope.map.pm.disableDraw('Poly');
                         $scope.map.removeControl(searchControl);
+                        if (baseMapControl) $scope.map.removeControl(baseMapControl);
                         $scope.drawEnabled = false;
                         $scope.drawAvailable = false;
                         if (polyLayer) {
@@ -301,7 +304,7 @@ angular.module('ortApp.directives', [])
 
                     $scope.resetMap = function () {
                         $scope.mapHalfScreen();
-                        $scope.baseMapControlEnabled = false;
+                        $scope.basemapControlEnabled = false;
                         $scope.searchControlEnabled = false;
                         $scope.drawOff();
                         $scope.polyLayerEnabled = false;

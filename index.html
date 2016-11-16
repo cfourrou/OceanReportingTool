@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?1bd25c48b9d3b6fd">
+    <link rel="stylesheet" href="css/ort.min.css?fc543ced53e1dafb">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -122,7 +122,7 @@
 
 <!-- MAIN CONTENT -->
 <div class="wrapper" ng-controller="pageslideCtrl as vm">
-    <script type="text/ng-template" id="Share1.html">
+    <script type="text/ng-template" id="ShareReport.html">
         <div class="modal">
             <div class="modal-overlay">
                 <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
@@ -131,7 +131,7 @@
                         <path d="M0 0h24v24h-24z" fill="none"/>
                     </svg>
                 </a>
-                Copy the link below to share.
+                {{modalcustom}}
                 <input type="text" ng-model="metadataurl" class="share-link">
 
             </div>
@@ -191,22 +191,45 @@
     <div class="inner">
         <div class="menu">
             <div class="menu-left">
-                <a ui-sref="splash" class="menu-reset" ng-click="vm.startOver()" role="button">RESET</a>
-                <a ui-sref="menu" class="menu-areas" ng-click="vm.startMenu()" role="button">KNOWN AREAS</a>
-                <a ui-sref="draw" class="menu-draw" ng-click="vm.drawMenu()" role="button">DRAW AREA</a>
+                <button ui-sref="splash" class="menu-reset menu-border-right" ng-click="vm.startOver()" href=""
+                        role="button">RESET
+                </button>
+                <button ui-sref="menu" class="menu-areas menu-border-right"
+                        ng-click="vm.startMenu();vm.menuButtonActivate('menu')" href=""
+                        role="button">KNOWN
+                    AREAS
+                </button>
+                <button ui-sref="draw" class="menu-draw menu-border-right"
+                        ng-click="vm.drawMenu();vm.menuButtonActivate('draw')" href=""
+                        role="button">DRAW
+                    AREA
+                </button>
 
 
             </div>
             <div ng-cloak ng-show="vm.AOI.isLoaded" class="menu-right">
 
-                <button class="menu-rightbutton" role="button" ui-sref="CEview" href="">GENERAL INFORMATION</button>
-                <button class="menu-rightbutton" role="button" ui-sref="EMview" href="">ENERGY & MINERALS</button>
-                <button class="menu-rightbutton" role="button" ui-sref="NRCview" href="">NATURAL RESOURCES &
+                <button ng-class="vm.AOI.viewName === 'CEview' ? 'menu--active':'menu--inactive'"
+                        class="menu-rightbutton menu-border-right" role="button" ui-sref="CEview" href="">GENERAL
+                    INFORMATION
+                </button>
+                <button ng-class="vm.AOI.viewName === 'EMview' ? 'menu--active':'menu--inactive'"
+                        class="menu-rightbutton menu-border-right" role="button" ui-sref="EMview" href="">ENERGY &
+                    MINERALS
+                </button>
+                <button ng-class="vm.AOI.viewName === 'NRCview' ? 'menu--active':'menu--inactive'"
+                        class="menu-rightbutton menu-border-right" role="button" ui-sref="NRCview" href="">NATURAL
+                    RESOURCES &
                     CONSERVATION
                 </button>
-                <button class="menu-rightbutton" role="button" ui-sref="TIview" href="">TRANSPORTATION & INFRASTRUCTURE
+                <button ng-class="vm.AOI.viewName === 'TIview' ? 'menu--active':'menu--inactive'"
+                        class="menu-rightbutton menu-border-right" role="button" ui-sref="TIview" href="">TRANSPORTATION
+                    & INFRASTRUCTURE
                 </button>
-                <button class="menu-rightbutton" role="button" ui-sref="ECview" href="">ECONOMICS & COMMERCE</button>
+                <button ng-class="vm.AOI.viewName === 'ECview' ? 'menu--active':'menu--inactive'"
+                        class="menu-rightbutton"
+                        role="button" ui-sref="ECview" href="">ECONOMICS & COMMERCE
+                </button>
 
             </div>
         </div>
@@ -254,7 +277,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?5ba733c010f51fb0"></script>
+<script src="js/ort.js?3088fdc246d5e30a"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

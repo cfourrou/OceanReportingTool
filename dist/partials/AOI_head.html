@@ -6,12 +6,13 @@
                 alt=""></a></div>
         <div class="AOIhead-button" title="Share" role="button">
 
-            <info-directive modal-template="Share1.html"
+            <info-directive modal-template="ShareReport.html"
                             message="vm.message"
                             metadata-url="{{vm.AOI.ShowURL()}}"
-                            modal-img="img/Export.svg" alt=""></info-directive>
+                            modal-img="img/Export.svg" alt=""
+                            modal-custom="{{vm.AOI.modaltext}}"></info-directive>
         </div>
-        <div class="AOIhead-button" title="Metadata" role="button"><a ui-sref="meta" href=""><img
+        <div class="AOIhead-button" title="Metadata" role="button" ng-click="vm.menuButtonActivate('meta')"><a ui-sref="meta" href=""><img
                 src="img/MetadataIcon.svg"
                 alt=""></a></div>
     </div>
