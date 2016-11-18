@@ -37,11 +37,12 @@
 
     </div>
     <div>
+        <div class="infographic-list infographic-list--pad " ng-hide="TIvm.AOI.TIVessel.length">No Data</div>
         <div class="infographic-list infographic-list--pad">
 
             <div class="vessel">
                 <div class="vessel-1"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg===0" class="vessel-img"
-                                          src="img/transportation-ship.svg"></div>
+                                           src="img/transportation-ship.svg"></div>
                 <div class="vessel-num">0</div>
             </div>
             <div class="vessel">
@@ -70,7 +71,7 @@
             </div>
             <div class="vessel">
                 <div class="vessel-6"><img ng-show="TIvm.AOI.TIVessel[0].all_2011_avg>=1501" class="vessel-img"
-                                          src="img/transportation-ship.svg"></div>
+                                           src="img/transportation-ship.svg"></div>
                 <div class="vessel-num">More than 1500</div>
             </div>
 

@@ -38,12 +38,15 @@
 
         <div class="infographic-dataarea--split">
             <div><b>Per 500m<sup>2</sup></b></div>
-            <div>Min: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_min|currency }}</div>
-            <div>Max: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_max|currency}}</div>
+            <div><span>Min: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_min|currency }}</span><span
+                    ng-hide="ECvm.AOI.ECFishRevenue.length">No Data</span></div>
+            <div><span>Max: {{ECvm.AOI.ECFishRevenue[0].FishingRev_value_max|currency}}</span><span
+                    ng-hide="ECvm.AOI.ECFishRevenue.length">No Data</span></div>
         </div>
         <div class="infographic-dataarea--split">
             <div><b>Area Total</b></div>
             <div>{{ECvm.AOI.ECFishRevenue[0].FishingRev_total|currency}}</div>
+            <span ng-hide="ECvm.AOI.ECFishRevenue.length">No Data</span>
         </div>
     </div>
 

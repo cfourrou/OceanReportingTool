@@ -59,7 +59,7 @@
     </div>
     <div class="infographic-dataarea">
         <div class="">
-            <div class="infographic-text--large">Stony Coral - {{NRCvm.AOI.NRCStonyCoral[0].Coral_Suitability}}
+            <div class="infographic-text--large"><span>Stony Coral - </span><span ng-hide="NRCvm.AOI.NRCStonyCoral[0].Coral_Suitability">No Data</span><span>{{NRCvm.AOI.NRCStonyCoral[0].Coral_Suitability}}</span>
                 <div class="layertoggle-button" ng-hide="NRCvm.AOI.toggleFull===true">
                     <div ng-class="NRCvm.AOI.NRCStoneyCoralLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                          ng-click="NRCvm.AOI.toggleNRCStoneyCoralLayer()"
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="">
-            <div class="infographic-text--large">Soft Coral - {{NRCvm.AOI.NRCSoftCoral[0].Coral_Suitability}}
+            <div class="infographic-text--large"><span>Soft Coral - </span><span ng-hide="NRCvm.AOI.NRCSoftCoral[0].Coral_Suitability">No Data</span><span>{{NRCvm.AOI.NRCSoftCoral[0].Coral_Suitability}}</span>
                 <div class="layertoggle-button" ng-hide="NRCvm.AOI.toggleFull===true">
                     <div ng-class="NRCvm.AOI.NRCSoftCoralLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                          ng-click="NRCvm.AOI.toggleNRCSoftCoralLayer()"
