@@ -28,7 +28,8 @@
         <!-- iButton end-->
         <div class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
             <div ng-class="AOIvm.AOI.CEPlaceLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                 ng-click="AOIvm.AOI.toggleCEPlaceLayer();AOIvm.AOI.toggleCETribalLayer()" ng-include="'img/switch_off.svg'"></div>
+                 ng-click="AOIvm.AOI.toggleCEPlaceLayer();AOIvm.AOI.toggleCETribalLayer()"
+                 ng-include="'img/switch_off.svg'"></div>
         </div>
         <div class="layertoggle-text" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
@@ -74,12 +75,14 @@
 
     <div class="infographic-dataarea">
 
-        <table class="table-tribe">
+        <div ng-hide="AOIvm.AOI.CETribalLands.length">No Tribal Lands were identified within 50 miles of this area</div>
+        <table ng-show="AOIvm.AOI.CETribalLands.length" class="table-tribe">
 
             <tr>
                 <th>Tribal Lands</th>
                 <th>Distance in Miles</th>
             </tr>
+
             <tr ng-repeat="x in AOIvm.AOI.CETribalLands | orderBy : 'Dist_Mi'">
                 <td>
                     <div>{{x.NAMELSAD}}</div>

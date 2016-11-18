@@ -33,11 +33,11 @@
 
 
         <div ng-repeat="x in ECvm.AOI.ECStateGDP| orderBy : 'st_name'">
-            <div><b>{{x.st_name}}</b> : {{x.PercentTotGDP}}%</div>
+            <div><b>{{x.st_name}}</b> : {{x.PercentTotGDP.toFixed(2)}}%</div>
 
         </div>
         <div ng-repeat="x in ECvm.AOI.ECCountyGDP| orderBy : 'cntyname'">
-            <div><b>{{x.cntyname}}</b> : {{x.PercentTotGDP}}%</div>
+            <div><b>{{x.cntyname}}</b> : {{x.PercentTotGDP.toFixed(2)}}%</div>
 
         </div>
     </div>

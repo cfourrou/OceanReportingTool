@@ -30,7 +30,8 @@
         <!-- iButton end-->
     </div>
     <div class="infographic-dataarea">
-        <div  class="infographic-dataarea--split">
+        <div class="infographic-dataarea--split">
+            <div ng-show="!AOIvm.AOI.CEFedGeoRegs.length || !AOIvm.AOI.CEFedGeoRegs[0].TOTAL_CNT">No Geo Regulations were identified for this area</div>
             <div ng-repeat="x in AOIvm.AOI.CEFedGeoRegs | unique: 'FederalGeoRegulationsName' | orderBy : 'FederalGeoRegulationsName'">
                 <a ng-if="$odd" target="_blank" href="{{x.DescriptionURL}}"> {{x.FederalGeoRegulationsName}} </a>
             </div>

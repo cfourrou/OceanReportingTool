@@ -46,9 +46,13 @@
 
         </div>
     </div>
-    <highchart id="stateAndFedContainer" config="AOIvm.AOI.highchartsNGState"
-               class="highcharts-stateandfed"></highchart>
-
+    <div class="infographic-dataarea" ng-show="AOIvm.AOI.CEFederalTotal+AOIvm.AOI.CEStateTotal===0">Area is outside of
+        State and Federal jurisdiction
+    </div>
+    <div ng-hide="AOIvm.AOI.CEFederalTotal+AOIvm.AOI.CEStateTotal===0">
+        <highchart id="stateAndFedContainer" config="AOIvm.AOI.highchartsNGState"
+                   class="highcharts-stateandfed"></highchart>
+    </div>
     <div>
 
     </div>

@@ -1329,7 +1329,10 @@ angular.module('ortApp.services', [])
                     AOI.EMActiveRenewableEnergyLeases.sort(function (a, b) {
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
+                    /******** test section*/
+                    if (AOI.ID==='105') AOI.CEFedGeoRegs[0].TOTAL_CNT=0;
 
+                    /**********************/
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
