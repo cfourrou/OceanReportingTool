@@ -3,30 +3,15 @@
         <div class="infographic-text">Vessel Count</div>
         <!-- iButton start-->
         <div class="iModal">
-            <info-directive class="iModal-button" modal-template="modal50.html" message="message"
+            <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
                             alttext="Element displays a color ramp representing the number of vessels in a raster pixel. The average value of the selected area is indicated with a tugboat icon."
-                            modal-img="img/info.svg"></info-directive>
-
-            <script type="text/ng-template" id="modal50.html">
-                <div class="modal">
-                    <div class="modal-overlay">
-                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                            <svg class="" viewBox="0 0 24 24">
-                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                <path d="M0 0h24v24h-24z" fill="none"/>
-                            </svg>
-                        </a>
-                        This data represents the average number of vessels traversing the area based on 2011 Vessel
+                            modal-img="img/info.svg"
+                            modal-title="Vessel Count"
+                            modal-text="This data represents the average number of vessels traversing the area based on 2011 Vessel
                         Traffic (AIS) layer created by BOEM. Ship icon represents the overall average of the
-                        selected polygon. Heavy vessel traffic may interfere with planned activities.
+                        selected polygon. Heavy vessel traffic may interfere with planned activities."
+            ></info-directive>
 
-                        <br>
-
-
-                    </div>
-                    <div class="modal-fade"></div>
-                </div>
-            </script>
 
         </div>
         <!-- iButton end-->

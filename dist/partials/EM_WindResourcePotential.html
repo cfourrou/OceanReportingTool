@@ -20,32 +20,17 @@
         <div class="iModal">
 
             <!-- //metadata-url="{{EMWindResourcePotential[0].METADATA_URL}}" -->
-            <info-directive class="iModal-button" modal-template="modal0.html"
+            <info-directive class="iModal-button" modal-template="ModalTemplate.html"
                             alttext="Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy."
                             message="message"
                             modal-img="img/info.svg"
-                            metadata-url="{{EMvm.AOI.EMWindResourcePotential[0].CAPACITY}}"></info-directive>
-
-            <script type="text/ng-template" id="modal0.html">
-                <div class="modal">
-                    <div class="modal-overlay">
-                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                            <svg class="" viewBox="0 0 24 24">
-                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                <path d="M0 0h24v24h-24z" fill="none"/>
-                            </svg>
-                        </a>
-                        Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m
+                            modal-title="Wind Resource Potential: Weighted Average"
+                            modal-text="Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m
                         height are generally considered to have a wind resource suitable for offshore
                         development.
                         The potential megawatts (MW) of rated capacity that could be installed in this area,
-                        assuming 5 MW of installed capacity per square kilometer of water is:
-                        {{metadataurl}} MW.
-                        <!--div class="modal-overlay--footnote"><a target="_blank" href={{metadataurl}}>Wind Resource Potential Metadata</a></div-->
-                    </div>
-                    <div class="modal-fade"></div>
-                </div>
-            </script>
+                        assuming 5 MW of installed capacity per square kilometer of water is: {{EMvm.AOI.EMWindResourcePotential[0].CAPACITY}} MW."
+            ></info-directive>
         </div>
 
         <div class="wind-spacer">&nbsp;</div>
@@ -57,36 +42,18 @@
         </div>
         <!-- iButton start-->
         <div class="iModal">
-            <info-directive class="iModal-button" modal-template="modal0b.html"
+            <info-directive class="iModal-button" modal-template="ModalTemplate.html"
                             message="message"
-                            modal-img="img/info.svg"></info-directive>
+                            modal-img="img/info.svg"
+                            modal-title="Wind Resource Potential: Potential Houses Supported"
+                            modal-text="Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual
+                        household energy use of 2kW <sup>2</sup>.<br><div class='modal-overlay--footnote'><sup>1</sup> <a target='_blank'
+                        href='http://apps2.eere.energy.gov/wind/windexchange/windmaps/offshore.asp'>U.S. Department of Energy offshore wind potential</a><br>
+            <sup>2</sup> <a target='_blank' href='http://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3'>U.S. Energy Information Administration FAQ</a></div>"
 
-            <script type="text/ng-template" id="modal0b.html">
-                <div class="modal">
-                    <div class="modal-overlay">
-                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                            <svg class="" viewBox="0 0 24 24">
-                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                <path d="M0 0h24v24h-24z" fill="none"/>
-                            </svg>
-                        </a>
-                        Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual
-                        household
-                        energy use of 2kW <sup>2</sup>.<br>
-
-                        <div class="modal-overlay--footnote"><sup>1</sup> <a target="_blank"
-                                                                             href="http://apps2.eere.energy.gov/wind/windexchange/windmaps/offshore.asp">U.S.
-                            Department of Energy offshore wind potential</a><br>
-                            <sup>2</sup> <a target="_blank"
-                                            href="http://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3">U.S.
-                                Energy Information Administration FAQ</a>
-                        </div>
+            ></info-directive>
 
 
-                    </div>
-                    <div class="modal-fade"></div>
-                </div>
-            </script>
 
         </div>
         <!-- iButton end-->
@@ -143,11 +110,12 @@
     </div>
 
 
-    <div class="windmill" ng-class="{'windmill-img--background':!EMvm.AOI.EMWindResourceClassification.length}"><img src="img/wind_cc.svg" class="windmill-img">
+    <div class="windmill" ng-class="{'windmill-img--background':!EMvm.AOI.EMWindResourceClassification.length}"><img
+            src="img/wind_cc.svg" class="windmill-img">
         <img class="windmill-binary" id="binaryImage"/>
     </div>
-    <div ng-show="EMvm.AOI.EMWindResourceClassification.length">
-        <highchart id="container" config="EMvm.AOI.highchartsNG" class="highcharts-windchart"></highchart>
+    <div class="highcharts-windchart" ng-if="EMvm.AOI.EMWindResourceClassification.length">
+        <highchart id="container" config="EMvm.AOI.highchartsNG" class="highcharts-windchart--consolidate"></highchart>
     </div>
 
 

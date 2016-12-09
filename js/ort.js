@@ -23874,7 +23874,11 @@ angular.module('ortApp.services', [])
                         AOI.massageData(tempFeatureArray);
                         AOI.display();
 
-                        if (AOI.CEPlaces.length > 0) AOI.name = "Near " + AOI.CEPlaces[0].Name;
+                        if (AOI.CEPlaces.length > 0) {
+                            if ((AOI.CEPlaces[0].Dist_Mi* 0.868976) > 3) {
+                                AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles offshore from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
+                            } else AOI.name = "Near " + AOI.CEPlaces[0].Name;
+                        }
                         else AOI.name = "My Report";
 
 
@@ -24476,10 +24480,7 @@ angular.module('ortApp.services', [])
                     AOI.EMActiveRenewableEnergyLeases.sort(function (a, b) {
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
-                    /******** test section*/
-                    if (AOI.ID==='105') AOI.CEFedGeoRegs[0].TOTAL_CNT=0;
 
-                    /**********************/
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
@@ -25145,7 +25146,7 @@ angular.module('ortApp.services', [])
                 ShowURL: function () {
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
                     if (AOI.ID === -9999) {
-                        AOI.modaltext = "This link will be active for " + AOIConfig.ortReportExpires + " from the time it was first generated. During this time anyone who uses this link will continue to see the same report generated here.";
+                        AOI.modaltext = "This link will be active for " + AOIConfig.ortReportExpires + " from the time it was first generated. During this time anyone who uses this link will continue to see the same report generated here. Use Print Tool to export to PDF or print to save indefinitely.";
                         shareURL = shareURL +
                             '&TI=' + AOI.drawAreaJobId.TI +
                             '&EC=' + AOI.drawAreaJobId.EC +
@@ -25196,6 +25197,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     vm.sidePanelVisible = true;
 
     $scope.currState = $state;
+
 
     vm.startSpin = function () {
         usSpinnerService.spin('spinner-1');
@@ -25252,7 +25254,12 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
                 break;
         }
     };
-
+    vm.toggleBasemapControl = function () { //toggles basemap control
+        vm.baseMapControlOn = !vm.baseMapControlOn;
+        $scope.basemapControlEnabled = !$scope.basemapControlEnabled;
+        vm.searchControlEnabled =   !vm.searchControlEnabled;
+        console.log("toggle b "+ vm.searchControlEnabled);
+    };
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
         vm.sidePanelVisible = !vm.sidePanelVisible;
     };
@@ -25276,7 +25283,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         vm.drawOrSubmitCommand = COMMAND.DRAW;
         vm.reset();
         $state.go('splash');
-
+        vm.AOI.viewName='reset';
         AOI.reloadAbort();
 
     };
@@ -25303,6 +25310,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             vm.paneOn();
         }
         AOI.unloadData();
+
         vm.drawOn();
     };
 
@@ -25342,6 +25350,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         $window.alert("We are currently experiencing problems with network. Please try again later.");
         console.error(error);
     });
+
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
         vm.statesMenu = [];
@@ -25384,9 +25393,19 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             vm.drawMenu();
             listener();
         }
+        if (newValue !== oldValue && newValue === 'menu') {
+            vm.AOI.viewName='menu';
+            listener();
+        }
     });
     vm.menuButtonActivate = function (menuItem) {
         vm.AOI.viewName = menuItem;
+    };
+    vm.removeReportTypeFromName = function (reportName, reportType) {
+        if (reportType.substring(reportType.length - 1) === "s") {
+            reportType = reportType.slice(0, -1);
+        }
+        return reportName.replace(reportType, "");
     };
 }
 
@@ -25535,15 +25554,19 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
 
 function SearchCtrl(AOI) {
     var vm = this;
+    AOI.viewName = "draw";
     //AOI.inPrintWindow = false;
     //AOI.toggleFull = true;
 }
 
 
+
 angular.module('ortApp.controllers', ["pageslide-directive"])
-    .controller('ModalController', function ($scope, metaurl, custom, close) {
+    .controller('ModalController', function ($scope, metaurl, custom, close, modaltitle, modaltext) {
         $scope.metadataurl = metaurl;
         $scope.modalcustom = custom;
+        $scope.modaltitle = modaltitle;
+        $scope.modaltext = modaltext;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };
@@ -25612,7 +25635,9 @@ angular.module('ortApp.directives', [])
                 metadataUrl: '@',
                 varData: '@',
                 alttext: '@',
-                modalCustom: '@'
+                modalCustom: '@',
+                modalTitle: '@',
+                modalText: '@',
             },
             template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{varData}}<div ng-if="!varData" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
@@ -25624,8 +25649,9 @@ angular.module('ortApp.directives', [])
                         inputs: {
                             metaurl: $scope.metadataUrl,
                             myvarData: $scope.varData,
-                            custom: $scope.modalCustom
-
+                            custom: $scope.modalCustom,
+                            modaltext: $scope.modalText,
+                            modaltitle: $scope.modalTitle
                         }
 
                     }).then(function (modal) {
@@ -25834,6 +25860,7 @@ angular.module('ortApp.directives', [])
                             if (newValue) baseMapControl.addTo($scope.map);
                             else $scope.map.removeControl(baseMapControl);
                         }
+                        console.log("watch "+newValue);
                     });
 
                     $scope.removeLayer = function (layer) {
@@ -25960,9 +25987,11 @@ angular.module('ortApp.directives', [])
                             bounds.extend(layerBounds);
                         });
                         $scope.AOI.smallMap.fitBounds(bounds);
+                        //$scope.AOI.smallMap.zoomOut(2);
                         minicLayer.off('load');
                     });
                 }
+
                 $scope.AOI.smallMap.invalidateSize();
 
                 $scope.$watch('AOI.ID', function (newValue, oldValue) {

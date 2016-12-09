@@ -727,7 +727,11 @@ angular.module('ortApp.services', [])
                         AOI.massageData(tempFeatureArray);
                         AOI.display();
 
-                        if (AOI.CEPlaces.length > 0) AOI.name = "Near " + AOI.CEPlaces[0].Name;
+                        if (AOI.CEPlaces.length > 0) {
+                            if ((AOI.CEPlaces[0].Dist_Mi* 0.868976) > 3) {
+                                AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles offshore from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
+                            } else AOI.name = "Near " + AOI.CEPlaces[0].Name;
+                        }
                         else AOI.name = "My Report";
 
 
@@ -1329,10 +1333,7 @@ angular.module('ortApp.services', [])
                     AOI.EMActiveRenewableEnergyLeases.sort(function (a, b) {
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
-                    /******** test section*/
-                    if (AOI.ID==='105') AOI.CEFedGeoRegs[0].TOTAL_CNT=0;
 
-                    /**********************/
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
@@ -1998,7 +1999,7 @@ angular.module('ortApp.services', [])
                 ShowURL: function () {
                     var shareURL = AOI.url[0] + '#/AOI?AOI=' + AOI.ID;
                     if (AOI.ID === -9999) {
-                        AOI.modaltext = "This link will be active for " + AOIConfig.ortReportExpires + " from the time it was first generated. During this time anyone who uses this link will continue to see the same report generated here.";
+                        AOI.modaltext = "This link will be active for " + AOIConfig.ortReportExpires + " from the time it was first generated. During this time anyone who uses this link will continue to see the same report generated here. Use Print Tool to export to PDF or print to save indefinitely.";
                         shareURL = shareURL +
                             '&TI=' + AOI.drawAreaJobId.TI +
                             '&EC=' + AOI.drawAreaJobId.EC +

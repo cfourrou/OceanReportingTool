@@ -32,6 +32,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
 
     $scope.currState = $state;
 
+
     vm.startSpin = function () {
         usSpinnerService.spin('spinner-1');
     };
@@ -87,7 +88,12 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
                 break;
         }
     };
-
+    vm.toggleBasemapControl = function () { //toggles basemap control
+        vm.baseMapControlOn = !vm.baseMapControlOn;
+        $scope.basemapControlEnabled = !$scope.basemapControlEnabled;
+        vm.searchControlEnabled =   !vm.searchControlEnabled;
+        console.log("toggle c "+ vm.searchControlEnabled);
+    };
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
         vm.sidePanelVisible = !vm.sidePanelVisible;
     };
@@ -111,7 +117,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         vm.drawOrSubmitCommand = COMMAND.DRAW;
         vm.reset();
         $state.go('splash');
-
+        vm.AOI.viewName='reset';
         AOI.reloadAbort();
 
     };
@@ -138,6 +144,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             vm.paneOn();
         }
         AOI.unloadData();
+
         vm.drawOn();
     };
 
@@ -177,6 +184,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         $window.alert("We are currently experiencing problems with network. Please try again later.");
         console.error(error);
     });
+
 
     queryService.query("KNOWN_AREA='Other Areas by State'").then(function (featureCollection) {
         vm.statesMenu = [];
@@ -219,9 +227,19 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             vm.drawMenu();
             listener();
         }
+        if (newValue !== oldValue && newValue === 'menu') {
+            vm.AOI.viewName='menu';
+            listener();
+        }
     });
     vm.menuButtonActivate = function (menuItem) {
         vm.AOI.viewName = menuItem;
+    };
+    vm.removeReportTypeFromName = function (reportName, reportType) {
+        if (reportType.substring(reportType.length - 1) === "s") {
+            reportType = reportType.slice(0, -1);
+        }
+        return reportName.replace(reportType, "");
     };
 }
 
@@ -370,15 +388,19 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
 
 function SearchCtrl(AOI) {
     var vm = this;
+    AOI.viewName = "draw";
     //AOI.inPrintWindow = false;
     //AOI.toggleFull = true;
 }
 
 
+
 angular.module('ortApp.controllers', ["pageslide-directive"])
-    .controller('ModalController', function ($scope, metaurl, custom, close) {
+    .controller('ModalController', function ($scope, metaurl, custom, close, modaltitle, modaltext) {
         $scope.metadataurl = metaurl;
         $scope.modalcustom = custom;
+        $scope.modaltitle = modaltitle;
+        $scope.modaltext = modaltext;
         $scope.close = function (result) {
             close(result, 500); // close, but give 500ms for to animate
         };

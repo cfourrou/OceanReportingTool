@@ -29,7 +29,7 @@
                         <div role="button" class="AOImenu-item" ui-sref="CEview" ng-mouseover="vm.mouseOn(aoil.AOI_ID)"
                              ng-mouseout="vm.mouseOff()"
                              ng-click="vm.mouseOff(); vm.AOI.loadData(aoil.AOI_ID,aoil.AOI_NAME)">
-                            {{aoil.AOI_NAME}}
+                            {{vm.removeReportTypeFromName(aoil.AOI_NAME,aoix.REPORT_TYPE)}}
                         </div>
                     </div>
                 </div>

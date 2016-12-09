@@ -38,7 +38,9 @@ angular.module('ortApp.directives', [])
                 metadataUrl: '@',
                 varData: '@',
                 alttext: '@',
-                modalCustom: '@'
+                modalCustom: '@',
+                modalTitle: '@',
+                modalText: '@',
             },
             template: '<a href ng-click="show(modalTemplate)" role="button" style="color:inherit;" aria-label="{{alttext}}">{{varData}}<div ng-if="!varData" ng-include="" src="modalImg" ></div></a>',
             controller: function ($scope, ModalService) {
@@ -50,8 +52,9 @@ angular.module('ortApp.directives', [])
                         inputs: {
                             metaurl: $scope.metadataUrl,
                             myvarData: $scope.varData,
-                            custom: $scope.modalCustom
-
+                            custom: $scope.modalCustom,
+                            modaltext: $scope.modalText,
+                            modaltitle: $scope.modalTitle
                         }
 
                     }).then(function (modal) {
@@ -260,6 +263,7 @@ angular.module('ortApp.directives', [])
                             if (newValue) baseMapControl.addTo($scope.map);
                             else $scope.map.removeControl(baseMapControl);
                         }
+                        console.log("watch "+newValue);
                     });
 
                     $scope.removeLayer = function (layer) {
@@ -386,9 +390,11 @@ angular.module('ortApp.directives', [])
                             bounds.extend(layerBounds);
                         });
                         $scope.AOI.smallMap.fitBounds(bounds);
+                        //$scope.AOI.smallMap.zoomOut(2);
                         minicLayer.off('load');
                     });
                 }
+
                 $scope.AOI.smallMap.invalidateSize();
 
                 $scope.$watch('AOI.ID', function (newValue, oldValue) {

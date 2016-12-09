@@ -3,31 +3,16 @@
         <div class="infographic-text">Protected Areas</div>
         <!-- iButton start-->
         <div class="iModal">
-            <info-directive class="iModal-button" modal-template="modal60.html" message="message"
+            <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
                             alttext="Element lists nearby federal parks, sanctuaries, and reserves that are within 15 miles of the selected area with associated hyperlinks to each system. Symbology is a light green polygon."
-                            modal-img="img/info.svg"></info-directive>
-
-            <script type="text/ng-template" id="modal60.html">
-                <div class="modal">
-                    <div class="modal-overlay">
-                        <a href="" class="modal-overlay--close" ng-click="close('Cancel')">
-                            <svg class="" viewBox="0 0 24 24">
-                                <path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/>
-                                <path d="M0 0h24v24h-24z" fill="none"/>
-                            </svg>
-                        </a>
-                        Nearby protected areas are national parks, national wildlife refuges, national marine
+                            modal-img="img/info.svg"
+                            modal-title="Protected Areas"
+                            modal-text="Nearby protected areas are national parks, national wildlife refuges, national marine
                         sanctuaries, or national estuarine research reserves within 15nm of the delineated areas.
                         When work is being considered in this area, it would be prudent to consider the effects on
-                        these protected areas. Links to each are provided.
+                        these protected areas. Links to each are provided."
+            ></info-directive>
 
-                        <br>
-
-
-                    </div>
-                    <div class="modal-fade"></div>
-                </div>
-            </script>
 
         </div>
         <!-- iButton end-->
