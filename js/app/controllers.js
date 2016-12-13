@@ -10,7 +10,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     var vm = this;
     vm.AOI = AOI;
 
-    vm.baseMapControlOn = false;
+    vm.basemapControlOn = false;
 
     vm.AOI.inPrintWindow = false;
 
@@ -74,7 +74,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
                     vm.stopSpin();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = COMMAND.DRAW;
-                    vm.baseMapControlOn = false;
+                    vm.basemapControlOn = false;
                     vm.drawOff();
                     $state.go('CEview');
                 });
@@ -89,10 +89,9 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         }
     };
     vm.toggleBasemapControl = function () { //toggles basemap control
-        vm.baseMapControlOn = !vm.baseMapControlOn;
-        $scope.basemapControlEnabled = !$scope.basemapControlEnabled;
-        vm.searchControlEnabled =   !vm.searchControlEnabled;
-        console.log("toggle c "+ vm.searchControlEnabled);
+
+        vm.basemapControlOn = !vm.basemapControlOn;
+
     };
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
         vm.sidePanelVisible = !vm.sidePanelVisible;
@@ -117,7 +116,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         vm.drawOrSubmitCommand = COMMAND.DRAW;
         vm.reset();
         $state.go('splash');
-        vm.AOI.viewName='reset';
+        vm.AOI.viewName = 'reset';
         AOI.reloadAbort();
 
     };
@@ -228,13 +227,14 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             listener();
         }
         if (newValue !== oldValue && newValue === 'menu') {
-            vm.AOI.viewName='menu';
+            vm.AOI.viewName = 'menu';
             listener();
         }
     });
     vm.menuButtonActivate = function (menuItem) {
         vm.AOI.viewName = menuItem;
     };
+
     vm.removeReportTypeFromName = function (reportName, reportType) {
         if (reportType.substring(reportType.length - 1) === "s") {
             reportType = reportType.slice(0, -1);
@@ -392,7 +392,6 @@ function SearchCtrl(AOI) {
     //AOI.inPrintWindow = false;
     //AOI.toggleFull = true;
 }
-
 
 
 angular.module('ortApp.controllers', ["pageslide-directive"])

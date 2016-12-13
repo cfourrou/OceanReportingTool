@@ -23876,7 +23876,7 @@ angular.module('ortApp.services', [])
 
                         if (AOI.CEPlaces.length > 0) {
                             if ((AOI.CEPlaces[0].Dist_Mi* 0.868976) > 3) {
-                                AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles offshore from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
+                                AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
                             } else AOI.name = "Near " + AOI.CEPlaces[0].Name;
                         }
                         else AOI.name = "My Report";
@@ -25176,7 +25176,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     var vm = this;
     vm.AOI = AOI;
 
-    vm.baseMapControlOn = false;
+    vm.basemapControlOn = false;
 
     vm.AOI.inPrintWindow = false;
 
@@ -25240,7 +25240,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
                     vm.stopSpin();
                     vm.searchControlEnabled = false;
                     vm.drawOrSubmitCommand = COMMAND.DRAW;
-                    vm.baseMapControlOn = false;
+                    vm.basemapControlOn = false;
                     vm.drawOff();
                     $state.go('CEview');
                 });
@@ -25255,10 +25255,9 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         }
     };
     vm.toggleBasemapControl = function () { //toggles basemap control
-        vm.baseMapControlOn = !vm.baseMapControlOn;
-        $scope.basemapControlEnabled = !$scope.basemapControlEnabled;
-        vm.searchControlEnabled =   !vm.searchControlEnabled;
-        console.log("toggle b "+ vm.searchControlEnabled);
+
+        vm.basemapControlOn = !vm.basemapControlOn;
+
     };
     vm.toggle = function () { //toggles slider pane but does nothing about the AOI
         vm.sidePanelVisible = !vm.sidePanelVisible;
@@ -25283,7 +25282,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         vm.drawOrSubmitCommand = COMMAND.DRAW;
         vm.reset();
         $state.go('splash');
-        vm.AOI.viewName='reset';
+        vm.AOI.viewName = 'reset';
         AOI.reloadAbort();
 
     };
@@ -25394,13 +25393,14 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
             listener();
         }
         if (newValue !== oldValue && newValue === 'menu') {
-            vm.AOI.viewName='menu';
+            vm.AOI.viewName = 'menu';
             listener();
         }
     });
     vm.menuButtonActivate = function (menuItem) {
         vm.AOI.viewName = menuItem;
     };
+
     vm.removeReportTypeFromName = function (reportName, reportType) {
         if (reportType.substring(reportType.length - 1) === "s") {
             reportType = reportType.slice(0, -1);
@@ -25560,7 +25560,6 @@ function SearchCtrl(AOI) {
 }
 
 
-
 angular.module('ortApp.controllers', ["pageslide-directive"])
     .controller('ModalController', function ($scope, metaurl, custom, close, modaltitle, modaltext) {
         $scope.metadataurl = metaurl;
@@ -25679,10 +25678,14 @@ angular.module('ortApp.directives', [])
                 drawIt: '=',
                 drawOn: '=',
                 drawOff: '=',
+                basemapOn: '=',
+                basemapOff: '=',
+                basemapControlEnabled: '=',
                 map: '=',
                 startDrawing: '=',
                 mapFullScreen: '=',
-                mapHalfScreen: '='
+                mapHalfScreen: '=',
+                toggleBaseLayer: '=',
 
             },
             replace: true,
@@ -25753,6 +25756,42 @@ angular.module('ortApp.directives', [])
                         position: 'topleft',
                         collapsed: false
                     });
+                    //$scope.toggleBaseLayer = function (layer) {
+                    //    console.log(layer);
+                    //   //esriGrey.addTo($scope.map);
+                    //};
+
+                    $scope.toggleBaseLayer = function (destLayer) {
+                        for (var base in baseMaps) {
+                            if ($scope.map.hasLayer(baseMaps[base]) && baseMaps[base] != baseMaps[destLayer]) {
+                                $scope.map.removeLayer(baseMaps[base]);
+                            }
+                        }
+                        $scope.map.addLayer(baseMaps[destLayer]);
+                    };
+
+                    $scope.toggleOverlayLayer = function (destLayer) {
+
+                        if ($scope.map.hasLayer(mapOverlay[destLayer])) {
+                            $scope.map.removeLayer(mapOverlay[destLayer]);
+
+                        } else {
+                            $scope.map.addLayer(mapOverlay[destLayer]);
+                        }
+
+                    };
+
+                    $scope.overlayLayerOn = function (destLayer) {
+
+                        if ($scope.map.hasLayer(mapOverlay[destLayer])) {
+                            return (true);
+
+                        } else {
+                            return false;
+                        }
+
+                    };
+
 
                     var searchControl = L.esri.Geocoding.geosearch({
                         expanded: true,
@@ -25813,7 +25852,12 @@ angular.module('ortApp.directives', [])
                         searchControl.addTo($scope.map);
                         $scope.drawEnabled = true;
                     };
-
+                    $scope.basemapOn = function () {
+                        $scope.basemapControlEnabled = true;
+                    };
+                    $scope.basemapOff = function () {
+                        $scope.basemapControlEnabled = false;
+                    };
                     $scope.mapFullScreen = function () {
 
                         $element.css('width', '100%');
@@ -25860,7 +25904,6 @@ angular.module('ortApp.directives', [])
                             if (newValue) baseMapControl.addTo($scope.map);
                             else $scope.map.removeControl(baseMapControl);
                         }
-                        console.log("watch "+newValue);
                     });
 
                     $scope.removeLayer = function (layer) {

@@ -729,7 +729,7 @@ angular.module('ortApp.services', [])
 
                         if (AOI.CEPlaces.length > 0) {
                             if ((AOI.CEPlaces[0].Dist_Mi* 0.868976) > 3) {
-                                AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles offshore from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
+                                AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
                             } else AOI.name = "Near " + AOI.CEPlaces[0].Name;
                         }
                         else AOI.name = "My Report";

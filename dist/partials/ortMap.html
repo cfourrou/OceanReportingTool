@@ -4,7 +4,8 @@
         <div ng-show="drawEnabled" id="drawtool" class="maptools">
             <div class="maptools-title">Map Navigation</div>
             <div class="mapcontrols">
-                <div class="mapcontrols-findButton" ng-class="drawLocked? 'addons-drawbutton--dis':'mapcontrols-findButton--enl'">
+                <div class="mapcontrols-findButton"
+                     ng-class="drawLocked? 'addons-drawbutton--dis':'mapcontrols-findButton--enl'">
                     <img class="map-control--button" src="img/texticon.svg?5e0f1fe48f7f9b52"/>FIND
                 </div>
             </div>
@@ -14,15 +15,53 @@
             </div>
         </div>
     </div>
-    <div ng-show="drawEnabled"  class="addons">
+    <div ng-show="drawEnabled" class="addons">
+
         <div ng-class="drawAvailable? 'addons-drawbutton--enl':'addons-drawbutton--dis'" ng-click="drawIt()"
              class="addons-drawbutton">
             <ng-include class="map-control--button" src="'img/MapInput_2.svg'"></ng-include>
             {{drawButtonText}}
         </div>
-        <div  class="addons-basemapbutton" ng-click="basemapControlEnabled = !basemapControlEnabled">
-            <img class="map-control--button" src="img/basemap.svg?4dd6582aaabbd6d0">
-            BASEMAP
+
+    </div>
+    <div class="spmenu  spmenu-top spmenu-open" ng-hide="!basemapControlEnabled">
+
+        <div>
+            <div>
+                <div class="control-title">Nautical Chart</div>
+
+                <div class="charttoggle-button">
+                    <div ng-class="overlayLayerOn('Nautical Chart') ? 'charttoggle-button--on' : 'charttoggle-button--off'"
+                         ng-click="toggleOverlayLayer('Nautical Chart');" ng-include="'img/switch_off.svg'">
+                    </div>
+                </div>
+
+                <a href="" class="btn-basemap--close" ng-click="basemapOff();"
+                   ng-include="'img/imodal-window-icons-02.svg'"></a>
+
+            </div>
+            <ul class="nv-basemap-ul">
+                <li class="col-sm-3">
+                    <a href="" ng-click="toggleBaseLayer('Grey');" class="nv-btn btn-basemap btn-Gray">
+                        <span class="label">Gray</span>
+                    </a>
+                </li>
+                <li class="col-sm-3">
+                    <a href="" ng-click="toggleBaseLayer('NatGeo World');" class="nv-btn btn-basemap btn-NatGeo">
+                        <span class="label">NatGeo</span>
+                    </a>
+                </li>
+                <li class="col-sm-3">
+                    <a href="" ng-click="toggleBaseLayer('Oceans');" class="nv-btn btn-basemap btn-Ocean">
+                        <span class="label">Ocean</span>
+                    </a>
+                </li>
+                <li class="col-sm-3">
+                    <a href="" ng-click="toggleBaseLayer('Streets');" class="nv-btn btn-basemap btn-Street">
+                        <span class="label">Street</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </span>

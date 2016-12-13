@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?8744f0f6a3a55557">
+    <link rel="stylesheet" href="css/ort.min.css?7f7d82f792c852a8">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -194,8 +194,8 @@
                     AREA
                 </button>
                 <button class="menu-basemap menu-border-right"
-                        ng-class="vm.AOI.viewName === 'basemap' ? 'menu--active':'menu--inactive'"
-                        ng-click="vm.toggleBasemapControl();vm.menuButtonActivate('basemap')" href=""
+                        ng-class="vm.basemapControlOn ? 'menu--active':'menu--inactive'"
+                        ng-click="vm.toggleBasemapControl();" href=""
                         role="button">BASEMAP
                 </button>
 
@@ -229,10 +229,11 @@
         <div class="lowerwindow">
 
             <ort-map zoom-level="vm.zoomlevel" draw-enabled="vm.drawtoolOn" draw-on="vm.drawOn"
-                     draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.baseMapControlOn"
+                     draw-off="vm.drawOff" map="vm.AOI.map" basemap-control-enabled="vm.basemapControlOn"
                      search-control-enabled="vm.searchControlOn" mouse-over="vm.mouseOn" mouse-out="vm.mouseOff"
                      poly-layer-enabled="vm.polyLayerOn" reset-map="vm.resetMap" start-drawing="vm.startDrawing"
-                     draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt"
+                     draw-button-text="vm.drawOrSubmitCommand" draw-it="vm.drawIt" basemap-on="vm.basemapOn"
+                     basemap-off="vm.basemapOff"
                      map-half-screen="vm.mapHalfScreen" map-full-screen="vm.mapFullScreen">
             </ort-map>
 
@@ -270,7 +271,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?7cc493fe146b73ee"></script>
+<script src="js/ort.js?8f4b4cc9b9f0af6e"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

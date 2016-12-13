@@ -82,10 +82,14 @@ angular.module('ortApp.directives', [])
                 drawIt: '=',
                 drawOn: '=',
                 drawOff: '=',
+                basemapOn: '=',
+                basemapOff: '=',
+                basemapControlEnabled: '=',
                 map: '=',
                 startDrawing: '=',
                 mapFullScreen: '=',
-                mapHalfScreen: '='
+                mapHalfScreen: '=',
+                toggleBaseLayer: '=',
 
             },
             replace: true,
@@ -156,6 +160,42 @@ angular.module('ortApp.directives', [])
                         position: 'topleft',
                         collapsed: false
                     });
+                    //$scope.toggleBaseLayer = function (layer) {
+                    //    console.log(layer);
+                    //   //esriGrey.addTo($scope.map);
+                    //};
+
+                    $scope.toggleBaseLayer = function (destLayer) {
+                        for (var base in baseMaps) {
+                            if ($scope.map.hasLayer(baseMaps[base]) && baseMaps[base] != baseMaps[destLayer]) {
+                                $scope.map.removeLayer(baseMaps[base]);
+                            }
+                        }
+                        $scope.map.addLayer(baseMaps[destLayer]);
+                    };
+
+                    $scope.toggleOverlayLayer = function (destLayer) {
+
+                        if ($scope.map.hasLayer(mapOverlay[destLayer])) {
+                            $scope.map.removeLayer(mapOverlay[destLayer]);
+
+                        } else {
+                            $scope.map.addLayer(mapOverlay[destLayer]);
+                        }
+
+                    };
+
+                    $scope.overlayLayerOn = function (destLayer) {
+
+                        if ($scope.map.hasLayer(mapOverlay[destLayer])) {
+                            return (true);
+
+                        } else {
+                            return false;
+                        }
+
+                    };
+
 
                     var searchControl = L.esri.Geocoding.geosearch({
                         expanded: true,
@@ -216,7 +256,12 @@ angular.module('ortApp.directives', [])
                         searchControl.addTo($scope.map);
                         $scope.drawEnabled = true;
                     };
-
+                    $scope.basemapOn = function () {
+                        $scope.basemapControlEnabled = true;
+                    };
+                    $scope.basemapOff = function () {
+                        $scope.basemapControlEnabled = false;
+                    };
                     $scope.mapFullScreen = function () {
 
                         $element.css('width', '100%');
@@ -263,7 +308,6 @@ angular.module('ortApp.directives', [])
                             if (newValue) baseMapControl.addTo($scope.map);
                             else $scope.map.removeControl(baseMapControl);
                         }
-                        console.log("watch "+newValue);
                     });
 
                     $scope.removeLayer = function (layer) {
