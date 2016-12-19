@@ -25173,6 +25173,8 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         $anchorScroll();
     });
 
+
+
     var vm = this;
     vm.AOI = AOI;
 
@@ -25316,11 +25318,13 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     vm.paneOff = function () {
         vm.sidePanelVisible = false;
         AOI.toggleFull = false;
+        AOI.doFullSlider();
     };
 
     vm.paneOn = function () {
         vm.sidePanelVisible = true;
         AOI.toggleFull = false;
+        AOI.doFullSlider();
     };
 
     vm.specialInterestAreasMenu = [];
@@ -25624,6 +25628,25 @@ function printDirective($state, $timeout) {
 
 angular.module('ortApp.directives', [])
     .directive("ngPrint", ['$state', '$timeout', printDirective])
+    .directive('exposeSize', function($window) {
+        return function($scope) {
+
+            $scope.initializeWindowSize = function() {
+                $scope.windowHeight = $window.innerHeight;
+                $scope.windowWidth = $window.innerWidth;
+            };
+
+            angular.element($window).bind('resize', function() {
+                $scope.initializeWindowSize();
+                $scope.$apply();
+            });
+
+            // Initiate the resize function default values
+            $scope.initializeWindowSize();
+
+
+        };
+    })
     .directive('infoDirective', function () {
         return {
             restrict: 'E',
@@ -26132,7 +26155,7 @@ $http.get("data/gis_config.json").then(function (result) {
                     EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower.num,
                     EMBeachNourishmentProjectsLayer: result.data['optionalLayerPanes'].EMBeachNourishmentProjectsLayer.num,
                     EMCoastalEnergyFacilitiesLayer: result.data['optionalLayerPanes'].EMCoastalEnergyFacilitiesLayer.num,
-                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements
+                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements but was renamed to General Information
                     ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//EC is for Economics and Commerce
                     TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//TI is for Transportation and Infrastructure
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
@@ -26155,13 +26178,13 @@ $http.get("data/gis_config.json").then(function (result) {
                     templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
-                    templateUrl: 'partials/CommonElements.html',
+                    templateUrl: 'partials/GeneralInformation.html',
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
                     cache: false,
                     url: '/AOI?AOIdetail',
-                    templateUrl: 'partials/CommonElements.html',
+                    templateUrl: 'partials/GeneralInformation.html',
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {

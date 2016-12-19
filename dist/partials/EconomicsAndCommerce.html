@@ -2,18 +2,35 @@
 indivdual infographics ID's 66-75 for EC
 -->
 <a ng-click="ECvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggle"
-   ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':ECvm.AOI.toggleFullStyle.MarginLeft,'transform':ECvm.AOI.toggleFullStyle.transform,'msTransform':ECvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':ECvm.AOI.toggleFullStyle.WebkitTransform}"><img
+   ng-style="{'marginLeft':ECvm.AOI.toggleFullStyle.MarginLeft,'transform':ECvm.AOI.toggleFullStyle.transform,'msTransform':ECvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':ECvm.AOI.toggleFullStyle.WebkitTransform}"><img
         class="toggle-img" src="img/ArrowButton.svg"></a>
 
-<div class="slider">
+<div expose-size class="slider">
     <ng-include src="'partials/AOI_head.html'"></ng-include>
     <div class="theme">
         <div tabindex="0">Economics and Commerce</div>
-        <div class="narrative" ng-bind-html="ECvm.AOI.narratives[4].narrative | unsafe" tabindex="0"></div>
-        <div ng-repeat="ECConf in ECvm.ECConfig | orderBy: 'priority'">
-            <div ng-if="ECConf.priority" class="zeroheightkludge" ng-include="ECConf.filename"></div>
+        <div ng-style="{'max-width':(ECvm.AOI.toggleFull)?'1318px':'645px'}" class="narrative"
+             ng-bind-html="ECvm.AOI.narratives[4].narrative | unsafe" tabindex="0"></div>
+        <div class="slidercolumn">
+            <div class="slidercolumn-one">
+                <div ng-repeat="ECConf in ECvm.ECConfig | orderBy: 'priority'">
+                    <div ng-if="ECConf.priority">
+                        <div ng-if="$even" class="zeroheightkludge"
+                             ng-include="ECConf.filename"></div>
+                        <div ng-if="($odd && !ECvm.AOI.toggleFull) ||($odd && ECvm.AOI.toggleFull && (windowWidth<1350)) "
+                             class="zeroheightkludge"
+                             ng-include="ECConf.filename"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="slidercolumn-two">
+                <div ng-repeat="ECConf in ECvm.ECConfig | orderBy: 'priority'">
+                    <div ng-if="ECConf.priority && ECvm.AOI.toggleFull &&(windowWidth>1349)">
+                        <div ng-if="$odd" class="zeroheightkludge" ng-include="ECConf.filename"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 

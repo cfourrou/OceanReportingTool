@@ -82,7 +82,7 @@ $http.get("data/gis_config.json").then(function (result) {
                     EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower.num,
                     EMBeachNourishmentProjectsLayer: result.data['optionalLayerPanes'].EMBeachNourishmentProjectsLayer.num,
                     EMCoastalEnergyFacilitiesLayer: result.data['optionalLayerPanes'].EMCoastalEnergyFacilitiesLayer.num,
-                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements
+                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements but was renamed to General Information
                     ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//EC is for Economics and Commerce
                     TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//TI is for Transportation and Infrastructure
                     TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
@@ -105,13 +105,13 @@ $http.get("data/gis_config.json").then(function (result) {
                     templateUrl: 'partials/splash.html'
                 })
                 .state('CEview', {
-                    templateUrl: 'partials/CommonElements.html',
+                    templateUrl: 'partials/GeneralInformation.html',
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('LoadAOI', {
                     cache: false,
                     url: '/AOI?AOIdetail',
-                    templateUrl: 'partials/CommonElements.html',
+                    templateUrl: 'partials/GeneralInformation.html',
                     controller: 'AOICtrl as AOIvm'
                 })
                 .state('NRCview', {

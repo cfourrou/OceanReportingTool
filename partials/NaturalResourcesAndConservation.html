@@ -2,16 +2,34 @@
 indivdual infographics ID's 56-65 for NRC
 -->
 <a ng-click="NRCvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggle"
-   ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':NRCvm.AOI.toggleFullStyle.MarginLeft,'transform':NRCvm.AOI.toggleFullStyle.transform,'msTransform':NRCvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':NRCvm.AOI.toggleFullStyle.WebkitTransform}"><img
+   ng-style="{'marginLeft':NRCvm.AOI.toggleFullStyle.MarginLeft,'transform':NRCvm.AOI.toggleFullStyle.transform,'msTransform':NRCvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':NRCvm.AOI.toggleFullStyle.WebkitTransform}"><img
         class="toggle-img" src="img/ArrowButton.svg"></a>
 
-<div class="slider">
+<div expose-size class="slider">
     <ng-include src="'partials/AOI_head.html'"></ng-include>
     <div class="theme">
         <div tabindex="0">Natural Resources and Conservation</div>
-        <div class="narrative" ng-bind-html="NRCvm.AOI.narratives[2].narrative | unsafe" tabindex="0"></div>
-        <div ng-repeat="NRCConf in NRCvm.NRCConfig | orderBy: 'priority'">
-            <div ng-if="NRCConf.priority" class="zeroheightkludge" ng-include="NRCConf.filename"></div>
+        <div ng-style="{'max-width':(NRCvm.AOI.toggleFull)?'1318px':'645px'}" class="narrative"
+             ng-bind-html="NRCvm.AOI.narratives[2].narrative | unsafe" tabindex="0"></div>
+        <div class="slidercolumn">
+            <div class="slidercolumn-one">
+                <div ng-repeat="NRCConf in NRCvm.NRCConfig | orderBy: 'priority'">
+                    <div ng-if="NRCConf.priority">
+                        <div ng-if="$even" class="zeroheightkludge"
+                             ng-include="NRCConf.filename"></div>
+                        <div ng-if="($odd && !NRCvm.AOI.toggleFull) ||($odd && NRCvm.AOI.toggleFull && (windowWidth<1350)) "
+                             class="zeroheightkludge"
+                             ng-include="NRCConf.filename"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="slidercolumn-two">
+                <div ng-repeat="NRCConf in NRCvm.NRCConfig | orderBy: 'priority'">
+                    <div ng-if="NRCConf.priority && NRCvm.AOI.toggleFull &&(windowWidth>1349)">
+                        <div ng-if="$odd" class="zeroheightkludge" ng-include="NRCConf.filename"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -2,16 +2,34 @@
 indivdual infographics ID's 46-55 for CE
 -->
 <a ng-click="TIvm.AOI.toggleFullSlider()" href="" id="togglefull" class="toggle"
-   ng-style="{'top':(window.innerHeight /2)+'px','marginLeft':TIvm.AOI.toggleFullStyle.MarginLeft,'transform':TIvm.AOI.toggleFullStyle.transform,'msTransform':TIvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':TIvm.AOI.toggleFullStyle.WebkitTransform}"><img
+   ng-style="{'marginLeft':TIvm.AOI.toggleFullStyle.MarginLeft,'transform':TIvm.AOI.toggleFullStyle.transform,'msTransform':TIvm.AOI.toggleFullStyle.msTransform,'WebkitTransform':TIvm.AOI.toggleFullStyle.WebkitTransform}"><img
         class="toggle-img" src="img/ArrowButton.svg"></a>
 
-<div class="slider">
+<div expose-size class="slider">
     <ng-include src="'partials/AOI_head.html'"></ng-include>
     <div class="theme">
         <div tabindex="0">Transportation and Infrastructure</div>
-        <div class="narrative" ng-bind-html="TIvm.AOI.narratives[3].narrative | unsafe" tabindex="0"></div>
-        <div ng-repeat="TIConf in TIvm.TIConfig | orderBy: 'priority'">
-            <div ng-if="TIConf.priority" class="zeroheightkludge" ng-include="TIConf.filename"></div>
+        <div ng-style="{'max-width':(TIvm.AOI.toggleFull)?'1318px':'645px'}" class="narrative"
+             ng-bind-html="TIvm.AOI.narratives[3].narrative | unsafe" tabindex="0"></div>
+        <div class="slidercolumn">
+            <div class="slidercolumn-one">
+                <div ng-repeat="TIConf in TIvm.TIConfig | orderBy: 'priority'">
+                    <div ng-if="TIConf.priority">
+                        <div ng-if="$even" class="zeroheightkludge"
+                             ng-include="TIConf.filename"></div>
+                        <div ng-if="($odd && !TIvm.AOI.toggleFull) ||($odd && TIvm.AOI.toggleFull && (windowWidth<1350)) "
+                             class="zeroheightkludge"
+                             ng-include="TIConf.filename"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="slidercolumn-two">
+                <div ng-repeat="TIConf in TIvm.TIConfig | orderBy: 'priority'">
+                    <div ng-if="TIConf.priority && TIvm.AOI.toggleFull &&(windowWidth>1349)">
+                        <div ng-if="$odd" class="zeroheightkludge" ng-include="TIConf.filename"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

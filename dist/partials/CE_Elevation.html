@@ -14,6 +14,8 @@
             <div ng-class="AOIvm.AOI.CEElevationIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                  ng-click="AOIvm.AOI.toggleCEElevation()" ng-include="'img/switch_off.svg'"></div>
         </div>
+        <div class="layertoggle-text" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
+        </div>
     </div>
     <div>
         <div class="infographic-swatch">

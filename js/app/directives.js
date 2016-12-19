@@ -28,6 +28,25 @@ function printDirective($state, $timeout) {
 
 angular.module('ortApp.directives', [])
     .directive("ngPrint", ['$state', '$timeout', printDirective])
+    .directive('exposeSize', function($window) {
+        return function($scope) {
+
+            $scope.initializeWindowSize = function() {
+                $scope.windowHeight = $window.innerHeight;
+                $scope.windowWidth = $window.innerWidth;
+            };
+
+            angular.element($window).bind('resize', function() {
+                $scope.initializeWindowSize();
+                $scope.$apply();
+            });
+
+            // Initiate the resize function default values
+            $scope.initializeWindowSize();
+
+
+        };
+    })
     .directive('infoDirective', function () {
         return {
             restrict: 'E',

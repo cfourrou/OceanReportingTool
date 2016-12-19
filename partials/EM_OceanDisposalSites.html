@@ -25,6 +25,8 @@
             <div ng-class="EMvm.AOI.EMOceanDisposalSitesLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                  ng-click="EMvm.AOI.toggleEMOceanDisposalSitesLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
+        <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+        </div>
     </div>
     <div class="infographic-swatch">
         <div class="swatch-img"><img src="img/OceanDisposalGraphic.svg"></div>

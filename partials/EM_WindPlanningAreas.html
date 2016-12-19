@@ -19,6 +19,8 @@
             <div ng-class="EMvm.AOI.EMWindPlanningAreaLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                  ng-click="EMvm.AOI.toggleEMWindPlanningAreaLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
+        <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
+        </div>
     </div>
     <div class="swatch-img"><img src="img/Wind_Planning_Areas.svg"></div>
     <div class="infographic-dataarea--small">

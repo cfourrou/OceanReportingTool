@@ -7,6 +7,8 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
         $anchorScroll();
     });
 
+
+
     var vm = this;
     vm.AOI = AOI;
 
@@ -150,11 +152,13 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     vm.paneOff = function () {
         vm.sidePanelVisible = false;
         AOI.toggleFull = false;
+        AOI.doFullSlider();
     };
 
     vm.paneOn = function () {
         vm.sidePanelVisible = true;
         AOI.toggleFull = false;
+        AOI.doFullSlider();
     };
 
     vm.specialInterestAreasMenu = [];

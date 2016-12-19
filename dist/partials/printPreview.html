@@ -5,7 +5,7 @@ Building Printable Page
 
     <div id="printSection" class="overflowauto" ng-print load-promise="Printvm.readyToPrint">
         <div>{{Printvm.AOI.name.toUpperCase()}}</div>
-        <div class="theme--printfriendly"> Common Elements
+        <div class="theme--printfriendly"> General Information
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
             <div ng-repeat="x in Printvm.CEConfig | orderBy: 'priority'" ng-init="AOIvm=Printvm;">
                 <div ng-show="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
