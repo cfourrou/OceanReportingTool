@@ -23342,6 +23342,11 @@ angular.module('ortApp.services', [])
                 TIPilot: [],
                 TIAnchorage: [],
                 map: {},
+                EMBeachName: [],
+                EMBeachTOTAL_FUND: [],
+                EMBeachSAND_VOL_C: [],
+                EMBeachCLASS_CNT: [],
+                EMBeachDist_Mi: [],
 
                 toggleLayer: function (layer, isVisible) {
                     if (!isVisible) {
@@ -23875,7 +23880,7 @@ angular.module('ortApp.services', [])
                         AOI.display();
 
                         if (AOI.CEPlaces.length > 0) {
-                            if ((AOI.CEPlaces[0].Dist_Mi* 0.868976) > 3) {
+                            if ((AOI.CEPlaces[0].Dist_Mi * 0.868976) > 3) {
                                 AOI.name = (AOI.CEPlaces[0].Dist_Mi * 0.868976).toFixed(2) + " Nautical Miles from " + AOI.CEPlaces[0].Name + ", " + AOI.CEPlaces[0].ST;
                             } else AOI.name = "Near " + AOI.CEPlaces[0].Name;
                         }
@@ -24235,12 +24240,14 @@ angular.module('ortApp.services', [])
                                 });
                                 AOI.addMetadata(feature);
                                 break;
-                            case "SC_BeachProjects":
+                            case "BeachProjects":
                                 AOI.EMBeachNourishmentProjects.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     BEACH_AREA: (feature.BEACH_AREA || 'unknown'),
-                                    YEAR: (feature.YEAR || '0'),
+                                    TOTAL_FUND: (feature.TOTAL_FUND || '0'),
                                     SAND_VOL_C: (feature.SAND_VOL_C || '0'),
+                                    YEAR: (feature.YEAR || '19xx'),
+                                    CLASS_CNT: (feature.CLASS_CNT || 0),
                                     Dist_Mi: ((feature.Dist_Mi === ' ') ? '0' : feature.Dist_Mi )
                                 });
                                 AOI.addMetadata(feature);
@@ -24481,11 +24488,30 @@ angular.module('ortApp.services', [])
                         return parseFloat(b.PERC_COVER) - parseFloat(a.PERC_COVER);
                     });
 
+
+                    if (AOI.EMBeachNourishmentProjects.length === 0) {
+                        AOI.EMBeachHeight = 0;
+                    } else {
+                        AOI.EMBeachHeight = 127 + (38 * AOI.EMBeachNourishmentProjects.length);
+                        //AOI.BeachProjectsSorted = _.sortBy(AOI.EMBeachNourishmentProjects, "BEACH_AREA");
+                        AOI.EMBeachNourishmentProjects.sort(function (a, b) {
+                            return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
+                        });
+                        angular.forEach(AOI.EMBeachNourishmentProjects, function (myBeachProjects, index) {
+                            AOI.EMBeachName[AOI.EMBeachName.length] = (myBeachProjects.BEACH_AREA || 'unknown');
+                            AOI.EMBeachTOTAL_FUND[AOI.EMBeachTOTAL_FUND.length] = (myBeachProjects.TOTAL_FUND || 0);
+                            AOI.EMBeachSAND_VOL_C[AOI.EMBeachSAND_VOL_C.length] = (myBeachProjects.SAND_VOL_C || 0);
+                            AOI.EMBeachCLASS_CNT[AOI.EMBeachCLASS_CNT.length] = (myBeachProjects.CLASS_CNT || 0);
+                            AOI.EMBeachDist_Mi[AOI.EMBeachDist_Mi.length] = (myBeachProjects.Dist_Mi || 0);
+                        });
+                    }
+
                     AOI.loadWindChart();
                     AOI.loadStateChart();
                     AOI.loadOceanJobEmployeesChart();
                     AOI.loadOceanJobDollarsChart();
                     AOI.loadOceanJobContributionsChart();
+                    AOI.loadBeachProjectsChart();
 
                 }
                 ,
@@ -24615,6 +24641,10 @@ angular.module('ortApp.services', [])
                         AOI.ECFishRevenue.length = 0;
                         AOI.TIAnchorage.length = 0;
                         AOI.TIPilot.length = 0;
+                        AOI.EMBeachName.length = 0;
+                        AOI.EMBeachTOTAL_FUND.length = 0;
+                        AOI.EMBeachSAND_VOL_C.length = 0;
+                        AOI.EMBeachCLASS_CNT.length = 0;
 
                         AOI.hide();
                     }
@@ -24759,6 +24789,112 @@ angular.module('ortApp.services', [])
                         AOI.toggleFullStyle.msTransform = "rotate(0deg)";
                         AOI.toggleFullStyle.transform = "rotate(0deg)";
                     }
+                }
+                ,
+                loadBeachProjectsChart: function () {
+                    var loadDeferred = $q.defer();
+                    if (AOI.BeachProjectsChart) AOI.BeachProjectsChart = null;
+                    AOI.BeachProjectsChart = {
+                        options: {
+                            credits: {
+                                enabled: false
+                            },
+                            exporting: {enabled: false},
+                            legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                //floating: true,
+                                backgroundColor: '#f4f8fc',
+                                shadow: false
+                            },
+                            tooltip: {
+                                shared: true
+                            },
+
+                            chart: {
+                                height: AOI.EMBeachHeight,
+                                type: 'bar',
+                                backgroundColor: '#f4f8fc',
+                                events: {
+                                    load: function () {
+                                        loadDeferred.resolve();
+                                    }
+                                },
+                                animation: !AOI.inPrintWindow
+                            },
+                            title: {
+                                text: null
+                            },
+
+                            //colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+                            xAxis: {
+                                categories: AOI.EMBeachName,
+                                labels: {
+                                    style: {
+                                        //color: 'red',
+                                        fontSize: '10px'
+                                    }
+                                }
+                            },
+                            yAxis: [{
+                                min: 0,
+                                title: {
+                                    text: 'Volume/Cost'
+                                }
+                            }, {
+                                title: {
+                                    text: 'Count'
+                                },
+                                opposite: true
+                            }],
+                            plotOptions: {
+                                column: {
+                                    grouping: false,
+                                    shadow: false,
+                                    borderWidth: 0,
+                                    animation: !AOI.inPrintWindow
+                                }
+
+                            }
+
+                        },
+                        loading: false,
+                        series: [{
+                            name: 'Volume(cyd)',
+                            color: 'rgba(192,67,73,1)',
+                            data: AOI.EMBeachSAND_VOL_C,
+                            //pointPadding: .2,
+                            pointWidth: 10,
+                            pointPlacement: -0.2,
+                            yAxis: 0,
+                            zIndex: 100
+                        }, {
+                            name: 'Count',
+                            color: 'rgba(76,127,193,1)',
+                            data: AOI.EMBeachCLASS_CNT,
+                            pointWidth: 33,
+                            yAxis: 1,
+                            zIndex: 50,
+
+                        }, {
+                            name: 'Cost(US$)',
+                            color: 'rgba(155,190,74,1)',
+                            data: AOI.EMBeachTOTAL_FUND,
+                            tooltip: {
+                                valuePrefix: '$',
+                                //valueSuffix: ' M'
+                            },
+                            // pointPadding: 0.3,
+                            pointWidth: 20,
+                            pointPlacement: 0.2,
+                            yAxis: 0,
+                            zIndex: 75
+                        }]
+
+                    };
+
+                    return loadDeferred.promise;
                 }
                 ,
                 loadStateChart: function () {
@@ -25139,6 +25275,7 @@ angular.module('ortApp.services', [])
                     allPromises.push(AOI.loadOceanJobEmployeesChart());
                     allPromises.push(AOI.loadOceanJobDollarsChart());
                     allPromises.push(AOI.loadOceanJobContributionsChart());
+                    allPromises.push(AOI.loadBeachProjectsChart());
 
                     return $q.all(allPromises);
                 }

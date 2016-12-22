@@ -8,12 +8,12 @@
                             message="message"
                             modal-img="img/info.svg"
                             modal-title="Beach Nourishment Projects"
-                            modal-text="Beach renourishment projects protect the economy and environment of coastal communities.
-                        Sand mined for these construction projects (measured in cubic yards, y3) is often removed
-                        from state and federal offshore waters. This data is currently only available for South
-                        Carolina. New data will be added as it becomes available."
+                            modal-text="This data is currently unavailable for Virginia. Data was compiled from several sources, cost information was not available for all beach projects. Project locations are approximations only.
+                            <br><a target='_blank' href='https://pubs.usgs.gov/of/2005/1326/gis-data.html'>The National Assessment of Shoreline Change</a>
+                           <br><a target='_blank' href='http://beachnourishment.wcu.edu/oneState?state=FL'> Beach Nourishment Viewer </a>
+                           <br><a target='_blank' href='http://www.scdhec.gov/HomeAndEnvironment/maps/GIS/GISDataClearinghouse/metadata/RENOURISH.htm'> S.C. Department of Health and Environmental Control, Ocean and Coastal Resource Management </a>"
 
-            ></info-directive>
+            </info-directive>
 
 
         </div>
@@ -36,58 +36,8 @@
     </div>
 
 
-    <div class="infographic-dataarea">
-        <div class="beachnourish-text">Sand Volume (y<sup>3</sup>) per Beach Nourishment Project
-        </div>
-
-
-        <table class="table-beachnourishment">
-            <tr ng-repeat="beach in EMvm.AOI.EMBeachNourishmentProjects | unique: 'BEACH_AREA' | orderBy : 'Dist_Mi'">
-
-
-                <td ng-if="$odd" class="table-beachnourishment--oddrow">
-                    <div>{{beach.BEACH_AREA}}</div>
-                    <div>({{beach.Dist_Mi.toFixed(2)}}Mi)</div>
-                </td>
-
-                <td ng-if="$even" class="table-beachnourishment--evenrow">
-                    <div>{{beach.BEACH_AREA}}</div>
-                    <div>({{beach.Dist_Mi.toFixed(2)}}Mi)</div>
-                </td>
-                <td class="table_beachnourishmentchart">
-
-                    <table>
-                        <tr ng-repeat="year in EMvm.AOI.EMBeachNourishmentProjects | filter: {BEACH_AREA: beach.BEACH_AREA}:true | orderBy : 'YEAR'">
-
-                            <td class="beachnourish-row">
-                                <div ng-class="'beachnourish-'+year.YEAR" class="beachnourish-bar"
-                                     ng-style="{'width': (year.SAND_VOL_C/3400000)*100 + '%' };"></div>
-                            </td>
-                        </tr>
-
-                    </table>
-
-                </td>
-            </tr>
-        </table>
-
-
-        <div class="beachnourish-legend">
-            <div class="beachnourish-box">
-                <div ng-repeat="yearx in EMvm.AOI.EMBeachNourishmentProjects | unique: 'YEAR' | orderBy : 'YEAR'">
-                    <svg width="8" height="8">
-                        <rect width="8" height="8" ng-class="'beachnourish-'+yearx.YEAR"/>
-                    </svg>
-                    {{yearx.YEAR}}
-                </div>
-            </div>
-        </div>
-        <div class="beachnourish-scale ">
-            <div class="beachnourish-scale--null  "></div>
-            <div class="beachnourish-scale--0">0y<sup>3</sup></div>
-            <div class="beachnourish-scale--1">1.2My<sup>3</sup></div>
-            <div class="beachnourish-scale--3">3.4My<sup>3</sup></div>
-        </div>
-
+    <div class="infographic-dataarea infographic-dataarea--nopad">
+        <highchart id="BeachProjectsChart" config="EMvm.AOI.BeachProjectsChart"
+                   class="highcharts-beachProjects "></highchart>
     </div>
 </div>
