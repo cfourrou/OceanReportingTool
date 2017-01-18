@@ -1,0 +1,59 @@
+<div class="infographic-box infographic-box--medium" tabindex="0">
+    <div class="infographic-title">
+        <div class="infographic-text">{{CEConf.name}}</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
+                            alttext={{CEConf.alttext}}
+                            modal-img="img/info.svg"
+                            modal-title={{CEConf.name}}
+                            modal-text={{CEConf.modaltext}}
+            ></info-directive>
+
+        </div>
+        <!-- iButton end-->
+        <div class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
+            <div ng-class="AOIvm.AOI.CETribalLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
+                 ng-click="AOIvm.AOI.toggleCETribalLayer()"
+                 ng-include="'img/switch_off.svg'"></div>
+        </div>
+        <div class="layertoggle-text" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
+        </div>
+    </div>
+    <div class="infographic-narrative" bind-html-compile="CEConf.narrativetext">
+    </div>
+
+    <div class="infographic-icon">
+        <div class="icon-img">
+            <img class="icon-img--fill" src="img/tribal-lands.svg">
+        </div>
+        <div class="icon-dataarea">&nbsp;Coastal Tribal Lands</div>
+    </div>
+
+    <div class="infographic-dataarea">
+
+        <div ng-hide="AOIvm.AOI.CETribalLands.length">No Tribal Lands were identified within 50 miles of this area</div>
+        <table ng-show="AOIvm.AOI.CETribalLands.length" class="table-tribe">
+
+            <tr>
+                <th>Tribal Lands</th>
+                <th>Distance in Miles</th>
+            </tr>
+
+            <tr ng-repeat="x in AOIvm.AOI.CETribalLands | orderBy : 'Dist_Mi'">
+                <td>
+                    <div>{{x.NAMELSAD}}</div>
+                </td>
+
+                <td>
+                    <div>{{x.Dist_Mi.toFixed(2)}}</div>
+                </td>
+
+
+            </tr>
+        </table>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="CEConf.ruletext">
+    </div>
+</div>
+

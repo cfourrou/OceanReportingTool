@@ -1,17 +1,14 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Beach Nourishment Projects</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html"
-                            alttext="Graphic of a bar graph showing available beach renourishment projects within 15 miles of the  selected area and how much sand was placed for each project. Bars are colored by year."
+                            alttext={{EMConf.alttext}}
                             message="message"
                             modal-img="img/info.svg"
-                            modal-title="Beach Nourishment Projects"
-                            modal-text="This data is currently unavailable for Virginia. Data was compiled from several sources, cost information was not available for all beach projects. Project locations are approximations only.
-                            <br><a target='_blank' href='https://pubs.usgs.gov/of/2005/1326/gis-data.html'>The National Assessment of Shoreline Change</a>
-                           <br><a target='_blank' href='http://beachnourishment.wcu.edu/oneState?state=FL'> Beach Nourishment Viewer </a>
-                           <br><a target='_blank' href='http://www.scdhec.gov/HomeAndEnvironment/maps/GIS/GISDataClearinghouse/metadata/RENOURISH.htm'> S.C. Department of Health and Environmental Control, Ocean and Coastal Resource Management </a>"
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             </info-directive>
 
@@ -26,7 +23,8 @@
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
+    </div>
     <div class="infographic-line">
         <div class="line-img">
             <img src="img/BeachNourishmentGraphicLine.svg">
@@ -39,5 +37,7 @@
     <div class="infographic-dataarea infographic-dataarea--nopad">
         <highchart id="BeachProjectsChart" config="EMvm.AOI.BeachProjectsChart"
                    class="highcharts-beachProjects "></highchart>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

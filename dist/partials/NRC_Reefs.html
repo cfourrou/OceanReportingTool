@@ -1,16 +1,13 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Artificial Reefs</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the number of artifical reefs that intersect the selected area. Symbology is a gray branching coral."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Artificial Reefs"
-                            modal-text="The presence of artifical reefs may affect the kinds of work that are able to be completed
-                        in an area. Generally, they provide a substrate for a benthic community that may or may not
-                        support assemblages of fish. As a result they will likely need to be avoided during the
-                        course of a project. This is not considered an exhaustive list of artifical reefs."
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -23,25 +20,31 @@
         <div class="layertoggle-text" ng-hide="NRCvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="NRCConf.narrativetext">
+    </div>
 
-    <div>
 
-        <div class="infographic-swatch">
-            <div class="swatch-img">
-                <img src="img/svg-elements_reefs.svg">
-            </div>
+    <div class="infographic-swatch infographic-swatch--small">
+        <div class="swatch-img">
+            <img src="img/svg-elements_reefs.svg">
         </div>
-
-        <div class="infographic-dataarea">
-            <div class="reef-spacer"></div>
-
-                    <span class="infographic-twosizeline--large"><ng-hide ng-hide="NRCvm.AOI.NRCReefs[0].TOTAL_CNT>=1">
-                        0
-                    </ng-hide>{{NRCvm.AOI.NRCReefs[0].TOTAL_CNT}}</span><span
+        <div class="swatch-dataarea swatch-dataarea--small">
+            <span class="infographic-twosizeline--large"><ng-hide ng-hide="NRCvm.AOI.NRCReefs[0].TOTAL_CNT>=1">
+                0
+            </ng-hide>{{NRCvm.AOI.NRCReefs[0].TOTAL_CNT}}</span><span
                 class="infographic-twosizeline--small"> Reefs Overlap</span>
-
-
         </div>
+    </div>
 
+    <div class="infographic-dataarea">
+
+
+
+
+
+    </div>
+
+
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
     </div>
 </div>

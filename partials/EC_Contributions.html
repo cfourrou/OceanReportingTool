@@ -1,13 +1,13 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Contributions by Industry</div>
+        <div class="infographic-text">{{ECConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Graphic of pie charts for each state county representing the portion of the ocean GDP that each of the 6 primary ocean industries contributes."
+                            alttext={{ECConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-text="Percentage of contribution of six ocean industry sectors to the ocean industry GDP."
-                            modal-title="Contributions by Industry"
+                            modal-text={{ECConf.modaltext}}
+                            modal-title={{ECConf.name}}
 
             ></info-directive>
 
@@ -15,10 +15,14 @@
         </div>
         <!-- iButton end-->
     </div>
+    <div class="infographic-narrative" bind-html-compile="ECConf.narrativetext">
+    </div>
     <div class="infographic-dataarea">
 
         <highchart id="OceanJobContributionsChart" config="ECvm.AOI.OceanJobContributionsChart"
                    class="highcharts-oceanjobcontributions"></highchart>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="ECConf.ruletext">
     </div>
 </div>

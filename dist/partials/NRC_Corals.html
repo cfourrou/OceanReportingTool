@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Deep Sea Coral<BR> Habitat Suitability</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element displays a color ramp representing deep sea coral habitat suitability from low to very high. The average value of the selected area for both stony and soft coral is listed."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Deep Sea Coral Habitat Suitability"
-                            modal-text="Deep sea coral habitat suitability is a combination of available data for individual hard
-                        and soft coral species into a more generalized grouping. The categories correspond to the
-                        predicted likelihood of suitable deep sea coral habitat occurring."
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -17,7 +15,9 @@
         <!-- iButton end-->
 
     </div>
-    <div class="infographic-swatch">
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="NRCConf.narrativetext">
+    </div>
+    <div class="infographic-swatch infographic-swatch--small">
 
         <div class="swatch-coral">
             <div class="coral-line">
@@ -68,5 +68,7 @@
             </div>
         </div>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
     </div>
 </div>

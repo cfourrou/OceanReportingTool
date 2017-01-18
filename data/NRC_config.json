@@ -1,12 +1,74 @@
 [
-    {"filename":"partials/NRC_HabitatConcern.html", "priority":56 },
-    {"filename":"partials/smallMap.html", "priority":58},
-    {"filename":"partials/NRC_CriticalHabitat.html","priority":57},
-    {"filename":"partials/NRC_MigratorySpecies.html","priority":59},
-    {"filename":"partials/NRC_NearbyAreas.html","priority":60},
-    {"filename":"partials/NRC_Corals.html","priority":61},
-    {"filename":"partials/NRC_Reefs.html","priority":62},
-    {"filename":"partials/NRC_Barrier.html","priority":63}
-
-
+  {
+    "name": "Habitat Areas of Particular Concern",
+    "filename": "partials/NRC_HabitatConcern.html",
+    "priority": 1,
+    "alttext":"Element lists the habitat areas of particular concern that intersect the selected area along with the percent of that area covered by each one.",
+    "modaltext": "Source: Habitat Areas of Particular Concern are described by NOAA's National Marine Fisheries Service:<br>Allowable Octocoral Closed Area, 2013<br>Golden Crab Access Area, 2013<br>Oculina Bank Experimental Closed Area, 2013<br>Oculina Bank HAPC, 2015<br>Shrimp Fishery Access Area, 2013<br>Stetson – Miami Terrace, 2015",
+    "narrativetext": "Designated by Fisheries Management Councils, HAPCs are discreet subsets of Essential Fish Habitat that are rare, sensitive, stressed by development, or important to ecosystem function. While HAPCs do not always correspond with additional protections or restrictions, they are considered high priority areas for conservation, management, and research. ",
+    "ruletext": "Showing the presence of the {{NRCvm.AOI.NRCHabConcern.length}} HAPCs that overlap the report area"
+  },
+  {
+    "name": "",
+    "filename": "partials/smallMap.html",
+    "priority": 2,
+    "alttext":"",
+    "modaltext": "",
+    "narrativetext": "",
+    "ruletext": ""
+  },
+  {
+    "name": "Critical Habitat Designations",
+    "filename": "partials/NRC_CriticalHabitat.html",
+    "priority": 3,
+    "alttext":"Element lists the critical habitat designated areas that intersect the selected area along with the percent of that area covered by each one.",
+    "modaltext": "Source: Critical Habitat Designations, National Oceanic and Atmospheric Administration, 2016",
+    "narrativetext": "Critical habitats contain features essential to the conservation of an endangered or threatened species. Critical habitats require special management and protection, but the designation does not necessarily restrict development.",
+    "ruletext": "Showing the presence of the {{NRCvm.AOI.NRCCriticalHab.length}} Critical Habitats that overlap the report area"
+  },
+  {
+    "name": "Managed Highly Migratory Species",
+    "filename": "partials/NRC_MigratorySpecies.html",
+    "priority": 4,
+    "alttext":"Element lists highly migratory species (for fish and sharks) areas that intersect the selected area and whether they represent adult, juvenile, neonatal, or spawning habitat.",
+    "modaltext": "Source: Managed Highly Migratory Species (Sharks), National Oceanic and Atmospheric Administration, 2009<br>Source: Managed Highly Migratory Species (Fish), National Oceanic and Atmospheric Administration, 2009",
+    "narrativetext": "Highly migratory species --- tuna, sharks, swordfish, and billfish --- live throughout the Atlantic Ocean and Gulf of Mexico. Because these species cross domestic and international boundaries, they are specially managed to account for requirements established through international cooperation.",
+    "ruletext": "Showing the presence of the {{NRCvm.AOI.NRCMigratoryFish.length + NRCvm.AOI.NRCMigratorySharks.length}} Managed Highly Migratory Species that overlap the report area"
+  },
+  {
+    "name": "Protected Areas",
+    "filename": "partials/NRC_NearbyAreas.html",
+    "priority": 7,
+    "alttext":"Element lists nearby federal parks, sanctuaries, and reserves that are within 15 miles of the selected area with associated hyperlinks to each system. Symbology is a light green polygon.",
+    "modaltext": "Source: Protected Areas, National Oceanic and Atmospheric Administration, 2014",
+    "narrativetext": "Activities permitted in protected areas vary based on the designation of the protected area and monitoring agency. The National Park Service oversees the National Park System and National Seashores, and the United States Fish and Wildlife Service manages the National Wildlife Refuge System. NOAA’s Office of National Marine Sanctuaries serves as the trustee for National Marine Sanctuaries, while the National Estuarine Research Reserves are managed through partnerships between NOAA’s Office for Coastal Management and coastal states. ",
+    "ruletext": "Showing {{NRCvm.AOI.NRCNearby.length}} protected areas within 15 nautical miles of the report area"
+  },
+  {
+    "name": "Deep Sea Coral Habitat Suitability",
+    "filename": "partials/NRC_Corals.html",
+    "priority": 6,
+    "alttext":"Element displays a color ramp representing deep sea coral habitat suitability from low to very high. The average value of the selected area for both stony and soft coral is listed.",
+    "modaltext": "Source: Merged layers of various species of stony coral gathered from Deep Sea Coral Habitat Suitability, National Oceanic and Atmospheric Administration,  2014<br>Source: Merged layers of various species of soft coral gathered from Deep Sea Coral Habitat Suitability, National Oceanic and Atmospheric Administration, 2014",
+    "narrativetext": "Deep-sea corals, also known as cold water corals, create complex communities that provide habitat for a variety of invertebrate and fish species, such as grouper, snapper, and sea bass. The map legend indicates the likelihood of appropriate deep sea coral habitat occurring based on several environmental characteristics and on individual hard and soft coral species observational data. Stony coral are the primary reef-building corals and produce hard skeletons made of aragonite, a crystal form of calcium carbonate. Soft corals, unlike stony corals, do not form calcium-based skeletons. A common example of a soft coral is a sea fan.",
+    "ruletext": "Showing average suitability value over the report area"
+  },
+  {
+    "name": "Artificial Reefs",
+    "filename": "partials/NRC_Reefs.html",
+    "priority": 5,
+    "alttext":"Element contains a count of the number of artifical reefs that intersect the selected area. Symbology is a gray branching coral.",
+    "modaltext": "Source: Artificial Reefs, National Oceanic and Atmospheric Administration, 2015",
+    "narrativetext": "Artificial reefs are human-made underwater structures that can be developed intentionally or from remnants of objects built for other purposes, such as shipwrecks. The hard surfaces of artificial reefs provide substrate for algae, barnacles, corals, and oysters to attach, which may then support assemblages of fish. Please note this is not considered and exhaustive list of artificial reefs, but coastal and ocean planning efforts should consider the known locations displayed on the map.",
+    "ruletext": "Showing the number of artificial reefs that overlap the report area"
+  },
+  {
+    "name": "Coastal Barrier Resource Areas",
+    "filename": "partials/NRC_Barrier.html",
+    "priority": 8,
+    "alttext":"Element contains a count of the number of coastal barrier resource units within 8 miles of the selected area, Symbology is a beige  polygon.",
+    "modaltext": "Source: Coastal Barrier Resource Areas, U.S. Fish and Wildlife Service, 2016",
+    "narrativetext": "The Coastal Barrier Resources Act supports the conservation of hurricane prone, biologically rich coastal barriers by restricting federal expenditures that encourage development, such as federal flood insurance. Relatively undeveloped coastal barriers along the Atlantic and Gulf coasts compose the John H. Chaffee Coastal Barrier Resources System (CBRS). Areas within the CBRS can be developed provided that private developers or other non-federal parties bear the full cost.",
+    "ruletext": "Showing Barrier Units within 8 nautical miles of the report area"
+  }
 ]

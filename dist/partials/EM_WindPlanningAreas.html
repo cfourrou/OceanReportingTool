@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Wind Planning Areas</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the number of wind planning areas that intersect the selected area and calculates the percentage of the selected area that the WPAs cover and how many OCS blocks that includes. Includes hyperlinks for more information on the WPAs"
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Wind Planning Areas"
-                            modal-text="Wind Planning Areas delineate an area that is being considered for Wind Power Development
-                        and can represent up to six different types of announcements within the US Federal Register
-                        (FR) that can be used to show the current status of wind power development."
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
             ></info-directive>
 
 
@@ -21,6 +19,8 @@
         </div>
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
+    </div>
+    <div class="infographic-narrative infographic-narrative--left " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="swatch-img"><img src="img/Wind_Planning_Areas.svg"></div>
     <div class="infographic-dataarea--small">
@@ -49,5 +49,7 @@
         <div class="infographic-twosizeline--small"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}} target="_blank">Current
             State
             Activities</a></div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

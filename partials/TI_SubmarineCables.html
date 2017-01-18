@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Submarine Cables</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the submarine cables within the selected area and a list of who owns them and their current service state."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Submarine Cables"
-                            modal-text="Submarine cables represent cables and information gathered from NASCA and digitized NOAA
-                        nautical charts. Cables within an area of interest may require avoidance during any
-                        construction projects or anchoring."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
@@ -23,6 +21,8 @@
         <div class="layertoggle-text" ng-hide="TIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
 
+    </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
 
@@ -41,5 +41,7 @@
              ng-repeat="x in TIvm.AOI.TISubmarine| orderBy : 'OwnerStatus'| unique: 'OwnerStatus'">
             {{x.OwnerStatus}}
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>
 </div>

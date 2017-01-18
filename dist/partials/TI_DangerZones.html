@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Danger Zones</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of danger zones within 1 mile of the selected area and a list of who maintains each area and what percentage of the selected area it covers."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Danger Zones"
-                            modal-text="Danger Zones and Restricted Areas are water areas used by the government, normally the armed
-                        forces, for hazardous operations or to protect the public from incidences potentially
-                        arising from those operations."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
@@ -21,6 +19,8 @@
         </div>
         <div class="layertoggle-text" ng-hide="TIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
+    </div>
+    <div class="infographic-narrative " bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
         <div class="infographic-dataarea">
@@ -37,5 +37,7 @@
             </div>
             <div class="infographic-list--pad">Covers {{x.PERC_COVER.toFixed(2)}}% of area</div>
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>
 </div>

@@ -1,13 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title infographic-title--2line">
-        <div class="infographic-text">Ocean Job Contribution<br>(Percentage)</div>
+        <div class="infographic-text">{{ECConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a list of states or counties and a percentage representing the contribution of ocean dollars to the total GDP"
+                            alttext={{ECConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Ocean Job Contribution(Percentage)"
-                            modal-text="Percentage of ocean industry GDP relative to the total GDP. Based on 2013 ENOW data"
+                            modal-title={{ECConf.name}}
+                            modal-text={{ECConf.modaltext}}
 
             ></info-directive>
 
@@ -15,7 +15,8 @@
         </div>
         <!-- iButton end-->
     </div>
-
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="ECConf.narrativetext">
+    </div>
     <div class="infographic-dataarea">
 
 
@@ -28,5 +29,6 @@
 
         </div>
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="ECConf.ruletext">
+    </div>
 </div>

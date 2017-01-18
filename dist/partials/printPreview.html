@@ -7,8 +7,8 @@ Building Printable Page
         <div>{{Printvm.AOI.name.toUpperCase()}}</div>
         <div class="theme--printfriendly"> General Information
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[0].narrative | unsafe"></div>
-            <div ng-repeat="x in Printvm.CEConfig | orderBy: 'priority'" ng-init="AOIvm=Printvm;">
-                <div ng-show="x.priority" class="zeroheightkludge" ng-include="x.filename"></div>
+            <div ng-repeat="CEConf in Printvm.CEConfig | orderBy: 'priority'" ng-init="AOIvm=Printvm;">
+                <div ng-show="CEConf.priority" class="zeroheightkludge" ng-include="CEConf.filename"></div>
             </div>
         </div>
 
@@ -16,9 +16,9 @@ Building Printable Page
 
         <div class="theme"> Energy and Minerals
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[1].narrative | unsafe"></div>
-            <div ng-repeat="x in Printvm.EMConfig | orderBy: 'priority'" ng-init="EMvm=Printvm">
-                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                     ng-include="x.filename"></div>
+            <div ng-repeat="EMConf in Printvm.EMConfig | orderBy: 'priority'" ng-init="EMvm=Printvm">
+                <div ng-if="EMConf.priority && EMConf.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="EMConf.filename"></div>
             </div>
 
         </div>
@@ -26,9 +26,9 @@ Building Printable Page
 
         <div class="theme"> Natural Resources and Conservation
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[2].narrative | unsafe"></div>
-            <div ng-repeat="x in Printvm.NRCConfig | orderBy: 'priority'" ng-init="NRCvm=Printvm">
-                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                     ng-include="x.filename"></div>
+            <div ng-repeat="NRCConf in Printvm.NRCConfig | orderBy: 'priority'" ng-init="NRCvm=Printvm">
+                <div ng-if="NRCConf.priority && NRCConf.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="NRCConf.filename"></div>
             </div>
         </div>
 
@@ -36,10 +36,10 @@ Building Printable Page
 
         <div class="theme"> Transportation and Infrastructure
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[3].narrative | unsafe"></div>
-            <div ng-repeat="x in Printvm.TIConfig | orderBy: 'priority'" ng-init="TIvm=Printvm">
+            <div ng-repeat="TIConf in Printvm.TIConfig | orderBy: 'priority'" ng-init="TIvm=Printvm">
 
-                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                     ng-include="x.filename"></div>
+                <div ng-if="TIConf.priority && TIConf.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="TIConf.filename"></div>
 
             </div>
 
@@ -48,10 +48,10 @@ Building Printable Page
 
         <div class="theme"> Economics And Commerce
             <div class="narrative" ng-bind-html="Printvm.AOI.narratives[4].narrative | unsafe"></div>
-            <div ng-repeat="x in Printvm.ECConfig | orderBy: 'priority'" ng-init="ECvm=Printvm">
+            <div ng-repeat="ECConf in Printvm.ECConfig | orderBy: 'priority'" ng-init="ECvm=Printvm">
 
-                <div ng-if="x.priority && x.filename !=='partials/smallMap.html'" class="zeroheightkludge"
-                     ng-include="x.filename"></div>
+                <div ng-if="ECConf.priority && ECConf.filename !=='partials/smallMap.html'" class="zeroheightkludge"
+                     ng-include="ECConf.filename"></div>
 
             </div>
 

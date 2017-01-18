@@ -1,14 +1,13 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Principal Ports</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists the 2 closest ports to the selected area with tonnage. Distance to the selected area is represented by a line graph with gray anchors representing each port."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Principal Ports"
-                            modal-text="These ports represent the top 150 ports based on total tonnage for the year. Certain
-                        projects may require a large port to conduct transactions."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
@@ -20,6 +19,8 @@
         </div>
         <div class="layertoggle-text" ng-hide="TIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
+    </div>
+    <div class="infographic-narrative " bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
         <div class="ports">
@@ -47,6 +48,7 @@
             <img class="anchor-img" src="img/transportation-anchor.svg">{{x.PortName}} - {{x.Total| number}} tonnage
         </div>
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
+    </div>
 </div>
 

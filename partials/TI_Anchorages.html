@@ -1,23 +1,21 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Anchorages</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of anchorages within 1 mile of the selected area and lists the type and percent of the area that it covers."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Anchorages"
-                            modal-text="Although many larger vessels, such as those used for wind farm construction, might not need
-                        to anchor, knowing the locations of anchorage areas is still wise. These areas are often
-                        used by larger vessels when they need to find safer areas than shipping lanes or coastal
-                        areas during extreme weather. Anchorage areas are also often used in case of emergency or
-                        when vessels need to wait for a pilot boat or docking space in a port."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
         </div>
 
 
+    </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
         <div class="infographic-dataarea">
@@ -32,5 +30,7 @@
             </div>
             <div class="infographic-list--pad">Covers {{x.PERC_COVER.toFixed(2)}}% of area</div>
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>
 </div>

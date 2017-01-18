@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Census Statistics</div>
+        <div class="infographic-text">{{ECConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a table with each state and county and their respective populations, total number of houses, and median household income. Symbology for counties is a magenta ouline."
+                            alttext={{ECConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Census Statistics"
-                            modal-text="Data from 2010 Census data and the American Community Survey. Data is reported for the state
-                        only when the area is in federal water. County data is included when the area is in state
-                        waters."
+                            modal-title={{ECConf.name}}
+                            modal-text={{ECConf.modaltext}}
             ></info-directive>
 
 
@@ -22,7 +20,8 @@
         <div class="layertoggle-text" ng-hide="ECvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
+    <div class="infographic-narrative" bind-html-compile="ECConf.narrativetext">
+    </div>
 
     <div class="infographic-line">
         <div class="line-img">
@@ -54,5 +53,7 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="ECConf.ruletext">
     </div>
 </div>

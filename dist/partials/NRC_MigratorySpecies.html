@@ -1,18 +1,13 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Managed Highly Migratory Species</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists highly migratory species (for fish and sharks) areas that intersect the selected area and whether they represent adult, juvenile, neonatal, or spawning habitat."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Managed Highly Migratory Species"
-                            modal-text="Highly migratory species—tuna, sharks, swordfish, and billfish—live throughout the Atlantic
-                        Ocean and Gulf of Mexico and often migrate long distances. Because these species cross
-                        domestic and international boundaries they are specially managed to take into account
-                        requirements established through international cooperation. Listed are species that
-                        intersect the delineated area and their life stages: A-Adult, J-Juvenile, N-Neonatal,
-                        S-Spawning"
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -20,6 +15,8 @@
         <!-- iButton end-->
 
 
+    </div>
+    <div class="infographic-narrative " bind-html-compile="NRCConf.narrativetext">
     </div>
     <div class="infographic-dataarea">
         <div class="infographic-list">A:Adult, J:Juvenile, N:Neonatal, S:Spawning</div>
@@ -55,5 +52,7 @@
             </div>
 
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
     </div>
 </div>

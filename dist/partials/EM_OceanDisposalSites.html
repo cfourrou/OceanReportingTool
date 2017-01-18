@@ -1,20 +1,13 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Ocean Disposal Sites</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists a count of each type of Ocean Disposal Site within 10 miles of the selected area. Symbology is a rose colored polygon on the map."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Ocean Disposal Sites"
-                            modal-text="Ocean dumping can only occur with a permit issued by the US Army Corps of Engineers or the
-                        EPA and only in designated disposal sites that meets certain environmental criteria.
-                        Reference the <a target='_blank'
-            href='http://www.epw.senate.gov/mprsa72.pdf'>the Marine
-            Protection, Research, and Sanctuaries Act</a> and <a target='_blank'
-                                                                 href='http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&SID=94bc9a5a4a48ef22fc45cf2c912af3e2&mc=true&n=pt40.25.228&r=PART&ty=HTML#se40.25.228_12'>
-            Electronic Code of Federal Regulations</a> for details and definitions regarding Ocean
-            Disposal Sites."
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             ></info-directive>
 
@@ -28,12 +21,14 @@
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-    <div class="infographic-swatch">
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="EMConf.narrativetext">
+    </div>
+    <div class="infographic-swatch infographic-swatch--small">
         <div class="swatch-img"><img src="img/OceanDisposalGraphic.svg"></div>
-        <span class="infographic-twosizeline">
+        <div class="swatch-dataarea swatch-dataarea--small">
               <span class="infographic-twosizeline--large">{{EMvm.AOI.EMOceanDisposalSites.length}}</span>
               <span class="infographic-twosizeline--small">Within 10 miles</span>
-        </span>
+        </div>
     </div>
 
 
@@ -48,6 +43,8 @@
                 <span class="infographic-twosizeline--small">{{dispx.PRIMARY_USE}}</span>
             </span>
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>
 

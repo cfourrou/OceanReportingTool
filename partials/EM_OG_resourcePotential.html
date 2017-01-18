@@ -1,32 +1,21 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Oil and Gas Resource Potential</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element is a table that list oil reserve plays that overlap the selected area and estimated amounts of oil and gas available in each one."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Oil and Gas Resource Potential"
-                            modal-text="Oil and Gas Resource Potential shows the extent of the probable oil and/or gas geologic
-                        structures (plays) identified within the US Outer Continental Shelf. Plays are groups of
-                        known and/or postulated sub-seafloor hydrocarbon accumulations that share common geologic,
-                        geographic, and temporal properties. The listed values represent the mean expected resource
-                        within an entire play, not within the specific area of interest. For more information on
-                        conceptual plays within the Atlantic OCS, follow the link below.<br>
-
-                        Bbl: Billion barrels<br>
-                        Tcf: trillion cubic feet<br>
-                        BOE: barrels of oil equivalent<br>
-                        Source:<a
-                            href='http://www.boem.gov/National-Assessment-2016/'
-            target='_blank'> Assessment of Undiscovered Technically Recoverable Oil and Gas Resources of
-            the Nation’s Outer Continental Shelf, 2016</a>"
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
             ></info-directive>
 
 
 
         </div>
         <!-- iButton end-->
+    </div>
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="infographic-twosizeline">
         <span class="infographic-twosizeline--small ">There are</span>
@@ -67,6 +56,7 @@
         </table>
 
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
+    </div>
 
 </div>

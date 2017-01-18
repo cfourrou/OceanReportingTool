@@ -1,23 +1,21 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Surficial Sediment Classification</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Graphic of a bar chart that lists the type of sediment samples found in the selected area and how many of each type are present."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-text="Represents a count and description of selected surface samples from the East Coast Sediment
-                        Texture Database within the AOI. Summary of these samples does not imply a homogenous
-                        sediment type over the whole area. Classification is based on Shepard’s pyramid.
-                        <br>
-                        <img src='img/Shepard1.png'>"
-                            modal-title="Surficial Sediment Classification"
+                            modal-text={{EMConf.modaltext}}
+                            modal-title={{EMConf.name}}
             ></info-directive>
 
 
         </div>
         <!-- iButton end-->
 
+    </div>
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="infographic-dataarea">
         <span class="infographic-list">Number of Samples Collected.</span>
@@ -45,5 +43,7 @@
         </div>
 
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

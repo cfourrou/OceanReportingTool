@@ -1,17 +1,14 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Marine Minerals Leases</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
 
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of completed leases within 2 miles of the selected area. Symbology is a hollow polygon with a purple outline."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Marine Minerals Leases"
-                            modal-text="Marine Mineral Leases (Sand and Gravel Lease Areas) define areas where entities that have
-                        entered into a Negotiated Non-Competitive Lease or Memorandum of Agreement with BOEM can
-                        dredge sand, gravel or shell resources from the outer Continental Shelf for coastal
-                        restoration or beach renourishment."
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             ></info-directive>
 
@@ -26,12 +23,11 @@
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-    <div>
-        <div class="infographic-dataarea">
-            <span class="infographic-twosizeline--large">{{EMvm.AOI.EMMarineMineralsLeases.length}}</span><span
-                class="infographic-twosizeline--small"> Within 2 miles</span>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="EMConf.narrativetext">
+    </div>
 
-        </div>
+    <div class="infographic-swatch infographic-swatch--small">
+
         <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 1}:true as leaseCompleted "></div>
         <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 2}:true as leaseActive "></div>
         <div ng-repeat="x in EMvm.AOI.EMMarineMineralsLeases | filter: {RuleID: 3}:true as leaseProposed "></div>
@@ -57,5 +53,7 @@
             <span class="infographic-twosizeline--small"> Proposed Leases</span>
         </div>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

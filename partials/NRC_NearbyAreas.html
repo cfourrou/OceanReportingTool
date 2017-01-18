@@ -1,16 +1,13 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Protected Areas</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists nearby federal parks, sanctuaries, and reserves that are within 15 miles of the selected area with associated hyperlinks to each system. Symbology is a light green polygon."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Protected Areas"
-                            modal-text="Nearby protected areas are national parks, national wildlife refuges, national marine
-                        sanctuaries, or national estuarine research reserves within 15nm of the delineated areas.
-                        When work is being considered in this area, it would be prudent to consider the effects on
-                        these protected areas. Links to each are provided."
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -23,7 +20,8 @@
         <div class="layertoggle-text" ng-hide="NRCvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
+    <div class="infographic-narrative " bind-html-compile="NRCConf.narrativetext">
+    </div>
     <div>
 
         <div class="infographic-swatch">
@@ -47,6 +45,8 @@
             </div>
         </div>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
     </div>
 </div>
 

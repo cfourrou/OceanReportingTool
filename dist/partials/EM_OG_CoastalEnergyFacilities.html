@@ -1,17 +1,14 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Coastal Energy Facilities</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
 
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element is a table that lists energy facilities within 20 miles of the selected area and the type, capacity (in megawatts), and distance (in miles) of each one."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Coastal Energy Facilities"
-                            modal-text="Coastal Energy Facilities depict the locations of facilities that generate electricity. The
-                        locations are created from the Environmental Protection Agency Emissions & Generation
-                        Resource Integrated Database (eGRID). Only facilities adjacent to the coast and Great Lakes
-                        are shown. "
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             ></info-directive>
 
@@ -25,6 +22,8 @@
         </div>
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
+    </div>
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="infographic-swatch">
         <div class="swatch-img"><img src="img/CoastalEnergyGraphic.svg"></div>
@@ -69,5 +68,7 @@
         </table>
 
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

@@ -1425,6 +1425,7 @@ angular.module('ortApp.services', [])
                         AOI.TISubmarineIsVisible = false;
                         AOI.TIDangerZonesIsVisible = false;
                         AOI.CEPlaceLayerIsVisible = false;
+                        AOI.CETribalLayerIsVisible = false;
                         AOI.TIVesselLayerIsVisible = false;
                         AOI.TIPrincipalPortsIsVisible = false;
                         AOI.NRCNearbyLayerIsVisible = false;

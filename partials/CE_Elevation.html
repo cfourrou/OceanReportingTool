@@ -1,12 +1,12 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Elevation</div>
+        <div class="infographic-text">{{CEConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Graphic represents the contour symbology (blue lines) on the map and displays the minimum, maximum, and mean elevation values of the area in meters."
-                            modal-img="img/info.svg" modal-title="Elevation"
-                            modal-text="Elevation data was derived from NOAA's 3 arc-second <a href='http://www.ngdc.noaa.gov/mgg/coastal/crm.html' target='_blank'>Coastal Relief Model</a>. Contours are 10m intervals.">
+                            alttext={{CEConf.alttext}}
+                            modal-img="img/info.svg" modal-title="CEConf.name"
+                            modal-text={{CEConf.modaltext}}>
             </info-directive>
         </div>
         <!-- iButton end-->
@@ -17,10 +17,13 @@
         <div class="layertoggle-text" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
+
     <div>
-        <div class="infographic-swatch">
+        <div class="infographic-narrative infographic-narrative--left" bind-html-compile="CEConf.narrativetext">
+        </div>
+        <div class="infographic-swatch infographic-swatch--small">
             <div class="swatch-img "><img src="img/contours-01.svg"></div>
-            <div class="swatch-dataarea">
+            <div class="swatch-dataarea swatch-dataarea--small">
                 <div><b>Max:</b> {{AOIvm.AOI.CEElevation[0].depth_max_m}}<span
                         ng-show="AOIvm.AOI.CEElevation[0].depth_max_m !== 'Unknown'">m</span></div>
                 <div><b>Mean:</b> {{AOIvm.AOI.CEElevation[0].depth_mean_m}}<span
@@ -29,5 +32,7 @@
                         ng-show="AOIvm.AOI.CEElevation[0].depth_min_m !== 'Unknown'">m</span></div>
             </div>
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="CEConf.ruletext">
     </div>
 </div>

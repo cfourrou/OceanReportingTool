@@ -1,40 +1,32 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Renewable Energy Leases</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-text=" BOEM's Outer Continental Shelf (OCS) Renewable Energy Program interim leasing policy allows
-                        for limited leasing and was designed for resource data collection and technology testing
-                        activities. The interim policy leases have a five year term and provide no subsequent commercial rights."
-                            modal-title="Renewable Energy Leases"
+                            modal-text={{EMConf.modaltext}}
+                            modal-title={{EMConf.name}}
             ></info-directive>
 
 
-
         </div>
-
         <!-- iButton end-->
         <div class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
             <div ng-class="EMvm.AOI.EMActiveRenewableEnergyLeasesLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                 ng-click="EMvm.AOI.toggleEMActiveRenewableEnergyLeasesLayer()"
-                 ng-include="'img/switch_off.svg'"></div>
+                 ng-click="EMvm.AOI.toggleEMActiveRenewableEnergyLeasesLayer()" ng-include="'img/switch_off.svg'"></div>
         </div>
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
-    <div class="infographic-swatch">
-        <div class="swatch-img"><img src="img/Renewable_Energy_Leases.svg"></div>
-        <div class="swatch-dataarea swatch-dataarea--smalltext">
-            <span>Within 2 miles</span>
-        </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="EMConf.narrativetext">
     </div>
+    <div class="swatch-img"><img src="img/Renewable_Energy_Leases.svg"></div>
 
 
-    <div class="infographic-dataarea">
+
+    <div class="infographic-dataarea--small">
             <span class="infographic-twosizeline--large"><ng-hide
                     ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_CNT>=0">0
             </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_CNT}}</span>
@@ -50,5 +42,7 @@
                     ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC>=0">0
             </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC}}</span>
         <span class="infographic-twosizeline--small">OCS blocks</span>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

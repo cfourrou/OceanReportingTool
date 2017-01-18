@@ -28,6 +28,20 @@ function printDirective($state, $timeout) {
 
 angular.module('ortApp.directives', [])
     .directive("ngPrint", ['$state', '$timeout', printDirective])
+    .directive('bindHtmlCompile', ['$compile', function ($compile) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                scope.$watch(function () {
+                    return scope.$eval(attrs.bindHtmlCompile);
+                }, function (value) {
+                    element.html(value);
+                    $compile(element.contents())(scope);
+                });
+            }
+        };
+    }])
+
     .directive('exposeSize', function($window) {
         return function($scope) {
 
@@ -71,7 +85,7 @@ angular.module('ortApp.directives', [])
                         inputs: {
                             metaurl: $scope.metadataUrl,
                             myvarData: $scope.varData,
-                            custom: $scope.modalCustom,
+                            modalcustom: $scope.modalCustom,
                             modaltext: $scope.modalText,
                             modaltitle: $scope.modalTitle
                         }

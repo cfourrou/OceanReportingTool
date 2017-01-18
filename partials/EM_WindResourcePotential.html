@@ -1,6 +1,6 @@
 <div class="infographic-box infographic-box--mediumb" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Wind Resource Potential</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <div class="layertoggle-button" ng-hide="EMvm.AOI.toggleFull===true">
             <div ng-class="EMvm.AOI.EMWindResourcePotentialLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
                  ng-click="EMvm.AOI.toggleEMWindResourcePotentialLayer()"
@@ -9,7 +9,8 @@
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
+    </div>
     <div class="wind-box">
         <div class="wind-avg"> Weighted Average:<br>
             <div ng-show="EMvm.AOI.EMWindResourcePotential[0].AVG_WGHT">{{EMvm.AOI.EMWindResourcePotential[0].AVG_WGHT}}
@@ -21,15 +22,12 @@
 
             <!-- //metadata-url="{{EMWindResourcePotential[0].METADATA_URL}}" -->
             <info-directive class="iModal-button" modal-template="ModalTemplate.html"
-                            alttext="Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy."
+                            alttext={{EMConf.alttext}}
                             message="message"
                             modal-img="img/info.svg"
-                            modal-title="Wind Resource Potential: Weighted Average"
-                            modal-text="Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m
-                        height are generally considered to have a wind resource suitable for offshore
-                        development.
-                        The potential megawatts (MW) of rated capacity that could be installed in this area,
-                        assuming 5 MW of installed capacity per square kilometer of water is: {{EMvm.AOI.EMWindResourcePotential[0].CAPACITY}} MW."
+                            modal-title='{{EMConf.name}}: Weighted Average'
+                            modal-text={{EMConf.modaltext}}
+                            modal-custom={{EMvm.AOI.EMWindResourcePotential[0].CAPACITY}}
             ></info-directive>
         </div>
 
@@ -45,11 +43,8 @@
             <info-directive class="iModal-button" modal-template="ModalTemplate.html"
                             message="message"
                             modal-img="img/info.svg"
-                            modal-title="Wind Resource Potential: Potential Houses Supported"
-                            modal-text="Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual
-                        household energy use of 2kW <sup>2</sup>.<br><div class='modal-overlay--footnote'><sup>1</sup> <a target='_blank'
-                        href='http://apps2.eere.energy.gov/wind/windexchange/windmaps/offshore.asp'>U.S. Department of Energy offshore wind potential</a><br>
-            <sup>2</sup> <a target='_blank' href='http://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3'>U.S. Energy Information Administration FAQ</a></div>"
+                            modal-title='{{EMConf.name}}: Potential Houses Supported'
+                            modal-text= {{EMConf.modaltext2}}
 
             ></info-directive>
 
@@ -116,10 +111,12 @@
     </div>
     <div class="highcharts-windchart" ng-if="EMvm.AOI.EMWindResourceClassification.length">
         <highchart id="container" config="EMvm.AOI.highchartsNG" class="highcharts-windchart--consolidate"></highchart>
+        <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
+        </div>
     </div>
 
 
-    <br>
+
 
 
 </div>

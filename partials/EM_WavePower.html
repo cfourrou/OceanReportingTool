@@ -1,22 +1,14 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Wave Power</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button " modal-template="ModalTemplate.html"
-                            alttext="Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter."
+                            alttext={{EMConf.alttext}}
                             message="message"
                             modal-img="img/info.svg"
-                            modal-title="Wave Power"
-                            modal-text="Wave Power is a renewable resource that captures the energy stored in wave height to produce
-                        electricity. To develop this resource a minimum of 10 kW/m must be available to be
-                        considered a potential location for development.
-                        <div class='modal-overlay--footnote'><a target='_blank'
-                                                                href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping
-            and Assessment of the United States Ocean Wave Energy Resource</a></div>
-        <div class='modal-overlay--footnote'><a target='_blank' href='http://www.aquagen.com.au/market'>AquaGen
-            Technologies: Why Wave Energy?</a>
-        </div>"
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
             ></info-directive>
 
         </div>
@@ -28,6 +20,8 @@
         </div>
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
+    </div>
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="power-graphic">
         <div class="power-chart ">
@@ -132,6 +126,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>
 

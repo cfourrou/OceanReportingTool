@@ -1,20 +1,20 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Shipping Lanes</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of shipping lanes within 1 mile of the selected area and a list of the type of shipping lane represented."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Shipping Lanes"
-                            modal-text="Shipping zones delineate activities and regulations for marine vessel traffic. The presence
-                        of shipping lanes or precautionary areas may influence the kind of work that may be
-                        conducted within the delineated area."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
         </div>
 
+    </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
         <div class="infographic-list infographic-list--pad">
@@ -26,5 +26,7 @@
         <div class="infographic-list infographic-list--pad" ng-repeat="x in TIvm.AOI.TIShipping">
             {{x.THEMELAYER}} - {{x.THEMELAYER_CNT}}
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>
 </div>

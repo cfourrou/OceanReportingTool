@@ -1,0 +1,32 @@
+<div class="infographic-box infographic-box--tiny" tabindex="0">
+    <div class="infographic-title">
+        <div class="infographic-text">{{CEConf.name}}</div>
+        <!-- iButton start-->
+        <div class="iModal">
+            <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
+                            alttext={{CEConf.alttext}}
+                            modal-img="img/info.svg"
+                            modal-title={{CEConf.name}}
+                            modal-text={{CEConf.modaltext}}
+            >
+            </info-directive>
+
+        </div>
+        <!-- iButton end-->
+    </div>
+    <div>
+        <div class="infographic-narrative infographic-narrative--left" bind-html-compile="CEConf.narrativetext">
+        </div>
+        <div class="infographic-swatch infographic-swatch--small">
+            <div class="swatch-img"><img src="img/area-polygon-01.svg"></div>
+            <div class="swatch-dataarea swatch-dataarea--small">
+                <div><b>mi<sup>2</sup></b> {{AOIvm.AOI.CEAreaOfPoly[0].Area_mi2.toLocaleString()}}</div>
+                <div><b>nm<sup>2</sup></b> {{AOIvm.AOI.CEAreaOfPoly[0].Area_nm2.toLocaleString()}}</div>
+                <div><b>km<sup>2</sup></b> {{AOIvm.AOI.CEAreaOfPoly[0].Area_km2.toLocaleString()}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="CEConf.ruletext">
+    </div>
+
+</div>

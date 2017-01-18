@@ -1,17 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Fishing Economic Value 2007-2012</div>
+        <div class="infographic-text">{{ECConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists the minimum and maximum pixel value within the selected area of fishing economic value and a total value for the whole area."
+                            alttext={{ECConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Fishing Economic Value 2007-2012"
-                            modal-text=" Fishing Revenue is a summation of all the state revenues by all gear types and all species.
-                        The value is in US dollars for 2012 representing the sum of the mean values for all six
-                        years of the analysis. This is a single data set from a larger study. The full study is
-                        titled &quot; Socio-Economic Impact of Outer Continental Shelf Wind Energy Development on Fishing
-                            in the U.S. Atlantic&quot;."
+                            modal-title={{ECConf.name}}
+                            modal-text={{ECConf.modaltext}}
 
             ></info-directive>
 
@@ -20,6 +16,8 @@
         <!-- iButton end-->
 
 
+    </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="ECConf.narrativetext">
     </div>
     <div class="infographic-dataarea">
 
@@ -36,6 +34,7 @@
             <span ng-hide="ECvm.AOI.ECFishRevenue.length">No Data</span>
         </div>
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="ECConf.ruletext">
+    </div>
 </div>
 

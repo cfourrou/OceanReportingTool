@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title infographic-title--0height">
-        <div class="infographic-text">Right Whale Restricted Areas</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of right whale restricted areas and the percentage of the selected area that it overlaps is reported in a graphic outline of a right whale."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Right Whale Restricted Areas"
-                            modal-text="Along certain zones of the East Coast of the United States, ships are required to reduce
-                        speeds to 10 knots or less over ground during seasonal periods within designated endangered
-                        species areas, such as the North Atlantic Right Whales."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
@@ -17,18 +15,34 @@
 
 
     </div>
-    <div>
-        <div class="infographic-list infographic-list--pad">
-            <span class="infographic-twosizeline--large"><ng-hide ng-hide="TIvm.AOI.TIRightWhale[0].TOTAL_CNT>=0">0
-            </ng-hide>{{TIvm.AOI.TIRightWhale[0].TOTAL_CNT}}</span><span
-                class="infographic-twosizeline--small"> Overlaps</span>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="TIConf.narrativetext">
+    </div>
+    <div class="infographic-swatch infographic-swatch--small">
+
+            <div class="whale">
+                <div ng-if="TIvm.AOI.TIRightWhale[0].PERC_COVER>0">{{TIvm.AOI.TIRightWhale[0].PERC_COVER.toFixed(2)}}%
+                </div>
+            </div>
+
+        <div class="swatch-dataarea swatch-dataarea--small">
 
         </div>
-        <div class="whale">
-            <div ng-if="TIvm.AOI.TIRightWhale[0].PERC_COVER>0">{{TIvm.AOI.TIRightWhale[0].PERC_COVER.toFixed(2)}}%</div>
-        </div>
-        <!--<div class="GreyText12 float-left padLeft15 w100" ng-repeat="x in TIvm.AOI.TISubmarine">
-            {{x.Owner}} - {{x.STATUS}}
-        </div>-->
+
+    </div>
+
+    <div class="infographic-dataarea">
+    <span class="infographic-twosizeline--large"><ng-hide ng-hide="TIvm.AOI.TIRightWhale[0].TOTAL_CNT>=0">0
+            </ng-hide>{{TIvm.AOI.TIRightWhale[0].TOTAL_CNT}}</span><span
+            class="infographic-twosizeline--small"> Overlaps</span>
+
+
+    </div>
+
+
+    <!--<div class="GreyText12 float-left padLeft15 w100" ng-repeat="x in TIvm.AOI.TISubmarine">
+        {{x.Owner}} - {{x.STATUS}}
+    </div>-->
+
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>
 </div>

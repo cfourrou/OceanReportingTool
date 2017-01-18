@@ -24505,7 +24505,6 @@ angular.module('ortApp.services', [])
                             AOI.EMBeachDist_Mi[AOI.EMBeachDist_Mi.length] = (myBeachProjects.Dist_Mi || 0);
                         });
                     }
-                    console.log(AOI.EMBeachDist_Mi);
 
                     AOI.loadWindChart();
                     AOI.loadStateChart();
@@ -24573,6 +24572,7 @@ angular.module('ortApp.services', [])
                         AOI.TISubmarineIsVisible = false;
                         AOI.TIDangerZonesIsVisible = false;
                         AOI.CEPlaceLayerIsVisible = false;
+                        AOI.CETribalLayerIsVisible = false;
                         AOI.TIVesselLayerIsVisible = false;
                         AOI.TIPrincipalPortsIsVisible = false;
                         AOI.NRCNearbyLayerIsVisible = false;
@@ -25703,9 +25703,9 @@ function SearchCtrl(AOI) {
 
 
 angular.module('ortApp.controllers', ["pageslide-directive"])
-    .controller('ModalController', function ($scope, metaurl, custom, close, modaltitle, modaltext) {
+    .controller('ModalController', function ($scope, metaurl, modalcustom, close, modaltitle, modaltext) {
         $scope.metadataurl = metaurl;
-        $scope.modalcustom = custom;
+        $scope.modalcustom = modalcustom;
         $scope.modaltitle = modaltitle;
         $scope.modaltext = modaltext;
         $scope.close = function (result) {
@@ -25766,6 +25766,20 @@ function printDirective($state, $timeout) {
 
 angular.module('ortApp.directives', [])
     .directive("ngPrint", ['$state', '$timeout', printDirective])
+    .directive('bindHtmlCompile', ['$compile', function ($compile) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                scope.$watch(function () {
+                    return scope.$eval(attrs.bindHtmlCompile);
+                }, function (value) {
+                    element.html(value);
+                    $compile(element.contents())(scope);
+                });
+            }
+        };
+    }])
+
     .directive('exposeSize', function($window) {
         return function($scope) {
 
@@ -25809,7 +25823,7 @@ angular.module('ortApp.directives', [])
                         inputs: {
                             metaurl: $scope.metadataUrl,
                             myvarData: $scope.varData,
-                            custom: $scope.modalCustom,
+                            modalcustom: $scope.modalCustom,
                             modaltext: $scope.modalText,
                             modaltitle: $scope.modalTitle
                         }

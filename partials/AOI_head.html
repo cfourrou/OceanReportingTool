@@ -1,10 +1,10 @@
 <div class="AOIhead">
     <div class="AOIhead-name" tabindex="0">{{vm.AOI.name.toUpperCase()}}</div>
     <div class="AOIhead-row">
-        <div class="AOIhead-button" title="Print" role="button"><a ui-sref="print" href=""><img
+        <div class="AOIhead-button" title="Print" role="button"><a  ui-sref="print" href=""><img
                 src="img/Printer.svg"
                 alt=""></a></div>
-        <div class="AOIhead-button" title="Share" role="button">
+        <div class="AOIhead-button" title="Share" role="button" >
 
             <info-directive modal-template="ModalTemplate.html"
                             modal-title="Share Report"
@@ -16,7 +16,8 @@
                     <input type='text' value='{{vm.AOI.ShowURL()}}' class='share-link'>"
             ></info-directive>
         </div>
-        <div class="AOIhead-button" title="Metadata" role="button" ng-click="vm.menuButtonActivate('meta')"><a
+        <div class="AOIhead-button" title="Metadata" role="button" tabindex="-1" ng-click="vm.menuButtonActivate('meta')"><a
+
                 ui-sref="meta" href=""><img
                 src="img/MetadataIcon.svg"
                 alt=""></a></div>

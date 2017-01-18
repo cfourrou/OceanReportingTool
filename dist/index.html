@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?21973d5bcf315a29">
+    <link rel="stylesheet" href="css/ort.min.css?480f774507c45ccc">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -168,7 +168,7 @@
                        ng-include="'img/imodal-window-icons-02.svg'">
                     </a>
                 </div>
-                <div class="modal-text" tabindex="0" ng-bind-html="modaltext | unsafe"></div>
+                <div class="modal-text" tabindex="0" bind-html-compile="modaltext"></div>
             </div>
             <div class="modal-fade" ng-click="close('Cancel')"></div>
         </div>
@@ -271,7 +271,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?10c35ab041267a88"></script>
+<script src="js/ort.js?f2b59d10b7f926f3"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

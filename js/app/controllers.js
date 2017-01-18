@@ -399,9 +399,9 @@ function SearchCtrl(AOI) {
 
 
 angular.module('ortApp.controllers', ["pageslide-directive"])
-    .controller('ModalController', function ($scope, metaurl, custom, close, modaltitle, modaltext) {
+    .controller('ModalController', function ($scope, metaurl, modalcustom, close, modaltitle, modaltext) {
         $scope.metadataurl = metaurl;
-        $scope.modalcustom = custom;
+        $scope.modalcustom = modalcustom;
         $scope.modaltitle = modaltitle;
         $scope.modaltext = modaltext;
         $scope.close = function (result) {

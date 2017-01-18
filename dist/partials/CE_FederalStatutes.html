@@ -1,22 +1,21 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Applicable Federal Geo Regulations</div>
+        <div class="infographic-text">{{CEConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists the applicable federal geo regulations that are effective in the selected area with hyperlinks for additional information."
+                            alttext={{CEConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Applicable Federal Geo Regulations"
-                            modal-text="Federal Geo Regulations listed fall within and apply to the defined area. Links will take
-                        you to additional information regarding each specific regulation or look it up here:
-                        <a href='https://coast.noaa.gov/oceanlawsearch/#/search' target='_blank'>Ocean Law
-            Search</a>"
+                            modal-title={{CEConf.name}}
+                            modal-text={{CEConf.modaltext}}
 
             ></info-directive>
 
 
         </div>
         <!-- iButton end-->
+    </div>
+    <div class="infographic-narrative" bind-html-compile="CEConf.narrativetext">
     </div>
     <div class="infographic-dataarea">
         <div class="infographic-dataarea--split">
@@ -32,5 +31,7 @@
                 <a ng-if="$even" target="_blank" href="{{x.DescriptionURL}}"> {{x.FederalGeoRegulationsName}} </a>
             </div>
         </div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="CEConf.ruletext">
     </div>
 </div>

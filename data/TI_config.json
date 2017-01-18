@@ -1,12 +1,92 @@
 [
-    {"filename":"partials/TI_SubmarineCables.html", "priority":46 },
-    {"filename":"partials/smallMap.html", "priority":47},
-    {"filename":"partials/TI_CoastalMaintainedChannels.html", "priority":48},
-    {"filename":"partials/TI_DangerZones.html","priority":51},
-    {"filename":"partials/TI_ShippingLanes.html","priority":49},
-    {"filename":"partials/TI_VesselCount.html","priority":50},
-    {"filename":"partials/TI_RightWhale.html","priority":52},
-    {"filename":"partials/TI_PrincipalPorts.html","priority":53},
-    {"filename":"partials/TI_PilotBoardingAreas.html","priority":54},
-    {"filename":"partials/TI_Anchorages.html","priority":55}
+  {
+    "name": "Submarine Cables",
+    "filename": "partials/TI_SubmarineCables.html",
+    "priority": 9,
+    "alttext":"Element contains a count of the submarine cables within the selected area and a list of who owns them and their current service state.",
+    "modaltext": "This data set may not represent all the cables in the area of interest.<br>Source: NOAA Charted Submarine cables in the United States as of December 2012, NOAA's Ocean Service, Office for Coastal Management, 2016",
+    "narrativetext": "Submarine cables represent cables and information gathered from North American Submarine Cable Association (NASCA) and digitized National Oceanic Atmospheric Administration (NOAA) nautical charts. Submarine cables, carry the vast majority of international communications that serve private, commercial, government and the financial sectors. Cables within an area of interest may require avoidance while anchoring or during any construction project.",
+    "ruletext": "Showing submarine cables within 1 nautical mile of the report area"
+  },
+  {
+    "name": "",
+    "filename": "partials/smallMap.html",
+    "priority": 2,
+    "alttext":"",
+    "modaltext": "",
+    "narrativetext": "",
+    "ruletext": ""
+  },
+  {
+    "name": "Coastal Maintained Channels",
+    "filename": "partials/TI_CoastalMaintainedChannels.html",
+    "priority": 6,
+    "alttext":"Element contains a count of maintained channels within 1 mile of the selected area.",
+    "modaltext": "Source: Coastal Maintained Channels in US waters, NOAA's Ocean Service, Office of Coast Survey, US Army Corps of Engineers, and US Coast Guard, 2015",
+    "narrativetext": "Coastal Maintained Channels are maintained and surveyed by the U.S. Army Corps of Engineers (USACE). These channels are necessary transportation systems that serve economic and national security interests. The possibility of silting is always present. Local authorities should be consulted for the controlling depth.",
+    "ruletext": "Showing maintained channels within 1 nautical mile of the report area and their minimum depths"
+  },
+  {
+    "name": "Danger Zones and Restricted Areas",
+    "filename": "partials/TI_DangerZones.html",
+    "priority": 10,
+    "alttext":"Element contains a count of danger zones within 1 mile of the selected area and a list of who maintains each area and what percentage of the selected area it covers.",
+    "modaltext": "Source: Danger Zones and Restricted Areas in the United States as of July 2015, NOAA's Ocean Service, Office for Coastal Management, 2016",
+    "narrativetext": "Danger Zones and Restricted Areas are water areas used by the government, normally the armed forces, for hazardous operations. The danger zones may be closed to the public on a full-time or intermittent basis. Restricted areas generally prohibit or limit public access to the area to provide security for Government property and/or protection to the public from the risks of damage or injury arising from the Government's use of that area.",
+    "ruletext": "Showing number of areas and their percent overlap with the report area"
+  },
+  {
+    "name": "Shipping Lanes",
+    "filename": "partials/TI_ShippingLanes.html",
+    "priority": 3,
+    "alttext":"Element contains a count of shipping lanes within 1 mile of the selected area and a list of the type of shipping lane represented.",
+    "modaltext": "Source: Shipping Fairways, Lanes, and Zones for US waters, NOAA's Ocean Service, Office of Coast Survey, 2015",
+    "narrativetext": "Shipping zones delineate activities and regulations for marine vessel traffic. The presence of shipping lanes or precautionary areas may influence the kind of work that may be conducted within the delineated area. To view this layer turn on the Nautical Chart within the basemap options.",
+    "ruletext": "Showing number of shipping lanes within 1 nautical mile of the report area"
+  },
+  {
+    "name": "Vessel Count",
+    "filename": "partials/TI_VesselCount.html",
+    "priority": 1,
+    "alttext":"Element displays a color ramp representing the number of vessels in a raster pixel. The average value of the selected area is indicated with a tugboat icon.",
+    "modaltext": "Source: 2011 Vessel Density, US Coast Guard and NOAA's Ocean Service, Office for Coastal Management, 2011",
+    "narrativetext": "This data represents the average number of vessels over 300 gross tons traversing the area over the year based on 2011 Vessel Traffic (AIS) layer created by the Bureau of Energy Management (BOEM). Heavy vessel traffic may interfere with planned activities.",
+    "ruletext": ""
+  },
+  {
+    "name": "Right Whale Restricted Areas",
+    "filename": "partials/TI_RightWhale.html",
+    "priority": 4,
+    "alttext":"Element contains a count of right whale restricted areas and the percentage of the selected area that it overlaps is reported in a graphic outline of a right whale.",
+    "modaltext": "Source: Seasonal Management Areas for North Atlantic Right Whales, NOAA's National Marine Fisheries Service, 2008",
+    "narrativetext": "Along certain zones of the East Coast of the United States, ships are required to reduce speeds to 10 knots or less over ground during seasonal periods within designated endangered species areas, such as the North Atlantic Right Whales.",
+    "ruletext": "Showing number of areas that overlap with the report area"
+  },
+  {
+    "name": "Principle Ports",
+    "filename": "partials/TI_PrincipalPorts.html",
+    "priority": 5,
+    "alttext":"Element lists the 2 closest ports to the selected area with tonnage. Distance to the selected area is represented by a line graph with gray anchors representing each port.",
+    "modaltext": "Source: Principal Ports for the United States of America, US Army Corps of Engineers and NOAA's Ocean Service, Office for Coastal Management, 2013",
+    "narrativetext": "Southeast ports represent 13 of the top 150 ports for the nation based on total tonnage for the year. Certain offshore projects may require a large port to conduct transactions.",
+    "ruletext": "Showing 2 closest ports to the reported area."
+  },
+  {
+    "name": "Pilot Boarding Areas",
+    "filename": "partials/TI_PilotBoardingAreas.html",
+    "priority": 8,
+    "alttext":"Element contains a count of pilot boarding areas within 1 mile of the selected area.",
+    "modaltext": "Source: Pilot Boarding Areas, NOAA's Ocean Service, Office for Coastal Management, 2014",
+    "narrativetext": "These areas are locations where local pilots can board foreign vessels or vessels registered in foreign trade to navigate them to a destination port safely. Restrictions on alternative uses of these areas should be investigated.",
+    "ruletext": "Showing pilot boarding areas within 1 nautical mile of the report area"
+  },
+  {
+    "name": "Designated Anchorage Areas",
+    "filename": "partials/TI_Anchorages.html",
+    "priority": 7,
+    "alttext":"Element contains a count of anchorages within 1 mile of the selected area and lists the type and percent of the area that it covers.",
+    "modaltext": "Source: Anchorage Areas, NOAA's Ocean Service, Office for Coastal Management, 2016",
+    "narrativetext": "Although many larger vessels, such as those used for wind farm construction, might not need to anchor, knowing the locations of anchorage areas is still wise. These areas are often used by larger vessels when they need to find safer areas away from shipping lanes or coastal areas during extreme weather. Anchorage areas are also often used when vessels need to wait for a pilot boat or docking space in a port.",
+    "ruletext": "Showing designated anchorages within 1 nautical mile of the report area"
+  }
 ]

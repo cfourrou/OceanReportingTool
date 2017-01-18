@@ -1,20 +1,21 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Coastal Maintained Channels</div>
+        <div class="infographic-text">{{TIConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of maintained channels within 1 mile of the selected area."
+                            alttext={{TIConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Coastal Maintained Channels"
-                            modal-text="Channels and waterways maintained and surveyed by the U.S. Army Corps of Engineers (USACE)
-                        are necessary transportation systems that serve economic and national security interests."
+                            modal-title={{TIConf.name}}
+                            modal-text={{TIConf.modaltext}}
             ></info-directive>
 
 
         </div>
 
 
+    </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
         <div class="infographic-dataarea">
@@ -24,5 +25,7 @@
 
         </div>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>
 </div>

@@ -1,22 +1,14 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Tidal Power</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button " modal-template="ModalTemplate.html"
-                            alttext="Element describes the suitablility of the selected area for tidal current power generation. Includes a bar graph representing the average current speed in meters per second."
+                            alttext={{EMConf.alttext}}
                             message="message"
                             modal-img="img/info.svg"
-                            modal-title="Tidal Power"
-                            modal-text=" Tidal streams are high velocity currents created by the ebb and flow of the tides through
-                        narrow channels. Tidal power is a predictable, concentrated, renewable energy source. To be
-                        considered a Tidal Power hotspot an area must meet at a minimum the three criteria outlined
-                        here:
-                        <div class='modal-overlay--footnote'><a target='_blank'
-                                                                href='http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf'>Assessment
-            of Energy Production
-            Potential from Tidal Streams in the
-            United States</a></div>"
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
             ></info-directive>
 
         </div>
@@ -27,6 +19,8 @@
         </div>
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
+    </div>
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="power-graphic">
         <div class="power-chart ">
@@ -84,7 +78,8 @@
             </div>
         </div>
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
+    </div>
 </div>
 
 

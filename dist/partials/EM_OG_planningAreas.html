@@ -1,19 +1,14 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Oil and Gas Planning Areas</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
 
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists the planning areas that the selected area falls in."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Oil and Gas Planning Areas"
-                            modal-text="Planning areas are administrative boundaries used to divide the Outer Continental Shelf into
-                        smaller more manageable regions for the purpose of planning and defining areas of potential
-                        lease sales within the <a
-                            href='http://www.boem.gov/Five-Year-Program-2017-2022/#Proposed Program'
-            target='_blank'>Five-Year Outer
-            Continental Shelf Oil and Gas Leasing Program.</a>"
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             ></info-directive>
 
@@ -23,7 +18,9 @@
 
         <!-- iButton end-->
     </div>
-    <div class="infographic-dataarea--small">
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="EMConf.narrativetext">
+    </div>
+    <div class="infographic-dataarea">
         <div class="infographic-twosizeline--small">This area falls within the</div>
         <div class="infographic-twosizeline--large"
              ng-repeat="gpplan in EMvm.AOI.OGPlanA | unique: 'Region' | orderBy : 'Region'">
@@ -33,6 +30,7 @@
 
 
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
+    </div>
 
 </div>

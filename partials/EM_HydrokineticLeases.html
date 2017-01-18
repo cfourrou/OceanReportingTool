@@ -1,15 +1,13 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Hydrokinetic Leases</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the hydrokinetic leases within 3 miles of the selected area. Symbology is a gold outline of a bouy."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Hydrokinetic Leases"
-                            modal-text="Hydrokinetic leases are granted by BOEM to grow offshore renewable energy through renewable
-                        energy initiatives. Currently these are research leases to test ocean energy equipment in
-                        Federal waters, not commercial leases."
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             ></info-directive>
 
@@ -25,12 +23,13 @@
         <div class="layertoggle-text" ng-hide="EMvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="EMConf.narrativetext">
+    </div>
 
-
-    <div class="infographic-swatch">
+    <div class="infographic-swatch infographic-swatch--small">
         <div class="swatch-img"><img src="img/HydrokineticLeasesGraphic.svg"></div>
-        <div class="swatch-dataarea swatch-dataarea--smalltext">
-            <span>Within 2 miles of this area</span>
+        <div class="swatch-dataarea swatch-dataarea--small">
+
         </div>
     </div>
     <div class="infographic-dataarea">
@@ -50,5 +49,6 @@
             <span class="infographic-twosizeline--small">projects</span>
         </span>
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
+    </div>
 </div>

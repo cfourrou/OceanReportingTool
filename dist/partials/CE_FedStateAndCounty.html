@@ -1,22 +1,22 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">State and County</div>
+        <div class="infographic-text">{{CEConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Graphic is a pie graph showing the proportion of the selected area that falls in state and/or federal jurisdiction. Lists which states and which counties it overlaps."
-                            modal-img="img/info.svg"
-                            modal-title="State and County"
-                            modal-text="Listed are adjacent states and counties. Pie chart represents the portion of the defined
-                        area that falls in either State or Federal waters."
+                            alttext={{CEConf.alttext}}
+                                    modal-img="img/info.svg"
+                            modal-title={{CEConf.name}}
+                            modal-text={{CEConf.modaltext}}
             >
 
             </info-directive>
 
 
-
         </div>
         <!-- iButton end-->
+    </div>
+    <div class="infographic-narrative" bind-html-compile="CEConf.narrativetext">
     </div>
     <div class="infographic-dataarea" ng-show="AOIvm.AOI.CEFederalTotal+AOIvm.AOI.CEStateTotal===0">Area is outside of
         State and Federal jurisdiction
@@ -39,8 +39,7 @@
         <highchart id="stateAndFedContainer" config="AOIvm.AOI.highchartsNGState"
                    class="highcharts-stateandfed"></highchart>
     </div>
-    <div>
-
+    <div class="infographic-rulelogic" bind-html-compile="CEConf.ruletext">
     </div>
 </div>
 

@@ -1,17 +1,14 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Oil and Gas Active Leases</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
 
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes."
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Oil and Gas Active Leases"
-                            modal-text="Oil and Gas leases are granted by BOEM to the highest bidder for the exploration,
-                        development and production of oil and gas contained within the Outer Continental Shelf.
-                        Under a lease, a company has the right to apply for permits to explore and develop the
-                        mineral resources within that area."
+                            modal-title={{EMConf.name}}
+                            modal-text={{EMConf.modaltext}}
 
             ></info-directive>
 
@@ -19,6 +16,8 @@
         </div>
     </div>
     <!-- iButton end-->
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
+    </div>
     <span class="infographic-twosizeline padbottom10">
         <span class="infographic-twosizeline--large ">{{EMvm.AOI.OGLease[0].TOTAL_CNT}}</span>
         <span class="infographic-twosizeline--small ">Oil and Gas leases within 2 miles of this area</span>
@@ -42,5 +41,7 @@
             </tr>
         </table>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>

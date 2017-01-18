@@ -1,20 +1,165 @@
 [
-  { "filename":"partials/EM_WindPlanningAreas.html", "priority":4 },
-  { "filename":"partials/EM_WindResourcePotential.html", "priority":1},
-  { "filename":"partials/smallMap.html", "priority":2},
-  { "filename":"partials/EM_BeachNourishment.html", "priority":11},
-  { "filename":"partials/EM_RenewableEnergyLeases.html", "priority":3},
-  { "filename":"partials/EM_MarineMineralsLeases.html", "priority":9 },
-  { "filename":"partials/EM_SedimentResources.html", "priority":10 },
-  { "filename":"partials/EM_HydrokineticLeases.html", "priority":13 },
-  { "filename":"partials/EM_SurficialSediment.html", "priority":8 },
-  { "filename":"partials/EM_WavePower.html", "priority":5 },
-  { "filename":"partials/EM_CurrentPower.html", "priority":7 },
-  { "filename":"partials/EM_TidalPower.html", "priority":6 },
-  { "filename":"partials/EM_OceanDisposalSites.html", "priority":12 },
-  { "filename":"partials/EM_OG_planningAreas.html", "priority":16 },
-  { "filename":"partials/EM_OG_activeLeases.html", "priority":0 },
-  { "filename":"partials/EM_OG_wells.html", "priority":0 },
-  { "filename":"partials/EM_OG_resourcePotential.html", "priority":15 },
-  { "filename":"partials/EM_OG_CoastalEnergyFacilities.html", "priority":14 }
+  {
+    "name": "Wind Planning Areas",
+    "filename": "partials/EM_WindPlanningAreas.html",
+    "priority": 3,
+    "alttext":"Element contains a count of the number of wind planning areas that intersect the selected area and calculates the percentage of the selected area that the WPAs cover and how many OCS blocks that includes. Includes hyperlinks for more information on the WPAs",
+    "modaltext": "Source: BOEM Wind Planning Areas, Bureau of Ocean and Energy Management, Office of Renewable Energy, 2011",
+    "narrativetext": "Wind Planning Areas delineate an area that is being considered for Wind Power Development. Wind Planning Areas can represent up to six different types of announcements within the US Federal Register (FR) that can be used for area consideration for potential wind leases.",
+    "ruletext": "Showing the number of WPAs that overlap the report area"
+  },
+  {
+    "name": "Wind Resource Potential",
+    "filename": "partials/EM_WindResourcePotential.html",
+    "priority": 1,
+    "alttext":"Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy.",
+    "modaltext": "The potential megawatts (MW) of rated capacity that could be installed in this area, assuming 5 MW of installed capacity per square kilometer of water is: {{modalcustom}} MW. Source: atlantic_coast_90mwindspeed_off, National Renewable Energy Laboratory, 2009",
+    "modaltext2":"Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual household energy use of 2kW <sup>2</sup>.<br><div class='modal-overlay--footnote'><sup>1</sup> <a target='_blank' href='http://apps2.eere.energy.gov/wind/windexchange/windmaps/offshore.asp'>U.S. Department of Energy offshore wind potential</a><br> <sup>2</sup> <a target='_blank' href='http://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3'>U.S. Energy Information Administration FAQ</a></div>",
+    "narrativetext": "Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m height are generally considered to have a wind resource suitable for offshore development.",
+    "ruletext": "Potential houses calculation assume report area is developed to maximum capacity"
+  },
+  {
+    "name": "",
+    "filename": "partials/smallMap.html",
+    "priority": 2,
+    "alttext":"",
+    "modaltext": "",
+    "narrativetext": "",
+    "ruletext": ""
+  },
+  {
+    "name": "Beach Nourishment Projects",
+    "filename": "partials/EM_BeachNourishment.html",
+    "priority": 11,
+    "alttext":"Graphic of a bar graph showing available beach renourishment projects within 15 miles of the  selected area and how much sand was placed for each project. Bars are colored by year.",
+    "modaltext": "This data is currently unavailable for Virginia. Data was compiled from several sources, cost information was not available for all beach projects. Project locations are approximations only.<br><a target='_blank' href='https://pubs.usgs.gov/of/2005/1326/gis-data.html'>The National Assessment of Shoreline Change</a> <br><a target='_blank' href='http://beachnourishment.wcu.edu/oneState?state=FL'> Beach Nourishment Viewer </a> <br><a target='_blank' href='http://www.scdhec.gov/HomeAndEnvironment/maps/GIS/GISDataClearinghouse/metadata/RENOURISH.htm'> S.C. Department of Health and Environmental Control, Ocean and Coastal Resource Management </a>",
+    "narrativetext": "Erosion of the Nation's beaches, dunes, barrier islands, and coastal wetlands is a serious challenge that affects natural resources, energy, defense, and public infrastructure as well as tourism, which is important to state and local economies.  By replenishing beaches with sand from state and Federal waters, the Nation's coastlines receive crucial resources for the maintenance of a healthy coastal ecosystem.",
+    "ruletext": "Showing beach nourishment projects within 15 nautical miles of the report area"
+  },
+  {
+    "name": "Offshore Wind Energy Leases",
+    "filename": "partials/EM_RenewableEnergyLeases.html",
+    "priority": 4,
+    "alttext":"Element contains a count of the number of renewable energy leases within 2 miles of the selected area and calculates the percentage of the selected area that those elases cover and how many OCS blocks that includes.",
+    "modaltext": "Source: Outer Continental Shelf Active Renewable Energy Leases, Bureau of Ocean and Energy Management, Office of Renewable Energy, 2015",
+    "narrativetext": "Areas within the US Outer Continental Shelf where BOEM has executed a lease for development of offshore wind power.",
+    "ruletext": "Showing the number of leases within 2 nautical miles of the report area"
+  },
+  {
+    "name": "Marine Minerals Leases",
+    "filename": "partials/EM_MarineMineralsLeases.html",
+    "priority": 10,
+    "alttext":"Element contains a count of completed leases within 2 miles of the selected area. Symbology is a hollow polygon with a purple outline.",
+    "modaltext": "Source: Federal OCS Sand and Gravel Borrow (Lease Areas), BOEM Marine Minerals Program, 2016",
+    "narrativetext": "Marine Mineral Leases (Sand and Gravel Lease Areas) define areas where entities that have entered into a Negotiated Non-Competitive Lease or Memorandum of Agreement with BOEM can dredge sand, gravel or shell resources from the outer Continental Shelf for coastal restoration or beach renourishment.",
+    "ruletext": "Showing {{EMvm.AOI.EMMarineMineralsLeases.length}} leases within 2 nautical miles of the report area"
+  },
+  {
+    "name": "Sediment Resources",
+    "filename": "partials/EM_SedimentResources.html",
+    "priority": 9,
+    "alttext":"Element is currently empty, the data for this element is not yet available for this tool",
+    "modaltext": "This data is currently unavailable. New data will be added as it becomes available.Sand Resources are areas with sediment potentially available for beach renourishment projects. Each resource is attributed with a level of confidence based on the results of reconnaissance level studies. The more available environmental data, the more confidence there is in the presence of restoration quality sand.<div class=''><dt>Possible</dt><dd>features identified as a result of bathymetry delineation of a supposed shoal. No additional physical data exists to support these areas as a resource</dd><dt>Potential</dt><dd>resource areas hypothesized to exist on the basis of indirect evidence such as acoustic subsurface profile (seismic) character or sidescan sonar character. The presence of sand through direct sampling methods has not yet been confirmed. </dd><dt>Probable</dt><dd>resource areas whose existence has been established through the use of vibracores, push cores and/or grab samples. Thickness and/or lateral extent has not been fully determined. These are reserves that could be viable if additional coring is done.</dd><dt>Proven</dt><dd>resource areas whose thickness and lateral extent have been fully determined through the use of vibracore and/or push cores. Generally reserved for shoals that have already been authorized as part of a lease.</dd><dt>Unusable</dt><dd>resource areas that as a result of additional surveys, prior dredging activity, or infrastructure development are not (or no longer) suitable for future dredging.</dd></dl><div>(adapted from Freedenberg and Hoenstine, 1999)</div></div>",
+    "narrativetext": "Coastal restoration, beach nourishment, and levee reconstruction are crucial to mitigate future coastal erosion, land loss, flooding, and storm damage. Success of that long-term effort depends on locating and securing significant quantities of OCS sediment resources compatible with the target environments being restored. BOEM is responsible for managing sand leasing within federal offshore waters only. Sand leases and resources within State waters are not available through this data layer.",
+    "ruletext": "Showing the number of sediment resources that overlap the report area"
+  },
+  {
+    "name": "Hydrokinetic Leases",
+    "filename": "partials/EM_HydrokineticLeases.html",
+    "priority": 13,
+    "alttext":"Element contains a count of the hydrokinetic leases within 3 miles of the selected area. Symbology is a gold outline of a bouy.",
+    "modaltext": "Source: Bureau of Ocean and Energy Management, Office of Renewable Energy, 2014",
+    "narrativetext": "Leased areas for development of wave, tidal or current power technologies. Hydrokinetic leases are granted by BOEM or States to encourage offshore renewable energy through renewable energy initiatives.",
+    "ruletext": "Showing the number of leases within 2 nautical miles of the report area"
+  },
+  {
+    "name":"Surficial Sediment Classification",
+    "filename": "partials/EM_SurficialSediment.html",
+    "priority": 8,
+    "alttext":"Graphic of a bar chart that lists the type of sediment samples found in the selected area and how many of each type are present.",
+    "modaltext": "Represents a count and description of selected surface samples within the report area. Summary of these samples does not imply a homogenous sediment type over the whole area. Classification is based on Shepard’s pyramid. Source: USGS East Coast Sediment Texture Database, US Gelogical Survey, 2014",
+    "narrativetext": "Geologists use information on sediment grain size to study trends in surface processes related to the dynamic conditions of transportation and deposition, ecologists use it when studying benthic habitats, engineers use it to study permeability and stability under load, geochemists use it to study kinetic reactions and the affinities of fine-grained particles and contaminants, and hydrologists use it when studying the movement of subsurface fluids (Syvitski, 1991).",
+    "ruletext": "Showing  {{EMvm.AOI.EMSurficialSediment.length}} sediment samples that overlap the report area"
+  },
+  {
+    "name": "Wave Power",
+    "filename": "partials/EM_WavePower.html",
+    "priority": 5,
+    "alttext":"Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter.",
+    "modaltext": "Source: OceanWaveResourcePotential, National Renewable Energy Lab, 2011, <a target='_blank' href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping and Assessment of the United States Ocean Wave Energy Resource</a>Source:<a target='_blank' href='http://www.aquagen.com.au/market'>AquaGen Technologies: Why Wave Energy?</a>",
+    "narrativetext": "Wave Power is a renewable resource that captures the energy stored in the motion of waves through an ever-growing assortment of devices that capture the energy, store, and deliver electricity to a power grid. For development of this resource to be economically viable, a minimum of 10 kW/m must be available to be considered a potential location for development.",
+    "ruletext": "Showing the average wave power (in kW/m) of the report area."
+  },
+  {
+    "name": "Ocean Current Power",
+    "filename": "partials/EM_CurrentPower.html",
+    "priority": 7,
+    "alttext":"Element describes the suitablility of the selected area for ocean current power generation. Includes a bar graph representing the average current speed in meters per second.",
+    "modaltext": "Source: Georgia Institute of Technology, <a target='_blank' href='http://energy.gov/sites/prod/files/2013/12/f5/energy_production_ocean_currents_us_0.pdf'>Assessment of Energy Production Potential from Ocean Currents along the United States Coastline</a>",
+    "narrativetext": "Large scale ocean currents are a renewable source of energy due to their persistence and sustainability as a result of earth's rotation. Extraction of energy from these currents requires a water velocity of a minimum of 1.0 m/s to be considered a potential resource location.",
+    "ruletext": "Showing the average ocean current speed (in m/s) of the report area."
+  },
+  {
+    "name": "Tidal Power",
+    "filename": "partials/EM_TidalPower.html",
+    "priority": 6,
+    "alttext":"Element describes the suitablility of the selected area for tidal current power generation. Includes a bar graph representing the average current speed in meters per second.",
+    "modaltext": "Source: usa_mc_tides, Georgia Tech Research Corporation, 2011, <a target='_blank' href='http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf'>Assessment of Energy Production Potential from Tidal Streams in the United States</a>",
+    "narrativetext": "Tidal power is a predictable, concentrated, renewable energy source. Tidal streams are high velocity currents created by the ebb and flow of the tides through narrow channels. To be considered a Tidal Power hotspot an area must meet at a minimum the three criteria outlined here: Depth > 5 meters Area > 0.5 square kilometers Current Speed > 1 meter per second",
+    "ruletext": "Showing the average tidal current speed (in m/s) of the report area."
+  },
+  {
+    "name": "Ocean Disposal Sites",
+    "filename": "partials/EM_OceanDisposalSites.html",
+    "priority": 12,
+    "alttext":"Element lists a count of each type of Ocean Disposal Site within 10 miles of the selected area. Symbology is a rose colored polygon on the map.",
+    "modaltext": "Please refer to the following for more details and definitions regarding Ocean Disposal Sites:<a target='_blank' href='http://www.epw.senate.gov/mprsa72.pdf'>the Marine Protection, Research, and Sanctuaries Act</a> and <a target='_blank' href='http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&SID=94bc9a5a4a48ef22fc45cf2c912af3e2&mc=true&n=pt40.25.228&r=PART&ty=HTML#se40.25.228_12'> Electronic Code of Federal Regulations</a>",
+    "narrativetext": "Today, the vast majority of material disposed in the ocean is uncontaminated sediment (dredged material) removed from our nation’s waterways to support a network of coastal ports and harbors for commercial, transportation, national defense and recreational purposes. Ocean dumping can only occur with a permit issued by the US Army Corps of Engineers or the Environmental Protection Agency and only in designated disposal sites that meets certain environmental criteria.",
+    "ruletext": "Showing ocean disposal sites within 10 nautical miles of the report area"
+  },
+  {
+    "name": "Oil and Gas Planning Areas",
+    "filename": "partials/EM_OG_planningAreas.html",
+    "priority": 16,
+    "alttext":"Element lists the planning areas that the selected area falls in.",
+    "modaltext": "Source: Bureau of Ocean Energy Management, Mapping and Boundary Branch, 2010",
+    "narrativetext": "Planning areas are administrative boundaries used to divide the Outer Continental Shelf into smaller more manageable regions for the purpose of planning and defining areas of potential lease sales within the BOEM’s Oil and Gas Leasing 5 year Program Plan.",
+    "ruletext": "Showing a list of planning areas the report area falls in or adjoins"
+  },
+  {
+    "name": "",
+    "filename": "partials/EM_OG_activeLeases.html",
+    "priority": 0,
+    "alttext":"",
+    "modaltext": "",
+    "narrativetext": "",
+    "ruletext": ""
+  },
+  {
+    "name": "",
+    "filename": "partials/EM_OG_wells.html",
+    "priority": 0,
+    "alttext":"",
+    "modaltext": "",
+    "narrativetext": "",
+    "ruletext": ""
+  },
+  {
+    "name": "Oil and Gas Resource Potential",
+    "filename": "partials/EM_OG_resourcePotential.html",
+    "priority": 15,
+    "alttext":"Element is a table that list oil reserve plays that overlap the selected area and estimated amounts of oil and gas available in each one.",
+    "modaltext": "The listed values represent the mean expected resource within an entire play, not within this specific report area. For more information on conceptual plays within the Atlantic OCS, follow the link below.<br>Bbl: Billion barrels<br>Tcf: trillion cubic feet<br>BOE: barrels of oil equivalent<br>Source:<a href='http://www.boem.gov/National-Assessment-2016/' target='_blank'> Assessment of Undiscovered Technically Recoverable Oil and Gas Resources of the Nation’s Outer Continental Shelf, 2016</a>",
+    "narrativetext": "Oil and Gas Resource Potential shows the extent of the probable oil and/or gas geologic structures (plays) identified within the US Outer Continental Shelf. Plays are groups of known and/or postulated sub-seafloor hydrocarbon accumulations that share common geologic, geographic, and temporal properties. These plays represent those known within federal waters.  Other plays may exist that could be identified in future seismic survey results.",
+    "ruletext": "Showing {{EMvm.AOI.OGresource.length}} oil and/or gas geologic structures that overlap the report area"
+  },
+  {
+    "name": "Coastal Energy Facilities",
+    "filename": "partials/EM_OG_CoastalEnergyFacilities.html",
+    "priority": 14,
+    "alttext":"Element is a table that lists energy facilities within 20 miles of the selected area and the type, capacity (in megawatts), and distance (in miles) of each one.",
+    "modaltext": "Only facilities adjacent to the coast and Great Lakes are shown. Source: Environmental Protection Agency Emissions & Generation Resource Integrated Database (eGRID). ",
+    "narrativetext": "Coastal Energy Facilities depict the locations of facilities that generate electricity.",
+    "ruletext": "Showing {{EMvm.AOI.EMCoastalEnergyFacilities.length}} coastal energy facilities within 20 miles of the report area"
+  }
 ]

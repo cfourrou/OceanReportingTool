@@ -1,27 +1,27 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Places</div>
+        <div class="infographic-text">{{CEConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element Lists the cities, their population from 2010, and their distance to the selected area that are within 10 miles. Also listed are the three closest Tribal lands within 50 miles."
+                            alttext={{CEConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Places"
-                            modal-text=" These places represent other local entities who may have interest in the ocean activities
-                        occuring in the defined area. Distance is to the closest perimeter of the polygon(s)."
+                            modal-title={{CEConf.name}}
+                            modal-text={{CEConf.modaltext}}
             ></info-directive>
 
         </div>
         <!-- iButton end-->
         <div class="layertoggle-button" ng-hide="AOIvm.AOI.toggleFull===true">
             <div ng-class="AOIvm.AOI.CEPlaceLayerIsVisible ? 'layertoggle-button--on' : 'layertoggle-button--off'"
-                 ng-click="AOIvm.AOI.toggleCEPlaceLayer();AOIvm.AOI.toggleCETribalLayer()"
+                 ng-click="AOIvm.AOI.toggleCEPlaceLayer()"
                  ng-include="'img/switch_off.svg'"></div>
         </div>
         <div class="layertoggle-text" ng-hide="AOIvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
+    <div class="infographic-narrative" bind-html-compile="CEConf.narrativetext">
+    </div>
     <div class="infographic-icon">
         <div class="icon-img">
             <img class="icon-img--fill" src="img/Map_marker.svg">
@@ -53,36 +53,8 @@
         </table>
     </div>
 
-    <div class="infographic-icon">
-        <div class="icon-img">
-            <img class="icon-img--fill" src="img/tribal-lands.svg">
-        </div>
-        <div class="icon-dataarea">&nbsp;Coastal Tribal Lands</div>
+
+    <div class="infographic-rulelogic" bind-html-compile="CEConf.ruletext">
     </div>
-
-    <div class="infographic-dataarea">
-
-        <div ng-hide="AOIvm.AOI.CETribalLands.length">No Tribal Lands were identified within 50 miles of this area</div>
-        <table ng-show="AOIvm.AOI.CETribalLands.length" class="table-tribe">
-
-            <tr>
-                <th>Tribal Lands</th>
-                <th>Distance in Miles</th>
-            </tr>
-
-            <tr ng-repeat="x in AOIvm.AOI.CETribalLands | orderBy : 'Dist_Mi'">
-                <td>
-                    <div>{{x.NAMELSAD}}</div>
-                </td>
-
-                <td>
-                    <div>{{x.Dist_Mi.toFixed(2)}}</div>
-                </td>
-
-
-            </tr>
-        </table>
-    </div>
-
 </div>
 

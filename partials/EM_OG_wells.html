@@ -1,16 +1,14 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Oil and Natural Gas Wells</div>
+        <div class="infographic-text">{{EMConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
 
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext=""
+                            alttext={{EMConf.alttext}}
                             modal-img="img/info.svg"
-            modal-title="Oil and Natural Gas Wells"
-            modal-text="Wells are boreholes drilled into the ocean floor within the Outer Continental Shelf for
-                        purposes of mineral exploration and mining. A database of well boreholes is maintained by
-                        Bureau of Safety and Environmental Enforcement (BSEE)."
+            modal-title={{EMConf.name}}
+            modal-text={{EMConf.modaltext}}
             ></info-directive>
 
 
@@ -18,7 +16,8 @@
         </div>
     </div>
     <!-- iButton end-->
-
+    <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
+    </div>
         <span class="infographic-twosizeline padbottom10">
             <span class="infographic-twosizeline--large ">{{EMvm.AOI.OGWells[0].TOTAL_CNT}}</span>
             <span class="infographic-twosizeline--small ">Oil and Gas Wells within this area</span>
@@ -41,6 +40,8 @@
 
             </tr>
         </table>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>
 

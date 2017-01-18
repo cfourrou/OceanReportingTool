@@ -1,23 +1,22 @@
 <div class="infographic-box infographic-box--medium" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Ocean Job Contributions</div>
+        <div class="infographic-text">{{ECConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains 2 bar graphs, one representing the number of employees per state or county that work in the ocean industry and one representing the number of dollars in both wages and goods and services per state or county."
+                            alttext={{ECConf.alttext}}
                             modal-img="img/info.svg"
-            modal-title="Ocean Job Contributions"
-                            modal-text="Data represents contributions to the GDP based on number of employees, wages earned, and
-                        goods and services provided from the ocean industry. Based on 2013 ENOW data"
+                            modal-title={{ECConf.name}}
+                            modal-text={{ECConf.modaltext}}
 
             ></info-directive>
-
 
 
         </div>
         <!-- iButton end-->
     </div>
-
+    <div class="infographic-narrative" bind-html-compile="ECConf.narrativetext">
+    </div>
     <div class="infographic-dataarea infographic-dataarea--nopad">
 
         <highchart id="OceanJobEmployeesChart" config="ECvm.AOI.OceanJobEmployeesChart"
@@ -25,6 +24,8 @@
         <highchart id="OceanJobDollarsChart" config="ECvm.AOI.OceanJobDollarsChart"
                    class="highcharts-oceanjobdollars "></highchart>
 
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="ECConf.ruletext">
     </div>
 </div>
 

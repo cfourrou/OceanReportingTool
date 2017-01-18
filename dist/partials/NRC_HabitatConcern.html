@@ -1,18 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Habitat Areas of Particular Concern</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists the habitat areas of particular concern that intersect the selected area along with the percent of that area covered by each one."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Habitat Areas of Particular Concern"
-                            modal-text="HAPCs provide important ecological functions and/or are especially vulnerable to
-                        degradation. HAPCs are discreet subsets of Essential Fish Habitat (EFH). They are considered
-                        high priority areas for conservation, management, or research because they are rare,
-                        sensitive, stressed by development, or important to ecosystem function. The HAPC designation
-                        does not necessarily mean additional protections or restrictions upon an area, but they help
-                        to prioritize and focus conservation efforts."
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -20,6 +15,8 @@
         <!-- iButton end-->
 
 
+    </div>
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="NRCConf.narrativetext">
     </div>
     <div class="infographic-dataarea">
         <div class="infographic-list"
@@ -31,5 +28,7 @@
         </div>
         <div ng-if="NRCvm.AOI.NRCHabConcern.length===0"><span class="infographic-twosizeline--large">0</span> <span
                 class="infographic-twosizeline--small">Habitat Areas of Particular Concern overlap</span></div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
     </div>
 </div>

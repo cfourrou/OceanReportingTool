@@ -1,16 +1,13 @@
 <div class="infographic-box infographic-box--small" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Coastal Barrier <br>Resource Areas</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element contains a count of the number of coastal barrier resource units within 8 miles of the selected area, Symbology is a beige  polygon."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Coastal Barrier Resource Areas"
-                            modal-text="CBRA encourages the conservation of hurricane prone, biologically rich coastal barriers by
-                        restricting federal expenditures that encourage development, such as federal flood
-                        insurance. Areas within the CBRS can be developed provided that private developers or other
-                        non-federal parties bear the full cost."
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -23,7 +20,8 @@
         <div class="layertoggle-text" ng-hide="NRCvm.AOI.toggleFull===true">DISPLAY ON MAP
         </div>
     </div>
-
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="NRCConf.narrativetext">
+    </div>
     <div class="infographic-swatch">
         <div class="swatch-img"><img src="img/NRCBarrierAreas.svg"></div>
         <div class="swatch-dataarea">
@@ -36,7 +34,8 @@
         <span class="infographic-twosizeline--small">Barrier Units within 8nm</span>
 
     </div>
-
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
+    </div>
 
 </div>
 

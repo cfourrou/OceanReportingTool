@@ -1,17 +1,13 @@
 <div class="infographic-box infographic-box--tiny" tabindex="0">
     <div class="infographic-title">
-        <div class="infographic-text">Critical Habitat Designations</div>
+        <div class="infographic-text">{{NRCConf.name}}</div>
         <!-- iButton start-->
         <div class="iModal">
             <info-directive class="iModal-button" modal-template="ModalTemplate.html" message="message"
-                            alttext="Element lists the critical habitat designated areas that intersect the selected area along with the percent of that area covered by each one."
+                            alttext={{NRCConf.alttext}}
                             modal-img="img/info.svg"
-                            modal-title="Critical Habitat Designations"
-                            modal-text="Critical habitats contain features essential to the conservation of an endangered or
-                        threatened species and that may require special management and protection. A critical
-                        habitat designation does not necessarily restrict development. It is a reminder to federal
-                        agencies that they must make special efforts to protect the important characteristics of
-                        these areas."
+                            modal-title={{NRCConf.name}}
+                            modal-text={{NRCConf.modaltext}}
             ></info-directive>
 
 
@@ -20,7 +16,8 @@
 
 
     </div>
-
+    <div class="infographic-narrative infographic-narrative--left" bind-html-compile="NRCConf.narrativetext">
+    </div>
     <div class="infographic-dataarea">
         <div class="infographic-list"
              ng-repeat="x in NRCvm.AOI.NRCCriticalHab| orderBy : 'AREANAME'">
@@ -31,6 +28,8 @@
         </div>
         <div ng-if="NRCvm.AOI.NRCCriticalHab.length===0"><span class="infographic-twosizeline--large">0</span> <span
                 class="infographic-twosizeline--small">Critical Habitat Designations overlap</span></div>
+    </div>
+    <div class="infographic-rulelogic" bind-html-compile="NRCConf.ruletext">
     </div>
 </div>
 
