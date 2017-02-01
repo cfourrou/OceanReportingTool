@@ -23362,9 +23362,7 @@ angular.module('ortApp.services', [])
                     AOI.map.isLoaded.then(function () {
                         if (AOI.ID === -9999) {
                             AOI.layer = L.geoJson(AOI.drawLayerShape, {
-                                color: '#EB660C',
-                                weight: 1.5,
-                                fillOpacity: .3,
+                                className: 'map-AOIfeature',
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
                             AOI.map.fitBounds(AOI.layer.getBounds(), {
@@ -23373,7 +23371,7 @@ angular.module('ortApp.services', [])
                         } else {
                             AOI.layer = L.esri.featureLayer({
                                 url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                                className: 'map-AOIfeature',
                                 where: "AOI_ID =" + AOI.ID + "",
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
@@ -23400,7 +23398,7 @@ angular.module('ortApp.services', [])
                                     //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                                     //so for now we will zoom out on error and allow this event to fire again.
 
-                                    AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                                    AOI.map.setView([32.06, -78.3], 6); //it should try again.
                                 }
                             });
                         }
@@ -23755,7 +23753,7 @@ angular.module('ortApp.services', [])
                                 icon: L.icon({
                                     iconUrl: 'img/svg-elements_reefs.svg',
                                     iconSize: [24, 24],
-                                    iconAnchor: [16, 37],
+                                    iconAnchor: [12, 12],
                                     popupAnchor: [0, -28]
                                 })
                             });
@@ -25888,7 +25886,8 @@ angular.module('ortApp.directives', [])
                     angular.forEach(AOIConfig.optionalLayers, function (value, key) {
                         $scope.map.createPane(key + 'Pane');
                     });
-                    $scope.map.setView([33.51, -78.3], 6);
+                    $scope.map.setView([32.06, -78.3], 6); //33.51, -78.3
+
                     $scope.map.createPane('AOIfeature');
 
                     var esriNatGeo = L.tileLayer(AOIConfig.baseMapLayers.esriNatGeo.url, {
@@ -26045,9 +26044,7 @@ angular.module('ortApp.directives', [])
                         $scope.map.invalidateSize();
                         if (AOI.drawLayerShape) {
                             var bounds = L.geoJson(AOI.drawLayerShape, {
-                                color: '#EB660C',
-                                weight: 1.5,
-                                fillOpacity: .3,
+                                className: 'map-AOIfeature',
                                 pane: 'AOIfeature'
                             }).getBounds();
                             $scope.map.fitBounds(bounds);
@@ -26112,7 +26109,7 @@ angular.module('ortApp.directives', [])
                         mouseLayer = L.esri.featureLayer({
                             url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
                             where: "AOI_ID =" + AOI_id + "",
-                            color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                            className: 'map-AOIfeature--mouseover',
                             simplifyFactor: 2.0
                         }).addTo($scope.map);
                     };
@@ -26127,7 +26124,7 @@ angular.module('ortApp.directives', [])
                         $scope.searchControlEnabled = false;
                         $scope.drawOff();
                         $scope.polyLayerEnabled = false;
-                        $scope.map.setView([33.51, -78.3], 6);
+                        $scope.map.setView([32.06, -78.3], 6);
                         clearMouseLayer();
                     };
                 }
@@ -26145,9 +26142,7 @@ angular.module('ortApp.directives', [])
             controller: ['$scope', 'L', 'AOI', 'AOIConfig', '$q', function ($scope, L, AOI, AOIConfig, $q) {
                 function setDrawnArea() {
                     minicLayer = L.geoJson($scope.AOI.drawLayerShape, {
-                        color: '#EB660C',
-                        weight: 1.5,
-                        fillOpacity: .3
+                        className: 'smallmap-AOIfeature',
                     }).addTo($scope.AOI.smallMap);
                     var minibounds = minicLayer.getBounds();
                     $scope.AOI.smallMap.fitBounds(minibounds);
@@ -26192,9 +26187,7 @@ angular.module('ortApp.directives', [])
                     minicLayer = L.esri.featureLayer({
                         url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
                         where: "AOI_ID =" + AOI.ID + "",
-                        color: '#EB660C',
-                        weight: 1.5,
-                        fillOpacity: .3
+                        className: 'smallmap-AOIfeature',
                     }).addTo($scope.AOI.smallMap);
 
 

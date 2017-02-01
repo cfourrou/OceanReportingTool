@@ -46,6 +46,39 @@ modifications to Leaflet and esri leaflet generic css
 /*****************************************************
 map and map controls
 ******************************************************/
+.map-AOIfeature {
+  stroke: @ortOrange;
+  fill: @ortOrange;
+  stroke-opacity: 1;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill-opacity: 0.3;
+  fill-rule: evenodd;
+}
+
+.map-AOIfeature--mouseover {
+  stroke: @ortOrange;
+  fill: @ortOrange;
+  stroke-opacity: 1;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill-opacity: 0.3;
+  fill-rule: evenodd;
+}
+
+.smallmap-AOIfeature {
+  stroke: @ortOrange;
+  fill: @ortOrange;
+  stroke-opacity: 1;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill-opacity: 0.3;
+  fill-rule: evenodd;
+}
+
 .map {
   min-height: 955px;
   width: 50%;
@@ -330,7 +363,7 @@ a.spmenu-button {
 }
 
 .label {
-  background-color:fade(@colorEclipse, 20%2);
+  background-color: fade(@colorEclipse, 20% 2);
   padding: 2px 5px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -344,13 +377,13 @@ a.spmenu-button {
   letter-spacing: 1px;
   text-transform: uppercase;
   &:hover {
-    background-color:fade(@colorEclipse, 50%);
+    background-color: fade(@colorEclipse, 50%);
   }
 
 }
 
 .nv-btn:hover > .label {
-  background-color:fade(@colorEclipse, 50%);
+  background-color: fade(@colorEclipse, 50%);
 }
 
 .btn-basemap--close {

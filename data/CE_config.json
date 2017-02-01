@@ -24,7 +24,7 @@
     "alttext":"Graphic represents the selected area symbology (orange polygon) on the map and displays the area calculation in miles squared, nautical miles squared, and kilometers squared.",
     "modaltext": "Source: Area calculations are made using the North America Albers Equal Area Conic projection and are valid for planning purposes only.",
     "narrativetext": "The total size of the geographic area for an activity may not always be a good indicator of the geographic scope of possible effects. There may be cumulative, temporal or  transient effects overlapping or beyond the reported geographic area.",
-    "ruletext": "Boundaries of the report area shown on the map may be generalized for appearance, original source data is always used for analysis and reporting."
+    "ruletext": "Boundaries of the report area shown on the map may be generalized for appearance, original source data is always used for analysis and reporting"
   },
   {
     "name": "Federal Statutes",
@@ -33,7 +33,7 @@
     "alttext":"Element lists the applicable federal geo regulations that are effective in the selected area with hyperlinks for additional information.",
     "modaltext": "Source: Federal Georegulations, <a target='_blank' href='http://MarineCadastre.gov/'>MarineCadastre.gov</a>, 2016-02-10.",
     "narrativetext": "Other federal statutes with complex or uncertain geographic boundaries exist in the area and can be found by using the <a target='_blank' href='https://coast.noaa.gov/oceanlawsearch/#/search'>Ocean Law Search tool</a> <div class='url-hidden'>(https://coast.noaa.gov/oceanlawsearch/#/search)</div>",
-    "ruletext": "Showing the presence of {{AOIvm.AOI.CEFedGeoRegs.length}} federal statutes that overlap the report area."
+    "ruletext": "Showing the presence of {{AOIvm.AOI.CEFedGeoRegs.length}} federal statutes that overlap the report area"
   },
   {
     "name": "Congressional and Legislative Districts",
@@ -42,7 +42,7 @@
     "alttext":"Element lists the applicable political districts that are within 12 nautical miles of the selected area, inlcluding congressional district, state house and state senate districts.",
     "modaltext": "Source: Congressional Districts, <a target='_blank' href='https://MarineCadastre.gov'>MarineCadastre.gov</a>, 2016-02-10.<br>Source: 114th Congressional District National, U.S. Census Bureau, 2014-08.",
     "narrativetext":  "There are {{AOIvm.AOI.CECongress.length}} members of the House Representatives whose districts are located in or near to this area.<br>There are {{AOIvm.AOI.CESenate.length + AOIvm.AOI.CEHouse.length}} members of state legislatures located in or near this area.<br>For more information also see:<br><a target='_blank' href='http://memberguide.gpo.gov/'>Member Guide for the Congress</a><div class='url-hidden'>(http://memberguide.gpo.gov/)</div><br><a target='_blank' href='https://www.congress.gov/state-legislature-websites'>State Legislature Websites</a><div class='url-hidden'>(https://www.congress.gov/state-legislature-websites)</div><br><a target='_blank' href='http://www.ncsl.org/'>National Conference of State Legislatures</a><div class='url-hidden'>(http://www.ncsl.org/)</div><br>",
-    "ruletext": "Showing all districts within 12 nautical miles of the report area, or the closest 3 if none are within 12 nautical miles."
+    "ruletext": "Showing all districts within 12 nautical miles of the report area, or the closest 3 if none are within 12 nautical miles"
   },
   {
     "name": "Federal, State and County Jurisdictions",
@@ -51,7 +51,7 @@
     "alttext":"Graphic is a pie graph showing the proportion of the selected area that falls in state and/or federal jurisdiction. Lists which states and which counties it overlaps.",
     "modaltext": "Source: Outer Continental Shelf Submerged Lands Act Boundary - Atlantic Region NAD83, <a target='_blank' href='http://MarineCadastre.gov/'>MarineCadastre.gov</a>, 2010-10-05 <BR>Source: TIGER/Line State Boundaries, U.S. Census Bureau, 2016",
     "narrativetext": "Proposed activities in the coastal zone or the outer continental shelf generally fall within jurisdictions governed by states,counties and municipalities, or by the federal government. Having a clear understanding of which jurisdiction(s) a proposed activity will occur in will help determine which statutes, regulations and administrative procedures need to be addressed. Please visit <a target='_blank' href='http://www.naco.org/counties'>National Association of Counties (NACo)<div class='url-hidden'>(http://www.naco.org/counties)</div></a> for further information.",
-    "ruletext": " A list of states and counties in or adjoining the report area, or abutting federal waters that begin at 3 nautical miles; federal waters generally continue to the limit of the Exclusive Economic Zone at 200 nautical miles."
+    "ruletext": " A list of states and counties in or adjoining the report area, or abutting federal waters that begin at 3 nautical miles; federal waters generally continue to the limit of the Exclusive Economic Zone at 200 nautical miles"
   },
   {
     "name": "Populated Places",
@@ -60,7 +60,7 @@
     "alttext":"Element Lists the cities, their population from 2010, and their distance to the selected area that are within 10 miles. Also listed are the three closest Tribal lands within 50 miles.",
     "modaltext": "Source: Unofficial, select coastal place names intended to help users of this tool orient themselves when reading an Ocean Report. For more detailed, and supported place name data please visit: <a target='_blank' href='http://MarineCadastre.gov/data/'>MarineCadastre.gov/data</a> and search on 'place', or visit the U.S. Board on <a target='_blank' href='http://geonames.usgs.gov/'> Geographic Names </a>",
     "narrativetext": "",
-    "ruletext": "Showing places within 10 miles of the report area, or the 3 closest if none are within 10 miles."
+    "ruletext": "Showing places within 10 miles of the report area, or the 3 closest if none are within 10 miles"
   },
   {
     "name": "Tribal Lands",
@@ -69,6 +69,6 @@
     "alttext":"Element Lists the three closest Tribal lands within 50 miles.",
     "modaltext": "Source: Bureau of Indian Affairs, The American Indian Reservations / Federally Recognized Tribal Entities, USGS 7.5' quadrangle maps and Bureau of Census. 1995, 2004, 2005.",
     "narrativetext": "The relationship between federally recognized tribes and the United States is one between sovereigns, i.e., between a government and a government. This principle, which is grounded in the United States Constitution, has helped to shape the long history of relations between the federal government and these tribal nations. These nations may have an interest in ocean activities occurring near their lands.",
-    "ruletext": "Showing the 3 closest areas of tribal interest within 50 miles."
+    "ruletext": "Showing the 3 closest areas of tribal interest within 50 miles"
   }
 ]

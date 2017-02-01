@@ -215,9 +215,7 @@ angular.module('ortApp.services', [])
                     AOI.map.isLoaded.then(function () {
                         if (AOI.ID === -9999) {
                             AOI.layer = L.geoJson(AOI.drawLayerShape, {
-                                color: '#EB660C',
-                                weight: 1.5,
-                                fillOpacity: .3,
+                                className: 'map-AOIfeature',
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
                             AOI.map.fitBounds(AOI.layer.getBounds(), {
@@ -226,7 +224,7 @@ angular.module('ortApp.services', [])
                         } else {
                             AOI.layer = L.esri.featureLayer({
                                 url: AOIConfig.ortMapServer + AOIConfig.ortLayerAOI,
-                                color: '#EB660C', weight: 1.5, fillOpacity: .3,
+                                className: 'map-AOIfeature',
                                 where: "AOI_ID =" + AOI.ID + "",
                                 pane: 'AOIfeature'
                             }).addTo(AOI.map);
@@ -253,7 +251,7 @@ angular.module('ortApp.services', [])
                                     //for some reason if we are zoomed in elsewhere and the bounds of this object are not in the map view, we can't read bounds correctly.
                                     //so for now we will zoom out on error and allow this event to fire again.
 
-                                    AOI.map.setView([33.51, -78.3], 6); //it should try again.
+                                    AOI.map.setView([32.06, -78.3], 6); //it should try again.
                                 }
                             });
                         }
@@ -608,7 +606,7 @@ angular.module('ortApp.services', [])
                                 icon: L.icon({
                                     iconUrl: 'img/svg-elements_reefs.svg',
                                     iconSize: [24, 24],
-                                    iconAnchor: [16, 37],
+                                    iconAnchor: [12, 12],
                                     popupAnchor: [0, -28]
                                 })
                             });

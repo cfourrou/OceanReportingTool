@@ -29,25 +29,25 @@
     <div class="infographic-swatch infographic-swatch--small">
         <div class="swatch-img"><img src="img/HydrokineticLeasesGraphic.svg"></div>
         <div class="swatch-dataarea swatch-dataarea--small">
-
-        </div>
-    </div>
-    <div class="infographic-dataarea">
-        <div ng-repeat="count in EMvm.AOI.EMMarineHydrokineticProjects | filter:query as filtered">
-        </div>
-        <div ng-repeat="dispx in EMvm.AOI.EMMarineHydrokineticProjects | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
-            <div ng-repeat="count in EMvm.AOI.EMMarineHydrokineticProjects | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+            <div ng-repeat="count in EMvm.AOI.EMMarineHydrokineticProjects | filter:query as filtered">
             </div>
-            <span class="infographic-twosizeline">
+            <div ng-repeat="dispx in EMvm.AOI.EMMarineHydrokineticProjects | unique: 'PRIMARY_USE' | orderBy : 'PRIMARY_USE'">
+                <div ng-repeat="count in EMvm.AOI.EMMarineHydrokineticProjects | filter: {PRIMARY_USE: dispx.PRIMARY_USE}:true as filtered">
+                </div>
+
                 <span class="infographic-twosizeline--large">{{filtered.length}}</span>
                 <span class="infographic-twosizeline--small">{{dispx.PRIMARY_USE}}</span>
 
-            </span>
-        </div>
+
+            </div>
         <span class="infographic-twosizeline" ng-show="!filtered.length">
             <span class="infographic-twosizeline--large">0 </span>
             <span class="infographic-twosizeline--small">projects</span>
         </span>
+        </div>
+    </div>
+    <div class="infographic-dataarea">
+
     </div>
     <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>

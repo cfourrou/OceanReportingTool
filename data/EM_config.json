@@ -88,7 +88,7 @@
     "alttext":"Element describes the suitablility of the selected area for wave power generation. Includes a bar graph representing the average wave power in kilowatts per meter.",
     "modaltext": "Source: OceanWaveResourcePotential, National Renewable Energy Lab, 2011, <a target='_blank' href='http://energy.gov/sites/prod/files/2013/12/f5/mappingandassessment.pdf'>Mapping and Assessment of the United States Ocean Wave Energy Resource</a>Source:<a target='_blank' href='http://www.aquagen.com.au/market'>AquaGen Technologies: Why Wave Energy?</a>",
     "narrativetext": "Wave Power is a renewable resource that captures the energy stored in the motion of waves through an ever-growing assortment of devices that capture the energy, store, and deliver electricity to a power grid. For development of this resource to be economically viable, a minimum of 10 kW/m must be available to be considered a potential location for development.",
-    "ruletext": "Showing the average wave power (in kW/m) of the report area."
+    "ruletext": "Showing the average wave power (in kW/m) of the report area"
   },
   {
     "name": "Ocean Current Power",
@@ -97,7 +97,7 @@
     "alttext":"Element describes the suitablility of the selected area for ocean current power generation. Includes a bar graph representing the average current speed in meters per second.",
     "modaltext": "Source: Georgia Institute of Technology, <a target='_blank' href='http://energy.gov/sites/prod/files/2013/12/f5/energy_production_ocean_currents_us_0.pdf'>Assessment of Energy Production Potential from Ocean Currents along the United States Coastline</a>",
     "narrativetext": "Large scale ocean currents are a renewable source of energy due to their persistence and sustainability as a result of earth's rotation. Extraction of energy from these currents requires a water velocity of a minimum of 1.0 m/s to be considered a potential resource location.",
-    "ruletext": "Showing the average ocean current speed (in m/s) of the report area."
+    "ruletext": "Showing the average ocean current speed (in m/s) of the report area"
   },
   {
     "name": "Tidal Power",
@@ -106,7 +106,7 @@
     "alttext":"Element describes the suitablility of the selected area for tidal current power generation. Includes a bar graph representing the average current speed in meters per second.",
     "modaltext": "Source: usa_mc_tides, Georgia Tech Research Corporation, 2011, <a target='_blank' href='http://energy.gov/sites/prod/files/2013/12/f5/1023527.pdf'>Assessment of Energy Production Potential from Tidal Streams in the United States</a>",
     "narrativetext": "Tidal power is a predictable, concentrated, renewable energy source. Tidal streams are high velocity currents created by the ebb and flow of the tides through narrow channels. To be considered a Tidal Power hotspot an area must meet at a minimum the three criteria outlined here: Depth > 5 meters Area > 0.5 square kilometers Current Speed > 1 meter per second",
-    "ruletext": "Showing the average tidal current speed (in m/s) of the report area."
+    "ruletext": "Showing the average tidal current speed (in m/s) of the report area"
   },
   {
     "name": "Ocean Disposal Sites",

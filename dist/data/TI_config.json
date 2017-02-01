@@ -69,7 +69,7 @@
     "alttext":"Element lists the 2 closest ports to the selected area with tonnage. Distance to the selected area is represented by a line graph with gray anchors representing each port.",
     "modaltext": "Source: Principal Ports for the United States of America, US Army Corps of Engineers and NOAA's Ocean Service, Office for Coastal Management, 2013",
     "narrativetext": "Southeast ports represent 13 of the top 150 ports for the nation based on total tonnage for the year. Certain offshore projects may require a large port to conduct transactions.",
-    "ruletext": "Showing 2 closest ports to the reported area."
+    "ruletext": "Showing 2 closest ports to the reported area"
   },
   {
     "name": "Pilot Boarding Areas",

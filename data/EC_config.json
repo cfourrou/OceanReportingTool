@@ -6,7 +6,7 @@
     "alttext":"Element contains 2 bar graphs, one representing the number of employees per state or county that work in the ocean industry and one representing the number of dollars in both wages and goods and services per state or county.",
     "modaltext": "Source: National Ocean Watch (<a target='_blank' href='https://coast.noaa.gov/dataregistry/search/collection/info/enow'>ENOW</a>) Data. Based on data from the Bureau of Labor Statistics and the Bureau of Economic Analysis. NOAA Office for Coastal Management. 2013 For more information see FAQs here: https://coast.noaa.gov/data/digitalcoast/pdf/enow-faq.pdf",
     "narrativetext": "Data represents employment and contributions to the estimated state gross domestic product (GDP) based on wages earned and goods and services provided by the entire ocean industry in this report area.",
-    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters."
+    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters"
   },
   {
     "name": "",
@@ -24,7 +24,7 @@
     "alttext":"Element lists the minimum and maximum pixel value within the selected area of fishing economic value and a total value for the whole area.",
     "modaltext": "Each quarter square km (500 m) cell has been summed for the annual mean correlated economic value over the six year period analyzed (2007-2012). This information was created for each state, gear type, Fishery Management Plan (FMP), top 30 exposed ports and top 30 exposed species. This was calculated using Vessel Trip Reports (VTR), Cumulative Distribution Function (CDF) which estimates radial distance within which fishing activity is likely to occur, and a 500 m raster cell output.  The top 30 species included in this assessment are:  Ocean Quahog, Surf Clam, Little Skate, Squid (Illex & Loligo), Menhaden, Winter Skate, Channeled Whelk, Red Grouper, Atlantic Herring, Vermillion Snapper, Atlantic Croaker, Jonah Crab, Red Hake, Atlantic Mackerel, Silver Hake,  King Mackerel, Butterfish, Yellowtail Founder, Winter Flounder, Summer Flounder, Black Sea Bass, Monkfish, Bluefish, Lobster, Spiny Dogfish, Scup, Skates, Cod, Sea Scallop.<br> Note 1: Local and regionally important fisheries such as shrimp are not included in this analysis.<br> Note 2: This is a single data set created from a larger study. The full study is titled ' Socio-Economic Impact of Outer Continental Shelf Wind Energy Development on Fishing in the U.S. Atlantic.' Commercial Fishing Average Annual Revenue, U.S. Atlantic Ocean, (2007-2012), NOAA NMFS, 2015",
     "narrativetext": "Commercial fishermen in the U.S. harvested 9.4 billion pounds of finfish and shellfish in 2014, earning $5.5 billion for their catch. Contributing the most to total U.S. revenue were shrimp ($702 million), followed by Pacific salmon ($617 million), American lobster ($567 million) and sea scallop ($424 million).<br>The mean annual revenue value for all years is shown for the report area.  In many areas the revenue value may be much greater for all fisheries because some species are not included in this assessment (eg shrimp.)",
-    "ruletext": "Fishing revenue is the mean of all the state revenues by all gear types and selected species for the six years of analysis."
+    "ruletext": "Fishing revenue is the mean of all the state revenues by all gear types and selected species for the six years of analysis"
   },
   {
     "name": "GDP of Ocean Economy",
@@ -33,7 +33,7 @@
     "alttext":"Element contains a list of states or counties and a percentage representing the contribution of ocean dollars to the total GDP",
     "modaltext": "Source: National Ocean Watch (<a target='_blank' href='https://coast.noaa.gov/dataregistry/search/collection/info/enow'>ENOW</a>) Data. Based on data from the Bureau of Labor Statistics and the Bureau of Economic Analysis. NOAA Office for Coastal Management. 2013 For more information see FAQs here: https://coast.noaa.gov/data/digitalcoast/pdf/enow-faq.pdf",
     "narrativetext": "All ocean economic activity in the area as a percent of the area’s total economy. The gross domestic product (GDP) reflects the economic health of an area and the relative size of all the ocean sectors.",
-    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters."
+    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters"
   },
   {
     "name": "Contributions by Industry",
@@ -42,7 +42,7 @@
     "alttext":"Graphic of pie charts for each state county representing the portion of the ocean GDP that each of the 6 primary ocean industries contributes.",
     "modaltext": "Source: National Ocean Watch (<a target='_blank' href='https://coast.noaa.gov/dataregistry/search/collection/info/enow'>ENOW</a>) Data. Based on data from the Bureau of Labor Statistics and the Bureau of Economic Analysis. NOAA Office for Coastal Management. 2013 For more information see FAQs here: https://coast.noaa.gov/data/digitalcoast/pdf/enow-faq.pdf",
     "narrativetext": "Each sector of the economy relies on the ocean in varying ways. For example, ecological health contributes to the value of fishing and tourism, but not others like oil production or marine transportation. Some activities can negatively impact the ecological health that other activities depend on. Understanding the type of economic activities that depend on the ocean can help to guide planning, management, and policy decision.",
-    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters."
+    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters"
   },
   {
     "name": "Census Statistics",
@@ -51,6 +51,6 @@
     "alttext":"Element contains a table with each state and county and their respective populations, total number of houses, and median household income. Symbology for counties is a magenta ouline.",
     "modaltext": "American Community Survey, U.S. Census. 2013<br>For more information on  <a target='_blank' href='http://www.census.gov/topics/population.html'>Population</a>,  <a target='_blank' href='http://www.census.gov/topics/housing.html'>Households</a>, or  <a target='_blank' href='http://www.census.gov/topics/income-poverty/income.html'>Income</a> visit the U.S. Census Bureau",
     "narrativetext": "Demographic statistics can be used as indicators of development, standard of living, ecological risk, and market demand. Population, households and income are just a few of the most common summary level statistics available.",
-    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters."
+    "ruletext": "Showing counties that overlap or abut report areas in state waters.<br>Showing states that overlap or abut report areas in federal waters"
   }
 ]
