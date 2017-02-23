@@ -1,6 +1,6 @@
 {
   "ortMapServer": {
-    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/OceanReportingTool/MapServer/"
+    "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
   },
   "ortLayerData": {
     "data": "57"
@@ -12,19 +12,19 @@
     "data":"14 days"
   },
   "ortEnergyGPService": {
-    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw/GPServer/Draw%20Area%20-%20EM"
+    "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/ORTReport_Draw_EM/GPServer/Draw%20Area%20-%20EM"
   },
   "ortCommonGPService": {
-    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_CE/GPServer/Draw%20Area%20-%20CE"
+    "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/ORTReport_Draw_GI/GPServer/Draw%20Area%20-%20GI"
   },
   "ortTranspoGPService": {
-    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_TI/GPServer/Draw%20Area%20-%20TI"
+    "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/ORTReport_Draw_TI/GPServer/Draw%20Area%20-%20TI"
   },
   "ortNaturalGPService": {
-    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_NRC/GPServer/Draw%20Area%20-%20NRC"
+    "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/ORTReport_Draw_NRC/GPServer/Draw%20Area%20-%20NRC"
   },
   "ortEconGPService": {
-    "data": "//54.201.166.81:6080/arcgis/rest/services/temp/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"
+    "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/ORTReport_Draw_EC/GPServer/Draw%20Area%20-%20EC"
   },
   "nauticalChart": {
     "url": "//seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer",
