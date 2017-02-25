@@ -773,6 +773,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Pilot_Boarding_Areas":
+                            case "PilotBoardingAreas":
                                 AOI.TIPilot.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0)
                                 });
@@ -831,6 +832,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "vessel_traffic_atl_2011":
+                            case "vesseltrafficatl2011":
                                 AOI.TIVessel.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     all_2011_avg: (feature.all_2011_avg || 0)
@@ -865,6 +867,7 @@ angular.module('ortApp.services', [])
                                 break;
                             case "CoastalStates":
                             case "Coastal_Shoreline_Counties_2010":
+                            case "CoastalShorelineCounties2010":
                                 AOI.ECCountyGDP.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     cntyname: (feature.cntyname || feature.st_name),
@@ -950,6 +953,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Danger_Zones_and_Restricted_Areas":
+                            case "DangerZonesandRestrictedAreas":
                                 AOI.TIDangerZones.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     boundaryType: (feature.boundaryType || 'Unknown'),
@@ -960,6 +964,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Coastal_Maintained_Channels":
+                            case "CoastalMaintainedChannels":
                                 AOI.TICoastal.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0)
                                 });
@@ -999,6 +1004,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Coastal_State_Legislative_Districts_House":
+                            case "StateLegislativeDistrictsHouse":
                                 AOI.CEHouse.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     NAMELSAD: (feature.NAMELSAD || 'Unknown'),
@@ -1007,6 +1013,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Coastal_State_Legislative_Districts_Senate":
+                            case "StateLegislativeDistrictsSenate":
                                 AOI.CESenate.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     NAMELSAD: (feature.NAMELSAD || 'Unknown'),
@@ -1015,6 +1022,7 @@ angular.module('ortApp.services', [])
                                 AOI.addMetadata(feature);
                                 break;
                             case "Coastal_Congressional_Districts_114th":
+                            case "CoastalCongressionalDistricts114th":
                                 AOI.CECongress.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
                                     NAMELSAD: (feature.NAMELSAD || 'Unknown'),
@@ -1154,6 +1162,7 @@ angular.module('ortApp.services', [])
                                 }
                                 AOI.addMetadata(feature);
                                 break;
+                            case "SandnGravelLeaseAreas":
                             case "Sand_n_GravelLeaseAreas": //aka Marine Minerals Leases
                                 AOI.EMMarineMineralsLeases.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
