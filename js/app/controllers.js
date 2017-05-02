@@ -72,6 +72,7 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
                 vm.mapHalfScreen();
                 vm.startSpin();
 
+
                 AOI.getReport().then(function () {
                     vm.stopSpin();
                     vm.searchControlEnabled = false;

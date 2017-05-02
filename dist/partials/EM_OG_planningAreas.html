@@ -21,7 +21,8 @@
     <div class="infographic-narrative " bind-html-compile="EMConf.narrativetext">
     </div>
     <div class="infographic-dataarea">
-        <div class="infographic-twosizeline--small">This area falls within the</div>
+        <div class="infographic-twosizeline--small" ng-hide="EMvm.AOI.OGPlanA.length">This area does not fall within an</div>
+        <div class="infographic-twosizeline--small" ng-show="EMvm.AOI.OGPlanA.length">This area falls within the</div>
         <div class="infographic-twosizeline--large"
              ng-repeat="gpplan in EMvm.AOI.OGPlanA | unique: 'Region' | orderBy : 'Region'">
             {{gpplan.Region}}

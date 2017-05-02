@@ -98,7 +98,7 @@
 
 
     <!-- Application CSS file -->
-    <link rel="stylesheet" href="css/ort.min.css?b12b7ad05de8ce68">
+    <link rel="stylesheet" href="css/ort.min.css?828193d72e2be05c">
 
     <!-- link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/ -->
     <!-- Google Analytics -->
@@ -203,25 +203,25 @@
             <div ng-cloak ng-show="vm.AOI.isLoaded" class="menu-right">
 
                 <button ng-class="vm.AOI.viewName === 'CEview' ? 'menu--active':'menu--inactive'"
-                        class="menu-rightbutton menu-border-right" role="button" ui-sref="CEview" href="">GENERAL
+                        class="menu-rightbutton menu-border-right" role="button" ui-sref="CEview" href="">GENERAL<BR>
                     INFORMATION
                 </button>
                 <button ng-class="vm.AOI.viewName === 'EMview' ? 'menu--active':'menu--inactive'"
-                        class="menu-rightbutton menu-border-right" role="button" ui-sref="EMview" href="">ENERGY &
+                        class="menu-rightbutton menu-border-right" role="button" ui-sref="EMview" href="">ENERGY &<br>
                     MINERALS
                 </button>
                 <button ng-class="vm.AOI.viewName === 'NRCview' ? 'menu--active':'menu--inactive'"
                         class="menu-rightbutton menu-border-right" role="button" ui-sref="NRCview" href="">NATURAL
-                    RESOURCES &
+                    RESOURCES &<BR>
                     CONSERVATION
                 </button>
                 <button ng-class="vm.AOI.viewName === 'TIview' ? 'menu--active':'menu--inactive'"
                         class="menu-rightbutton menu-border-right" role="button" ui-sref="TIview" href="">TRANSPORTATION
-                    & INFRASTRUCTURE
+                    &<BR> INFRASTRUCTURE
                 </button>
                 <button ng-class="vm.AOI.viewName === 'ECview' ? 'menu--active':'menu--inactive'"
                         class="menu-rightbutton"
-                        role="button" ui-sref="ECview" href="">ECONOMICS & COMMERCE
+                        role="button" ui-sref="ECview" href="">ECONOMICS &<br> COMMERCE
                 </button>
 
             </div>
@@ -243,27 +243,27 @@
             <div pageslide ps-open="vm.sidePanelVisible" ps-size="50%" ps-container="slide_div" ps-cloak="true"
                  ps-custom-top="55px" ng-style="{'width' : vm.AOI.sliderWidth}">
                 <div ui-view class="h900"></div>
-                <div class="footer">
-                    <div class="footer--left"><a target="_blank" href="https://www.commerce.gov/">United States
-                        Department of Commerce</a>
-                        | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
-                            Administration</a>
-                        | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
-                    </div>
-                    <div class="footer--right">
-                        <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
-                            href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
-                        Policy</a>
-                        | <a href="" target="_blank">Link Disclaimer</a> | <a
-                            href="http://usa.gov"
-                            target="_blank">USA.gov</a>
 
-                    </div>
-                </div>
             </div>
 
         </div>
+        <div class="footer">
+            <div class="footer--left"><a target="_blank" href="https://www.commerce.gov/">United States
+                Department of Commerce</a>
+                | <a target="_blank" href="http://www.noaa.gov/">National Oceanic and Atmospheric
+                    Administration</a>
+                | <a target="_blank" href="http://oceanservice.noaa.gov/">National Ocean Service</a>
+            </div>
+            <div class="footer--right">
+                <a href="//coast.noaa.gov/contactform/" target="_blank">Contact Us</a> | <a
+                    href="//coast.noaa.gov/PrivacyPolicy/privacyPolicy.html" target="_blank">Privacy
+                Policy</a>
+                | <a href="" target="_blank">Link Disclaimer</a> | <a
+                    href="http://usa.gov"
+                    target="_blank">USA.gov</a>
 
+            </div>
+        </div>
     </div>
 
 
@@ -271,7 +271,7 @@
 
 
 <!-- DO NOT INCLUDE SCRIPTS HERE, USE GRUNT. README! -->
-<script src="js/ort.js?aa36d6ae21f064cb"></script>
+<script src="js/ort.js?47e7b9ee450c0ef1"></script>
 
 
 <!-- HTML5 Polyfil to help screen readers with HTML5 elements https://github.com/yatil/accessifyhtml5.js -->

@@ -3,7 +3,7 @@
     "data": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
   },
   "ortLayerData": {
-    "data": "57"
+    "data": "56"
   },
   "ortLayerAOI": {
     "data": "7"
@@ -56,107 +56,131 @@
   "optionalLayerPanes": {
     "EMWindResourcePotentialLayer": {
       "num": "19",
-      "displayName": "Wind Resource Potential"
+      "displayName": "Wind Resource Potential",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMActiveRenewableEnergyLeasesLayer": {
       "num": "18",
-      "displayName": "Active Renewable Energy Leases"
+      "displayName": "Active Renewable Energy Leases",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMWindPlanningAreaLayer": {
       "num": "22",
-      "displayName": "BOEM_Wind_Planning_Areas"
+      "displayName": "BOEM_Wind_Planning_Areas",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMOceanDisposalSitesLayer": {
       "num": "23",
-      "displayName": "OceanDisposalSites"
+      "displayName": "OceanDisposalSites",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMMarineMineralsLeasesLayer": {
       "num": "21",
       "displayName": "Marine Minerals Leases",
-      "layerName": "Sand_n_GravelLeaseAreas"
+      "layerName": "Sand_n_GravelLeaseAreas",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMMarineHydrokineticProjectsLayer": {
       "num": "3",
       "displayName": "Hydrokinetic Leases",
-      "layerName": "MarineHydrokineticProjects"
+      "layerName": "MarineHydrokineticProjects",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMOceanWaveResourcePotentialLayer": {
       "num": 20,
       "displayName": "Wave Power",
-      "layerName": "Ocean Wave Resource Potential"
+      "layerName": "Ocean Wave Resource Potential",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMTidalPowerLayer": {
       "num": 32,
       "displayName": "Tidal Power",
-      "layerName": "usa_mc_wm"
+      "layerName": "usa_mc_wm",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMCurrentPower": {
       "num": 31,
       "displayName": "Current Power",
-      "layerName": "us_oc_ms"
+      "layerName": "us_oc_ms",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMBeachNourishmentProjectsLayer": {
       "num": 6,
       "displayName": "Beach Nourishment",
-      "layerName": "SC_BeachProjects"
+      "layerName": "SC_BeachProjects",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "EMCoastalEnergyFacilitiesLayer": {
       "num": 1,
-      "displayName": "Coastal Energy Facilities"
+      "displayName": "Coastal Energy Facilities",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "CEElevationLayer": {
       "num": 5,
-      "displayName": "bathymetric_Contours"
+      "displayName": "bathymetric_Contours",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "ECCoastalCountiesLayer": {
-      "num": 53,
-      "displayName": "CoastalCounties"
+      "num": 52,
+      "displayName": "CoastalCounties",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "TISubmarineLayer": {
       "num": 34,
-      "displayName": "SubmarineCables"
+      "displayName": "SubmarineCables",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "TIDangerZonesLayer": {
       "num": 37,
-      "displayName": "DangerZones"
+      "displayName": "DangerZones",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "CEPlaceLayer": {
       "num": 0,
-      "displayName": "Places"
+      "displayName": "Places",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "CETribalLayer": {
       "num": 9,
-      "displayName": "tribal Lands"
+      "displayName": "tribal Lands",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "TIVesselLayer": {
-      "num": 42,
-      "displayName": "vessel count"
+      "num": 0,
+      "displayName": "vessel count",
+      "server": "https://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2013VesselDensity/MapServer/"
     },
     "TIPrincipalPortsLayer": {
       "num": 33,
-      "displayName": "Principle Ports"
+      "displayName": "Principle Ports",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "NRCNearbyLayer": {
-      "num": 49,
+      "num": 48,
       "displayName": "Nearby Protected Areas",
-      "layerName": "MPA_selected"
+      "layerName": "MPA_selected",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "NRCReefsLayer": {
-      "num": 43,
+      "num": 42,
       "displayName": "Artificial Reefs",
-      "layerName": "ArtificialReefs"
+      "layerName": "ArtificialReefs",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "NRCSoftCoralLayer": {
-      "num": 50,
-      "displayName": "Soft Coral"
+      "num": 49,
+      "displayName": "Soft Coral",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "NRCStoneyCoralLayer": {
-      "num": 51,
-      "displayName": "Stoney Coral"
+      "num": 50,
+      "displayName": "Stoney Coral",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     },
     "NRCBarrierLayer": {
-      "num": 44,
-      "displayName": "Coastal Barrier"
+      "num": 43,
+      "displayName": "Coastal Barrier",
+      "server": "//saas.quantumspatial.com/arcgis/rest/services/OceanReportingTool/OceanReportingTool/MapServer/"
     }
   }
 }

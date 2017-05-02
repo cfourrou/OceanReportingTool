@@ -71,30 +71,30 @@ $http.get("data/gis_config.json").then(function (result) {
                     }
                 },
                 optionalLayers: {
-                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer.num, //EM is for Energy and Minerals
-                    EMActiveRenewableEnergyLeasesLayer: result.data['optionalLayerPanes'].EMActiveRenewableEnergyLeasesLayer.num,
-                    EMWindPlanningAreaLayer: result.data['optionalLayerPanes'].EMWindPlanningAreaLayer.num,
-                    EMOceanDisposalSitesLayer: result.data['optionalLayerPanes'].EMOceanDisposalSitesLayer.num,
-                    EMMarineMineralsLeasesLayer: result.data['optionalLayerPanes'].EMMarineMineralsLeasesLayer.num,
-                    EMMarineHydrokineticProjectsLayer: result.data['optionalLayerPanes'].EMMarineHydrokineticProjectsLayer.num,
-                    EMOceanWaveResourcePotentialLayer: result.data['optionalLayerPanes'].EMOceanWaveResourcePotentialLayer.num,
-                    EMTidalPowerLayer: result.data['optionalLayerPanes'].EMTidalPowerLayer.num,
-                    EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower.num,
-                    EMBeachNourishmentProjectsLayer: result.data['optionalLayerPanes'].EMBeachNourishmentProjectsLayer.num,
-                    EMCoastalEnergyFacilitiesLayer: result.data['optionalLayerPanes'].EMCoastalEnergyFacilitiesLayer.num,
-                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer.num,//CE is for Common Elements but was renamed to General Information
-                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer.num,//EC is for Economics and Commerce
-                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer.num,//TI is for Transportation and Infrastructure
-                    TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer.num,
-                    CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer.num,
-                    CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer.num,
-                    TIVesselLayer: result.data['optionalLayerPanes'].TIVesselLayer.num,
-                    TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer.num,
-                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer.num,//NRC is for Natural Resources and Conservation
-                    NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer.num,
-                    NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer.num,
-                    NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer.num,
-                    NRCBarrierLayer: result.data['optionalLayerPanes'].NRCBarrierLayer.num
+                    EMWindResourcePotentialLayer: result.data['optionalLayerPanes'].EMWindResourcePotentialLayer, //EM is for Energy and Minerals
+                    EMActiveRenewableEnergyLeasesLayer: result.data['optionalLayerPanes'].EMActiveRenewableEnergyLeasesLayer,
+                    EMWindPlanningAreaLayer: result.data['optionalLayerPanes'].EMWindPlanningAreaLayer,
+                    EMOceanDisposalSitesLayer: result.data['optionalLayerPanes'].EMOceanDisposalSitesLayer,
+                    EMMarineMineralsLeasesLayer: result.data['optionalLayerPanes'].EMMarineMineralsLeasesLayer,
+                    EMMarineHydrokineticProjectsLayer: result.data['optionalLayerPanes'].EMMarineHydrokineticProjectsLayer,
+                    EMOceanWaveResourcePotentialLayer: result.data['optionalLayerPanes'].EMOceanWaveResourcePotentialLayer,
+                    EMTidalPowerLayer: result.data['optionalLayerPanes'].EMTidalPowerLayer,
+                    EMCurrentPowerLayer: result.data['optionalLayerPanes'].EMCurrentPower,
+                    EMBeachNourishmentProjectsLayer: result.data['optionalLayerPanes'].EMBeachNourishmentProjectsLayer,
+                    EMCoastalEnergyFacilitiesLayer: result.data['optionalLayerPanes'].EMCoastalEnergyFacilitiesLayer,
+                    CEElevationLayer: result.data['optionalLayerPanes'].CEElevationLayer,//CE is for Common Elements but was renamed to General Information
+                    ECCoastalCountiesLayer: result.data['optionalLayerPanes'].ECCoastalCountiesLayer,//EC is for Economics and Commerce
+                    TISubmarineLayer: result.data['optionalLayerPanes'].TISubmarineLayer,//TI is for Transportation and Infrastructure
+                    TIDangerZonesLayer: result.data['optionalLayerPanes'].TIDangerZonesLayer,
+                    CEPlaceLayer: result.data['optionalLayerPanes'].CEPlaceLayer,
+                    CETribalLayer: result.data['optionalLayerPanes'].CETribalLayer,
+                    TIVesselLayer: result.data['optionalLayerPanes'].TIVesselLayer,
+                    TIPrincipalPortsLayer: result.data['optionalLayerPanes'].TIPrincipalPortsLayer,
+                    NRCNearbyLayer: result.data['optionalLayerPanes'].NRCNearbyLayer,//NRC is for Natural Resources and Conservation
+                    NRCReefsLayer: result.data['optionalLayerPanes'].NRCReefsLayer,
+                    NRCSoftCoralLayer: result.data['optionalLayerPanes'].NRCSoftCoralLayer,
+                    NRCStoneyCoralLayer: result.data['optionalLayerPanes'].NRCStoneyCoralLayer,
+                    NRCBarrierLayer: result.data['optionalLayerPanes'].NRCBarrierLayer
                 }
             });
 

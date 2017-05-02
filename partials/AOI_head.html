@@ -1,25 +1,26 @@
 <div class="AOIhead">
     <div class="AOIhead-name" tabindex="0">{{vm.AOI.name.toUpperCase()}}</div>
     <div class="AOIhead-row">
-        <div class="AOIhead-button" title="Print" role="button"><a  ui-sref="print" href=""><img
-                src="img/Printer.svg"
+
+        <div class="AOIhead-button" title="Metadata" role="button" tabindex="-1"
+             ng-click="vm.menuButtonActivate('meta')"><a
+                ui-sref="meta" href=""><img
+                src="img/tag.svg"
                 alt=""></a></div>
-        <div class="AOIhead-button" title="Share" role="button" >
+        <div class="AOIhead-button" title="Share" role="button">
 
             <info-directive modal-template="ModalTemplate.html"
                             modal-title="Share Report"
                             message="vm.message"
                             metadata-url="{{vm.AOI.ShowURL()}}"
-                            modal-img="img/Export.svg" alt=""
+                            modal-img="img/download.svg" alt=""
                             modal-custom="{{vm.AOI.modaltext}}"
                             modal-text="{{vm.AOI.modaltext}}
                     <input type='text' value='{{vm.AOI.ShowURL()}}' class='share-link'>"
             ></info-directive>
         </div>
-        <div class="AOIhead-button" title="Metadata" role="button" tabindex="-1" ng-click="vm.menuButtonActivate('meta')"><a
-
-                ui-sref="meta" href=""><img
-                src="img/MetadataIcon.svg"
+        <div class="AOIhead-button" title="Print" role="button"><a ui-sref="print" href=""><img
+                src="img/print.svg"
                 alt=""></a></div>
     </div>
 </div>

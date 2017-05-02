@@ -1,12 +1,18 @@
 
 .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   font-size: 11px;
   color: @ortGrey-Light;
-  height: 20px;
-  width: 200%;
+  //height: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 100%;
   background: @ortGrey-Dark;
   clear: both;
-  margin-left: -100%;
+  //margin-left: -100%;
+  z-index: 1000;
   &:hover {
     color: @colorWhite;
   }
@@ -37,8 +43,10 @@
 
 .footer--left {
   float: left;
+  padding-left: 5px;
 }
 
 .footer--right {
   float: right;
+  padding-right: 5px;
 }

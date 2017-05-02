@@ -72,10 +72,11 @@ angular.module('ortApp.services', [])
                 run: function (shape) {
                     var deferred = $q.defer();
 
+
                     task.setParam("Report_Boundary", shape);
                     task.setOutputParam("Output_Report");
 
-                    task.run(function (error, geojson) {
+                    task.run(function (error, geojson, raw) {
                         if (error) deferred.resolve(error);
                         else {
                             geojson.Output_Report.jobId = geojson.jobId;
@@ -84,8 +85,10 @@ angular.module('ortApp.services', [])
                     });
 
                     return deferred.promise;
+
                 }
             };
+
         };
 
         return myGPService;
@@ -316,7 +319,6 @@ angular.module('ortApp.services', [])
                         AOI.loadData(-9999, '');
                     });
 
-
                 },
                 getSavedReport: function () {
                     var promises = [];
@@ -360,7 +362,7 @@ angular.module('ortApp.services', [])
                 loadData: function (id, name) {
                     AOI.ID = id;
                     AOI.EMWindResourcePotentialLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMWindResourcePotentialLayer,
+                        url: AOIConfig.optionalLayers.EMWindResourcePotentialLayer.server + AOIConfig.optionalLayers.EMWindResourcePotentialLayer.num,
                         pane: 'EMWindResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.Speed_90 >= 8.8) {
@@ -382,7 +384,7 @@ angular.module('ortApp.services', [])
                     });
 
                     AOI.EMActiveRenewableEnergyLeasesLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMActiveRenewableEnergyLeasesLayer,
+                        url: AOIConfig.optionalLayers.EMActiveRenewableEnergyLeasesLayer.server + AOIConfig.optionalLayers.EMActiveRenewableEnergyLeasesLayer.num,
                         pane: 'EMActiveRenewableEnergyLeasesLayerPane',
                         style: function (feature) {
 
@@ -390,7 +392,7 @@ angular.module('ortApp.services', [])
                         }
                     });
                     AOI.EMWindPlanningAreaLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMWindPlanningAreaLayer,
+                        url: AOIConfig.optionalLayers.EMWindPlanningAreaLayer.server + AOIConfig.optionalLayers.EMWindPlanningAreaLayer.num,
                         pane: 'EMWindPlanningAreaLayerPane',
                         style: function (feature) {
 
@@ -398,14 +400,14 @@ angular.module('ortApp.services', [])
                         }
                     });
                     AOI.EMOceanDisposalSitesLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMOceanDisposalSitesLayer,
+                        url: AOIConfig.optionalLayers.EMOceanDisposalSitesLayer.server + AOIConfig.optionalLayers.EMOceanDisposalSitesLayer.num,
                         pane: 'EMOceanDisposalSitesLayerPane',
                         style: function (feature) {
                             return {fillColor: '#FFA7A7', color: '#4A4A4A', weight: 1.5, fillOpacity: .5};
                         }
                     });
                     AOI.EMMarineMineralsLeasesLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMMarineMineralsLeasesLayer,
+                        url: AOIConfig.optionalLayers.EMMarineMineralsLeasesLayer.server + AOIConfig.optionalLayers.EMMarineMineralsLeasesLayer.num,
                         pane: 'EMMarineMineralsLeasesLayerPane',
                         style: function (feature) {
                             if (feature.properties.RuleID === 1) {
@@ -424,7 +426,7 @@ angular.module('ortApp.services', [])
 
 
                     AOI.EMMarineHydrokineticProjectsLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMMarineHydrokineticProjectsLayer,
+                        url: AOIConfig.optionalLayers.EMMarineHydrokineticProjectsLayer.server + AOIConfig.optionalLayers.EMMarineHydrokineticProjectsLayer.num,
                         pane: 'EMMarineHydrokineticProjectsLayerPane',
                         pointToLayer: function (feature, latlng) {
                             return L.marker(latlng, {
@@ -439,7 +441,7 @@ angular.module('ortApp.services', [])
                     });
 
                     AOI.EMOceanWaveResourcePotentialLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMOceanWaveResourcePotentialLayer,
+                        url: AOIConfig.optionalLayers.EMOceanWaveResourcePotentialLayer.server + AOIConfig.optionalLayers.EMOceanWaveResourcePotentialLayer.num,
                         pane: 'EMOceanWaveResourcePotentialLayerPane',
                         style: function (feature) {
                             if (feature.properties.ann_wef > 40) {
@@ -469,21 +471,21 @@ angular.module('ortApp.services', [])
                     });
 
                     AOI.EMTidalPowerLayer = L.esri.dynamicMapLayer({
-                        url: AOIConfig.ortMapServer,
+                        url: AOIConfig.optionalLayers.EMTidalPowerLayer.server,
                         pane: 'EMTidalPowerLayerPane',
-                        layers: [AOIConfig.optionalLayers.EMTidalPowerLayer],
+                        layers: [AOIConfig.optionalLayers.EMTidalPowerLayer.num],
                         opacity: .8
                     });
 
                     AOI.EMCurrentPowerLayer = L.esri.dynamicMapLayer({
-                        url: AOIConfig.ortMapServer,
+                        url: AOIConfig.optionalLayers.EMCurrentPowerLayer.server,
                         pane: 'EMCurrentPowerLayerPane',
-                        layers: [AOIConfig.optionalLayers.EMCurrentPowerLayer],
+                        layers: [AOIConfig.optionalLayers.EMCurrentPowerLayer.num],
                         opacity: .8
                     });
 
                     AOI.EMBeachNourishmentProjectsLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMBeachNourishmentProjectsLayer,
+                        url: AOIConfig.optionalLayers.EMBeachNourishmentProjectsLayer.server + AOIConfig.optionalLayers.EMBeachNourishmentProjectsLayer.num,
                         pane: 'EMBeachNourishmentProjectsLayerPane',
                         style: function (feature) {
                             return {color: '#8B572A', weight: 4, fillOpacity: 0};
@@ -491,7 +493,7 @@ angular.module('ortApp.services', [])
                     });
 
                     AOI.EMCoastalEnergyFacilitiesLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.EMCoastalEnergyFacilitiesLayer,
+                        url: AOIConfig.optionalLayers.EMCoastalEnergyFacilitiesLayer.server + AOIConfig.optionalLayers.EMCoastalEnergyFacilitiesLayer.num,
                         pane: 'EMCoastalEnergyFacilitiesLayerPane',
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
@@ -519,21 +521,21 @@ angular.module('ortApp.services', [])
                     });
 
                     AOI.CEElevationLayer = L.esri.dynamicMapLayer({
-                        url: AOIConfig.ortMapServer,
+                        url: AOIConfig.optionalLayers.CEElevationLayer.server,
                         pane: 'CEElevationLayerPane',
-                        layers: [AOIConfig.optionalLayers.CEElevationLayer],
+                        layers: [AOIConfig.optionalLayers.CEElevationLayer.num],
                         opacity: .8
                     });
 
                     AOI.TISubmarineLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TISubmarineLayer,
+                        url: AOIConfig.optionalLayers.TISubmarineLayer.server + AOIConfig.optionalLayers.TISubmarineLayer.num,
                         pane: 'TISubmarineLayerPane',
                         style: function (feature) {
                             return {color: '#880cf4', weight: 2, fillOpacity: 0};
                         }
                     });
                     AOI.TIDangerZonesLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.TIDangerZonesLayer,
+                        url: AOIConfig.optionalLayers.TIDangerZonesLayer.server + AOIConfig.optionalLayers.TIDangerZonesLayer.num,
                         pane: 'TIDangerZonesLayerPane',
 
                         style: function (feature) {
@@ -556,7 +558,7 @@ angular.module('ortApp.services', [])
                     });
 
                     AOI.CEPlaceLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + [AOIConfig.optionalLayers.CEPlaceLayer],
+                        url: AOIConfig.optionalLayers.CEPlaceLayer.server + [AOIConfig.optionalLayers.CEPlaceLayer.num],
                         pane: 'CEPlaceLayerPane',
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
@@ -585,7 +587,7 @@ angular.module('ortApp.services', [])
 
 
                     AOI.TIPrincipalPortsLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + [AOIConfig.optionalLayers.TIPrincipalPortsLayer],
+                        url: AOIConfig.optionalLayers.TIPrincipalPortsLayer.server + [AOIConfig.optionalLayers.TIPrincipalPortsLayer.num],
                         pane: 'TIPrincipalPortsLayerPane',
                         pointToLayer: function (feature, latlng) {
                             return L.marker(latlng, {
@@ -599,7 +601,7 @@ angular.module('ortApp.services', [])
                         }
                     });
                     AOI.NRCReefsLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + [AOIConfig.optionalLayers.NRCReefsLayer],
+                        url: AOIConfig.optionalLayers.NRCReefsLayer.server + [AOIConfig.optionalLayers.NRCReefsLayer.num],
                         pane: 'NRCReefsLayerPane',
                         pointToLayer: function (feature, latlng) {
                             return L.marker(latlng, {
@@ -613,7 +615,7 @@ angular.module('ortApp.services', [])
                         }
                     });
                     AOI.CETribalLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.CETribalLayer,
+                        url: AOIConfig.optionalLayers.CETribalLayer.server + AOIConfig.optionalLayers.CETribalLayer.num,
                         pane: 'CETribalLayerPane',
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
@@ -637,7 +639,7 @@ angular.module('ortApp.services', [])
 
 
                     AOI.NRCNearbyLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.NRCNearbyLayer,
+                        url: AOIConfig.optionalLayers.NRCNearbyLayer.server + AOIConfig.optionalLayers.NRCNearbyLayer.num,
                         pane: 'NRCNearbyLayerPane',
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
@@ -659,35 +661,34 @@ angular.module('ortApp.services', [])
                         }
                     });
                     AOI.NRCBarrierLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.NRCBarrierLayer,
+                        url: AOIConfig.optionalLayers.NRCBarrierLayer.server + AOIConfig.optionalLayers.NRCBarrierLayer.num,
                         pane: 'NRCBarrierLayerPane',
                         style: function (feature) {
                             return {color: '#d6ce70', weight: 1.5, fillOpacity: .7};
                         }
                     });
 
-
                     AOI.TIVesselLayer = L.esri.dynamicMapLayer({
-                        url: AOIConfig.ortMapServer,
+                        url: AOIConfig.optionalLayers.TIVesselLayer.server,
                         pane: 'TIVesselLayerPane',
-                        layers: [AOIConfig.optionalLayers.TIVesselLayer],
+                        layers: [AOIConfig.optionalLayers.TIVesselLayer.num],
                         opacity: .8
                     });
 
                     AOI.NRCSoftCoralLayer = L.esri.dynamicMapLayer({
-                        url: AOIConfig.ortMapServer,
+                        url: AOIConfig.optionalLayers.NRCSoftCoralLayer.server,
                         pane: 'NRCSoftCoralLayerPane',
-                        layers: [AOIConfig.optionalLayers.NRCSoftCoralLayer],
+                        layers: [AOIConfig.optionalLayers.NRCSoftCoralLayer.num],
                         opacity: .8
                     });
                     AOI.NRCStoneyCoralLayer = L.esri.dynamicMapLayer({
-                        url: AOIConfig.ortMapServer,
+                        url: AOIConfig.optionalLayers.NRCStoneyCoralLayer.server,
                         pane: 'NRCStoneyCoralLayerPane',
-                        layers: [AOIConfig.optionalLayers.NRCStoneyCoralLayer],
+                        layers: [AOIConfig.optionalLayers.NRCStoneyCoralLayer.num],
                         opacity: .8
                     });
                     AOI.ECCoastalCountiesLayer = L.esri.featureLayer({
-                        url: AOIConfig.ortMapServer + AOIConfig.optionalLayers.ECCoastalCountiesLayer,
+                        url: AOIConfig.optionalLayers.ECCoastalCountiesLayer.server + AOIConfig.optionalLayers.ECCoastalCountiesLayer.num,
                         pane: 'ECCoastalCountiesLayerPane',
                         onEachFeature: function (feature, layer) {
                             if (feature.properties) {
@@ -831,11 +832,13 @@ angular.module('ortApp.services', [])
                                 });
                                 AOI.addMetadata(feature);
                                 break;
-                            case "vessel_traffic_atl_2011":
-                            case "vesseltrafficatl2011":
+                            case "vesseltrafficatl":
                                 AOI.TIVessel.push({
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
-                                    all_2011_avg: (feature.all_2011_avg || 0)
+                                    all_2011_avg: (feature.all_2011_avg || 0),
+                                    value_min: (feature.value_min || 0),
+                                    value_max: (feature.value_max || 0),
+                                    vessel_mean: (feature.vessel_mean || 0)
                                 });
                                 AOI.addMetadata(feature);
                                 break;

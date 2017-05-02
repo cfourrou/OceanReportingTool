@@ -48,13 +48,13 @@
     "name": "Vessel Count",
     "filename": "partials/TI_VesselCount.html",
     "priority": 1,
-    "alttext":"Element displays a color ramp representing the number of vessels in a raster pixel. The average value of the selected area is indicated with a tugboat icon.",
-    "modaltext": "Source: 2011 Vessel Density, US Coast Guard and NOAA's Ocean Service, Office for Coastal Management, 2011",
-    "narrativetext": "This data represents the average number of vessels over 300 gross tons traversing the area over the year based on 2011 Vessel Traffic (AIS) layer created by the Bureau of Energy Management (BOEM). Heavy vessel traffic may interfere with planned activities.",
-    "ruletext": ""
+    "alttext":"Element displays a color ramp representing the number of vessels in a raster pixel. The minimum, Mean, and maximum vessel counts for the south east atlantic are listed below the color ramp.",
+    "modaltext": "Source: 2013 Vessel Density, NOAA's Ocean Service, Office for Coastal Management, 2015",
+    "narrativetext": "The data represents the average number of vessels over 300 gross tons traversing the area over the year based on 2013 Vessel Density (AIS) layer created by MarineCadastre.gov. Heavy vessel traffic may interfere with planned activities.",
+    "ruletext": "Legend values are an approximation of vessel count based on density. Statistics represent the SE Atlantic study area only. Turn on the layer to visualize approximate counts in the area of interest."
   },
   {
-    "name": "Right Whale Restricted Areas",
+    "name": "Right Whale Seasonal Management Areas",
     "filename": "partials/TI_RightWhale.html",
     "priority": 4,
     "alttext":"Element contains a count of right whale restricted areas and the percentage of the selected area that it overlaps is reported in a graphic outline of a right whale.",
