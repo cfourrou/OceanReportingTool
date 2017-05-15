@@ -34,10 +34,10 @@
         <div class="wind-spacer">&nbsp;</div>
         <div class="house-box">
             <div class="wind-area">Area with suitable wind resources:
-                <div ng-show="EMvm.AOI.EMWindResourceArea">
+                <div class="wind-data" ng-show="EMvm.AOI.EMWindResourceArea">
                     {{EMvm.AOI.EMWindResourceArea.toLocaleString()}} km<sup>2</sup>
                 </div>
-                <div ng-if="!EMvm.AOI.EMWindResourceArea">No Data</div>
+                <div class="wind-data" ng-if="!EMvm.AOI.EMWindResourceArea">No Data</div>
             </div>
             <!-- iButton start-->
             <div class="iModal">
@@ -54,14 +54,17 @@
             <!-- iButton end-->
             <div class="wind-houses">
                 Potential Houses Supported Annually:
-                <div ng-show="EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">
+                <div class="wind-data" ng-show="EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">
                     {{EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM}}
                 </div>
-                <div ng-if="!EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">No Data</div>
+                <div class="wind-data" ng-if="!EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">No Data</div>
             </div>
 
             <div class="house">
-                <img class="house-image" img src="img/houseicon.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 1000000" class="house-image" img src="img/wind-resources-1.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 100000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 1000000" class="house-image" img src="img/wind-resources-2.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 20000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 100000" class="house-image" img src="img/wind-resources-3.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 1000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 20000" class="house-image" img src="img/wind-resources-4.svg"/>
             </div>
         </div>
 
@@ -72,37 +75,37 @@
                 <svg class="key-icons">
                     <circle cx="7" cy="7" r="7" fill="#0E3708"/>
                 </svg>
-                Superb (8.8-11.1 m/s)
+                Superb (8.8-11.1)
             </div>
             <div class="key-lines">
                 <svg class="key-icons">
                     <circle cx="7" cy="7" r="7" fill="#5C9227"/>
                 </svg>
-                Outstanding (8.0-8.8 m/s)
+                Outstanding (8.0-8.8)
             </div>
             <div class="key-lines">
                 <svg class="key-icons">
                     <circle cx="7" cy="7" r="7" fill="#A6C900"/>
                 </svg>
-                Excellent (7.5-8.0 m/s)
+                Excellent (7.5-8.0)
             </div>
             <div class="key-lines">
                 <svg class="key-icons">
                     <circle cx="7" cy="7" r="7" fill="#EFCF06"/>
                 </svg>
-                Good (7.0-7.5 m/s)
+                Good (7.0-7.5)
             </div>
             <div class="key-lines">
                 <svg class="key-icons">
                     <circle cx="7" cy="7" r="7" fill="#D96704"/>
                 </svg>
-                Fair (6.6-7.0 m/s)
+                Fair (6.6-7.0)
             </div>
             <div class="key-lines">
                 <svg class="key-icons">
                     <circle cx="7" cy="7" r="7" fill="#A90306"/>
                 </svg>
-                Unsuitable (<6.6 m/s)
+                Unsuitable (<6.6)
             </div>
             <div class="key-lines">
                 <svg class="key-icons">

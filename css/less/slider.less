@@ -1755,12 +1755,23 @@ Energy and Minerals
 
 .wind-area {
   float: left;
-  width: 75%;
+  color: @colorGrey-timer;
+  //width: 85%;
+  font-size: 16px;
 }
+
 .wind-houses {
   float: left;
-  width: 83%;
+  width: 95%;
+  font-size: 16px;
+  color: @colorGrey-timer;
 }
+
+.wind-data {
+  font-size: 22px;
+  color: @colorGrey-again;
+}
+
 .wind-box {
   float: left;
   width: 500px;
@@ -1802,20 +1813,21 @@ Energy and Minerals
   //position: absolute;
 }
 
-.house-box{
+.house-box {
   height: 245px;
   width: 300px;
   position: absolute;
-  left: 205px;
+  left: 190px;
 }
+
 .house-image {
   fill: @ortGrey-Dark;
-  width: 96px;
-  height: 96px;
+  width: 277px;
+  height: 100px;
   -webkit-filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%));
   filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%)); /* Same syntax as box-shadow */
   //float: right;
-  top: 85px;
+  top: 113px;
   left: 0px;
   position: absolute;
 }
@@ -2099,10 +2111,12 @@ Transportation and Infrastructure
   text-align: center;
   font-weight: bold;
 }
-.vessel-datacontainer{
+
+.vessel-datacontainer {
   padding-left: 6px;
   padding-right: 6px;
 }
+
 .vessel-data {
   background-color: @colorBlueGradiant;
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr=@colorBlueGradiant, endColorstr=@colorYellowGradiant);

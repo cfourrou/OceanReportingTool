@@ -24368,6 +24368,7 @@ angular.module('ortApp.services', [])
                                     AVG_WGHT: (feature.AVG_WGHT || 0).toFixed(2),
                                     PERC_COVER: (feature.PERC_COVER || 0),
                                     HOUSES_SUM: (feature.HOUSES_SUM || 0).toLocaleString(),
+                                    HOUSES_CAP:(feature.HOUSES_SUM || 0),
                                     CAPACITY: (feature.CAPACITY || 0).toLocaleString(),
                                     TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
@@ -24376,21 +24377,25 @@ angular.module('ortApp.services', [])
                                 });
                                 AOI.addMetadata(feature);
 
-                                AOI.EMWindResourceArea += feature.Area_km2;
+
 
                                 if (feature.TOTAL_CNT > 0) {
                                     switch (feature.WIND_CLASS.substring(0, 3)) { //make sure the stacked bar chart has the best classification at top and worst at bottom
                                         case "Sup":
                                             AOI.EMWindResourceClassification[0] = feature.PERC_COVER;
+                                            AOI.EMWindResourceArea += feature.Area_km2;
                                             break;
                                         case "Out":
                                             AOI.EMWindResourceClassification[1] = feature.PERC_COVER;
+                                            AOI.EMWindResourceArea += feature.Area_km2;
                                             break;
                                         case "Exc":
                                             AOI.EMWindResourceClassification[2] = feature.PERC_COVER;
+                                            AOI.EMWindResourceArea += feature.Area_km2;
                                             break;
                                         case "Goo":
                                             AOI.EMWindResourceClassification[3] = feature.PERC_COVER;
+                                            AOI.EMWindResourceArea += feature.Area_km2;
                                             break;
                                         case "Fai":
                                             AOI.EMWindResourceClassification[4] = feature.PERC_COVER;
