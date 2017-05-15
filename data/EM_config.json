@@ -13,10 +13,10 @@
     "filename": "partials/EM_WindResourcePotential.html",
     "priority": 1,
     "alttext":"Graphic of a turbine to illustrating wind speed averages over the selected area in meters per second and of a house to show the potential houses supported by the potential wind energy.",
-    "modaltext": "The potential megawatts (MW) of rated capacity that could be installed in this area, assuming 5 MW of installed capacity per square kilometer of water is: {{modalcustom}} MW. Source: atlantic_coast_90mwindspeed_off, National Renewable Energy Laboratory, 2009",
+    "modaltext": "The potential megawatts (MW) of rated capacity that could be installed in this area, assuming 5 MW of installed capacity per square kilometer of good or better quality wind is: {{modalcustom}} MW. Source: atlantic_coast_90mwindspeed_off, National Renewable Energy Laboratory, 2009",
     "modaltext2":"Calculation assumes 5MW<sup>1</sup> produced per square km, and an average annual household energy use of 2kW <sup>2</sup>.<br><div class='modal-overlay--footnote'><sup>1</sup> <a target='_blank' href='http://apps2.eere.energy.gov/wind/windexchange/windmaps/offshore.asp'>U.S. Department of Energy offshore wind potential</a><br> <sup>2</sup> <a target='_blank' href='http://www.eia.gov/tools/faqs/faq.cfm?id=97&t=3'>U.S. Energy Information Administration FAQ</a></div>",
     "narrativetext": "Areas with annual average wind speeds of 7 meters per second (m/s) and greater at 90-m height are generally considered to have a wind resource suitable for offshore development.",
-    "ruletext": "Potential houses calculation assume report area is developed to maximum capacity"
+    "ruletext": "Potential houses calculation assume only areas of good or better quality are developed to maximum capacity"
   },
   {
     "name": "",

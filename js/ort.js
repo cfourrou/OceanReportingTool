@@ -23210,11 +23210,10 @@ angular.module('ortApp.services', [])
                 useCors: false,
                 async: true,
                 path: 'submitJob',
-                asyncInterval: 1
+                asyncInterval: 5
             });
 
             var task = gpService.createTask();
-
             return {
                 run: function (shape) {
                     var deferred = $q.defer();
@@ -23224,6 +23223,7 @@ angular.module('ortApp.services', [])
                     task.setOutputParam("Output_Report");
 
                     task.run(function (error, geojson, raw) {
+
                         if (error) deferred.resolve(error);
                         else {
                             geojson.Output_Report.jobId = geojson.jobId;
@@ -23235,7 +23235,6 @@ angular.module('ortApp.services', [])
 
                 }
             };
-
         };
 
         return myGPService;
@@ -23307,6 +23306,7 @@ angular.module('ortApp.services', [])
                 EMCoastalEnergyFacilities: [],
                 CEElevation: [],
                 EMWindResourceClassification: [],
+                EMWindResourceArea: 0,
                 CEAreaOfPoly: [],
                 CEFedGeoRegs: [],
                 CECongress: [],
@@ -23445,6 +23445,12 @@ angular.module('ortApp.services', [])
                     allPromises.push(TIGPService.run(AOI.drawLayerShape));
                     allPromises.push(NRCGPService.run(AOI.drawLayerShape));
                     allPromises.push(ECGPService.run(AOI.drawLayerShape));
+
+                    console.log(EMGPService);
+                    //console.log(CEGPService.run["[[Scopes]]"]);
+                    //console.log(TIGPService.run["[[Scopes]]"][0]);
+                    //console.log(NRCGPService.run[0]);
+                    //console.log(ECGPService.["[[Scopes]]"]["0"].task._currentJobId);
 
                     return $q.all(allPromises).then(function (results) {
                         AOI.featureCollection = {fields: null, features: []};
@@ -24365,9 +24371,12 @@ angular.module('ortApp.services', [])
                                     CAPACITY: (feature.CAPACITY || 0).toLocaleString(),
                                     TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
-                                    METADATA_URL: feature.METADATA_URL
+                                    METADATA_URL: feature.METADATA_URL,
+                                    AREA_KM2: (feature.Area_km2 || 0)
                                 });
                                 AOI.addMetadata(feature);
+
+                                AOI.EMWindResourceArea += feature.Area_km2;
 
                                 if (feature.TOTAL_CNT > 0) {
                                     switch (feature.WIND_CLASS.substring(0, 3)) { //make sure the stacked bar chart has the best classification at top and worst at bottom
@@ -24597,6 +24606,7 @@ angular.module('ortApp.services', [])
                         AOI.EMWindPlanningArea.length = 0;
                         AOI.metadata.length = 0;
                         AOI.EMWindResourceClassification.length = 0;
+                        AOI.EMWindResourceArea = 0;
                         AOI.EMOceanDisposalSites.length = 0;
                         AOI.EMMarineMineralsLeases.length = 0;
                         AOI.EMMarineHydrokineticProjects.length = 0;
@@ -25322,7 +25332,6 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     });
 
 
-
     var vm = this;
     vm.AOI = AOI;
 
@@ -25791,15 +25800,15 @@ angular.module('ortApp.directives', [])
         };
     }])
 
-    .directive('exposeSize', function($window) {
-        return function($scope) {
+    .directive('exposeSize', function ($window) {
+        return function ($scope) {
 
-            $scope.initializeWindowSize = function() {
+            $scope.initializeWindowSize = function () {
                 $scope.windowHeight = $window.innerHeight;
                 $scope.windowWidth = $window.innerWidth;
             };
 
-            angular.element($window).bind('resize', function() {
+            angular.element($window).bind('resize', function () {
                 $scope.initializeWindowSize();
                 $scope.$apply();
             });

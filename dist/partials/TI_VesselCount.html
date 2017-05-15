@@ -23,47 +23,19 @@
     <div class="infographic-narrative " bind-html-compile="TIConf.narrativetext">
     </div>
     <div>
-        <div class="infographic-list infographic-list--pad">
-
-            <div class="vessel">
-                <div class="vessel-1"></div>
-                <div class="vessel-num">0</div>
-            </div>
-            <div class="vessel">
-                <div class="vessel-2"></div>
-                <div class="vessel-num">1-75</div>
-            </div>
-            <div class="vessel">
-                <div class="vessel-3"></div>
-                <div class="vessel-num">76-250</div>
-            </div>
-            <div class="vessel">
-                <div class="vessel-4"></div>
-                <div class="vessel-num">251-750</div>
-            </div>
-            <div class="vessel">
-                <div class="vessel-5"></div>
-                <div class="vessel-num">751-1500</div>
-            </div>
-            <div class="vessel">
-                <div class="vessel-6"></div>
-                <div class="vessel-num">More than 1500</div>
-            </div>
-
-        </div>
 
         <div class="infographic-list infographic-list--pad">
-            <div class="vessel-data" ng-show="TIvm.AOI.TIVessel.length">
-                <div class="vessel-min">Min: {{TIvm.AOI.TIVessel[0].value_min}}</div>
-                <div class="vessel-min">Mean: {{TIvm.AOI.TIVessel[0].vessel_mean}}</div>
-                <div class="vessel-min">Max: {{TIvm.AOI.TIVessel[0].value_max}}</div>
-            </div>
-            <div class="vessel-data" ng-hide="TIvm.AOI.TIVessel.length">
-                <div class="vessel-min"></div>
-                <div class="vessel-min">No Data</div>
-                <div class="vessel-min"></div>
+            <div class="vessel-data" >
+                <div class="vessel-datacontainer">
+                    <div class="vessel-min vessel-min--left"><10</div>
+                    <div class="vessel-min">100</div>
+                    <div class="vessel-min">150</div>
+                    <div class="vessel-min">250</div>
+                    <div class="vessel-min vessel-min--right">>500</div>
+                </div>
             </div>
         </div>
+
     </div>
     <div class="infographic-rulelogic" bind-html-compile="TIConf.ruletext">
     </div>

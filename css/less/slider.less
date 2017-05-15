@@ -382,6 +382,7 @@ Generic infographic classes
   padding-left: 12px;
   vertical-align: bottom;
 }
+
 .infographic-dataarea--medium {
   height: 120px;
   //width: 312.8px;
@@ -743,7 +744,7 @@ Highcharts
   height: 231px;
   width: 190px;
   position: relative;
-  bottom: 277px;
+  bottom: 276px;
 }
 
 .highcharts-windchart--consolidate {
@@ -1752,11 +1753,14 @@ Energy and Minerals
   width: 25%;
 }
 
+.wind-area {
+  float: left;
+  width: 75%;
+}
 .wind-houses {
   float: left;
-  width: 38%;
+  width: 83%;
 }
-
 .wind-box {
   float: left;
   width: 500px;
@@ -1773,8 +1777,8 @@ Energy and Minerals
   color: @colorBlack;
   z-index: 100;
   position: relative;
-  left: 200px;
-  top: 112px;
+  left: 154px;
+  top: 118px;
   background: @colorBlack;
   vertical-align: middle;
 }
@@ -1790,22 +1794,30 @@ Energy and Minerals
 }
 
 .house {
-  width: 300px;
-  height: 100px;
-  font-family: 'Open Sans';
-  font-size: 12px;
-  color: @ortGrey-Dark;
-  position: absolute;
-
+  //width: 300px;
+  //height: 100px;
+  //font-family: 'Open Sans';
+  //font-size: 12px;
+  //color: @ortGrey-Dark;
+  //position: absolute;
 }
 
-.house-color {
+.house-box{
+  height: 245px;
+  width: 300px;
+  position: absolute;
+  left: 205px;
+}
+.house-image {
   fill: @ortGrey-Dark;
   width: 96px;
   height: 96px;
   -webkit-filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%));
   filter: drop-shadow(0px 2px 2px fade(@colorBlack, 50%)); /* Same syntax as box-shadow */
-  float: right;
+  //float: right;
+  top: 85px;
+  left: 0px;
+  position: absolute;
 }
 
 .windmill {
@@ -1813,7 +1825,7 @@ Energy and Minerals
   height: 239px;
   position: relative;
   z-index: 50;
-  bottom: 46px;
+  bottom: 45px;
   overflow: hidden;
 
 }
@@ -2056,33 +2068,69 @@ Transportation and Infrastructure
   position: relative;
 }
 
-.vessel-min{
+.vessel-min {
+  width: 20%;
+  height: 24px;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+}
+
+.vessel-min--left {
+  text-align: left;
+}
+
+.vessel-min--right {
+  text-align: right;
+}
+
+.vessel-mean {
   width: 33%;
   height: 24px;
   float: left;
   text-align: center;
   font-weight: bold;
 }
-.vessel-mean{
+
+.vessel-max {
   width: 33%;
   height: 24px;
   float: left;
   text-align: center;
   font-weight: bold;
 }
-.vessel-max{
-  width: 33%;
-  height: 24px;
-  float: left;
-  text-align: center;
-  font-weight: bold;
+.vessel-datacontainer{
+  padding-left: 6px;
+  padding-right: 6px;
 }
-.vessel-data{
-  background-color: @colorBlueBar;
+.vessel-data {
+  background-color: @colorBlueGradiant;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr=@colorBlueGradiant, endColorstr=@colorYellowGradiant);
+  background-image: -moz-linear-gradient(left, @colorBlueGradiant 0%, @colorYellowGradiant 50%, @colorRedGradiant 100%);
+  background-image: linear-gradient(left, @colorBlueGradiant 0%, @colorYellowGradiant 50%, @colorRedGradiant 100%);
+  background-image: -webkit-linear-gradient(left, @colorBlueGradiant 0%, @colorYellowGradiant 50%, @colorRedGradiant 100%);
+  background-image: -o-linear-gradient(left, @colorBlueGradiant 0%, @colorYellowGradiant 50%, @colorRedGradiant 100%);
+  background-image: -ms-linear-gradient(left, @colorBlueGradiant 0%, @colorYellowGradiant 50%, @colorRedGradiant 100%);
+  background-image: -webkit-gradient(linear, left bottom, right bottom, color-stop(0%, @colorBlueGradiant), color-stop(50%, @colorYellowGradiant), color-stop(100%, @colorRedGradiant));
   height: 24px;
   line-height: 24px;
   width: 615px;
 }
+
+.vessel-data--log {
+  width: 615px;
+  height: 24px;
+  line-height: 24px;
+  background-color: #2892C7;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr=#2892C7, endColorstr=#FAFA64);
+  background-image: -moz-linear-gradient(left, #2892C7 0%, #FAFA64 94%, #ff8d00 98%, #E83134 100%);
+  background-image: linear-gradient(left, #2892C7 0%, #FAFA64 94%, #ff8d00 98%, #E83134 100%);
+  background-image: -webkit-linear-gradient(left, #2892C7 0%, #FAFA64 94%, #ff8d00 98%, #E83134 100%);
+  background-image: -o-linear-gradient(left, #2892C7 0%, #FAFA64 94%, #ff8d00 98%, #E83134 100%);
+  background-image: -ms-linear-gradient(left, #2892C7 0%, #FAFA64 94%, #ff8d00 98%, #E83134 100%);
+  background-image: -webkit-gradient(linear, left bottom, right bottom, color-stop(0%, #2892C7), color-stop(94%, #FAFA64), color-stop(98%, #ff8d00), color-stop(100%, #E83134));
+}
+
 /******************************************
 Transportation and Infrastructure
   Principle Ports

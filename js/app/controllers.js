@@ -8,7 +8,6 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
     });
 
 
-
     var vm = this;
     vm.AOI = AOI;
 

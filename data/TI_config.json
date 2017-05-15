@@ -24,7 +24,7 @@
     "alttext":"Element contains a count of maintained channels within 1 mile of the selected area.",
     "modaltext": "Source: Coastal Maintained Channels in US waters, NOAA's Ocean Service, Office of Coast Survey, US Army Corps of Engineers, and US Coast Guard, 2015",
     "narrativetext": "Coastal Maintained Channels are maintained and surveyed by the U.S. Army Corps of Engineers (USACE). These channels are necessary transportation systems that serve economic and national security interests. The possibility of silting is always present. Local authorities should be consulted for the controlling depth.",
-    "ruletext": "Showing maintained channels within 1 nautical mile of the report area and their minimum depths"
+    "ruletext": "Showing maintained channels within 1 nautical mile of the report area"
   },
   {
     "name": "Danger Zones and Restricted Areas",
@@ -48,10 +48,10 @@
     "name": "Vessel Count",
     "filename": "partials/TI_VesselCount.html",
     "priority": 1,
-    "alttext":"Element displays a color ramp representing the number of vessels in a raster pixel. The minimum, Mean, and maximum vessel counts for the south east atlantic are listed below the color ramp.",
-    "modaltext": "Source: 2013 Vessel Density, NOAA's Ocean Service, Office for Coastal Management, 2015",
-    "narrativetext": "The data represents the average number of vessels over 300 gross tons traversing the area over the year based on 2013 Vessel Density (AIS) layer created by MarineCadastre.gov. Heavy vessel traffic may interfere with planned activities.",
-    "ruletext": "Legend values are an approximation of vessel count based on density. Statistics represent the SE Atlantic study area only. Turn on the layer to visualize approximate counts in the area of interest."
+    "alttext":"Element displays a color ramp representing the number of vessels in a raster pixel.",
+    "modaltext": "Source: 2013 Vessel Density, MarineCadastre.gov, 2015. Density Values are multiplied by 100 to get approximate vessel counts.",
+    "narrativetext": "This data represents the approximate number of vessels over 300 gross tons traversing the SE Atlantic over the year based on the 2013 Vessel Traffic (AIS) layer created by MarineCadastre.gov. Despite a range of vessel counts from 0 to 56,565, the average value over the entire SE Atlantic is seven (7) vessels. This number is low because there are large areas of the ocean where vessel traffic is low to non-existent. Heavy vessel traffic may interfere with planned activities.",
+    "ruletext": "Legend values are an approximation of vessel count based on density. Statistics represent the SE Atlantic only. Turn on the layer to visualize approximate counts in the area of interest."
   },
   {
     "name": "Right Whale Seasonal Management Areas",

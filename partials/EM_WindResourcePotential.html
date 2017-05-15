@@ -32,26 +32,38 @@
         </div>
 
         <div class="wind-spacer">&nbsp;</div>
-        <div class="wind-houses">Potential Houses Supported
-            <div ng-show="EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">Annually:
-                {{EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM}}
+        <div class="house-box">
+            <div class="wind-area">Area with suitable wind resources:
+                <div ng-show="EMvm.AOI.EMWindResourceArea">
+                    {{EMvm.AOI.EMWindResourceArea.toLocaleString()}} km<sup>2</sup>
+                </div>
+                <div ng-if="!EMvm.AOI.EMWindResourceArea">No Data</div>
             </div>
-            <div ng-if="!EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">Annually: No Data</div>
+            <!-- iButton start-->
+            <div class="iModal">
+                <info-directive class="iModal-button" modal-template="ModalTemplate.html"
+                                message="message"
+                                modal-img="img/info.svg"
+                                modal-title='{{EMConf.name}}: Potential Houses Supported'
+                                modal-text={{EMConf.modaltext2}}
+
+                ></info-directive>
+
+
+            </div>
+            <!-- iButton end-->
+            <div class="wind-houses">
+                Potential Houses Supported Annually:
+                <div ng-show="EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">
+                    {{EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM}}
+                </div>
+                <div ng-if="!EMvm.AOI.EMWindResourcePotential[0].HOUSES_SUM">No Data</div>
+            </div>
+
+            <div class="house">
+                <img class="house-image" img src="img/houseicon.svg"/>
+            </div>
         </div>
-        <!-- iButton start-->
-        <div class="iModal">
-            <info-directive class="iModal-button" modal-template="ModalTemplate.html"
-                            message="message"
-                            modal-img="img/info.svg"
-                            modal-title='{{EMConf.name}}: Potential Houses Supported'
-                            modal-text= {{EMConf.modaltext2}}
-
-            ></info-directive>
-
-
-
-        </div>
-        <!-- iButton end-->
 
     </div>
     <div class="windResource-key">
@@ -99,9 +111,7 @@
                 Unknown (no data)
             </div>
         </div>
-        <div class="house">
-            <img class="house-color" img src="img/houseicon.svg"/>
-        </div>
+
     </div>
 
 
@@ -114,9 +124,6 @@
         <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
         </div>
     </div>
-
-
-
 
 
 </div>
