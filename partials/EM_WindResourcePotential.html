@@ -61,10 +61,10 @@
             </div>
 
             <div class="house">
-                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 1000000" class="house-image" img src="img/wind-resources-1.svg"/>
-                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 100000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 1000000" class="house-image" img src="img/wind-resources-2.svg"/>
-                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 20000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 100000" class="house-image" img src="img/wind-resources-3.svg"/>
-                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP > 1000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 20000" class="house-image" img src="img/wind-resources-4.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP >= 1000000" class="house-image" img src="img/wind-resources-1.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP >= 100000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 1000000" class="house-image" img src="img/wind-resources-2.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP >= 20000 && EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 100000" class="house-image" img src="img/wind-resources-3.svg"/>
+                <img ng-if="EMvm.AOI.EMWindResourcePotential[0].HOUSES_CAP < 20000" class="house-image" img src="img/wind-resources-4.svg"/>
             </div>
         </div>
 

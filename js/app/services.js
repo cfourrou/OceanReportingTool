@@ -140,6 +140,7 @@ angular.module('ortApp.services', [])
                 name: null,
                 added: false,
                 EMWindPlanningArea: [],
+                EMWindPlanningAreaSum:0,
                 metadata: [],
                 EMActiveRenewableEnergyLeases: [],
                 EMWindResourcePotential: [],
@@ -1199,6 +1200,7 @@ angular.module('ortApp.services', [])
                                     METADATA_URL: feature.METADATA_URL
                                 });
                                 AOI.addMetadata(feature);
+                                AOI.EMWindPlanningAreaSum += feature.PERC_COVER;
                                 break;
                             case "ActiveRenewableEnergyLeases":
                                 AOI.EMActiveRenewableEnergyLeases.push({
@@ -1462,6 +1464,7 @@ angular.module('ortApp.services', [])
 
                         AOI.EMWindResourcePotential.length = 0;
                         AOI.EMWindPlanningArea.length = 0;
+                        AOI.EMWindPlanningAreaSum = 0;
                         AOI.metadata.length = 0;
                         AOI.EMWindResourceClassification.length = 0;
                         AOI.EMWindResourceArea = 0;

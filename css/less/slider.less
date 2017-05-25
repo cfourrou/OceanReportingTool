@@ -378,16 +378,20 @@ Generic infographic classes
 
 .infographic-dataarea--small {
   height: 70px;
-  //width: 312.8px;
-  padding-left: 12px;
+  width: 120px;
+  float: left;
+  padding-left: 7px;
   vertical-align: bottom;
+  line-height: 15px;
 }
 
 .infographic-dataarea--medium {
   height: 120px;
-  //width: 312.8px;
-  padding-left: 12px;
+  width: 120px;
+  float: left;
+  padding-left: 7px;
   vertical-align: bottom;
+  line-height: 15px;
 }
 
 .infographic-dataarea {
@@ -484,7 +488,7 @@ Generic infographic classes
   font-size: 12px;
   color: @ortGrey-Dark;
   vertical-align: bottom;
-  line-height: 23px;
+  line-height: 20px;
 
 }
 
@@ -493,7 +497,7 @@ Generic infographic classes
   font-size: 14px;
   color: @ortGrey-Dark;
   vertical-align: bottom;
-  line-height: 23px;
+  line-height: 18px;
 
 }
 
@@ -501,6 +505,7 @@ Generic infographic classes
   // width: 312.8px;
   padding-left: 12px;
   vertical-align: bottom;
+  line-height: 25px;
 }
 
 .infographic-twosizeline--small a:link, a:visited {
@@ -512,6 +517,15 @@ Generic infographic classes
   font-size: 21px;
   color: @ortGrey-Dark;
   vertical-align: bottom;
+  line-height: 26px;
+}
+
+.infographic-twosizeline--larger {
+  font-family: 'Open Sans';
+  font-size: 22px;
+  color: @ortGrey-Dark;
+  vertical-align: bottom;
+  line-height: 23px;
 }
 
 .infographic-text--large {
@@ -1861,6 +1875,62 @@ Energy and Minerals
   width: 190px;
   position: relative;
   bottom: 237px;
+}
+
+/*****************************************
+Energy and Minerals
+  Wind Planning Areas
+*****************************************/
+.windplanning-table--spacer {
+  height: 15px;
+  width: 315px;
+}
+
+.table-windplanning {
+  background-color: @ortGrey-Background;
+  text-align: center;
+  box-shadow: 0px 2px 4px 0px fade(@colorGrey-BoxShadow, 50%);
+  border-collapse: separate;
+  font-family: 'Open Sans';
+  font-size: 10px;
+
+}
+
+.table-windplanning tr {
+  border: 1px solid @colorLightGrey;
+  height: 20px;
+}
+
+.table-windplanning th {
+  border: 1px solid @colorLightGrey;
+  height: 20px;
+}
+
+.table-windplanning td {
+  border: 1px solid @colorLightGrey;
+  height: 20px;
+  a {
+    text-decoration: underline;
+  }
+}
+
+.table-windplanning--narrow {
+  width: 120px;
+}
+
+.table-windplanning--wide {
+  width: 170px;
+}
+
+.table-windplanning--short {
+
+  width: 95px;
+}
+
+.table-windplanning--long {
+
+  width: 315px;
+
 }
 
 /****************************************

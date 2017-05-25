@@ -33,15 +33,15 @@
         <span class="infographic-twosizeline--small">BOEM Active Renewable Energy Leases</span>
     </div>
     <div class="infographic-twosizeline">
-        <span class="infographic-twosizeline--small">Covers</span>
-            <span class="infographic-twosizeline--large"><ng-hide
+        <span class="infographic-twosizeline--medium">Covers</span>
+            <span class="infographic-twosizeline--larger"><ng-hide
                     ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].PERC_COVER>=0">0
-            </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].PERC_COVER.toFixed(0)}}</span>
-        <span class="infographic-twosizeline--small">%, including</span>
-            <span class="infographic-twosizeline--large"><ng-hide
+            </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].PERC_COVER.toFixed(0)}}%</span>
+        <span class="infographic-twosizeline--medium">, including</span>
+            <span class="infographic-twosizeline--larger"><ng-hide
                     ng-hide="EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC>=0">0
             </ng-hide>{{EMvm.AOI.EMActiveRenewableEnergyLeases[0].TOTAL_BLOC}}</span>
-        <span class="infographic-twosizeline--small">OCS blocks</span>
+        <span class="infographic-twosizeline--medium">OCS blocks</span>
     </div>
     <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>

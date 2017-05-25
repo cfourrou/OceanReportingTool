@@ -26,34 +26,51 @@
     <div class="infographic-dataarea--medium">
         <span class="infographic-twosizeline--large"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT>=0">0
         </ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT}}</span>
-        <span class="infographic-twosizeline--small">BOEM Wind Planning Area</span>
+        <span class="infographic-twosizeline--small">BOEM Wind Planning Area<ng-hide
+                ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_CNT===1">s
+        </ng-hide></span>
     </div>
     <div class="infographic-twosizeline">
-        <span class="infographic-twosizeline--small">Covers</span>
-        <span class="infographic-twosizeline--large"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].PERC_COVER>=0">0
-        </ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].PERC_COVER.toFixed(0)}}</span>
-        <span class="infographic-twosizeline--small">%, including</span>
-        <span class="infographic-twosizeline--large"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC>=0">0
+        <span class="infographic-twosizeline--medium">Covers</span>
+        <span class="infographic-twosizeline--larger">{{EMvm.AOI.EMWindPlanningAreaSum.toFixed(0)}}%</span>
+        <span class="infographic-twosizeline--medium">, including</span>
+        <span class="infographic-twosizeline--larger"><ng-hide ng-hide="EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC>=0">0
         </ng-hide>{{EMvm.AOI.EMWindPlanningArea[0].TOTAL_BLOC}}</span>
-        <span class="infographic-twosizeline--small">OCS blocks</span>
+        <span class="infographic-twosizeline--medium">OCS blocks</span>
     </div>
 
-    <div class="infographic-twosizeline">
-        <div class="infographic-twosizeline--small">{{EMvm.AOI.EMWindPlanningArea[0].PROT_NUMBE}}
-            {{EMvm.AOI.EMWindPlanningArea[0].INFO}}
-        </div>
-        <ng-show ng-show="EMvm.AOI.EMWindPlanningArea[0].PERC_COVER>=0">
-            <div class="infographic-twosizeline--small"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK1}}
-                                                           target="_blank">Current
-                Federal
-                Register Notice</a>
-            </div>
-            <div class="infographic-twosizeline--small"><a href={{EMvm.AOI.EMWindPlanningArea[0].LINK2}}
-                                                           target="_blank">Current
-                State
-                Activities</a></div>
-        </ng-show>
+    <div class="windplanning-table--spacer"></div>
+    <div class="infographic-dataarea">
+
+
+        <table class="table-windplanning ">
+
+
+            <tr
+                    ng-repeat="facs in EMvm.AOI.EMWindPlanningArea  | orderBy : 'PERC_COVER'">
+                <td class="table-windplanning--long">
+                    <div>{{facs.PROT_NUMBE}} {{facs.INFO}}</div>
+                </td>
+                <td class="table-windplanning--wide">
+                    <div><a href={{facs.LINK1}}
+                            target="_blank">Current
+                        Federal
+                        Register Notice</a></div>
+                </td>
+                <td class="table-windplanning--narrow">
+                    <div><a href={{facs.LINK2}}
+                            target="_blank">Current
+                        State
+                        Activities</a></div>
+                </td>
+
+
+            </tr>
+        </table>
+
+
     </div>
+
     <div class="infographic-rulelogic" bind-html-compile="EMConf.ruletext">
     </div>
 </div>
