@@ -50,24 +50,14 @@ function PageslideCtrl(Highcharts, AOI, $state, usSpinnerService, $location, myQ
 
                 vm.startDrawing();
 
-                //if (vm.drawtoolOn) {
-                //    if (vm.drawLocked) {
-                //        vm.drawOff();
-                //
-                //    } else {
-                //        vm.startDrawing();
-                //    }
-                //}
                 break;
             case COMMAND.SUBMIT:
-                //allPromises = [];
 
                 vm.drawOrSubmitCommand = COMMAND.WORKING;
 
 
-                //vm.drawOff();
                 vm.paneOn();
-                //map to 50%
+
                 vm.mapHalfScreen();
                 vm.startSpin();
 
@@ -354,7 +344,6 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
     var vm = this;
     vm.AOI = AOI;
     vm.AOI.inPrintWindow = true;
-    //vm.AOI.sliderWidth = '100%';
     vm.AOI.viewName = "PrintCtrl";
     vm.congressIsActive = true;
     vm.senateIsActive = true;
@@ -393,8 +382,6 @@ function PrintCtrl($rootScope, AOI, webService, $q) {
 function SearchCtrl(AOI) {
     var vm = this;
     AOI.viewName = "draw";
-    //AOI.inPrintWindow = false;
-    //AOI.toggleFull = true;
 }
 
 

@@ -462,7 +462,6 @@ angular.module('ortApp.directives', [])
                             bounds.extend(layerBounds);
                         });
                         $scope.AOI.smallMap.fitBounds(bounds);
-                        //$scope.AOI.smallMap.zoomOut(2);
                         minicLayer.off('load');
                     });
                 }

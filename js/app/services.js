@@ -140,7 +140,7 @@ angular.module('ortApp.services', [])
                 name: null,
                 added: false,
                 EMWindPlanningArea: [],
-                EMWindPlanningAreaSum:0,
+                EMWindPlanningAreaSum: 0,
                 metadata: [],
                 EMActiveRenewableEnergyLeases: [],
                 EMWindResourcePotential: [],
@@ -270,20 +270,6 @@ angular.module('ortApp.services', [])
                     }
                     AOI.isVisible = false;
                 },
-                //zoomTo: function () {
-                //
-                //    var myBounds = L.latLngBounds([]);
-                //    // loop through the features returned by the server
-                //    AOI.layer.eachFeature(function (layer) {
-                //        // get the bounds of an individual feature
-                //        var layerBounds = layer.getBounds();
-                //        // extend the bounds of the collection to fit the bounds of the new feature
-                //        myBounds.extend(layerBounds);
-                //    });
-                //    AOI.map.fitBounds(myBounds);
-                //
-                //
-                //},
                 isVisible: false,
                 getReport: function () {
                     var allPromises = [];
@@ -301,11 +287,6 @@ angular.module('ortApp.services', [])
                     allPromises.push(ECGPService.run(AOI.drawLayerShape));
 
                     console.log(EMGPService);
-                    //console.log(CEGPService.run["[[Scopes]]"]);
-                    //console.log(TIGPService.run["[[Scopes]]"][0]);
-                    //console.log(NRCGPService.run[0]);
-                    //console.log(ECGPService.["[[Scopes]]"]["0"].task._currentJobId);
-
                     return $q.all(allPromises).then(function (results) {
                         AOI.featureCollection = {fields: null, features: []};
 
@@ -721,7 +702,6 @@ angular.module('ortApp.services', [])
                         }
                     });
 
-                    //<div id="stateCountyInfo" class="stateCountyInfo ng-binding ng-hide" ng-show="mapsModel.stateCountyInfoShow" style="top: 386px; left: 1024px;"></div>
 
                     if (AOI.ID === -9999) {
                         var featureCollection = JSON.parse(JSON.stringify(AOI.featureCollection));
@@ -1223,7 +1203,7 @@ angular.module('ortApp.services', [])
                                     AVG_WGHT: (feature.AVG_WGHT || 0).toFixed(2),
                                     PERC_COVER: (feature.PERC_COVER || 0),
                                     HOUSES_SUM: (feature.HOUSES_SUM || 0).toLocaleString(),
-                                    HOUSES_CAP:(feature.HOUSES_SUM || 0),
+                                    HOUSES_CAP: (feature.HOUSES_SUM || 0),
                                     CAPACITY: (feature.CAPACITY || 0).toLocaleString(),
                                     TOTAL_BLOC: (feature.TOTAL_BLOC || 0),
                                     TOTAL_CNT: (feature.TOTAL_CNT || 0),
@@ -1231,7 +1211,6 @@ angular.module('ortApp.services', [])
                                     AREA_KM2: (feature.Area_km2 || 0)
                                 });
                                 AOI.addMetadata(feature);
-
 
 
                                 if (feature.TOTAL_CNT > 0) {
@@ -1372,7 +1351,6 @@ angular.module('ortApp.services', [])
                         AOI.EMBeachHeight = 0;
                     } else {
                         AOI.EMBeachHeight = 127 + (38 * AOI.EMBeachNourishmentProjects.length);
-                        //AOI.BeachProjectsSorted = _.sortBy(AOI.EMBeachNourishmentProjects, "BEACH_AREA");
                         AOI.EMBeachNourishmentProjects.sort(function (a, b) {
                             return parseFloat(a.Dist_Mi) - parseFloat(b.Dist_Mi);
                         });
@@ -1506,7 +1484,6 @@ angular.module('ortApp.services', [])
                         AOI.ECStateGDP.length = 0;
                         AOI.ECCountyGDP.length = 0;
                         AOI.OceanJobContributionsSeries.length = 0;
-                        // AOI.drawAreaJobId = {};
                         AOI.Shared = false;
                         AOI.CEPlaces.length = 0;
                         AOI.TIShipping.length = 0;
@@ -1686,7 +1663,6 @@ angular.module('ortApp.services', [])
                                 layout: 'vertical',
                                 align: 'right',
                                 verticalAlign: 'middle',
-                                //floating: true,
                                 backgroundColor: '#f4f8fc',
                                 shadow: false
                             },
@@ -1709,12 +1685,12 @@ angular.module('ortApp.services', [])
                                 text: null
                             },
 
-                            //colors: ['#4f81bd', '#4f81bd', '#A6C900', '#EFCF06', '#D96704', '#A90306', '#A1A1A1'],
+
                             xAxis: {
                                 categories: AOI.EMBeachName,
                                 labels: {
                                     style: {
-                                        //color: 'red',
+
                                         fontSize: '10px'
                                     }
                                 }
@@ -1746,7 +1722,6 @@ angular.module('ortApp.services', [])
                             name: 'Volume(cyd)',
                             color: 'rgba(192,67,73,1)',
                             data: AOI.EMBeachSAND_VOL_C,
-                            //pointPadding: .2,
                             pointWidth: 10,
                             pointPlacement: -0.2,
                             yAxis: 0,
@@ -1765,9 +1740,7 @@ angular.module('ortApp.services', [])
                             data: AOI.EMBeachTOTAL_FUND,
                             tooltip: {
                                 valuePrefix: '$',
-                                //valueSuffix: ' M'
                             },
-                            // pointPadding: 0.3,
                             pointWidth: 20,
                             pointPlacement: 0.2,
                             yAxis: 0,
